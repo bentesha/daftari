@@ -19,9 +19,7 @@ class ItemTile extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppText(itemTitle,
-                  style: AppTextStyles.body
-                      .copyWith(color: AppColors.onBackground)),
+              AppText(itemTitle, weight: FontWeight.w500, size: 18.dw),
               AppIconButton(
                 onPressed: onPressed,
                 icon: Icons.more_horiz,
@@ -47,8 +45,8 @@ class ItemTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppText(title, style: AppTextStyles.subtitle),
-          AppText(value),
+          AppText(title, opacity: .75, size: 15.dw),
+          AppText(value, weight: FontWeight.w500, size: 15.dw),
         ],
       ),
     );

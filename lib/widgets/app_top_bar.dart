@@ -28,7 +28,7 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
             titleSpacing: 5,
             backgroundColor: AppColors.primary,
             titleTextStyle:
-                AppTextStyles.heading.copyWith(color: AppColors.onPrimary)),
+                TextStyle(fontWeight: FontWeight.w600, fontSize: 20.dw)),
       ),
       child: AppBar(
         elevation: 0,
@@ -43,9 +43,11 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: EdgeInsets.only(left: 19.dw, bottom: 5.dw),
-                  child: AppText('$month, $year $title'.toUpperCase(),
-                      style: AppTextStyles.subtitle
-                          .copyWith(color: AppColors.onSecondary)),
+                  child: AppText(
+                    '$month, $year $title'.toUpperCase(),
+                    color: AppColors.onPrimary,
+                    size: 14.dw,
+                  ),
                 )),
             preferredSize: Size.fromHeight(60.dh)),
       ),

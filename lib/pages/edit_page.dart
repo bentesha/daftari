@@ -22,38 +22,18 @@ class EditPage extends StatelessWidget {
     return ListView(
       children: [
         _buildTitle(),
-        AppTextField(
-            errors: const {},
-            text: '',
-            onChanged: (_) {},
-            hintText: '',
-            keyboardType: TextInputType.text,
-            label: titlesList[0],
-            errorName: ''),
-        AppTextField(
-            errors: const {},
-            text: '',
-            onChanged: (_) {},
-            hintText: '',
-            keyboardType: TextInputType.text,
-            label: titlesList[1],
-            errorName: ''),
-        AppTextField(
-            errors: const {},
-            text: '',
-            onChanged: (_) {},
-            hintText: '',
-            keyboardType: TextInputType.text,
-            label: titlesList[2],
-            errorName: ''),
-        AppTextField(
-            errors: const {},
-            text: '',
-            onChanged: (_) {},
-            hintText: '',
-            keyboardType: TextInputType.text,
-            label: titlesList[3],
-            errorName: ''),
+        ListView.builder(
+            itemCount: titlesList.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (_, index) => AppTextField(
+                errors: const {},
+                text: '',
+                onChanged: (_) {},
+                hintText: '',
+                keyboardType: TextInputType.text,
+                label: titlesList[index],
+                errorName: '')),
       ],
     );
   }
@@ -61,7 +41,7 @@ class EditPage extends StatelessWidget {
   _buildTitle() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 19.dw, vertical: 10.dh),
-      child: AppText(pageTitle, style: AppTextStyles.heading2),
+      child: AppText(pageTitle, size: 24.dw, weight: FontWeight.bold),
     );
   }
 
@@ -69,10 +49,9 @@ class EditPage extends StatelessWidget {
     return Builder(builder: (context) {
       return AppTextButton(
         onPressed: () => Navigator.pop(context),
-        height: 40.dh,
-        margin: EdgeInsets.only(left: 19.dw, right: 19.dw, bottom: 19.dw),
+        height: 50.dh,
+        margin: EdgeInsets.only(left: 19.dw, right: 19.dw, bottom: 10.dw),
         text: 'Done',
-        textStyle: AppTextStyles.body2.copyWith(color: AppColors.onPrimary),
       );
     });
   }

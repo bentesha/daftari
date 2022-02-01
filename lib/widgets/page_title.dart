@@ -20,9 +20,10 @@ class PageTitle extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppText(title,
-              style: AppTextStyles.body2
-                  .copyWith(color: AppColors.onSecondary.withOpacity(.75))),
+          AppText(
+            title,
+            color: AppColors.onSecondary.withOpacity(.85),
+          ),
           AppIconButton(
             onPressed: actionCallback,
             icon: actionIcon,

@@ -34,15 +34,18 @@ class AppDrawer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 40.dh),
-            AppText('Mary James',
-                style: AppTextStyles.heading.copyWith(
-                    color: Theme.of(context).colorScheme.onSecondary)),
-            AppText('@ Bella Bella Boutique',
-                style: AppTextStyles.subtitle.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSecondary
-                        .withOpacity(.65))),
+            const AppText(
+              'Mary James',
+              color: AppColors.onSecondary,
+              weight: FontWeight.w500,
+            ),
+            SizedBox(height: 5.dh),
+            AppText(
+              '@ Bella Bella Boutique',
+              color: AppColors.onSecondary,
+              opacity: .75,
+              size: 14.dw,
+            ),
           ],
         ),
       );
@@ -74,11 +77,13 @@ class AppDrawer extends StatelessWidget {
           alignment: Alignment.centerLeft,
           height: 40.dh,
           padding: EdgeInsets.only(left: 19.dw),
-          child: AppText(title,
-              style: AppTextStyles.body2.copyWith(
-                  color: isCurrent
-                      ? AppColors.accent
-                      : AppColors.onSecondary.withOpacity(.75))),
+          child: AppText(
+            title,
+            weight: FontWeight.w500,
+            color: isCurrent
+                ? AppColors.accent
+                : AppColors.onSecondary.withOpacity(.75),
+          ),
         ),
         contentPadding: EdgeInsets.zero,
         dense: true,
@@ -108,6 +113,7 @@ class AppDrawer extends StatelessWidget {
         break;
       default:
     }
+    Navigator.pop(context);
     Navigator.push(context, MaterialPageRoute(builder: (_) => nextPage));
   }
 
@@ -117,8 +123,6 @@ class AppDrawer extends StatelessWidget {
       text: 'Settings',
       height: 40.dh,
       isFilled: false,
-      textStyle: AppTextStyles.body2
-          .copyWith(color: AppColors.onSecondary.withOpacity(.75)),
       margin: EdgeInsets.only(bottom: 20.dh),
       alignment: Alignment.centerLeft,
       padding: EdgeInsets.only(left: 19.dw),

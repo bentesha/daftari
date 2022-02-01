@@ -6,3 +6,4 @@ export 'expenses_page.dart';
 export 'stock_management.dart';
 export 'opening_stock_page.dart';
 export 'edit_page.dart';
+export 'add_category_page.dart';

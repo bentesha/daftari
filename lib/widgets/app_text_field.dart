@@ -61,9 +61,9 @@ class _AppTextFieldState extends State<AppTextField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppText(widget.label,
-              style:
-                  AppTextStyles.body2.copyWith(color: AppColors.onBackground)),
+          AppText(
+            widget.label,
+          ),
           Container(
             height: 40.dh,
             margin: EdgeInsets.only(top: 8.dh),

@@ -57,7 +57,8 @@ class _StockManagementState extends State<StockManagement> {
           padding: EdgeInsets.only(left: 19.dw, bottom: 5.dh),
           child: AppText(
             'Reasons For Stock Loss'.toUpperCase(),
-            style: AppTextStyles.body.copyWith(color: AppColors.primaryVariant),
+            color: AppColors.primaryVariant,
+            weight: FontWeight.w500,
           ),
         ),
         _buildDetail('Stolen Items', 187300.00),
@@ -77,10 +78,13 @@ class _StockManagementState extends State<StockManagement> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppText(title,
-              style:
-                  AppTextStyles.body2.copyWith(color: AppColors.onBackground)),
-          AppText(Utils.convertToMoneyFormat(amount)),
+          AppText(
+            title,
+          ),
+          AppText(
+            Utils.convertToMoneyFormat(amount),
+            weight: FontWeight.w500,
+          ),
         ],
       ),
     );
@@ -97,9 +101,11 @@ class _StockManagementState extends State<StockManagement> {
   void _showBottomSheet() {
     _scaffoldKey.currentState!.showBottomSheet((context) => AppBottomSheet(
         titles: const ['Edit Opening Stock', 'Edit Lost Items', 'Close'],
-        callbacks: [null, () => _navigateTo(const OpeningStockPage()), null]));
+        callbacks: [() => _navigateTo(const OpeningStockPage()), null, null]));
   }
 
-  void _navigateTo(Widget page) =>
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => page));
+  void _navigateTo(Widget page) {
+    Navigator.pop(context);
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => page));
+  }
 }

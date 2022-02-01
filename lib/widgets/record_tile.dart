@@ -23,20 +23,14 @@ class RecordTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppText(title,
-                  style: AppTextStyles.body2
-                      .copyWith(color: AppColors.onBackground)),
-              AppText(
-                Utils.convertToMoneyFormat(totalPrice),
-                style: AppTextStyles.body,
-              )
+              AppText(title, weight: FontWeight.w500),
+              AppText(Utils.convertToMoneyFormat(totalPrice),
+                  weight: FontWeight.w500, size: 16.dw)
             ],
           ),
           SizedBox(height: 5.dh),
-          AppText(
-            '$quantity $unit @ ${Utils.convertToMoneyFormat(unitPrice)}',
-            style: AppTextStyles.subtitle,
-          )
+          AppText('$quantity $unit @ ${Utils.convertToMoneyFormat(unitPrice)}',
+              opacity: .7, size: 14.dw)
         ],
       ),
     );

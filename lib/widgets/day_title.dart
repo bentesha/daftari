@@ -8,8 +8,8 @@ class DayTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey.shade300,
-      padding: EdgeInsets.symmetric(horizontal: 19.dw, vertical: 10.dh),
+      padding: EdgeInsets.symmetric(horizontal: 19.dw, vertical: 8.dh),
+      color: AppColors.secondaryVariant,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -18,7 +18,7 @@ class DayTitle extends StatelessWidget {
               ? AppIconButton(
                   onPressed: () {},
                   icon: Icons.more_horiz,
-                  iconColor: AppColors.primary,
+                  iconColor: AppColors.onSecondary,
                 )
               : Container()
         ],

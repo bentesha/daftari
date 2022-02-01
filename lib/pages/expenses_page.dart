@@ -22,7 +22,18 @@ class _ExpensesPageState extends State<ExpensesPage> {
   }
 
   _buildBottomNavBar() {
-    return const MonthlyTotalTile(title: 'Total Expenses', amount: 4000000);
+    return MonthlyTotalTile(
+      title: 'Total Expenses',
+      amount: 4000000,
+      addCallback: _navigateToEditPage,
+    );
+  }
+
+  void _navigateToEditPage() {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => const EditPage(
+            pageTitle: 'Adding an expense',
+            titlesList: ['Item Title', 'Price', 'Notes'])));
   }
 
   _buildAppBar() {

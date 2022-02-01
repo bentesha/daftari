@@ -23,12 +23,10 @@ class AdjustableTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppText(title,
-                  style: AppTextStyles.body2
-                      .copyWith(color: AppColors.onBackground)),
+              AppText(title, weight: FontWeight.w500),
               AppText(
                 Utils.convertToMoneyFormat(totalPrice),
-                style: AppTextStyles.body,
+                weight: FontWeight.w500,
               )
             ],
           ),
@@ -43,8 +41,7 @@ class AdjustableTile extends StatelessWidget {
     final isEmpty = text == null;
     return Padding(
       padding: isEmpty ? EdgeInsets.zero : EdgeInsets.only(top: 5.dh),
-      child:
-          isEmpty ? Container() : AppText(text, style: AppTextStyles.subtitle),
+      child: isEmpty ? Container() : AppText(text, opacity: .75),
     );
   }
 }

@@ -57,7 +57,18 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
   }
 
   _buildBottomNavBar() {
-    return const MonthlyTotalTile(title: 'Total Sales', amount: 878500);
+    return MonthlyTotalTile(
+      title: 'Total Sales',
+      amount: 878500,
+      addCallback: _navigateToEditPage,
+    );
+  }
+
+  void _navigateToEditPage() {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => const EditPage(
+            pageTitle: 'Adding Sales Record',
+            titlesList: ['Item Title', 'Quantity Sold', 'Notes'])));
   }
 
   final _recordsList = <RecordTile>[

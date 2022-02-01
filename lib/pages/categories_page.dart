@@ -67,9 +67,14 @@ class _CategoriesPageState extends State<CategoriesPage> {
   _buildTitle() {
     return PageTitle(
       title: '4 Categories',
-      actionCallback: () {},
+      actionCallback: _navigateToCategoryPage,
       actionIcon: Icons.add,
     );
+  }
+
+  void _navigateToCategoryPage() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (_) => const AddCategoryPage()));
   }
 
   final _categoriesList = const <CategoryTile>[

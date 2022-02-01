@@ -46,7 +46,7 @@ class AppBottomSheet extends StatelessWidget {
         text: text,
         alignment: Alignment.centerLeft,
         isFilled: false,
-        textStyle: AppTextStyles.body2.copyWith(color: textColor),
+        textColor: textColor,
       );
     });
   }

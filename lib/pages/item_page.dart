@@ -42,7 +42,12 @@ class _ItemPageState extends State<ItemPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(child: AppText(widget.item, style: AppTextStyles.heading2)),
+          Expanded(
+              child: AppText(
+            widget.item.toUpperCase(),
+            weight: FontWeight.bold,
+            size: 22.dw,
+          )),
           Row(
             children: [
               AppIconButton(
@@ -73,9 +78,11 @@ class _ItemPageState extends State<ItemPage> {
               const SheetOpeningTile(),
               Padding(
                 padding: EdgeInsets.only(left: 19.dw, top: 15.dh),
-                child: AppText(title,
-                    style: AppTextStyles.heading
-                        .copyWith(color: AppColors.onPrimary)),
+                child: AppText(
+                  title.toUpperCase(),
+                  size: 18.dw,
+                  color: AppColors.onSecondary,
+                ),
               ),
               AppDivider(color: AppColors.onPrimary, height: 2.dw),
               _buildTextButton(isTappedFromItem ? 'Edit' : 'Rename'),
@@ -93,9 +100,8 @@ class _ItemPageState extends State<ItemPage> {
       padding: EdgeInsets.only(left: 19.dw),
       text: text,
       alignment: Alignment.centerLeft,
+      textColor: textColor,
       isFilled: false,
-      textStyle:
-          AppTextStyles.body2.copyWith(color: textColor ?? AppColors.onPrimary),
     );
   }
 }

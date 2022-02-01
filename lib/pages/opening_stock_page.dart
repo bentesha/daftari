@@ -54,7 +54,8 @@ class _OpeningStockPageState extends State<OpeningStockPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-              child: AppText('Opening Stock', style: AppTextStyles.heading2)),
+              child: AppText('Opening Stock',
+                  size: 24.dw, weight: FontWeight.bold)),
           AppIconButton(
             onPressed: () => _navigateTo(const EditPage(
               pageTitle: 'Adding Opening Stock Item',

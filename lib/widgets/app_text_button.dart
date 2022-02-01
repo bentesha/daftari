@@ -14,6 +14,7 @@ class AppTextButton extends StatefulWidget {
       this.isFilled = true,
       this.textStyle,
       this.iconColor = AppColors.onBackground,
+      this.textColor,
       required this.onPressed,
       Key? key})
       : super(key: key);
@@ -29,7 +30,7 @@ class AppTextButton extends StatefulWidget {
   final Widget? child;
   final Alignment? alignment;
   final TextStyle? textStyle;
-  final Color? iconColor;
+  final Color? iconColor, textColor;
 
   @override
   _AppTextButtonState createState() => _AppTextButtonState();
@@ -48,7 +49,7 @@ class _AppTextButtonState extends State<AppTextButton>
         vsync: this);
     animation = ColorTween(
             end: Colors.grey.withOpacity(.25),
-            begin: widget.isFilled ? AppColors.secondary : Colors.transparent)
+            begin: widget.isFilled ? AppColors.primary : Colors.transparent)
         .animate(controller)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
@@ -86,18 +87,24 @@ class _AppTextButtonState extends State<AppTextButton>
     return hasProvidedChild
         ? widget.child
         : widget.withIcon
-            ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Icon(widget.icon ?? Icons.share,
-                    color: widget.iconColor ?? AppColors.secondary,
-                    size: 22.dw),
-                SizedBox(width: 15.dw),
-                _text(),
-              ])
+            ? Row(
+                mainAxisAlignment: widget.alignment == Alignment.centerLeft
+                    ? MainAxisAlignment.start
+                    : MainAxisAlignment.center,
+                children: [
+                    Icon(widget.icon ?? Icons.share,
+                        color: widget.iconColor ?? AppColors.secondary,
+                        size: 22.dw),
+                    SizedBox(width: 15.dw),
+                    _text(),
+                  ])
             : _text();
   }
 
   _text() {
-    return AppText(widget.text ?? 'Click Me', style: widget.textStyle);
+    return AppText(widget.text ?? 'Click Me',
+        weight: FontWeight.w500,
+        color: widget.textColor ?? AppColors.onPrimary);
   }
 
   @override

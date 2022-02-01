@@ -58,7 +58,18 @@ class _PurchasesPageState extends State<PurchasesPage> {
   }
 
   _buildBottomNavBar() {
-    return const MonthlyTotalTile(title: 'Total Purchases', amount: 2560000);
+    return MonthlyTotalTile(
+      title: 'Total Purchases',
+      amount: 2560000,
+      addCallback: _navigateToEditPage,
+    );
+  }
+
+  void _navigateToEditPage() {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => const EditPage(
+            pageTitle: 'Adding Purchases Record',
+            titlesList: ['Item Title', 'Quantity Purchased', 'Notes'])));
   }
 
   final _recordsList = <RecordTile>[

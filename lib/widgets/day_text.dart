@@ -10,7 +10,7 @@ class DayText extends StatelessWidget {
     final ordinal = Utils.getOrdinalsFrom(day);
 
     return AppText('$day$ordinal $weekDay',
-        style: AppTextStyles.body2
-            .copyWith(color: AppColors.onSecondary.withOpacity(.75)));
+        color: AppColors.onSecondary.withOpacity(.85),
+       );
   }
 }

@@ -19,11 +19,9 @@ class CategoryTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppText(title, style: AppTextStyles.body),
-              AppText(
-                '$numberOfItems items',
-                style: AppTextStyles.subtitle,
-              )
+              AppText(title, weight: FontWeight.w500),
+              SizedBox(height: 5.dh),
+              AppText('$numberOfItems items', opacity: .75)
             ],
           ),
           AppIconButton(

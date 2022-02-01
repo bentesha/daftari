@@ -19,7 +19,9 @@ class ItemTile extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppText(itemTitle, style: AppTextStyles.body),
+              AppText(itemTitle,
+                  style: AppTextStyles.body
+                      .copyWith(color: AppColors.onBackground)),
               AppIconButton(
                 onPressed: onPressed,
                 icon: Icons.more_horiz,

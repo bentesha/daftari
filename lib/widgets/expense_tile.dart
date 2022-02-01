@@ -1,15 +1,16 @@
 import '../source.dart';
 
-class ExpenseTile extends StatelessWidget {
-  const ExpenseTile(
+class AdjustableTile extends StatelessWidget {
+  const AdjustableTile(
       {Key? key,
       required this.title,
       this.description,
+      this.date,
       required this.totalPrice})
       : super(key: key);
 
   final String title;
-  final String? description;
+  final String? description, date;
   final double totalPrice;
 
   @override
@@ -31,15 +32,19 @@ class ExpenseTile extends StatelessWidget {
               )
             ],
           ),
-          description == null ? Container() : SizedBox(height: 5.dh),
-          description == null
-              ? Container()
-              : AppText(
-                  description!,
-                  style: AppTextStyles.subtitle,
-                )
+          _buildText(description),
+          _buildText(date)
         ],
       ),
+    );
+  }
+
+  _buildText(String? text) {
+    final isEmpty = text == null;
+    return Padding(
+      padding: isEmpty ? EdgeInsets.zero : EdgeInsets.only(top: 5.dh),
+      child:
+          isEmpty ? Container() : AppText(text, style: AppTextStyles.subtitle),
     );
   }
 }

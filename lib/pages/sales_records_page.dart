@@ -57,54 +57,7 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
   }
 
   _buildBottomNavBar() {
-    final amount = Utils.convertToMoneyFormat(4000000);
-
-    return Container(
-      color: AppColors.secondary,
-      width: ScreenSizeConfig.getFullWidth - 30.dw,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            flex: 4,
-            child: AppTextButton(
-              onPressed: () {},
-              height: 60.dh,
-              padding: EdgeInsets.symmetric(horizontal: 15.dw),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  AppText('Today\'s Total',
-                      style: AppTextStyles.subtitle.copyWith(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSecondary
-                              .withOpacity(.75))),
-                  AppText(amount,
-                      style: AppTextStyles.body.copyWith(
-                          color: Theme.of(context).colorScheme.onSecondary))
-                ],
-              ),
-            ),
-          ),
-          _buildDivider(),
-          Expanded(
-            child: AppTextButton(
-                onPressed: () {},
-                height: 60.dh,
-                child: Icon(
-                  Icons.add,
-                  size: 24.dw,
-                  color: AppColors.onSecondary,
-                )),
-          )
-        ],
-      ),
-    );
-  }
-
-  _buildDivider() {
-    return Container(height: 40.dh, width: 2.dw, color: AppColors.divider);
+    return const MonthlyTotalTile(title: 'Total Sales', amount: 878500);
   }
 
   final _recordsList = <RecordTile>[

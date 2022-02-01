@@ -14,7 +14,7 @@ class _StockManagementState extends State<StockManagement> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: const AppDrawer(Pages.categories_page),
+      drawer: const AppDrawer(Pages.stock_adjustment_page),
       appBar: _buildAppBar(),
       body: _buildBody(),
     );
@@ -86,52 +86,20 @@ class _StockManagementState extends State<StockManagement> {
     );
   }
 
-  void _showBottomSheet() {
-    _scaffoldKey.currentState!.showBottomSheet((context) => Container(
-          color: AppColors.secondary,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SheetOpeningTile(),
-              _buildTextButton('Edit Opening Stock'),
-              _buildTextButton('Edit Lost Items'),
-              _buildTextButton('Close', textColor: AppColors.accent),
-            ],
-          ),
-        ));
-  }
-
-  _buildTextButton(String text, {Color? textColor}) {
-    return AppTextButton(
-      onPressed: () => Navigator.pop(context),
-      height: 40.dh,
-      padding: EdgeInsets.only(left: 19.dw),
-      text: text,
-      alignment: Alignment.centerLeft,
-      isFilled: false,
-      textStyle:
-          AppTextStyles.body2.copyWith(color: textColor ?? AppColors.onPrimary),
-    );
-  }
-
   _buildTitle() {
-    return Container(
-      color: AppColors.secondaryVariant,
-      padding: EdgeInsets.symmetric(horizontal: 19.dw, vertical: 10.dh),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          AppText('Last Edited on 20.02.2021',
-              style: AppTextStyles.subtitle
-                  .copyWith(color: AppColors.onSecondary.withOpacity(.75))),
-          AppIconButton(
-            onPressed: _showBottomSheet,
-            icon: Icons.edit_outlined,
-            iconColor: AppColors.onPrimary,
-          )
-        ],
-      ),
+    return PageTitle(
+      title: 'Last Edited on 20.02.2021',
+      actionCallback: _showBottomSheet,
+      actionIcon: Icons.edit_outlined,
     );
   }
+
+  void _showBottomSheet() {
+    _scaffoldKey.currentState!.showBottomSheet((context) => AppBottomSheet(
+        titles: const ['Edit Opening Stock', 'Edit Lost Items', 'Close'],
+        callbacks: [null, () => _navigateTo(const OpeningStockPage()), null]));
+  }
+
+  void _navigateTo(Widget page) =>
+      Navigator.of(context).push(MaterialPageRoute(builder: (_) => page));
 }

@@ -39,7 +39,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     return ListView(
       padding: EdgeInsets.zero,
       children: [
-        const DayTitle(),
+        _buildTitle(),
         ListView.separated(
           separatorBuilder: (_, __) => Container(
             height: 1.5.dw,
@@ -61,6 +61,14 @@ class _CategoriesPageState extends State<CategoriesPage> {
           shrinkWrap: true,
         )
       ],
+    );
+  }
+
+  _buildTitle() {
+    return PageTitle(
+      title: '4 Categories',
+      actionCallback: () {},
+      actionIcon: Icons.add,
     );
   }
 

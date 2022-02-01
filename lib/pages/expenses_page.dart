@@ -17,7 +17,12 @@ class _ExpensesPageState extends State<ExpensesPage> {
       drawer: const AppDrawer(Pages.expenses_page),
       appBar: _buildAppBar(),
       body: _buildBody(),
+      bottomNavigationBar: _buildBottomNavBar(),
     );
+  }
+
+  _buildBottomNavBar() {
+    return const MonthlyTotalTile(title: 'Total Expenses', amount: 4000000);
   }
 
   _buildAppBar() {
@@ -58,14 +63,14 @@ class _ExpensesPageState extends State<ExpensesPage> {
     );
   }
 
-  final _expensesList = const <ExpenseTile>[
-    ExpenseTile(title: 'Electricity Bills', totalPrice: 205000),
-    ExpenseTile(
+  final _expensesList = const <AdjustableTile>[
+    AdjustableTile(title: 'Electricity Bills', totalPrice: 205000),
+    AdjustableTile(
       title: 'Water Bills',
       totalPrice: 205000,
       description: 'An example description for water bills from DAWASCO.',
     ),
-    ExpenseTile(title: 'Rent', totalPrice: 205000),
-    ExpenseTile(title: 'Transportation Costs', totalPrice: 205000),
+    AdjustableTile(title: 'Rent', totalPrice: 205000),
+    AdjustableTile(title: 'Transportation Costs', totalPrice: 205000),
   ];
 }

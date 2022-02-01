@@ -1,10 +1,10 @@
 import '../source.dart';
 
 class AppDivider extends StatelessWidget {
-  const AppDivider({Key? key, this.height, this.margin, this.color})
+  const AppDivider({Key? key, this.height, this.margin, this.color, this.width})
       : super(key: key);
 
-  final double? height;
+  final double? height, width;
   final EdgeInsets? margin;
   final Color? color;
 
@@ -12,6 +12,7 @@ class AppDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: height ?? 1,
+      width: width,
       margin: margin ?? EdgeInsets.symmetric(vertical: 5.dh),
       color: color ?? AppColors.divider,
     );

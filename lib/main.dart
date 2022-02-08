@@ -1,7 +1,26 @@
 import 'app.dart';
 import 'source.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+
+  final appDirectory = await path_provider.getApplicationDocumentsDirectory();
+  Hive
+    ..init(appDirectory.path)
+    ..registerAdapter(ItemAdapter())
+    ..registerAdapter(RecordAdapter());
+
+  await Hive.openBox(Constants.kItemsBox);
+  await Hive.openBox(Constants.kRecordsBox);
+
+  final myApp = MultiProvider(
+    providers: [
+      Provider<RecordsService>(create: (_) => RecordsService()),
+      Provider<ItemsService>(create: (_) => ItemsService()),
+    ],
+    child: const MyApp(),
+  );
+
+  runApp(myApp);
 }

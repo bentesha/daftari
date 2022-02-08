@@ -72,30 +72,5 @@ class _PurchasesPageState extends State<PurchasesPage> {
             titlesList: ['Item Title', 'Quantity Purchased', 'Notes'])));
   }
 
-  final _recordsList = <RecordTile>[
-    const RecordTile(
-        title: 'Candle',
-        unit: 'packs',
-        totalPrice: 40000.00,
-        unitPrice: 2000.00,
-        quantity: 20),
-    const RecordTile(
-        title: 'Handbags',
-        unit: 'bags',
-        totalPrice: 320000.00,
-        unitPrice: 8000.00,
-        quantity: 4),
-    const RecordTile(
-        title: 'Candle',
-        unit: 'packs',
-        totalPrice: 40000.00,
-        unitPrice: 2000.00,
-        quantity: 20),
-    const RecordTile(
-        title: 'Candle',
-        unit: 'packs',
-        totalPrice: 40000.00,
-        unitPrice: 2000.00,
-        quantity: 20),
-  ];
+  final _recordsList = <RecordTile>[RecordTile(Record.empty())];
 }

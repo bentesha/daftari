@@ -1,10 +1,10 @@
 import '../source.dart';
 
 class ItemTile extends StatelessWidget {
-  const ItemTile(this.itemTitle, {Key? key, required this.onPressed})
+  const ItemTile(this.item, {Key? key, required this.onPressed})
       : super(key: key);
 
-  final String itemTitle;
+  final Item item;
   final VoidCallback onPressed;
 
   @override
@@ -19,11 +19,10 @@ class ItemTile extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppText(itemTitle, weight: FontWeight.w500, size: 18.dw),
+              AppText(item.title, weight: FontWeight.w500, size: 18.dw),
               AppIconButton(
                 onPressed: onPressed,
                 icon: Icons.more_horiz,
-                iconColor: AppColors.primaryVariant,
               )
             ],
           ),
@@ -32,9 +31,9 @@ class ItemTile extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 5.dh),
           child: Container(height: 1.dh, color: Colors.grey),
         ),
-        _buildItemDetail('Unit', 'kgs.'),
+        _buildItemDetail('Unit', item.unit),
         _buildItemDetail('In Stock', '20'),
-        _buildItemDetail('Value', Utils.convertToMoneyFormat(30000)),
+        _buildItemDetail('Value', item.getQuantityValue),
       ]),
     );
   }

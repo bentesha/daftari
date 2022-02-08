@@ -26,7 +26,6 @@ class CategoryTile extends StatelessWidget {
           ),
           AppIconButton(
             icon: Icons.chevron_right,
-            iconColor: AppColors.secondary.withOpacity(.85),
             onPressed: () {},
           )
         ],

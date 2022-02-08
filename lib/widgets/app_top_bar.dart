@@ -24,9 +24,12 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Theme(
       data: ThemeData(
+        iconTheme: const IconThemeData(color: AppColors.onPrimary),
         appBarTheme: AppBarTheme(
             titleSpacing: 5,
             backgroundColor: AppColors.primary,
+            iconTheme: const IconThemeData(color: AppColors.onPrimary),
+            actionsIconTheme: const IconThemeData(color: AppColors.onPrimary),
             titleTextStyle:
                 TextStyle(fontWeight: FontWeight.w600, fontSize: 20.dw)),
       ),
@@ -35,7 +38,6 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
         title: const Text('Bella Bella Boutique'),
         leading: AppIconButton(
           icon: Icons.menu,
-          iconColor: AppColors.onSecondary,
           onPressed: showDrawerCallback,
         ),
         bottom: PreferredSize(

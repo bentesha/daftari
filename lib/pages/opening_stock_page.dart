@@ -67,7 +67,6 @@ class _OpeningStockPageState extends State<OpeningStockPage> {
               ],
             )),
             icon: Icons.add,
-            iconColor: AppColors.primaryVariant,
           )
         ],
       ),

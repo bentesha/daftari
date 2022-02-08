@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 import '../source.dart';
 
 extension SizeExtension on num {
@@ -7,6 +9,8 @@ extension SizeExtension on num {
 }
 
 class Utils {
+  static const _uuid = Uuid();
+
   static _leapYear(int year) {
     bool leapYear = false;
 
@@ -19,6 +23,8 @@ class Utils {
 
     return leapYear;
   }
+
+  static getRandomId() => _uuid.v4();
 
   static int getDaysInMonth() {
     final monthLength = <int>[31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -121,7 +127,6 @@ class Utils {
     }
 
     return (isNegative ? '-' : '') +
-        'Tzs. ' +
         money +
         (decimals.length == 2 ? '${decimals}0' : decimals);
   }

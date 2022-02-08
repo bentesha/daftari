@@ -28,7 +28,7 @@ class _ItemPageState extends State<ItemPage> {
         Column(
             children: titles
                 .map((e) => ItemTile(
-                      e,
+                      Item.empty(),
                       onPressed: () => _showBottomSheet(e, true),
                     ))
                 .toList()),
@@ -53,13 +53,11 @@ class _ItemPageState extends State<ItemPage> {
               AppIconButton(
                 onPressed: () {},
                 icon: Icons.add,
-                iconColor: AppColors.primaryVariant,
               ),
               SizedBox(width: 15.dw),
               AppIconButton(
                 onPressed: () => _showBottomSheet(widget.item, false),
                 icon: Icons.more_horiz,
-                iconColor: AppColors.primaryVariant,
               ),
             ],
           )

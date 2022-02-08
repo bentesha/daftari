@@ -9,15 +9,40 @@ class SalesRecordsPage extends StatefulWidget {
 
 class _SalesRecordsPageState extends State<SalesRecordsPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  late final SalesPageBloc bloc;
+
+  @override
+  void initState() {
+    final recordsService = Provider.of<RecordsService>(context, listen: false);
+    final itemsService = Provider.of<ItemsService>(context, listen: false);
+    bloc = SalesPageBloc(recordsService, itemsService);
+    bloc.init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<SalesPageBloc, SalesPageState>(
+      bloc: bloc,
+      builder: (_, state) {
+        return state.when(loading: _buildLoading, content: _buildContent);
+      },
+    );
+  }
+
+  Widget _buildLoading(RecordsSupplements supp) {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget _buildContent(RecordsSupplements supp) {
     return Scaffold(
       key: _scaffoldKey,
       drawer: const AppDrawer(Pages.sales_page),
       appBar: _buildAppBar(),
-      body: _buildBody(),
-      bottomNavigationBar: _buildBottomNavBar(),
+      body: _buildRecords(supp),
+      floatingActionButton: _buildAddItemButton(supp.itemList),
     );
   }
 
@@ -36,7 +61,10 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
     return AppTopBar(showDrawerCallback: _openDrawer, title: "Sales Records");
   }
 
-  _buildBody() {
+  _buildRecords(RecordsSupplements supp) {
+    final recordList = supp.recordList;
+    if (recordList.isEmpty) return _buildEmptyState();
+
     return ListView(
       children: [
         const DayTitle(),
@@ -44,9 +72,10 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
           padding: EdgeInsets.symmetric(vertical: 8.dh),
           child: ListView.separated(
             separatorBuilder: (_, __) => const AppDivider(),
-            itemCount: _recordsList.length,
+            itemCount: recordList.length,
             itemBuilder: (_, index) {
-              return _recordsList[index];
+              final record = recordList[index];
+              return _buildItem(record);
             },
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
@@ -56,45 +85,45 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
     );
   }
 
-  _buildBottomNavBar() {
-    return MonthlyTotalTile(
-      title: 'Total Sales',
-      amount: 878500,
-      addCallback: _navigateToEditPage,
+  _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.network(
+            Constants.kEmptyItemImage,
+            height: 100.dh,
+            fit: BoxFit.contain,
+          ),
+          SizedBox(height: 30.dh),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 19.dw),
+            child: const AppText(
+              'No sales record has been added. Add one by clicking the button on a bottom-right corner.',
+              alignment: TextAlign.center,
+            ),
+          )
+        ],
+      ),
     );
   }
 
-  void _navigateToEditPage() {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => const EditPage(
-            pageTitle: 'Adding Sales Record',
-            titlesList: ['Item Title', 'Quantity Sold', 'Notes'])));
+  _buildItem(Record record) {
+    return RecordTile(record);
   }
 
-  final _recordsList = <RecordTile>[
-    const RecordTile(
-        title: 'Candle',
-        unit: 'packs',
-        totalPrice: 40000.00,
-        unitPrice: 2000.00,
-        quantity: 20),
-    const RecordTile(
-        title: 'Handbags',
-        unit: 'bags',
-        totalPrice: 320000.00,
-        unitPrice: 8000.00,
-        quantity: 4),
-    const RecordTile(
-        title: 'Candle',
-        unit: 'packs',
-        totalPrice: 40000.00,
-        unitPrice: 2000.00,
-        quantity: 20),
-    const RecordTile(
-        title: 'Candle',
-        unit: 'packs',
-        totalPrice: 40000.00,
-        unitPrice: 2000.00,
-        quantity: 20),
-  ];
+  _buildAddItemButton(List<Item> itemList) {
+    return FloatingActionButton(
+      onPressed: () => _showItemDialog(itemList),
+      child: const Icon(Icons.add, color: AppColors.onPrimary),
+    );
+  }
+
+  _showItemDialog(List<Item> itemList) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return RecordDialog(itemList: itemList);
+        });
+  }
 }

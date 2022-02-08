@@ -3,24 +3,22 @@ import '../source.dart';
 class AppIconButton extends StatefulWidget {
   const AppIconButton(
       {this.icon,
-      this.iconColor,
       this.height,
       this.width,
       this.margin,
       this.buttonColor,
       this.spreadRadius,
-      this.iconSize,
+      this.iconThemeData,
       required this.onPressed,
       Key? key})
       : super(key: key);
 
   final IconData? icon;
-  final Color? iconColor;
   final Color? buttonColor;
   final EdgeInsetsGeometry? margin;
   final double? spreadRadius, height, width;
-  final double? iconSize;
   final VoidCallback onPressed;
+  final IconThemeData? iconThemeData;
 
   @override
   _AppIconButtonState createState() => _AppIconButtonState();
@@ -44,12 +42,14 @@ class _AppIconButtonState extends State<AppIconButton>
 
   @override
   Widget build(BuildContext context) {
+    final iconThemeData = widget.iconThemeData ?? Theme.of(context).iconTheme;
+
     return AnimatedBuilder(
         animation: controller,
         child: Icon(
           widget.icon ?? Icons.home,
-          color: widget.iconColor ?? Colors.black,
-          size: widget.iconSize,
+          color: iconThemeData.color,
+          size: iconThemeData.size,
         ),
         builder: (context, child) {
           final shouldHideRipple =

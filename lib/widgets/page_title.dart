@@ -27,7 +27,6 @@ class PageTitle extends StatelessWidget {
           AppIconButton(
             onPressed: actionCallback,
             icon: actionIcon,
-            iconColor: AppColors.onPrimary,
           )
         ],
       ),

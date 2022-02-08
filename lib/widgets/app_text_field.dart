@@ -13,7 +13,8 @@ class AppTextField extends StatefulWidget {
       required this.errorName,
       this.letterSpacing,
       this.isPassword = false,
-      this.isLoginPasswrd = false,
+      this.isLoginPassword = false,
+      this.shouldShowErrorText = false,
       Key? key})
       : super(key: key);
 
@@ -25,8 +26,7 @@ class AppTextField extends StatefulWidget {
   final double? letterSpacing;
   final TextInputType keyboardType;
   final TextCapitalization textCapitalization;
-  final bool isPassword;
-  final bool isLoginPasswrd;
+  final bool isPassword, isLoginPassword, shouldShowErrorText;
 
   @override
   _AppTextFieldState createState() => _AppTextFieldState();
@@ -52,7 +52,7 @@ class _AppTextFieldState extends State<AppTextField> {
   @override
   Widget build(BuildContext context) {
     final hasError = widget.errors.containsKey(widget.errorName);
-    final border = hasError ? errorBorder : _inputBorder;
+    final border = hasError ? _errorBorder : _inputBorder;
     final hasNoText = controller.text.isEmpty;
     final emptyContainer = Container(width: 0.01);
 
@@ -61,9 +61,7 @@ class _AppTextFieldState extends State<AppTextField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppText(
-            widget.label,
-          ),
+          AppText(widget.label, opacity: .7),
           Container(
             height: 40.dh,
             margin: EdgeInsets.only(top: 8.dh),
@@ -81,9 +79,10 @@ class _AppTextFieldState extends State<AppTextField> {
                         color: AppColors.onBackground,
                         letterSpacing: widget.letterSpacing,
                         fontSize: 16.dw,
+                        fontWeight: FontWeight.w500,
                       ),
                       cursorColor: AppColors.primary,
-                      obscureText: widget.isLoginPasswrd
+                      obscureText: widget.isLoginPassword
                           ? true
                           : widget.isPassword && !isVisible,
                       obscuringCharacter: '*',
@@ -117,7 +116,7 @@ class _AppTextFieldState extends State<AppTextField> {
                               left: 10.dw, top: 12.dw, bottom: 8.dw)));
                 }),
           ),
-          hasError
+          hasError && widget.shouldShowErrorText
               ? Padding(
                   padding: EdgeInsets.only(top: 8.dw),
                   child: AppText(
@@ -135,7 +134,7 @@ class _AppTextFieldState extends State<AppTextField> {
       borderSide: BorderSide(width: 0.0, color: Colors.transparent),
       borderRadius: BorderRadius.zero);
 
-  final errorBorder = const OutlineInputBorder(
+  final _errorBorder = const OutlineInputBorder(
       borderRadius: BorderRadius.zero,
       borderSide: BorderSide(width: 1.2, color: Colors.white70));
 }

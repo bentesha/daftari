@@ -18,7 +18,6 @@ class DayTitle extends StatelessWidget {
               ? AppIconButton(
                   onPressed: () {},
                   icon: Icons.more_horiz,
-                  iconColor: AppColors.onSecondary,
                 )
               : Container()
         ],

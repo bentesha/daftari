@@ -1,20 +1,14 @@
 import '../source.dart';
 
 class RecordTile extends StatelessWidget {
-  const RecordTile(
-      {Key? key,
-      required this.title,
-      required this.unit,
-      required this.totalPrice,
-      required this.unitPrice,
-      required this.quantity})
-      : super(key: key);
+  const RecordTile(this.record, {Key? key}) : super(key: key);
 
-  final String title, unit;
-  final double totalPrice, unitPrice, quantity;
+  final Record record;
 
   @override
   Widget build(BuildContext context) {
+    final item = record.item;
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 18.dw),
       child: Column(
@@ -23,13 +17,13 @@ class RecordTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppText(title, weight: FontWeight.w500),
-              AppText(Utils.convertToMoneyFormat(totalPrice),
+              AppText(item.title, weight: FontWeight.w500),
+              AppText(item.getQuantityValue,
                   weight: FontWeight.w500, size: 16.dw)
             ],
           ),
           SizedBox(height: 5.dh),
-          AppText('$quantity $unit @ ${Utils.convertToMoneyFormat(unitPrice)}',
+          AppText('${record.quantity} ${item.unit} @ ${item.getUnitPrice}',
               opacity: .7, size: 14.dw)
         ],
       ),

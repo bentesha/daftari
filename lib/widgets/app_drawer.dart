@@ -113,6 +113,7 @@ class AppDrawer extends StatelessWidget {
         break;
       default:
     }
+    //closes the drawer in the page from which it naviagates to the other page.
     Navigator.pop(context);
     Navigator.push(context, MaterialPageRoute(builder: (_) => nextPage));
   }

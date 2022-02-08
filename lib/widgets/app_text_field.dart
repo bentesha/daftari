@@ -14,7 +14,7 @@ class AppTextField extends StatefulWidget {
       this.letterSpacing,
       this.isPassword = false,
       this.isLoginPassword = false,
-      this.shouldShowErrorText = false,
+      this.shouldShowErrorText = true,
       Key? key})
       : super(key: key);
 
@@ -51,17 +51,15 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final hasError = widget.errors.containsKey(widget.errorName);
+    final hasError = widget.errors[widget.errorName] != null;
     final border = hasError ? _errorBorder : _inputBorder;
-    final hasNoText = controller.text.isEmpty;
-    final emptyContainer = Container(width: 0.01);
 
     return Padding(
       padding: EdgeInsets.only(left: 19.dw, right: 19.dw, bottom: 20.dh),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppText(widget.label, opacity: .7),
+          AppText(widget.label, opacity: .85),
           Container(
             height: 40.dh,
             margin: EdgeInsets.only(top: 8.dh),
@@ -89,24 +87,12 @@ class _AppTextFieldState extends State<AppTextField> {
                       decoration: InputDecoration(
                           hintText: widget.hintText,
                           hintStyle: TextStyle(
-                            color: AppColors.onBackground2,
-                            fontSize: 14.dw,
+                            color: AppColors.onBackground.withOpacity(.5),
+                            fontSize: 16.dw,
+                            fontWeight: FontWeight.w100,
                           ),
                           fillColor: AppColors.surface,
-                          suffixIcon: hasNoText
-                              ? emptyContainer
-                              : widget.isPassword
-                                  ? GestureDetector(
-                                      onTap: () =>
-                                          isVisibleNotifier.value = !isVisible,
-                                      child: Icon(
-                                          !isVisible
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
-                                          size: 16.dw,
-                                          color: AppColors.accent),
-                                    )
-                                  : emptyContainer,
+                          suffixIcon: _suffixIcon(isVisible),
                           filled: true,
                           isDense: true,
                           border: border,
@@ -116,18 +102,42 @@ class _AppTextFieldState extends State<AppTextField> {
                               left: 10.dw, top: 12.dw, bottom: 8.dw)));
                 }),
           ),
-          hasError && widget.shouldShowErrorText
-              ? Padding(
-                  padding: EdgeInsets.only(top: 8.dw),
-                  child: AppText(
-                    widget.errors[widget.errorName]!,
-                    color: AppColors.error,
-                  ),
-                )
-              : Container()
+          _buildError(),
         ],
       ),
     );
+  }
+
+  _buildError() {
+    final hasError = widget.errors[widget.errorName] != null;
+
+    return hasError && widget.shouldShowErrorText
+        ? Padding(
+            padding: EdgeInsets.only(top: 8.dw),
+            child: AppText(
+              widget.errors[widget.errorName]!,
+              color: AppColors.error,
+              size: 14.dw,
+            ),
+          )
+        : Container();
+  }
+
+  _suffixIcon(bool isVisible) {
+    final hasNoText = controller.text.isEmpty;
+    final emptyContainer = Container(width: 0.01);
+
+    return hasNoText
+        ? emptyContainer
+        : widget.isPassword
+            ? GestureDetector(
+                onTap: () => isVisibleNotifier.value = !isVisible,
+                child: Icon(
+                    !isVisible ? Icons.visibility : Icons.visibility_off,
+                    size: 16.dw,
+                    color: AppColors.accent),
+              )
+            : emptyContainer;
   }
 
   final _inputBorder = const UnderlineInputBorder(
@@ -136,5 +146,5 @@ class _AppTextFieldState extends State<AppTextField> {
 
   final _errorBorder = const OutlineInputBorder(
       borderRadius: BorderRadius.zero,
-      borderSide: BorderSide(width: 1.2, color: Colors.white70));
+      borderSide: BorderSide(width: 1.2, color: AppColors.error));
 }

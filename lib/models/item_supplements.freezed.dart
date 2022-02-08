@@ -23,7 +23,7 @@ class _$ItemSupplementsTearOff {
       required String unit,
       required String unitPrice,
       required String quantity,
-      required Map<String, String> errors}) {
+      required Map<String, String?> errors}) {
     return _ItemSupplements(
       title: title,
       unit: unit,
@@ -43,7 +43,7 @@ mixin _$ItemSupplements {
   String get unit => throw _privateConstructorUsedError;
   String get unitPrice => throw _privateConstructorUsedError;
   String get quantity => throw _privateConstructorUsedError;
-  Map<String, String> get errors => throw _privateConstructorUsedError;
+  Map<String, String?> get errors => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ItemSupplementsCopyWith<ItemSupplements> get copyWith =>
@@ -60,7 +60,7 @@ abstract class $ItemSupplementsCopyWith<$Res> {
       String unit,
       String unitPrice,
       String quantity,
-      Map<String, String> errors});
+      Map<String, String?> errors});
 }
 
 /// @nodoc
@@ -100,7 +100,7 @@ class _$ItemSupplementsCopyWithImpl<$Res>
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+              as Map<String, String?>,
     ));
   }
 }
@@ -117,7 +117,7 @@ abstract class _$ItemSupplementsCopyWith<$Res>
       String unit,
       String unitPrice,
       String quantity,
-      Map<String, String> errors});
+      Map<String, String?> errors});
 }
 
 /// @nodoc
@@ -159,7 +159,7 @@ class __$ItemSupplementsCopyWithImpl<$Res>
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
-              as Map<String, String>,
+              as Map<String, String?>,
     ));
   }
 }
@@ -184,7 +184,7 @@ class _$_ItemSupplements extends _ItemSupplements {
   @override
   final String quantity;
   @override
-  final Map<String, String> errors;
+  final Map<String, String?> errors;
 
   @override
   String toString() {
@@ -224,7 +224,7 @@ abstract class _ItemSupplements extends ItemSupplements {
       required String unit,
       required String unitPrice,
       required String quantity,
-      required Map<String, String> errors}) = _$_ItemSupplements;
+      required Map<String, String?> errors}) = _$_ItemSupplements;
   const _ItemSupplements._() : super._();
 
   @override
@@ -236,7 +236,7 @@ abstract class _ItemSupplements extends ItemSupplements {
   @override
   String get quantity;
   @override
-  Map<String, String> get errors;
+  Map<String, String?> get errors;
   @override
   @JsonKey(ignore: true)
   _$ItemSupplementsCopyWith<_ItemSupplements> get copyWith =>

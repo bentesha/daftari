@@ -1,26 +1,16 @@
 import '../source.dart';
 
-class RecordDialog extends StatelessWidget {
-  const RecordDialog({Key? key, required this.itemList}) : super(key: key);
-
-  final List<Item> itemList;
+class EmptyItemDialog extends StatelessWidget {
+  const EmptyItemDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
       insetPadding: EdgeInsets.symmetric(horizontal: 10.dw),
       child: SizedBox(
-        width: ScreenSizeConfig.getFullWidth,
-        height: 450.dh,
-        child: itemList.isEmpty
-            ? _buildEmptyState()
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  DayText(color: AppColors.onBackground),
-                ],
-              ),
-      ),
+          width: ScreenSizeConfig.getFullWidth,
+          height: 350.dh,
+          child: _buildEmptyState()),
     );
   }
 
@@ -40,17 +30,18 @@ class RecordDialog extends StatelessWidget {
             child: const AppText(
                 'You have not added any items. Click the button below to add items'),
           ),
-          SizedBox(height: 20.dh),
-          Builder(
-            builder: (context) {
-              return AppTextButton(
-                onPressed:() => ItemEditPage.navigateTo(context),
-                height: 40.dh,
-                text: 'Add Item',
-                margin: EdgeInsets.symmetric(horizontal: 19.dw),
-              );
-            }
-          )
+          SizedBox(height: 40.dh),
+          Builder(builder: (context) {
+            return AppTextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                ItemEditPage.navigateTo(context);
+              },
+              height: 40.dh,
+              text: 'Add Item',
+              margin: EdgeInsets.symmetric(horizontal: 19.dw),
+            );
+          })
         ],
       ),
     );

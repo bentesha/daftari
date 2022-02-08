@@ -19,10 +19,25 @@ class _$RecordsSupplementsTearOff {
   const _$RecordsSupplementsTearOff();
 
   _RecordsSupplements call(
-      {required List<Record> recordList, required List<Item> itemList}) {
+      {required List<Record> recordList,
+      required List<Item> itemList,
+      required Map<String, String?> errors,
+      required String quantity,
+      required DateTime date,
+      String? notes,
+      required String amount,
+      required String selectedItemId,
+      required String query}) {
     return _RecordsSupplements(
       recordList: recordList,
       itemList: itemList,
+      errors: errors,
+      quantity: quantity,
+      date: date,
+      notes: notes,
+      amount: amount,
+      selectedItemId: selectedItemId,
+      query: query,
     );
   }
 }
@@ -34,6 +49,13 @@ const $RecordsSupplements = _$RecordsSupplementsTearOff();
 mixin _$RecordsSupplements {
   List<Record> get recordList => throw _privateConstructorUsedError;
   List<Item> get itemList => throw _privateConstructorUsedError;
+  Map<String, String?> get errors => throw _privateConstructorUsedError;
+  String get quantity => throw _privateConstructorUsedError;
+  DateTime get date => throw _privateConstructorUsedError;
+  String? get notes => throw _privateConstructorUsedError;
+  String get amount => throw _privateConstructorUsedError;
+  String get selectedItemId => throw _privateConstructorUsedError;
+  String get query => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RecordsSupplementsCopyWith<RecordsSupplements> get copyWith =>
@@ -45,7 +67,16 @@ abstract class $RecordsSupplementsCopyWith<$Res> {
   factory $RecordsSupplementsCopyWith(
           RecordsSupplements value, $Res Function(RecordsSupplements) then) =
       _$RecordsSupplementsCopyWithImpl<$Res>;
-  $Res call({List<Record> recordList, List<Item> itemList});
+  $Res call(
+      {List<Record> recordList,
+      List<Item> itemList,
+      Map<String, String?> errors,
+      String quantity,
+      DateTime date,
+      String? notes,
+      String amount,
+      String selectedItemId,
+      String query});
 }
 
 /// @nodoc
@@ -61,6 +92,13 @@ class _$RecordsSupplementsCopyWithImpl<$Res>
   $Res call({
     Object? recordList = freezed,
     Object? itemList = freezed,
+    Object? errors = freezed,
+    Object? quantity = freezed,
+    Object? date = freezed,
+    Object? notes = freezed,
+    Object? amount = freezed,
+    Object? selectedItemId = freezed,
+    Object? query = freezed,
   }) {
     return _then(_value.copyWith(
       recordList: recordList == freezed
@@ -71,6 +109,34 @@ class _$RecordsSupplementsCopyWithImpl<$Res>
           ? _value.itemList
           : itemList // ignore: cast_nullable_to_non_nullable
               as List<Item>,
+      errors: errors == freezed
+          ? _value.errors
+          : errors // ignore: cast_nullable_to_non_nullable
+              as Map<String, String?>,
+      quantity: quantity == freezed
+          ? _value.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
+              as String,
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      notes: notes == freezed
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amount: amount == freezed
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as String,
+      selectedItemId: selectedItemId == freezed
+          ? _value.selectedItemId
+          : selectedItemId // ignore: cast_nullable_to_non_nullable
+              as String,
+      query: query == freezed
+          ? _value.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -82,7 +148,16 @@ abstract class _$RecordsSupplementsCopyWith<$Res>
           _RecordsSupplements value, $Res Function(_RecordsSupplements) then) =
       __$RecordsSupplementsCopyWithImpl<$Res>;
   @override
-  $Res call({List<Record> recordList, List<Item> itemList});
+  $Res call(
+      {List<Record> recordList,
+      List<Item> itemList,
+      Map<String, String?> errors,
+      String quantity,
+      DateTime date,
+      String? notes,
+      String amount,
+      String selectedItemId,
+      String query});
 }
 
 /// @nodoc
@@ -100,6 +175,13 @@ class __$RecordsSupplementsCopyWithImpl<$Res>
   $Res call({
     Object? recordList = freezed,
     Object? itemList = freezed,
+    Object? errors = freezed,
+    Object? quantity = freezed,
+    Object? date = freezed,
+    Object? notes = freezed,
+    Object? amount = freezed,
+    Object? selectedItemId = freezed,
+    Object? query = freezed,
   }) {
     return _then(_RecordsSupplements(
       recordList: recordList == freezed
@@ -110,6 +192,34 @@ class __$RecordsSupplementsCopyWithImpl<$Res>
           ? _value.itemList
           : itemList // ignore: cast_nullable_to_non_nullable
               as List<Item>,
+      errors: errors == freezed
+          ? _value.errors
+          : errors // ignore: cast_nullable_to_non_nullable
+              as Map<String, String?>,
+      quantity: quantity == freezed
+          ? _value.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
+              as String,
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      notes: notes == freezed
+          ? _value.notes
+          : notes // ignore: cast_nullable_to_non_nullable
+              as String?,
+      amount: amount == freezed
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as String,
+      selectedItemId: selectedItemId == freezed
+          ? _value.selectedItemId
+          : selectedItemId // ignore: cast_nullable_to_non_nullable
+              as String,
+      query: query == freezed
+          ? _value.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -118,16 +228,38 @@ class __$RecordsSupplementsCopyWithImpl<$Res>
 
 class _$_RecordsSupplements implements _RecordsSupplements {
   const _$_RecordsSupplements(
-      {required this.recordList, required this.itemList});
+      {required this.recordList,
+      required this.itemList,
+      required this.errors,
+      required this.quantity,
+      required this.date,
+      this.notes,
+      required this.amount,
+      required this.selectedItemId,
+      required this.query});
 
   @override
   final List<Record> recordList;
   @override
   final List<Item> itemList;
+  @override
+  final Map<String, String?> errors;
+  @override
+  final String quantity;
+  @override
+  final DateTime date;
+  @override
+  final String? notes;
+  @override
+  final String amount;
+  @override
+  final String selectedItemId;
+  @override
+  final String query;
 
   @override
   String toString() {
-    return 'RecordsSupplements(recordList: $recordList, itemList: $itemList)';
+    return 'RecordsSupplements(recordList: $recordList, itemList: $itemList, errors: $errors, quantity: $quantity, date: $date, notes: $notes, amount: $amount, selectedItemId: $selectedItemId, query: $query)';
   }
 
   @override
@@ -137,14 +269,29 @@ class _$_RecordsSupplements implements _RecordsSupplements {
             other is _RecordsSupplements &&
             const DeepCollectionEquality()
                 .equals(other.recordList, recordList) &&
-            const DeepCollectionEquality().equals(other.itemList, itemList));
+            const DeepCollectionEquality().equals(other.itemList, itemList) &&
+            const DeepCollectionEquality().equals(other.errors, errors) &&
+            const DeepCollectionEquality().equals(other.quantity, quantity) &&
+            const DeepCollectionEquality().equals(other.date, date) &&
+            const DeepCollectionEquality().equals(other.notes, notes) &&
+            const DeepCollectionEquality().equals(other.amount, amount) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedItemId, selectedItemId) &&
+            const DeepCollectionEquality().equals(other.query, query));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(recordList),
-      const DeepCollectionEquality().hash(itemList));
+      const DeepCollectionEquality().hash(itemList),
+      const DeepCollectionEquality().hash(errors),
+      const DeepCollectionEquality().hash(quantity),
+      const DeepCollectionEquality().hash(date),
+      const DeepCollectionEquality().hash(notes),
+      const DeepCollectionEquality().hash(amount),
+      const DeepCollectionEquality().hash(selectedItemId),
+      const DeepCollectionEquality().hash(query));
 
   @JsonKey(ignore: true)
   @override
@@ -155,12 +302,33 @@ class _$_RecordsSupplements implements _RecordsSupplements {
 abstract class _RecordsSupplements implements RecordsSupplements {
   const factory _RecordsSupplements(
       {required List<Record> recordList,
-      required List<Item> itemList}) = _$_RecordsSupplements;
+      required List<Item> itemList,
+      required Map<String, String?> errors,
+      required String quantity,
+      required DateTime date,
+      String? notes,
+      required String amount,
+      required String selectedItemId,
+      required String query}) = _$_RecordsSupplements;
 
   @override
   List<Record> get recordList;
   @override
   List<Item> get itemList;
+  @override
+  Map<String, String?> get errors;
+  @override
+  String get quantity;
+  @override
+  DateTime get date;
+  @override
+  String? get notes;
+  @override
+  String get amount;
+  @override
+  String get selectedItemId;
+  @override
+  String get query;
   @override
   @JsonKey(ignore: true)
   _$RecordsSupplementsCopyWith<_RecordsSupplements> get copyWith =>

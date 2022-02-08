@@ -1,3 +1,5 @@
+import 'package:inventory_management/pages/settings_page.dart';
+
 import '../source.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -119,14 +121,17 @@ class AppDrawer extends StatelessWidget {
   }
 
   _buildSettingsButton() {
-    return AppTextButton(
-      onPressed: () {},
-      text: 'Settings',
-      height: 40.dh,
-      isFilled: false,
-      margin: EdgeInsets.only(bottom: 20.dh),
-      alignment: Alignment.centerLeft,
-      padding: EdgeInsets.only(left: 19.dw),
-    );
+    return Builder(builder: (context) {
+      return AppTextButton(
+        onPressed: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => const SettingsPage())),
+        text: 'Settings',
+        height: 40.dh,
+        isFilled: false,
+        margin: EdgeInsets.only(bottom: 20.dh),
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(left: 19.dw),
+      );
+    });
   }
 }

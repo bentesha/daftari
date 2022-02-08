@@ -9,23 +9,35 @@ class SalesRecordsPage extends StatefulWidget {
 
 class _SalesRecordsPageState extends State<SalesRecordsPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  late final SalesPageBloc bloc;
+  late final RecordsPageBloc bloc;
 
   @override
   void initState() {
-    final recordsService = Provider.of<RecordsService>(context, listen: false);
-    final itemsService = Provider.of<ItemsService>(context, listen: false);
-    bloc = SalesPageBloc(recordsService, itemsService);
+    bloc = Provider.of<RecordsPageBloc>(context, listen: false);
     bloc.init();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SalesPageBloc, SalesPageState>(
+    return Scaffold(
+      key: _scaffoldKey,
+      drawer: const AppDrawer(Pages.sales_page),
+      appBar: _buildAppBar(),
+      body: _buildBody(),
+      floatingActionButton: _buildAddItemButton(),
+    );
+  }
+
+  Widget _buildBody() {
+    return BlocBuilder<RecordsPageBloc, RecordsPageState>(
       bloc: bloc,
       builder: (_, state) {
-        return state.when(loading: _buildLoading, content: _buildContent);
+        return state.when(
+          loading: _buildLoading,
+          content: _buildContent,
+          success: (s, _) => _buildContent(s),
+        );
       },
     );
   }
@@ -33,16 +45,6 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
   Widget _buildLoading(RecordsSupplements supp) {
     return const Center(
       child: CircularProgressIndicator(),
-    );
-  }
-
-  Widget _buildContent(RecordsSupplements supp) {
-    return Scaffold(
-      key: _scaffoldKey,
-      drawer: const AppDrawer(Pages.sales_page),
-      appBar: _buildAppBar(),
-      body: _buildRecords(supp),
-      floatingActionButton: _buildAddItemButton(supp.itemList),
     );
   }
 
@@ -61,27 +63,19 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
     return AppTopBar(showDrawerCallback: _openDrawer, title: "Sales Records");
   }
 
-  _buildRecords(RecordsSupplements supp) {
+  Widget _buildContent(RecordsSupplements supp) {
     final recordList = supp.recordList;
     if (recordList.isEmpty) return _buildEmptyState();
 
-    return ListView(
-      children: [
-        const DayTitle(),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.dh),
-          child: ListView.separated(
-            separatorBuilder: (_, __) => const AppDivider(),
-            itemCount: recordList.length,
-            itemBuilder: (_, index) {
-              final record = recordList[index];
-              return _buildItem(record);
-            },
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-          ),
-        )
-      ],
+    return ListView.builder(
+      itemCount: DateFormatter.getDaysInMonth(),
+      itemBuilder: (context, i) {
+        final index = DateFormatter.getDaysInMonth() - i + 1;
+        final dayRecords =
+            recordList.where((e) => e.date.day == index).toList();
+        return _buildDayRecords(dayRecords);
+      },
+      shrinkWrap: true,
     );
   }
 
@@ -108,22 +102,72 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
     );
   }
 
-  _buildItem(Record record) {
-    return RecordTile(record);
+  _buildDayRecords(List<Record> dayRecords) {
+    if (dayRecords.isEmpty) return Container();
+
+    return DayRecordTile(date: dayRecords.first.date, recordList: dayRecords);
   }
 
-  _buildAddItemButton(List<Item> itemList) {
+  _buildAddItemButton() {
     return FloatingActionButton(
-      onPressed: () => _showItemDialog(itemList),
+      onPressed: !bloc.hasItems
+          ? () => _showEmptyItemsDialog()
+          : () => Navigator.push(
+              context, MaterialPageRoute(builder: (_) => const RecordPage())),
       child: const Icon(Icons.add, color: AppColors.onPrimary),
     );
   }
 
-  _showItemDialog(List<Item> itemList) {
+  _showEmptyItemsDialog() {
     showDialog(
         context: context,
         builder: (_) {
-          return RecordDialog(itemList: itemList);
+          return const EmptyItemDialog();
         });
+  }
+}
+
+class DayRecordTile extends StatelessWidget {
+  const DayRecordTile({Key? key, required this.date, required this.recordList})
+      : super(key: key);
+
+  final DateTime date;
+  final List<Record> recordList;
+
+  @override
+  Widget build(BuildContext context) {
+    final dateString = DateFormatter.convertToDMY(date);
+
+    return Container(
+        padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 10.dh),
+        margin: EdgeInsets.only(right: 8.dw, left: 8.dw, top: 10.dh),
+        color: Colors.grey.withOpacity(.45),
+        child: Row(
+          children: [
+            AppText(dateString, color: AppColors.secondary),
+            Expanded(
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  height: 25.dw,
+                  width: 25.dw,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle, color: Colors.grey),
+                  child: AppText(recordList.length.toString()),
+                ),
+                SizedBox(width: 10.dw),
+                AppIconButton(
+                  onPressed: () {},
+                  icon: Icons.keyboard_arrow_down,
+                  iconThemeData: Theme.of(context)
+                      .iconTheme
+                      .copyWith(size: 25.dw, color: AppColors.secondary),
+                ),
+              ],
+            ))
+          ],
+        ));
   }
 }

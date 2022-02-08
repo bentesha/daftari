@@ -8,8 +8,8 @@ class DayText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final day = DateTime.now().day;
-    final weekDay = Utils.getWeekDay(day);
-    final ordinal = Utils.getOrdinalsFrom(day);
+    final weekDay = DateFormatter.getWeekDay(day);
+    final ordinal = DateFormatter.getOrdinalsFrom(day);
 
     return AppText(
       '$day$ordinal $weekDay',

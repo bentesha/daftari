@@ -9,6 +9,8 @@ class ItemsService {
   final itemsController = StreamController<Item>.broadcast();
   Stream<Item> get getItemStream => itemsController.stream;
 
+  List<Item> get getItemList => _itemList;
+
   List<Item> getAll() {
     if (_box.isEmpty) return [];
 

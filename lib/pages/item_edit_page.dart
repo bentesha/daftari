@@ -14,11 +14,11 @@ class ItemEditPage extends StatefulWidget {
 
 class _ItemEditPageState extends State<ItemEditPage> {
   late final ItemPageBloc bloc;
-  late final ItemsService service;
 
   @override
   void initState() {
-    final service = Provider.of<ItemsService>(context, listen: false);
+    final service =
+        Provider.of<RecordsPageBloc>(context, listen: false).itemsService;
     bloc = ItemPageBloc(service);
     super.initState();
   }
@@ -45,16 +45,7 @@ class _ItemEditPageState extends State<ItemEditPage> {
   }
 
   _buildAppBar() {
-    return AppBar(
-      title: AppText('Adding Item',
-          size: 22.dw, style: Theme.of(context).appBarTheme.titleTextStyle!),
-      actions: [
-        AppIconButton(
-            onPressed: bloc.saveItem,
-            icon: Icons.done,
-            margin: EdgeInsets.only(right: 19.dw))
-      ],
-    );
+    return PageAppBar(title: 'Adding Item', actionCallback: bloc.saveItem);
   }
 
   Widget _buildLoading(ItemSupplements supp) {
@@ -71,7 +62,7 @@ class _ItemEditPageState extends State<ItemEditPage> {
         errors: errors,
         text: supp.title,
         onChanged: bloc.updateTitle,
-        hintText: '',
+        hintText: 'e.g. Clothes',
         keyboardType: TextInputType.name,
         label: 'Title',
         errorName: 'title',
@@ -83,8 +74,9 @@ class _ItemEditPageState extends State<ItemEditPage> {
               errors: errors,
               text: supp.unit,
               onChanged: bloc.updateUnit,
-              hintText: '',
+              hintText: 'ea.',
               keyboardType: TextInputType.name,
+              shouldShowErrorText: false,
               label: 'Unit',
               errorName: 'unit',
             ),
@@ -94,8 +86,9 @@ class _ItemEditPageState extends State<ItemEditPage> {
               errors: errors,
               text: supp.unitPrice,
               onChanged: bloc.updateUnitPrice,
-              hintText: '',
+              hintText: '0',
               keyboardType: TextInputType.number,
+              shouldShowErrorText: false,
               label: 'Unit Price',
               errorName: 'unitPrice',
             ),
@@ -107,9 +100,9 @@ class _ItemEditPageState extends State<ItemEditPage> {
         errors: errors,
         text: supp.quantity,
         onChanged: bloc.updateQuantity,
-        hintText: '',
+        hintText: '0',
         keyboardType: TextInputType.number,
-        label: 'Quantity Sold',
+        label: 'Quantity',
         errorName: 'quantity',
       ),
       _buildTotalOpeningValue(supp),
@@ -140,9 +133,9 @@ class _ItemEditPageState extends State<ItemEditPage> {
     );
   }
 
-  _buildUnitTextFieldsErrors(Map<String, String> errors) {
-    final hasUnitError = errors.containsKey('unit');
-    final hasUnitPriceError = errors.containsKey('unitPrice');
+  _buildUnitTextFieldsErrors(Map<String, String?> errors) {
+    final hasUnitError = errors['unit'] != null;
+    final hasUnitPriceError = errors['unitPrice'] != null;
 
     return Padding(
       padding: EdgeInsets.only(left: 19.dw, right: 19.dw, bottom: 10.dh),

@@ -31,7 +31,9 @@ class ItemPageBloc extends Cubit<ItemPageState> {
     _validate();
 
     var supp = state.supp;
-    if (supp.errors.isNotEmpty) return;
+    final hasErrors = InputValidation.checkErrors(supp.errors);
+    if (hasErrors) return;
+
     final item = Item(
         id: Utils.getRandomId(),
         unit: supp.unit,
@@ -44,25 +46,16 @@ class ItemPageBloc extends Cubit<ItemPageState> {
 
   _validate() {
     var supp = state.supp;
-    final errors = <String, String>{};
+    final errors = <String, String?>{};
 
     emit(ItemPageState.loading(supp));
-    if (supp.title.isEmpty) {
-      errors['title'] = 'Title cannot be empty';
-    }
-    if (supp.unit.isEmpty) {
-      errors['unit'] = 'Unit cannot be empty';
-    }
-    if (supp.unitPrice.isEmpty) {
-      errors['unitPrice'] = 'Unit price cannot be empty';
-    } else if (double.tryParse(supp.unitPrice) == null) {
-      errors['unitPrice'] = 'Invalid unit price!';
-    }
-    if (supp.quantity.isEmpty) {
-      errors['quantity'] = 'Quantity cannot be empty';
-    } else if (double.tryParse(supp.quantity) == null) {
-      errors['quantity'] = 'Invalid quantity!';
-    }
+    errors['title'] = InputValidation.validateText(supp.title, 'Title');
+    errors['unit'] = InputValidation.validateText(supp.unit, 'Unit');
+
+    errors['unitPrice'] =
+        InputValidation.validateNumber(supp.unitPrice, 'Unit Price');
+    errors['quantity'] =
+        InputValidation.validateNumber(supp.quantity, 'Quantity');
 
     supp = supp.copyWith(errors: errors);
     emit(ItemPageState.content(supp));

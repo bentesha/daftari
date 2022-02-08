@@ -14,7 +14,7 @@ class Record extends HiveObject {
   final String id;
 
   @HiveField(1)
-  final String notes;
+  final String? notes;
 
   @HiveField(2)
   final DateTime date;
@@ -28,21 +28,25 @@ class Record extends HiveObject {
   @HiveField(5)
   final String type;
 
+  @HiveField(6)
+  final double sellingPrice;
+
   Record({
     required this.id,
     required this.item,
     required this.date,
-    required this.notes,
+    required this.sellingPrice,
+    this.notes,
     required this.quantity,
     required this.type,
   });
 
   factory Record.empty() => Record(
-        notes: '',
         id: '',
         date: DateTime.now(),
         item: Item.empty(),
         quantity: 0,
         type: RecordsTypes.sales,
+        sellingPrice: 0,
       );
 }

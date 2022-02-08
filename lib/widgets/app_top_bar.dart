@@ -17,19 +17,15 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback showDrawerCallback;
   final String title;
 
-  static final month = Utils.getCurrentMonth();
-  static final year = Utils.getCurrentYear();
+  static final month = DateFormatter.getCurrentMonth();
+  static final year = DateFormatter.getCurrentYear();
 
   @override
   Widget build(BuildContext context) {
     return Theme(
       data: ThemeData(
         iconTheme: const IconThemeData(color: AppColors.onPrimary),
-        appBarTheme: AppBarTheme(
-            titleSpacing: 5,
-            backgroundColor: AppColors.primary,
-            iconTheme: const IconThemeData(color: AppColors.onPrimary),
-            actionsIconTheme: const IconThemeData(color: AppColors.onPrimary),
+        appBarTheme: Theme.of(context).appBarTheme.copyWith(
             titleTextStyle:
                 TextStyle(fontWeight: FontWeight.w600, fontSize: 20.dw)),
       ),

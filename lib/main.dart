@@ -16,11 +16,13 @@ void main() async {
 
   final myApp = MultiProvider(
     providers: [
-      Provider<RecordsService>(create: (_) => RecordsService()),
-      Provider<ItemsService>(create: (_) => ItemsService()),
+      Provider<RecordsPageBloc>(
+          create: (_) => RecordsPageBloc(RecordsService(), ItemsService()))
     ],
     child: const MyApp(),
   );
+
+  // await Hive.box(Constants.kRecordsBox).clear();
 
   runApp(myApp);
 }

@@ -11,14 +11,14 @@ class ItemSupplements with _$ItemSupplements {
       required String unit,
       required String unitPrice,
       required String quantity,
-      required Map<String, String> errors}) = _ItemSupplements;
+      required Map<String, String?> errors}) = _ItemSupplements;
 
   factory ItemSupplements.empty() => const ItemSupplements(
         title: '',
         errors: {},
-        quantity: '0',
-        unit: 'ea.',
-        unitPrice: '0',
+        quantity: '',
+        unit: '',
+        unitPrice: '',
       );
 
   bool get canCalculateTotalPrice =>

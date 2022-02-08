@@ -17,7 +17,6 @@ class AppTheme {
           selectionColor: AppColors.primary,
           selectionHandleColor: AppColors.primary,
         ),
-        
         appBarTheme: const AppBarTheme(
             backgroundColor: AppColors.primary,
             elevation: 0,
@@ -27,7 +26,7 @@ class AppTheme {
                 fontFamily: Constants.kFontFam,
                 fontWeight: FontWeight.w500)),
         progressIndicatorTheme: const ProgressIndicatorThemeData(
-            color: AppColors.primary, circularTrackColor: AppColors.primary),
+            color: AppColors.primary, circularTrackColor: AppColors.onPrimary),
         dialogTheme: const DialogTheme(
           backgroundColor: AppColors.onSecondary,
           elevation: 5,
@@ -36,6 +35,8 @@ class AppTheme {
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: AppColors.primary,
           elevation: 2,
-        ));
+        ),
+        listTileTheme: const ListTileThemeData(
+            dense: true, contentPadding: EdgeInsets.zero));
   }
 }

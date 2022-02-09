@@ -16,6 +16,7 @@ class AppTextButton extends StatefulWidget {
       this.iconColor = AppColors.onBackground,
       this.textColor,
       required this.onPressed,
+      this.backgroundColor,
       Key? key})
       : super(key: key);
 
@@ -30,7 +31,7 @@ class AppTextButton extends StatefulWidget {
   final Widget? child;
   final Alignment? alignment;
   final TextStyle? textStyle;
-  final Color? iconColor, textColor;
+  final Color? iconColor, textColor, backgroundColor;
 
   @override
   _AppTextButtonState createState() => _AppTextButtonState();
@@ -49,7 +50,9 @@ class _AppTextButtonState extends State<AppTextButton>
         vsync: this);
     animation = ColorTween(
             end: Colors.grey.withOpacity(.25),
-            begin: widget.isFilled ? AppColors.primary : Colors.transparent)
+            begin: widget.isFilled
+                ? widget.backgroundColor ?? AppColors.primary
+                : Colors.transparent)
         .animate(controller)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {

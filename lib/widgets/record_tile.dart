@@ -9,24 +9,29 @@ class RecordTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final item = record.item;
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 18.dw),
+    return AppTextButton(
+      padding: EdgeInsets.symmetric(horizontal: 19.dw, vertical: 8.dh),
+      isFilled: false,
+      onPressed: () => _onPressed(context),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppText(item.title, weight: FontWeight.w500),
-              AppText(item.getQuantityValue,
+              AppText(item.title, weight: FontWeight.w300),
+              AppText(record.getFormattedTotalAmount,
                   weight: FontWeight.w500, size: 16.dw)
             ],
           ),
           SizedBox(height: 5.dh),
-          AppText('${record.quantity} ${item.unit} @ ${item.getUnitPrice}',
+          AppText('${record.quantity} ${item.unit} @ ${record.getSellingPrice}',
               opacity: .7, size: 14.dw)
         ],
       ),
     );
   }
+
+  _onPressed(BuildContext context) => Navigator.push(
+      context, MaterialPageRoute(builder: (_) => RecordPage(record: record)));
 }

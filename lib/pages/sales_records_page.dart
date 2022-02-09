@@ -105,7 +105,10 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
   _buildDayRecords(List<Record> dayRecords) {
     if (dayRecords.isEmpty) return Container();
 
-    return DayRecordTile(date: dayRecords.first.date, recordList: dayRecords);
+    return DayRecordTile(
+        date: dayRecords.first.date,
+        recordList: dayRecords,
+        dailyAmounts: bloc.getRecordsTotalAmount);
   }
 
   _buildAddItemButton() {
@@ -124,50 +127,5 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
         builder: (_) {
           return const EmptyItemDialog();
         });
-  }
-}
-
-class DayRecordTile extends StatelessWidget {
-  const DayRecordTile({Key? key, required this.date, required this.recordList})
-      : super(key: key);
-
-  final DateTime date;
-  final List<Record> recordList;
-
-  @override
-  Widget build(BuildContext context) {
-    final dateString = DateFormatter.convertToDMY(date);
-
-    return Container(
-        padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 10.dh),
-        margin: EdgeInsets.only(right: 8.dw, left: 8.dw, top: 10.dh),
-        color: Colors.grey.withOpacity(.45),
-        child: Row(
-          children: [
-            AppText(dateString, color: AppColors.secondary),
-            Expanded(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  height: 25.dw,
-                  width: 25.dw,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: Colors.grey),
-                  child: AppText(recordList.length.toString()),
-                ),
-                SizedBox(width: 10.dw),
-                AppIconButton(
-                  onPressed: () {},
-                  icon: Icons.keyboard_arrow_down,
-                  iconThemeData: Theme.of(context)
-                      .iconTheme
-                      .copyWith(size: 25.dw, color: AppColors.secondary),
-                ),
-              ],
-            ))
-          ],
-        ));
   }
 }

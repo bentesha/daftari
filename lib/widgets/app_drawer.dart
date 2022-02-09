@@ -123,8 +123,12 @@ class AppDrawer extends StatelessWidget {
   _buildSettingsButton() {
     return Builder(builder: (context) {
       return AppTextButton(
-        onPressed: () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => const SettingsPage())),
+        onPressed: () {
+          //closes the drawer
+          Navigator.pop(context);
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (_) => const SettingsPage()));
+        },
         text: 'Settings',
         height: 40.dh,
         isFilled: false,

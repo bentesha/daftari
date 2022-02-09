@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import '../source.dart';
 
 part 'records_page_state.freezed.dart';

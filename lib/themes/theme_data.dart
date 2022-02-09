@@ -37,6 +37,8 @@ class AppTheme {
           elevation: 2,
         ),
         listTileTheme: const ListTileThemeData(
-            dense: true, contentPadding: EdgeInsets.zero));
+            dense: true,
+            contentPadding: EdgeInsets.zero,
+            minVerticalPadding: 0));
   }
 }

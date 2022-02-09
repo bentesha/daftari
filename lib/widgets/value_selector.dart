@@ -7,6 +7,7 @@ class ValueSelector extends StatelessWidget {
       this.value,
       required this.onPressed,
       required this.errors,
+      required this.isEditable,
       required this.errorName})
       : super(key: key);
 
@@ -15,6 +16,7 @@ class ValueSelector extends StatelessWidget {
   final VoidCallback onPressed;
   final Map<String, String?> errors;
   final String errorName;
+  final bool isEditable;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class ValueSelector extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppTextButton(
-          onPressed: onPressed,
+          onPressed: isEditable ? onPressed : () {},
           isFilled: false,
           padding: EdgeInsets.symmetric(horizontal: 19.dw),
           child: ListTile(
@@ -33,7 +35,8 @@ class ValueSelector extends StatelessWidget {
                   opacity: value == null ? .5 : 1,
                   weight: value == null ? FontWeight.w100 : FontWeight.w500),
             ),
-            trailing: const Icon(Icons.chevron_right),
+            trailing:
+                isEditable ? const Icon(Icons.chevron_right) : Container(width: .1),
           ),
         ),
         _buildError(),

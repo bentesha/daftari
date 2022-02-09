@@ -14,9 +14,25 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
   bool get hasItems => itemsService.getItemList.isNotEmpty;
   String? get getSelectedItem {
     final supp = state.supplements;
-    if (supp.selectedItemId.isEmpty) return null;
-    final index = supp.itemList.indexWhere((e) => e.id == supp.selectedItemId);
+    if (supp.itemId.isEmpty) return null;
+    final index = supp.itemList.indexWhere((e) => e.id == supp.itemId);
     return supp.itemList[index].title;
+  }
+
+  Record? _record;
+  int? _day;
+
+  Map<int, double> get getRecordsTotalAmount =>
+      recordsService.getAllTotalAmounts();
+
+  double get getDayTotalAmount {
+    return recordsService.getTotalAmountsByDay(_day!);
+  }
+
+  List<Record> get getSpecificDayRecords {
+    return state.supplements.recordList
+        .where((e) => e.date.day == _day)
+        .toList();
   }
 
   void init() {
@@ -49,12 +65,13 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
     supp = supp.copyWith(
       date: date ?? supp.date,
       quantity: quantity ?? supp.quantity,
-      amount: amount ?? supp.amount,
+      sellingPrice: amount ?? supp.sellingPrice,
       notes: notes ?? supp.notes,
-      selectedItemId: id ?? supp.selectedItemId,
+      itemId: id ?? supp.itemId,
     );
-    if (id != null)
+    if (id != null) {
       emit(RecordsPageState.success(supp, RecordPages.search_item_page));
+    }
     emit(RecordsPageState.content(supp));
   }
 
@@ -83,7 +100,7 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
-    final index = supp.itemList.indexWhere((e) => e.id == supp.selectedItemId);
+    final index = supp.itemList.indexWhere((e) => e.id == supp.itemId);
 
     final record = Record(
       date: supp.date,
@@ -91,10 +108,25 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
       type: RecordsTypes.sales,
       quantity: double.parse(supp.quantity),
       item: supp.itemList[index],
-      sellingPrice: double.parse(supp.amount),
+      sellingPrice: double.parse(supp.sellingPrice),
       notes: supp.notes,
     );
     await recordsService.addRecord(record);
+    emit(RecordsPageState.success(supp, RecordPages.record_page));
+  }
+
+  void editRecord() async {
+    _validate();
+
+    var supp = state.supplements;
+    final hasErrors = InputValidation.checkErrors(supp.errors);
+    if (hasErrors) return;
+
+    final record = _record!.copyWith(
+        quantity: double.parse(supp.quantity),
+        sellingPrice: double.parse(supp.sellingPrice),
+        notes: supp.notes);
+    await recordsService.editRecord(record);
     emit(RecordsPageState.success(supp, RecordPages.record_page));
   }
 
@@ -104,8 +136,9 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
 
     final errors = <String, String?>{};
 
-    errors['item'] = InputValidation.validateText(supp.selectedItemId, 'Item');
-    errors['amount'] = InputValidation.validateNumber(supp.amount, 'Amount');
+    errors['item'] = InputValidation.validateText(supp.itemId, 'Item');
+    errors['price'] =
+        InputValidation.validateNumber(supp.sellingPrice, 'Item Price');
     errors['quantity'] =
         InputValidation.validateNumber(supp.quantity, 'Quantity');
 
@@ -116,15 +149,29 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
   _handleRecordStream(Record record) {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
+    //supp.recordList.add(record);
     supp = supp.copyWith(recordList: recordsService.getRecordList);
     emit(RecordsPageState.content(supp));
   }
 
-  void initRecord() {
+  void initRecord({Record? record}) {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
     supp = RecordsSupplements.empty()
         .copyWith(itemList: supp.itemList, recordList: supp.recordList);
+
+    if (record != null) {
+      _record = record;
+      supp = supp.copyWith(
+          sellingPrice: record.sellingPrice.toString(),
+          quantity: record.quantity.toString(),
+          date: record.date,
+          notes: record.notes,
+          itemId: record.item.id);
+    }
+
     emit(RecordsPageState.content(supp));
   }
+
+  void initDayRecords(int day) => _day = day;
 }

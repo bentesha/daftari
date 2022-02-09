@@ -4,12 +4,12 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
   const PageAppBar(
       {Key? key,
       required this.title,
-      required this.actionCallback,
+      this.actionCallback,
       this.hasAction = true})
       : super(key: key);
 
   final String title;
-  final VoidCallback actionCallback;
+  final VoidCallback? actionCallback;
   final bool hasAction;
 
   @override
@@ -20,7 +20,7 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         hasAction
             ? AppIconButton(
-                onPressed: actionCallback,
+                onPressed: actionCallback ?? () {},
                 icon: Icons.done,
                 margin: EdgeInsets.only(right: 19.dw))
             : Container()

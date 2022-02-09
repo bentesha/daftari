@@ -1,7 +1,9 @@
 import '../source.dart';
 
 class RecordPage extends StatefulWidget {
-  const RecordPage({Key? key}) : super(key: key);
+  const RecordPage({this.record, Key? key}) : super(key: key);
+
+  final Record? record;
 
   @override
   State<RecordPage> createState() => _RecordPageState();
@@ -9,11 +11,13 @@ class RecordPage extends StatefulWidget {
 
 class _RecordPageState extends State<RecordPage> {
   late final RecordsPageBloc bloc;
+  late final bool isEditing;
 
   @override
   void initState() {
     bloc = Provider.of<RecordsPageBloc>(context, listen: false);
-    bloc.initRecord();
+    isEditing = widget.record != null;
+    bloc.initRecord(record: widget.record);
     super.initState();
   }
 
@@ -21,7 +25,8 @@ class _RecordPageState extends State<RecordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PageAppBar(
-          title: 'Adding New Record', actionCallback: bloc.saveRecord),
+          title: !isEditing ? 'Adding New Record' : 'Editing Record',
+          actionCallback: isEditing ? bloc.editRecord : bloc.saveRecord),
       body: _buildBody(),
     );
   }
@@ -30,8 +35,9 @@ class _RecordPageState extends State<RecordPage> {
     return BlocConsumer<RecordsPageBloc, RecordsPageState>(
         bloc: bloc,
         listener: (_, state) {
-          final isSuccessful =
-              state.maybeWhen(success: (_, page) => page == RecordPages.record_page, orElse: () => false);
+          final isSuccessful = state.maybeWhen(
+              success: (_, page) => page == RecordPages.record_page,
+              orElse: () => false);
 
           if (isSuccessful) Navigator.pop(context);
         },
@@ -58,6 +64,7 @@ class _RecordPageState extends State<RecordPage> {
           value: bloc.getSelectedItem,
           errors: supp.errors,
           errorName: 'item',
+          isEditable: !isEditing,
           onPressed: () => Navigator.push(context,
               MaterialPageRoute(builder: (_) => const ItemSearchPage())),
         ),
@@ -66,6 +73,7 @@ class _RecordPageState extends State<RecordPage> {
           value: DateFormatter.convertToDMY(supp.date),
           onPressed: () => _showDatePicker(supp.date),
           errors: const {},
+          isEditable: !isEditing,
           errorName: '',
         ),
         const AppDivider(),
@@ -81,16 +89,16 @@ class _RecordPageState extends State<RecordPage> {
         ),
         AppTextField(
           errors: supp.errors,
-          text: supp.quantity,
+          text: supp.sellingPrice,
           onChanged: bloc.updateAmount,
           hintText: 'Item selling price',
           keyboardType: TextInputType.number,
-          label: 'Amount',
-          errorName: 'amount',
+          label: 'Price per item',
+          errorName: 'price',
         ),
         AppTextField(
           errors: supp.errors,
-          text: supp.quantity,
+          text: supp.notes,
           onChanged: bloc.updateNotes,
           hintText: 'Record notes',
           keyboardType: TextInputType.number,

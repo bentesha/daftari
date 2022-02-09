@@ -10,6 +10,7 @@ export 'add_category_page.dart';
 export 'item_edit_page.dart';
 export 'record_page.dart';
 export 'item_search_page.dart';
+export 'day_records_page.dart';
 
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:provider/provider.dart';

@@ -11,8 +11,8 @@ class RecordsSupplements with _$RecordsSupplements {
     required String quantity,
     required DateTime date,
     String? notes,
-    required String amount,
-    required String selectedItemId,
+    required String sellingPrice,
+    required String itemId,
     required String query,
   }) = _RecordsSupplements;
 
@@ -22,8 +22,8 @@ class RecordsSupplements with _$RecordsSupplements {
       errors: <String, String?>{},
       date: DateTime.now(),
       notes: null,
-      selectedItemId: '',
-      amount: '',
+      itemId: '',
+      sellingPrice: '',
       query: '',
       quantity: '');
 }

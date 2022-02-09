@@ -60,8 +60,12 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
   _buildItems(List<Item> itemList) {
     if (itemList.isEmpty) return _buildEmptyItemState();
 
-    return ListView(
-      children: itemList.map((e) => _buildItemTile(e)).toList(),
+    return ListView.separated(
+      separatorBuilder: (_, __) => const AppDivider(margin: EdgeInsets.zero),
+      itemCount: itemList.length,
+      itemBuilder: (_, index) {
+        return _buildItemTile(itemList[index]);
+      },
     );
   }
 
@@ -74,7 +78,7 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
   Widget _buildItemTile(Item item) {
     return AppTextButton(
       onPressed: () => bloc.updateId(item.id),
-      child: ListTile(title: AppText(item.title)),
+      child: ListTile(title: AppText(item.title, weight: FontWeight.w500)),
       isFilled: false,
       padding: EdgeInsets.symmetric(horizontal: 19.dw),
     );

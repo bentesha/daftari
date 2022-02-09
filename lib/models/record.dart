@@ -49,4 +49,25 @@ class Record extends HiveObject {
         type: RecordsTypes.sales,
         sellingPrice: 0,
       );
+
+  Record copyWith(
+          {String? id,
+          double? sellingPrice,
+          double? quantity,
+          String? notes}) =>
+      Record(
+        sellingPrice: sellingPrice ?? this.sellingPrice,
+        date: date,
+        id: id ?? this.id,
+        type: type,
+        quantity: quantity ?? this.quantity,
+        item: item,
+        notes: notes,
+      );
+
+  double get totalAmount => sellingPrice * quantity;
+
+  String get getSellingPrice => Utils.convertToMoneyFormat(sellingPrice);
+
+  String get getFormattedTotalAmount => Utils.convertToMoneyFormat(totalAmount);
 }

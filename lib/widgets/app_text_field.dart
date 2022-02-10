@@ -61,7 +61,7 @@ class _AppTextFieldState extends State<AppTextField> {
         children: [
           AppText(widget.label, opacity: .85),
           Container(
-            height: 40.dh,
+            height: widget.maxLines > 1 ? 90.dh : 40.dh,
             margin: EdgeInsets.only(top: 8.dh),
             child: ValueListenableBuilder<bool>(
                 valueListenable: isVisibleNotifier,

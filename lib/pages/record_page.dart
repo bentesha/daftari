@@ -101,10 +101,12 @@ class _RecordPageState extends State<RecordPage> {
           text: supp.notes,
           onChanged: bloc.updateNotes,
           hintText: 'Record notes',
-          keyboardType: TextInputType.number,
+          keyboardType: TextInputType.multiline,
           label: 'Notes',
           errorName: 'notes',
+          maxLines: 3,
         ),
+        _buildDeleteRecord(),
       ],
     );
   }
@@ -117,5 +119,21 @@ class _RecordPageState extends State<RecordPage> {
         lastDate: DateTime(2030));
 
     if (selectedDate != null) bloc.updateDate(selectedDate);
+  }
+
+  _buildDeleteRecord() {
+    return isEditing
+        ? Expanded(
+            child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+            AppTextButton(
+                onPressed: () {},
+                height: 40.dh,
+                text: 'Delete',
+                backgroundColor: AppColors.surface,
+                textColor: AppColors.error,
+                margin:
+                    EdgeInsets.only(bottom: 20.dh, left: 15.dw, right: 15.dw))
+          ]))
+        : Container();
   }
 }

@@ -35,6 +35,8 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
         .toList();
   }
 
+  List<int> get getDaysWithRecords => recordsService.getDaysWithRecords;
+
   void init() {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));

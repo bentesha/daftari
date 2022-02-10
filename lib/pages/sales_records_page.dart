@@ -66,13 +66,14 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
   Widget _buildContent(RecordsSupplements supp) {
     final recordList = supp.recordList;
     if (recordList.isEmpty) return _buildEmptyState();
+    final daysWithRecord = bloc.getDaysWithRecords;
 
-    return ListView.builder(
-      itemCount: DateFormatter.getDaysInMonth(),
-      itemBuilder: (context, i) {
-        final index = DateFormatter.getDaysInMonth() - i + 1;
-        final dayRecords =
-            recordList.where((e) => e.date.day == index).toList();
+    return ListView.separated(
+      itemCount: daysWithRecord.length,
+      separatorBuilder: (_, __) => const AppDivider(margin: EdgeInsets.zero),
+      itemBuilder: (context, index) {
+        final day = daysWithRecord[index];
+        final dayRecords = recordList.where((e) => e.date.day == day).toList();
         return _buildDayRecords(dayRecords);
       },
       shrinkWrap: true,
@@ -102,7 +103,7 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
     );
   }
 
-  _buildDayRecords(List<Record> dayRecords) {
+  Widget _buildDayRecords(List<Record> dayRecords) {
     if (dayRecords.isEmpty) return Container();
 
     return DayRecordTile(

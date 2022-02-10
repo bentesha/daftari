@@ -1,6 +1,10 @@
 class InputValidation {
   static String? validateText(String value, String errorId) {
-    if (value.trim().isEmpty) return '$errorId can\'t be empty';
+    if (value.trim().isEmpty) {
+      return '$errorId can\'t be empty';
+    } else {
+      return null;
+    }
   }
 
   static String? validateNumber(String value, String errorId) {
@@ -10,6 +14,8 @@ class InputValidation {
       return 'Invalid value for $errorId!';
     } else if (double.tryParse(value) == 0) {
       return '$errorId can\'t be zero.';
+    } else {
+      return null;
     }
   }
 

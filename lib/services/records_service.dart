@@ -62,4 +62,14 @@ class RecordsService {
     }
     return amountsMap;
   }
+
+  List<int> get getDaysWithRecords {
+    final days = <int>[];
+    for (Record record in _recordList) {
+      final day = record.date.day;
+      if (days.contains(day)) continue;
+      days.add(day);
+    }
+    return days;
+  }
 }

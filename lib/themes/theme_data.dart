@@ -27,6 +27,8 @@ class AppTheme {
                 fontWeight: FontWeight.w500)),
         progressIndicatorTheme: const ProgressIndicatorThemeData(
             color: AppColors.primary, circularTrackColor: AppColors.onPrimary),
+        checkboxTheme: CheckboxThemeData(
+            fillColor: MaterialStateProperty.resolveWith(getCheckBoxColor)),
         dialogTheme: const DialogTheme(
           backgroundColor: AppColors.onSecondary,
           elevation: 5,
@@ -40,5 +42,10 @@ class AppTheme {
             dense: true,
             contentPadding: EdgeInsets.zero,
             minVerticalPadding: 0));
+  }
+
+  static Color getCheckBoxColor(Set<MaterialState> state) {
+    if (state.contains(MaterialState.selected)) return AppColors.accent;
+    return AppColors.onBackground2;
   }
 }

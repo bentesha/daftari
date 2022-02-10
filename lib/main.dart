@@ -9,15 +9,18 @@ void main() async {
   Hive
     ..init(appDirectory.path)
     ..registerAdapter(ItemAdapter())
-    ..registerAdapter(RecordAdapter());
+    ..registerAdapter(RecordAdapter())
+    ..registerAdapter(GroupAdapter());
 
   await Hive.openBox(Constants.kItemsBox);
   await Hive.openBox(Constants.kRecordsBox);
+  await Hive.openBox(Constants.kGroupsBox);
 
   final myApp = MultiProvider(
     providers: [
       Provider<RecordsPageBloc>(
-          create: (_) => RecordsPageBloc(RecordsService(), ItemsService()))
+          create: (_) => RecordsPageBloc(RecordsService(), ItemsService())),
+      Provider<GroupPagesBloc>(create: (_) => GroupPagesBloc(GroupsService()))
     ],
     child: const MyApp(),
   );

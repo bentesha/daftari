@@ -117,7 +117,7 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
       onPressed: !bloc.hasItems
           ? () => _showEmptyItemsDialog()
           : () => Navigator.push(
-              context, MaterialPageRoute(builder: (_) => const RecordPage())),
+              context, MaterialPageRoute(builder: (_) => const RecordsGroupPage())),
       child: const Icon(Icons.add, color: AppColors.onPrimary),
     );
   }

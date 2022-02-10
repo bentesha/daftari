@@ -27,6 +27,7 @@ class _$RecordsSupplementsTearOff {
       String? notes,
       required String sellingPrice,
       required String itemId,
+      required String groupId,
       required String query}) {
     return _RecordsSupplements(
       recordList: recordList,
@@ -37,6 +38,7 @@ class _$RecordsSupplementsTearOff {
       notes: notes,
       sellingPrice: sellingPrice,
       itemId: itemId,
+      groupId: groupId,
       query: query,
     );
   }
@@ -55,6 +57,7 @@ mixin _$RecordsSupplements {
   String? get notes => throw _privateConstructorUsedError;
   String get sellingPrice => throw _privateConstructorUsedError;
   String get itemId => throw _privateConstructorUsedError;
+  String get groupId => throw _privateConstructorUsedError;
   String get query => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -76,6 +79,7 @@ abstract class $RecordsSupplementsCopyWith<$Res> {
       String? notes,
       String sellingPrice,
       String itemId,
+      String groupId,
       String query});
 }
 
@@ -98,6 +102,7 @@ class _$RecordsSupplementsCopyWithImpl<$Res>
     Object? notes = freezed,
     Object? sellingPrice = freezed,
     Object? itemId = freezed,
+    Object? groupId = freezed,
     Object? query = freezed,
   }) {
     return _then(_value.copyWith(
@@ -133,6 +138,10 @@ class _$RecordsSupplementsCopyWithImpl<$Res>
           ? _value.itemId
           : itemId // ignore: cast_nullable_to_non_nullable
               as String,
+      groupId: groupId == freezed
+          ? _value.groupId
+          : groupId // ignore: cast_nullable_to_non_nullable
+              as String,
       query: query == freezed
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
@@ -157,6 +166,7 @@ abstract class _$RecordsSupplementsCopyWith<$Res>
       String? notes,
       String sellingPrice,
       String itemId,
+      String groupId,
       String query});
 }
 
@@ -181,6 +191,7 @@ class __$RecordsSupplementsCopyWithImpl<$Res>
     Object? notes = freezed,
     Object? sellingPrice = freezed,
     Object? itemId = freezed,
+    Object? groupId = freezed,
     Object? query = freezed,
   }) {
     return _then(_RecordsSupplements(
@@ -216,6 +227,10 @@ class __$RecordsSupplementsCopyWithImpl<$Res>
           ? _value.itemId
           : itemId // ignore: cast_nullable_to_non_nullable
               as String,
+      groupId: groupId == freezed
+          ? _value.groupId
+          : groupId // ignore: cast_nullable_to_non_nullable
+              as String,
       query: query == freezed
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
@@ -236,6 +251,7 @@ class _$_RecordsSupplements implements _RecordsSupplements {
       this.notes,
       required this.sellingPrice,
       required this.itemId,
+      required this.groupId,
       required this.query});
 
   @override
@@ -255,11 +271,13 @@ class _$_RecordsSupplements implements _RecordsSupplements {
   @override
   final String itemId;
   @override
+  final String groupId;
+  @override
   final String query;
 
   @override
   String toString() {
-    return 'RecordsSupplements(recordList: $recordList, itemList: $itemList, errors: $errors, quantity: $quantity, date: $date, notes: $notes, sellingPrice: $sellingPrice, itemId: $itemId, query: $query)';
+    return 'RecordsSupplements(recordList: $recordList, itemList: $itemList, errors: $errors, quantity: $quantity, date: $date, notes: $notes, sellingPrice: $sellingPrice, itemId: $itemId, groupId: $groupId, query: $query)';
   }
 
   @override
@@ -277,6 +295,7 @@ class _$_RecordsSupplements implements _RecordsSupplements {
             const DeepCollectionEquality()
                 .equals(other.sellingPrice, sellingPrice) &&
             const DeepCollectionEquality().equals(other.itemId, itemId) &&
+            const DeepCollectionEquality().equals(other.groupId, groupId) &&
             const DeepCollectionEquality().equals(other.query, query));
   }
 
@@ -291,6 +310,7 @@ class _$_RecordsSupplements implements _RecordsSupplements {
       const DeepCollectionEquality().hash(notes),
       const DeepCollectionEquality().hash(sellingPrice),
       const DeepCollectionEquality().hash(itemId),
+      const DeepCollectionEquality().hash(groupId),
       const DeepCollectionEquality().hash(query));
 
   @JsonKey(ignore: true)
@@ -309,6 +329,7 @@ abstract class _RecordsSupplements implements RecordsSupplements {
       String? notes,
       required String sellingPrice,
       required String itemId,
+      required String groupId,
       required String query}) = _$_RecordsSupplements;
 
   @override
@@ -327,6 +348,8 @@ abstract class _RecordsSupplements implements RecordsSupplements {
   String get sellingPrice;
   @override
   String get itemId;
+  @override
+  String get groupId;
   @override
   String get query;
   @override

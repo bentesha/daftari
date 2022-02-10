@@ -16,13 +16,17 @@ class _RecordsGroupPageState extends State<RecordsGroupPage> {
   @override
   void initState() {
     bloc = Provider.of<RecordsPageBloc>(context, listen: false);
+    bloc.initGroupRecords();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const PageAppBar(title: 'Add Record'), body: _buildBody());
+      appBar: const PageAppBar(title: 'Add Records Group'),
+      body: _buildBody(),
+      floatingActionButton: _buildAddItemButton(),
+    );
   }
 
   _buildBody() {
@@ -48,11 +52,40 @@ class _RecordsGroupPageState extends State<RecordsGroupPage> {
       children: [
         ValueSelector(
             title: 'Date',
-            onPressed: () {},
-            errors: supp.errors,
+            value: DateFormatter.convertToDMY(supp.date),
+            onPressed: () => _showDatePicker(supp.date),
+            errors: const {},
             isEditable: true,
             errorName: 'date')
       ],
     );
+  }
+
+  _buildAddItemButton() {
+    return FloatingActionButton(
+      onPressed: !bloc.hasItems
+          ? () => _showEmptyItemsDialog()
+          : () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const RecordsGroupPage())),
+      child: const Icon(Icons.add, color: AppColors.onPrimary),
+    );
+  }
+
+  _showEmptyItemsDialog() {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return const EmptyItemDialog();
+        });
+  }
+
+  _showDatePicker(DateTime date) async {
+    final selectedDate = await showDatePicker(
+        context: context,
+        initialDate: date,
+        firstDate: DateTime(2022),
+        lastDate: DateTime(2030));
+
+    if (selectedDate != null) bloc.updateDate(selectedDate);
   }
 }

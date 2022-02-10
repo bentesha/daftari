@@ -114,19 +114,9 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
 
   _buildAddItemButton() {
     return FloatingActionButton(
-      onPressed: !bloc.hasItems
-          ? () => _showEmptyItemsDialog()
-          : () => Navigator.push(
-              context, MaterialPageRoute(builder: (_) => const RecordsGroupPage())),
+      onPressed: () => Navigator.push(
+          context, MaterialPageRoute(builder: (_) => const RecordsGroupPage())),
       child: const Icon(Icons.add, color: AppColors.onPrimary),
     );
-  }
-
-  _showEmptyItemsDialog() {
-    showDialog(
-        context: context,
-        builder: (_) {
-          return const EmptyItemDialog();
-        });
   }
 }

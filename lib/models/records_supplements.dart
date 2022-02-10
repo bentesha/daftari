@@ -13,6 +13,7 @@ class RecordsSupplements with _$RecordsSupplements {
     String? notes,
     required String sellingPrice,
     required String itemId,
+    required String groupId,
     required String query,
   }) = _RecordsSupplements;
 
@@ -23,6 +24,7 @@ class RecordsSupplements with _$RecordsSupplements {
       date: DateTime.now(),
       notes: null,
       itemId: '',
+      groupId: '',
       sellingPrice: '',
       query: '',
       quantity: '');

@@ -107,6 +107,7 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
     final record = Record(
       date: supp.date,
       id: Utils.getRandomId(),
+      groupId: supp.groupId,
       type: RecordsTypes.sales,
       quantity: double.parse(supp.quantity),
       item: supp.itemList[index],
@@ -131,6 +132,8 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
     await recordsService.editRecord(record);
     emit(RecordsPageState.success(supp, RecordPages.record_page));
   }
+
+  void addGroup() {}
 
   _validate() {
     var supp = state.supplements;
@@ -172,6 +175,14 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
           itemId: record.item.id);
     }
 
+    emit(RecordsPageState.content(supp));
+  }
+
+  void initGroupRecords() {
+    var supp = state.supplements;
+    emit(RecordsPageState.loading(supp));
+
+    supp = supp.copyWith(date: DateTime.now());
     emit(RecordsPageState.content(supp));
   }
 

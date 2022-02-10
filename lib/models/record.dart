@@ -9,26 +9,29 @@ class RecordsTypes {
 }
 
 @HiveType(typeId: 1)
-class Record extends HiveObject {
+class Record {
   @HiveField(0)
   final String id;
 
   @HiveField(1)
-  final String? notes;
+  final String groupId;
 
   @HiveField(2)
-  final DateTime date;
+  final String? notes;
 
   @HiveField(3)
-  final Item item;
+  final DateTime date;
 
   @HiveField(4)
-  final double quantity;
+  final Item item;
 
   @HiveField(5)
-  final String type;
+  final double quantity;
 
   @HiveField(6)
+  final String type;
+
+  @HiveField(7)
   final double sellingPrice;
 
   Record({
@@ -37,12 +40,14 @@ class Record extends HiveObject {
     required this.date,
     required this.sellingPrice,
     this.notes,
+    required this.groupId,
     required this.quantity,
     required this.type,
   });
 
   factory Record.empty() => Record(
         id: '',
+        groupId: '',
         date: DateTime.now(),
         item: Item.empty(),
         quantity: 0,
@@ -59,6 +64,7 @@ class Record extends HiveObject {
         sellingPrice: sellingPrice ?? this.sellingPrice,
         date: date,
         id: id ?? this.id,
+        groupId: this.id,
         type: type,
         quantity: quantity ?? this.quantity,
         item: item,

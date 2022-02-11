@@ -1,21 +1,19 @@
 import '../source.dart';
 
 class ValueSelector extends StatelessWidget {
-  const ValueSelector(
-      {Key? key,
-      required this.title,
-      this.value,
-      required this.onPressed,
-      required this.errors,
-      required this.isEditable,
-      required this.errorName})
-      : super(key: key);
+  const ValueSelector({
+    Key? key,
+    required this.title,
+    this.value,
+    required this.onPressed,
+    required this.error,
+    required this.isEditable,
+  }) : super(key: key);
 
   final String title;
   final String? value;
   final VoidCallback onPressed;
-  final Map<String, String?> errors;
-  final String errorName;
+  final String? error;
   final bool isEditable;
 
   @override
@@ -35,8 +33,9 @@ class ValueSelector extends StatelessWidget {
                   opacity: value == null ? .5 : 1,
                   weight: value == null ? FontWeight.w100 : FontWeight.w500),
             ),
-            trailing:
-                isEditable ? const Icon(Icons.chevron_right) : Container(width: .1),
+            trailing: isEditable
+                ? const Icon(Icons.chevron_right)
+                : Container(width: .1),
           ),
         ),
         _buildError(),
@@ -45,13 +44,13 @@ class ValueSelector extends StatelessWidget {
   }
 
   _buildError() {
-    final hasError = errors[errorName] != null;
+    final hasError = error != null;
 
     return hasError
         ? Padding(
             padding: EdgeInsets.symmetric(horizontal: 19.dw),
             child: AppText(
-              errors[errorName]!,
+              error!,
               color: AppColors.error,
               size: 14.dw,
             ),

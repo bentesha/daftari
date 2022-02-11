@@ -2,7 +2,7 @@ import '../source.dart';
 
 class AppTextField extends StatefulWidget {
   const AppTextField(
-      {required this.errors,
+      {required this.error,
       required this.text,
       required this.onChanged,
       this.maxLines = 1,
@@ -10,7 +10,6 @@ class AppTextField extends StatefulWidget {
       required this.keyboardType,
       this.textCapitalization = TextCapitalization.sentences,
       required this.label,
-      required this.errorName,
       this.letterSpacing,
       this.isPassword = false,
       this.isLoginPassword = false,
@@ -18,11 +17,11 @@ class AppTextField extends StatefulWidget {
       Key? key})
       : super(key: key);
 
-  final Map<String, dynamic> errors;
+  final String? error;
   final String? text;
   final ValueChanged<String> onChanged;
   final int maxLines;
-  final String hintText, errorName, label;
+  final String hintText, label;
   final double? letterSpacing;
   final TextInputType keyboardType;
   final TextCapitalization textCapitalization;
@@ -51,7 +50,7 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   Widget build(BuildContext context) {
-    final hasError = widget.errors[widget.errorName] != null;
+    final hasError = widget.error != null;
     final border = hasError ? _errorBorder : _inputBorder;
 
     return Padding(
@@ -109,13 +108,13 @@ class _AppTextFieldState extends State<AppTextField> {
   }
 
   _buildError() {
-    final hasError = widget.errors[widget.errorName] != null;
+    final hasError = widget.error != null;
 
     return hasError && widget.shouldShowErrorText
         ? Padding(
             padding: EdgeInsets.only(top: 8.dw),
             child: AppText(
-              widget.errors[widget.errorName]!,
+              widget.error!,
               color: AppColors.error,
               size: 14.dw,
             ),

@@ -27,13 +27,12 @@ class EditPage extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (_, index) => AppTextField(
-                errors: const {},
                 text: '',
                 onChanged: (_) {},
                 hintText: '',
                 keyboardType: TextInputType.text,
                 label: titlesList[index],
-                errorName: '')),
+                error: '')),
       ],
     );
   }

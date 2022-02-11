@@ -8,24 +8,24 @@ class ItemSearchPage extends StatefulWidget {
 }
 
 class _ItemSearchPageState extends State<ItemSearchPage> {
-  late final RecordsPageBloc bloc;
+  late final ItemPageBloc bloc;
   final controller = TextEditingController();
 
   @override
   void initState() {
     controller.text = '';
-    bloc = Provider.of<RecordsPageBloc>(context, listen: false);
+    final service = Provider.of<ItemsService>(context, listen: false);
+    bloc = ItemPageBloc(service);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RecordsPageBloc, RecordsPageState>(
+    return BlocConsumer<ItemPageBloc, ItemPageState>(
         bloc: bloc,
         listener: (_, state) {
-          final isSuccessful = state.maybeWhen(
-              success: (_, page) => page == RecordPages.search_item_page,
-              orElse: () => false);
+          final isSuccessful =
+              state.maybeWhen(success: (_) => true, orElse: () => false);
 
           if (isSuccessful) Navigator.pop(context);
         },
@@ -33,25 +33,25 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
           return state.when(
             loading: _buildLoading,
             content: _buildContent,
-            success: (s, _) => _buildContent(s),
+            success: _buildContent,
           );
         });
   }
 
-  Widget _buildLoading(RecordsSupplements supp) {
+  Widget _buildLoading(ItemSupplements supp) {
     return const Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  Widget _buildContent(RecordsSupplements supp) {
+  Widget _buildContent(ItemSupplements supp) {
     return Scaffold(
       appBar: _buildAppBar(supp),
       body: _buildItems(supp.itemList),
     );
   }
 
-  _buildAppBar(RecordsSupplements supp) {
+  _buildAppBar(ItemSupplements supp) {
     return AppBar(
       title: _buildTextField(supp),
     );
@@ -84,7 +84,7 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
     );
   }
 
-  _buildTextField(RecordsSupplements supp) {
+  _buildTextField(ItemSupplements supp) {
     controller.text = supp.query;
     controller.selection = TextSelection.fromPosition(
         TextPosition(offset: controller.text.length));

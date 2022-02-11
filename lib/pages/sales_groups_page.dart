@@ -9,11 +9,14 @@ class SalesRecordsPage extends StatefulWidget {
 
 class _SalesRecordsPageState extends State<SalesRecordsPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  late final RecordsPageBloc bloc;
+  late final GroupPagesBloc bloc;
 
   @override
   void initState() {
-    bloc = Provider.of<RecordsPageBloc>(context, listen: false);
+    final recordsService = Provider.of<RecordsService>(context, listen: false);
+    final groupsService = Provider.of<GroupsService>(context, listen: false);
+    final itemsService = Provider.of<ItemsService>(context, listen: false);
+    bloc = GroupPagesBloc(groupsService, recordsService, itemsService);
     bloc.init();
     super.initState();
   }
@@ -30,19 +33,19 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
   }
 
   Widget _buildBody() {
-    return BlocBuilder<RecordsPageBloc, RecordsPageState>(
+    return BlocBuilder<GroupPagesBloc, GroupPagesState>(
       bloc: bloc,
       builder: (_, state) {
         return state.when(
           loading: _buildLoading,
           content: _buildContent,
-          success: (s, _) => _buildContent(s),
+          success: _buildContent,
         );
       },
     );
   }
 
-  Widget _buildLoading(RecordsSupplements supp) {
+  Widget _buildLoading(GroupSupplements supp) {
     return const Center(
       child: CircularProgressIndicator(),
     );
@@ -63,18 +66,22 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
     return AppTopBar(showDrawerCallback: _openDrawer, title: "Sales Records");
   }
 
-  Widget _buildContent(RecordsSupplements supp) {
-    final recordList = supp.recordList;
-    if (recordList.isEmpty) return _buildEmptyState();
-    final daysWithRecord = bloc.getDaysWithRecords;
+  Widget _buildContent(GroupSupplements supp) {
+    final groupList = supp.groupList;
+    if (groupList.isEmpty) return _buildEmptyState();
 
     return ListView.separated(
-      itemCount: daysWithRecord.length,
+      itemCount: groupList.length,
       separatorBuilder: (_, __) => const AppDivider(margin: EdgeInsets.zero),
       itemBuilder: (context, index) {
-        final day = daysWithRecord[index];
-        final dayRecords = recordList.where((e) => e.date.day == day).toList();
-        return _buildDayRecords(dayRecords);
+        final group = groupList[index];
+        final groupRecords =
+            supp.recordList.where((e) => e.id == group.id).toList();
+
+        return GroupTile(
+            group: group,
+            recordList: groupRecords,
+            groupAmount: supp.groupAmounts[group.id] ?? 0);
       },
       shrinkWrap: true,
     );
@@ -103,19 +110,10 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
     );
   }
 
-  Widget _buildDayRecords(List<Record> dayRecords) {
-    if (dayRecords.isEmpty) return Container();
-
-    return DayRecordTile(
-        date: dayRecords.first.date,
-        recordList: dayRecords,
-        dailyAmounts: bloc.getRecordsTotalAmount);
-  }
-
   _buildAddItemButton() {
     return FloatingActionButton(
       onPressed: () => Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const RecordsGroupPage())),
+          context, MaterialPageRoute(builder: (_) => const GroupEditPage())),
       child: const Icon(Icons.add, color: AppColors.onPrimary),
     );
   }

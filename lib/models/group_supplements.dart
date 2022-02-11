@@ -6,18 +6,21 @@ part 'group_supplements.freezed.dart';
 class GroupSupplements with _$GroupSupplements {
   const factory GroupSupplements({
     required List<Group> groupList,
+    required List<Record> recordList,
     required DateTime date,
     required String id,
-    required String title,
+    String? title,
     required Map<String, String?> errors,
-   required bool isDateAsTitle,
+    required Map<String, double> groupAmounts,
+    required bool isDateAsTitle,
   }) = _GroupPageSupplement;
 
   factory GroupSupplements.empty() => GroupSupplements(
       groupList: <Group>[],
+      recordList: <Record>[],
       id: '',
       date: DateTime.now(),
-      title: '',
       isDateAsTitle: true,
+      groupAmounts: {},
       errors: {});
 }

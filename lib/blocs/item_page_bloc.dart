@@ -15,7 +15,7 @@ class ItemPageBloc extends Cubit<ItemPageState> {
 
   void _updateItem(
       {String? title, String? unit, String? unitPrice, String? quantity}) {
-    var supp = state.supp;
+    var supp = state.supplements;
     emit(ItemPageState.loading(supp));
 
     supp = supp.copyWith(
@@ -30,7 +30,7 @@ class ItemPageBloc extends Cubit<ItemPageState> {
   void saveItem() async {
     _validate();
 
-    var supp = state.supp;
+    var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
@@ -44,8 +44,33 @@ class ItemPageBloc extends Cubit<ItemPageState> {
     emit(ItemPageState.success(supp));
   }
 
+  void updateSearchQuery(String query) {
+    var supp = state.supplements;
+    emit(ItemPageState.loading(supp));
+    final list = service.getItemList
+        .where((e) => e.title.toLowerCase().startsWith(query.toLowerCase()))
+        .toList();
+    supp = supp.copyWith(itemList: list, query: query);
+    emit(ItemPageState.content(supp));
+  }
+
+  void clearQuery() {
+    var supp = state.supplements;
+    emit(ItemPageState.loading(supp));
+    final list = service.getItemList;
+    supp = supp.copyWith(itemList: list, query: '');
+    emit(ItemPageState.content(supp));
+  }
+
+  void updateId(String id) {
+    var supp = state.supplements;
+    emit(ItemPageState.loading(supp));
+    service.updateId(id);
+    emit(ItemPageState.success(supp));
+  }
+
   _validate() {
-    var supp = state.supp;
+    var supp = state.supplements;
     final errors = <String, String?>{};
 
     emit(ItemPageState.loading(supp));

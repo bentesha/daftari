@@ -16,13 +16,12 @@ class AddCategoryPage extends StatelessWidget {
       children: [
         _buildTitle(),
         AppTextField(
-            errors: const {},
             text: '',
             onChanged: (_) {},
             hintText: '',
             keyboardType: TextInputType.text,
             label: 'Category Title',
-            errorName: ''),
+            error: ''),
         Padding(
           padding: EdgeInsets.only(left: 19.dw, bottom: 10.dh),
           child: AppText(
@@ -31,57 +30,54 @@ class AddCategoryPage extends StatelessWidget {
           ),
         ),
         AppTextField(
-            errors: const {},
             text: '',
             onChanged: (_) {},
             hintText: '',
             keyboardType: TextInputType.text,
             label: 'Item Title',
-            errorName: ''),
+            error: ''),
         AppTextField(
-            errors: const {},
             text: '',
             onChanged: (_) {},
             hintText: '',
             keyboardType: TextInputType.text,
             label: 'Unit',
-            errorName: ''),
+            error: ''),
         Row(
           children: [
             Expanded(
               child: AppTextField(
-                  errors: const {},
-                  text: '',
-                  onChanged: (_) {},
-                  hintText: '',
-                  keyboardType: TextInputType.text,
-                  label: 'Unit Price',
-                  errorName: ''),
+                error: '',
+                text: '',
+                onChanged: (_) {},
+                hintText: '',
+                keyboardType: TextInputType.text,
+                label: 'Unit Price',
+              ),
             ),
             Expanded(
               child: AppTextField(
-                  errors: const {},
-                  text: '',
-                  onChanged: (_) {},
-                  hintText: '',
-                  keyboardType: TextInputType.text,
-                  label: 'In Stock',
-                  errorName: ''),
+                error: '',
+                text: '',
+                onChanged: (_) {},
+                hintText: '',
+                keyboardType: TextInputType.text,
+                label: 'In Stock',
+              ),
             ),
           ],
         ),
         AppTextButton(
-          onPressed: () {},
-          alignment: Alignment.centerLeft,
-          text: 'Add Item',
-          textColor: AppColors.primaryVariant,
-          isFilled: false,
-          withIcon: true,
-          icon: Icons.add,
-          height: 45.dh,
-          iconColor: AppColors.primaryVariant,
-          padding: EdgeInsets.only(left: 19.dw)
-        )
+            onPressed: () {},
+            alignment: Alignment.centerLeft,
+            text: 'Add Item',
+            textColor: AppColors.primaryVariant,
+            isFilled: false,
+            withIcon: true,
+            icon: Icons.add,
+            height: 45.dh,
+            iconColor: AppColors.primaryVariant,
+            padding: EdgeInsets.only(left: 19.dw))
       ],
     );
   }

@@ -3,46 +3,38 @@ import '../source.dart';
 class RecordsPageBloc extends Cubit<RecordsPageState> {
   RecordsPageBloc(this.recordsService, this.itemsService)
       : super(RecordsPageState.initial()) {
-    recordsService.getRecordStream.listen((record) {
-      _handleRecordStream(record);
-    });
+    recordsService.addListener(() => _handleRecordsUpdates());
+    itemsService.addListener(() => _handleSelectedItemId());
   }
 
   final RecordsService recordsService;
   final ItemsService itemsService;
 
   bool get hasItems => itemsService.getItemList.isNotEmpty;
-  String? get getSelectedItem {
-    final supp = state.supplements;
-    if (supp.itemId.isEmpty) return null;
-    final index = supp.itemList.indexWhere((e) => e.id == supp.itemId);
-    return supp.itemList[index].title;
-  }
+
+  Item? get getSelectedItem =>
+      itemsService.getItemById(state.supplements.itemId);
 
   Record? _record;
-  int? _day;
 
-  Map<int, double> get getRecordsTotalAmount =>
-      recordsService.getAllTotalAmounts();
-
-  double get getDayTotalAmount {
-    return recordsService.getTotalAmountsByDay(_day!);
-  }
-
-  List<Record> get getSpecificDayRecords {
-    return state.supplements.recordList
-        .where((e) => e.date.day == _day)
-        .toList();
-  }
-
-  List<int> get getDaysWithRecords => recordsService.getDaysWithRecords;
-
-  void init() {
+  void init([String? groupId, Record? record]) {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
     final recordList = recordsService.getAll();
     final itemList = itemsService.getAll();
-    supp = supp.copyWith(itemList: itemList, recordList: recordList);
+    supp = supp.copyWith(
+        itemList: itemList,
+        recordList: recordList,
+        groupId: groupId ?? supp.groupId);
+    if (record != null) {
+      _record = record;
+      supp = supp.copyWith(
+          sellingPrice: record.sellingPrice.toString(),
+          quantity: record.quantity.toString(),
+          date: record.date,
+          notes: record.notes,
+          itemId: record.item.id);
+    }
     emit(RecordsPageState.content(supp));
   }
 
@@ -54,14 +46,8 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
 
   void updateQuantity(String quantity) => _updateAttributes(quantity: quantity);
 
-  void updateId(String id) => _updateAttributes(id: id);
-
   _updateAttributes(
-      {DateTime? date,
-      String? quantity,
-      String? amount,
-      String? notes,
-      String? id}) {
+      {DateTime? date, String? quantity, String? amount, String? notes}) {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
     supp = supp.copyWith(
@@ -69,29 +55,8 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
       quantity: quantity ?? supp.quantity,
       sellingPrice: amount ?? supp.sellingPrice,
       notes: notes ?? supp.notes,
-      itemId: id ?? supp.itemId,
     );
-    if (id != null) {
-      emit(RecordsPageState.success(supp, RecordPages.search_item_page));
-    }
-    emit(RecordsPageState.content(supp));
-  }
 
-  void updateSearchQuery(String query) {
-    var supp = state.supplements;
-    emit(RecordsPageState.loading(supp));
-    final list = itemsService.getItemList
-        .where((e) => e.title.toLowerCase().startsWith(query.toLowerCase()))
-        .toList();
-    supp = supp.copyWith(itemList: list, query: query);
-    emit(RecordsPageState.content(supp));
-  }
-
-  void clearQuery() {
-    var supp = state.supplements;
-    emit(RecordsPageState.loading(supp));
-    final list = itemsService.getItemList;
-    supp = supp.copyWith(itemList: list, query: '');
     emit(RecordsPageState.content(supp));
   }
 
@@ -115,7 +80,7 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
       notes: supp.notes,
     );
     await recordsService.addRecord(record);
-    emit(RecordsPageState.success(supp, RecordPages.record_page));
+    emit(RecordsPageState.success(supp));
   }
 
   void editRecord() async {
@@ -130,10 +95,8 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
         sellingPrice: double.parse(supp.sellingPrice),
         notes: supp.notes);
     await recordsService.editRecord(record);
-    emit(RecordsPageState.success(supp, RecordPages.record_page));
+    emit(RecordsPageState.success(supp));
   }
-
-  void addGroup() {}
 
   _validate() {
     var supp = state.supplements;
@@ -151,40 +114,18 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
     emit(RecordsPageState.content(supp));
   }
 
-  _handleRecordStream(Record record) {
+  _handleRecordsUpdates() {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
-    //supp.recordList.add(record);
     supp = supp.copyWith(recordList: recordsService.getRecordList);
     emit(RecordsPageState.content(supp));
   }
 
-  void initRecord({Record? record}) {
+  _handleSelectedItemId() {
+    log('was in here');
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
-    supp = RecordsSupplements.empty()
-        .copyWith(itemList: supp.itemList, recordList: supp.recordList);
-
-    if (record != null) {
-      _record = record;
-      supp = supp.copyWith(
-          sellingPrice: record.sellingPrice.toString(),
-          quantity: record.quantity.toString(),
-          date: record.date,
-          notes: record.notes,
-          itemId: record.item.id);
-    }
-
+    supp = supp.copyWith(itemId: itemsService.getSelectedItemId);
     emit(RecordsPageState.content(supp));
   }
-
-  void initGroupRecords() {
-    var supp = state.supplements;
-    emit(RecordsPageState.loading(supp));
-
-    supp = supp.copyWith(date: DateTime.now());
-    emit(RecordsPageState.content(supp));
-  }
-
-  void initDayRecords(int day) => _day = day;
 }

@@ -1,40 +1,36 @@
 import '../source.dart';
 
-class DayRecordTile extends StatelessWidget {
-  const DayRecordTile(
+class GroupTile extends StatelessWidget {
+  const GroupTile(
       {Key? key,
-      required this.date,
-      required this.recordList,
-      required this.dailyAmounts})
+      required this.group,
+      required this.groupAmount,
+      required this.recordList})
       : super(key: key);
 
-  final DateTime date;
+  final Group group;
   final List<Record> recordList;
-  final Map<int, double> dailyAmounts;
+  final double groupAmount;
 
   @override
   Widget build(BuildContext context) {
-    final ordinal = DateFormatter.getOrdinalsFrom(date.day);
-    final weekDay = DateFormatter.getWeekDay(date.weekday);
-    final dayTotalAmount = Utils.convertToMoneyFormat(dailyAmounts[date.day]!);
-    final dayString = '${date.day}$ordinal, $weekDay';
+    final title = group.title ?? group.getTitleFromDate;
+    final formattedGroupAmount = Utils.convertToMoneyFormat(groupAmount);
 
     return AppTextButton(
         isFilled: false,
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) =>
-                    DayRecordsPage(day: date.day, title: dayString))),
+        onPressed: () => Navigator.push(context,
+            MaterialPageRoute(builder: (_) => GroupRecordsPage(group))),
         padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 15.dh),
-        //margin: EdgeInsets.only(right: 8.dw, left: 8.dw, top: 10.dh),
         child: Row(
           children: [
-            AppText(dayString, color: AppColors.secondary),
+            AppText(title, color: AppColors.secondary),
             Expanded(
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [AppText(dayTotalAmount, weight: FontWeight.bold)],
+              children: [
+                AppText(formattedGroupAmount, weight: FontWeight.bold)
+              ],
             ))
           ],
         ));

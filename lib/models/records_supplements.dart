@@ -14,7 +14,6 @@ class RecordsSupplements with _$RecordsSupplements {
     required String sellingPrice,
     required String itemId,
     required String groupId,
-    required String query,
   }) = _RecordsSupplements;
 
   factory RecordsSupplements.empty() => RecordsSupplements(
@@ -26,6 +25,5 @@ class RecordsSupplements with _$RecordsSupplements {
       itemId: '',
       groupId: '',
       sellingPrice: '',
-      query: '',
       quantity: '');
 }

@@ -1,6 +1,6 @@
 class Constants {
-  static const kFontFam = 'Circular';
-  static const kFontFam2 = 'Circular';
+  static const kFontFam = 'AndroidEuclid';
+  static const kFontFam2 = 'AndroidEuclid';
 
   static const kItemsBox = 'items_box';
   static const kRecordsBox = 'records_box';

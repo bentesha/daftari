@@ -17,9 +17,8 @@ class _ItemEditPageState extends State<ItemEditPage> {
 
   @override
   void initState() {
-    final service =
-        Provider.of<RecordsPageBloc>(context, listen: false).itemsService;
-    bloc = ItemPageBloc(service);
+    final itemsService = Provider.of<ItemsService>(context, listen: false);
+    bloc = ItemPageBloc(itemsService);
     super.initState();
   }
 
@@ -59,51 +58,47 @@ class _ItemEditPageState extends State<ItemEditPage> {
 
     return ListView(padding: EdgeInsets.only(top: 19.dh), children: [
       AppTextField(
-        errors: errors,
         text: supp.title,
         onChanged: bloc.updateTitle,
         hintText: 'e.g. Clothes',
         keyboardType: TextInputType.name,
         label: 'Title',
-        errorName: 'title',
+        error: errors['title'],
       ),
       Row(
         children: [
           Expanded(
             child: AppTextField(
-              errors: errors,
               text: supp.unit,
               onChanged: bloc.updateUnit,
               hintText: 'ea.',
               keyboardType: TextInputType.name,
               shouldShowErrorText: false,
               label: 'Unit',
-              errorName: 'unit',
+              error: errors['unit'],
             ),
           ),
           Expanded(
             child: AppTextField(
-              errors: errors,
               text: supp.unitPrice,
               onChanged: bloc.updateUnitPrice,
               hintText: '0',
               keyboardType: TextInputType.number,
               shouldShowErrorText: false,
               label: 'Unit Price',
-              errorName: 'unitPrice',
+              error: errors['unitPrice'],
             ),
           ),
         ],
       ),
       _buildUnitTextFieldsErrors(errors),
       AppTextField(
-        errors: errors,
         text: supp.quantity,
         onChanged: bloc.updateQuantity,
         hintText: '0',
         keyboardType: TextInputType.number,
         label: 'Quantity',
-        errorName: 'quantity',
+        error: errors['quantity'],
       ),
       _buildTotalOpeningValue(supp),
     ]);

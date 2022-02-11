@@ -18,14 +18,16 @@ void main() async {
 
   final myApp = MultiProvider(
     providers: [
-      Provider<RecordsPageBloc>(
-          create: (_) => RecordsPageBloc(RecordsService(), ItemsService())),
-      Provider<GroupPagesBloc>(create: (_) => GroupPagesBloc(GroupsService()))
+      ChangeNotifierProvider<ItemsService>(create: (_) => ItemsService()),
+      ChangeNotifierProvider<GroupsService>(create: (_) => GroupsService()),
+      ChangeNotifierProvider<RecordsService>(create: (_) => RecordsService()),
     ],
     child: const MyApp(),
   );
-
-  // await Hive.box(Constants.kRecordsBox).clear();
+/* 
+  await Hive.box(Constants.kGroupsBox).clear();
+  await Hive.box(Constants.kRecordsBox).clear();
+  await Hive.box(Constants.kItemsBox).clear(); */
 
   runApp(myApp);
 }

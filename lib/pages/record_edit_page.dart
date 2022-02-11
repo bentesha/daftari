@@ -1,23 +1,26 @@
 import '../source.dart';
 
-class RecordPage extends StatefulWidget {
-  const RecordPage({this.record, Key? key}) : super(key: key);
+class RecordEditPage extends StatefulWidget {
+  const RecordEditPage({this.groupId, this.record, Key? key}) : super(key: key);
 
+  final String? groupId;
   final Record? record;
 
   @override
-  State<RecordPage> createState() => _RecordPageState();
+  State<RecordEditPage> createState() => _RecordEditPageState();
 }
 
-class _RecordPageState extends State<RecordPage> {
+class _RecordEditPageState extends State<RecordEditPage> {
   late final RecordsPageBloc bloc;
   late final bool isEditing;
 
   @override
   void initState() {
-    bloc = Provider.of<RecordsPageBloc>(context, listen: false);
+    final recordsService = Provider.of<RecordsService>(context, listen: false);
+    final itemsService = Provider.of<ItemsService>(context, listen: false);
+    bloc = RecordsPageBloc(recordsService, itemsService);
     isEditing = widget.record != null;
-    bloc.initRecord(record: widget.record);
+    bloc.init(widget.groupId, widget.record);
     super.initState();
   }
 
@@ -36,9 +39,8 @@ class _RecordPageState extends State<RecordPage> {
     return BlocConsumer<RecordsPageBloc, RecordsPageState>(
         bloc: bloc,
         listener: (_, state) {
-          final isSuccessful = state.maybeWhen(
-              success: (_, page) => page == RecordPages.record_page,
-              orElse: () => false);
+          final isSuccessful =
+              state.maybeWhen(success: (_) => true, orElse: () => false);
 
           if (isSuccessful) Navigator.pop(context);
         },
@@ -46,7 +48,7 @@ class _RecordPageState extends State<RecordPage> {
           return state.when(
             loading: _buildLoading,
             content: _buildContent,
-            success: (s, _) => _buildContent(s),
+            success: _buildContent,
           );
         });
   }
@@ -62,64 +64,48 @@ class _RecordPageState extends State<RecordPage> {
       children: [
         ValueSelector(
           title: 'Item',
-          value: bloc.getSelectedItem,
-          errors: supp.errors,
-          errorName: 'item',
+          value: bloc.getSelectedItem?.title,
+          error: supp.errors['item'],
           isEditable: !isEditing,
           onPressed: () => Navigator.push(context,
               MaterialPageRoute(builder: (_) => const ItemSearchPage())),
         ),
-        ValueSelector(
+        DateSelector(
           title: 'Date',
-          value: DateFormatter.convertToDMY(supp.date),
-          onPressed: () => _showDatePicker(supp.date),
-          errors: const {},
+          onDateSelected: bloc.updateDate,
+          date: supp.date,
           isEditable: !isEditing,
-          errorName: '',
         ),
         const AppDivider(),
         SizedBox(height: 6.dh),
         AppTextField(
-          errors: supp.errors,
           text: supp.quantity,
           onChanged: bloc.updateQuantity,
           hintText: 'Quantity sold',
           keyboardType: TextInputType.number,
           label: 'Quantity',
-          errorName: 'quantity',
+          error: supp.errors['quantity'],
         ),
         AppTextField(
-          errors: supp.errors,
           text: supp.sellingPrice,
           onChanged: bloc.updateAmount,
           hintText: 'Item selling price',
           keyboardType: TextInputType.number,
           label: 'Price per item',
-          errorName: 'price',
+          error: supp.errors['price'],
         ),
         AppTextField(
-          errors: supp.errors,
+          error: supp.errors['notes'],
           text: supp.notes,
           onChanged: bloc.updateNotes,
           hintText: 'Record notes',
           keyboardType: TextInputType.multiline,
           label: 'Notes',
-          errorName: 'notes',
           maxLines: 3,
         ),
         _buildDeleteRecord(),
       ],
     );
-  }
-
-  _showDatePicker(DateTime date) async {
-    final selectedDate = await showDatePicker(
-        context: context,
-        initialDate: date,
-        firstDate: DateTime(2022),
-        lastDate: DateTime(2030));
-
-    if (selectedDate != null) bloc.updateDate(selectedDate);
   }
 
   _buildDeleteRecord() {
@@ -141,7 +127,7 @@ class _RecordPageState extends State<RecordPage> {
   _buildAddItemButton() {
     return FloatingActionButton(
       onPressed: () => Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const RecordPage())),
+          context, MaterialPageRoute(builder: (_) => const RecordEditPage())),
       child: const Icon(Icons.add, color: AppColors.onPrimary),
     );
   }

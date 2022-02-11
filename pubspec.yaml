@@ -49,4 +49,9 @@ flutter:
           weight: 500
         - asset: assets/fonts/Avenir/Heavy.ttf
           weight: 600
-                    
+    - family: Antipasto
+      fonts:
+        - asset: assets/fonts/Antipasto/Medium.ttf
+    - family: AndroidEuclid
+      fonts:
+        - asset: assets/fonts/AndroidEuclid/Medium.otf                    

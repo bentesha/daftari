@@ -33,5 +33,7 @@ class RecordTile extends StatelessWidget {
   }
 
   _onPressed(BuildContext context) => Navigator.push(
-      context, MaterialPageRoute(builder: (_) => RecordPage(record: record)));
+      context,
+      MaterialPageRoute(
+          builder: (_) => RecordEditPage(groupId: record.groupId)));
 }

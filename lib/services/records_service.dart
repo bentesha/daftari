@@ -1,19 +1,11 @@
 import 'dart:async';
 import '../source.dart';
 
-class RecordsService {
+class RecordsService extends ChangeNotifier {
   static final _box = Hive.box(Constants.kRecordsBox);
   static final _recordList = <Record>[];
 
   List<Record> get getRecordList => _recordList;
-
-  final _controller = StreamController<Record>.broadcast();
-  Stream<Record> get getRecordStream => _controller
-          .stream /* .distinct((r1, r2) {
-        log((r1 == r2).toString());
-        return r1.id == r2.id;
-      }) */
-      ;
 
   List<Record> getAll() {
     if (_box.isEmpty) return [];
@@ -29,22 +21,21 @@ class RecordsService {
   Future<void> addRecord(Record record) async {
     await _box.add(record);
     _recordList.add(record);
-    _controller.add(record);
+    notifyListeners();
   }
 
   Future<void> editRecord(Record record) async {
     _box.put(record.id, record);
     final index = _recordList.indexWhere((e) => e.id == record.id);
-    log(index.toString());
     _recordList[index] = record;
-    _controller.add(record);
+    notifyListeners();
   }
 
-  ///returns a list of two amounts, first is total amount of income and second is
-  ///the total amount of expenses in the specific day.
-  double getTotalAmountsByDay(int day) {
+  double _getTotalRecordsAmount([String? id, int? day]) {
     double sales = 0;
-    final list = _recordList.where((e) => e.date.day == day).toList();
+    final list = _recordList.where((e) {
+      return id != null ? e.groupId == id : e.date.day == day;
+    }).toList();
     if (list.isEmpty) return 0;
 
     for (Record record in list) {
@@ -53,17 +44,21 @@ class RecordsService {
     return sales;
   }
 
-  Map<int, double> getAllTotalAmounts() {
+  double getRecordsTotalByGroup(String id) => _getTotalRecordsAmount(id);
+
+  double getRecordsTotalByDay(int day) => _getTotalRecordsAmount(null, day);
+
+  Map<int, double> getAllRecordsTotal() {
     final days = DateFormatter.getDaysInMonth();
     final amountsMap = <int, double>{};
     for (int day = 1; day <= days; day++) {
-      final amountsList = getTotalAmountsByDay(day);
+      final amountsList = getRecordsTotalByDay(day);
       amountsMap[day] = amountsList;
     }
     return amountsMap;
   }
 
-  List<int> get getDaysWithRecords {
+/*   List<int> get getDaysWithRecords {
     final days = <int>[];
     for (Record record in _recordList) {
       final day = record.date.day;
@@ -71,5 +66,5 @@ class RecordsService {
       days.add(day);
     }
     return days;
-  }
+  } */
 }

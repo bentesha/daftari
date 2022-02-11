@@ -30,10 +30,9 @@ class _$RecordsPageStateTearOff {
     );
   }
 
-  _Success success(RecordsSupplements supplements, RecordPages page) {
+  _Success success(RecordsSupplements supplements) {
     return _Success(
       supplements,
-      page,
     );
   }
 }
@@ -49,22 +48,21 @@ mixin _$RecordsPageState {
   TResult when<TResult extends Object?>({
     required TResult Function(RecordsSupplements supplements) loading,
     required TResult Function(RecordsSupplements supplements) content,
-    required TResult Function(RecordsSupplements supplements, RecordPages page)
-        success,
+    required TResult Function(RecordsSupplements supplements) success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(RecordsSupplements supplements)? loading,
     TResult Function(RecordsSupplements supplements)? content,
-    TResult Function(RecordsSupplements supplements, RecordPages page)? success,
+    TResult Function(RecordsSupplements supplements)? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(RecordsSupplements supplements)? loading,
     TResult Function(RecordsSupplements supplements)? content,
-    TResult Function(RecordsSupplements supplements, RecordPages page)? success,
+    TResult Function(RecordsSupplements supplements)? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -205,8 +203,7 @@ class _$_Loading implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function(RecordsSupplements supplements) loading,
     required TResult Function(RecordsSupplements supplements) content,
-    required TResult Function(RecordsSupplements supplements, RecordPages page)
-        success,
+    required TResult Function(RecordsSupplements supplements) success,
   }) {
     return loading(supplements);
   }
@@ -216,7 +213,7 @@ class _$_Loading implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(RecordsSupplements supplements)? loading,
     TResult Function(RecordsSupplements supplements)? content,
-    TResult Function(RecordsSupplements supplements, RecordPages page)? success,
+    TResult Function(RecordsSupplements supplements)? success,
   }) {
     return loading?.call(supplements);
   }
@@ -226,7 +223,7 @@ class _$_Loading implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(RecordsSupplements supplements)? loading,
     TResult Function(RecordsSupplements supplements)? content,
-    TResult Function(RecordsSupplements supplements, RecordPages page)? success,
+    TResult Function(RecordsSupplements supplements)? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -351,8 +348,7 @@ class _$_Content implements _Content {
   TResult when<TResult extends Object?>({
     required TResult Function(RecordsSupplements supplements) loading,
     required TResult Function(RecordsSupplements supplements) content,
-    required TResult Function(RecordsSupplements supplements, RecordPages page)
-        success,
+    required TResult Function(RecordsSupplements supplements) success,
   }) {
     return content(supplements);
   }
@@ -362,7 +358,7 @@ class _$_Content implements _Content {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(RecordsSupplements supplements)? loading,
     TResult Function(RecordsSupplements supplements)? content,
-    TResult Function(RecordsSupplements supplements, RecordPages page)? success,
+    TResult Function(RecordsSupplements supplements)? success,
   }) {
     return content?.call(supplements);
   }
@@ -372,7 +368,7 @@ class _$_Content implements _Content {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(RecordsSupplements supplements)? loading,
     TResult Function(RecordsSupplements supplements)? content,
-    TResult Function(RecordsSupplements supplements, RecordPages page)? success,
+    TResult Function(RecordsSupplements supplements)? success,
     required TResult orElse(),
   }) {
     if (content != null) {
@@ -433,7 +429,7 @@ abstract class _$SuccessCopyWith<$Res>
   factory _$SuccessCopyWith(_Success value, $Res Function(_Success) then) =
       __$SuccessCopyWithImpl<$Res>;
   @override
-  $Res call({RecordsSupplements supplements, RecordPages page});
+  $Res call({RecordsSupplements supplements});
 
   @override
   $RecordsSupplementsCopyWith<$Res> get supplements;
@@ -451,17 +447,12 @@ class __$SuccessCopyWithImpl<$Res> extends _$RecordsPageStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? supplements = freezed,
-    Object? page = freezed,
   }) {
     return _then(_Success(
       supplements == freezed
           ? _value.supplements
           : supplements // ignore: cast_nullable_to_non_nullable
               as RecordsSupplements,
-      page == freezed
-          ? _value.page
-          : page // ignore: cast_nullable_to_non_nullable
-              as RecordPages,
     ));
   }
 }
@@ -469,16 +460,14 @@ class __$SuccessCopyWithImpl<$Res> extends _$RecordsPageStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Success implements _Success {
-  const _$_Success(this.supplements, this.page);
+  const _$_Success(this.supplements);
 
   @override
   final RecordsSupplements supplements;
-  @override
-  final RecordPages page;
 
   @override
   String toString() {
-    return 'RecordsPageState.success(supplements: $supplements, page: $page)';
+    return 'RecordsPageState.success(supplements: $supplements)';
   }
 
   @override
@@ -487,15 +476,12 @@ class _$_Success implements _Success {
         (other.runtimeType == runtimeType &&
             other is _Success &&
             const DeepCollectionEquality()
-                .equals(other.supplements, supplements) &&
-            const DeepCollectionEquality().equals(other.page, page));
+                .equals(other.supplements, supplements));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(supplements),
-      const DeepCollectionEquality().hash(page));
+      runtimeType, const DeepCollectionEquality().hash(supplements));
 
   @JsonKey(ignore: true)
   @override
@@ -507,10 +493,9 @@ class _$_Success implements _Success {
   TResult when<TResult extends Object?>({
     required TResult Function(RecordsSupplements supplements) loading,
     required TResult Function(RecordsSupplements supplements) content,
-    required TResult Function(RecordsSupplements supplements, RecordPages page)
-        success,
+    required TResult Function(RecordsSupplements supplements) success,
   }) {
-    return success(supplements, page);
+    return success(supplements);
   }
 
   @override
@@ -518,9 +503,9 @@ class _$_Success implements _Success {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(RecordsSupplements supplements)? loading,
     TResult Function(RecordsSupplements supplements)? content,
-    TResult Function(RecordsSupplements supplements, RecordPages page)? success,
+    TResult Function(RecordsSupplements supplements)? success,
   }) {
-    return success?.call(supplements, page);
+    return success?.call(supplements);
   }
 
   @override
@@ -528,11 +513,11 @@ class _$_Success implements _Success {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(RecordsSupplements supplements)? loading,
     TResult Function(RecordsSupplements supplements)? content,
-    TResult Function(RecordsSupplements supplements, RecordPages page)? success,
+    TResult Function(RecordsSupplements supplements)? success,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(supplements, page);
+      return success(supplements);
     }
     return orElse();
   }
@@ -573,12 +558,10 @@ class _$_Success implements _Success {
 }
 
 abstract class _Success implements RecordsPageState {
-  const factory _Success(RecordsSupplements supplements, RecordPages page) =
-      _$_Success;
+  const factory _Success(RecordsSupplements supplements) = _$_Success;
 
   @override
   RecordsSupplements get supplements;
-  RecordPages get page;
   @override
   @JsonKey(ignore: true)
   _$SuccessCopyWith<_Success> get copyWith =>

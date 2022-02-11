@@ -19,7 +19,7 @@ class GroupAdapter extends TypeAdapter<Group> {
     return Group(
       id: fields[0] as String,
       date: fields[2] as DateTime,
-      title: fields[1] as String,
+      title: fields[1] as String?,
     );
   }
 

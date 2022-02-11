@@ -1,28 +1,35 @@
 import '../source.dart';
 
-class RecordsGroupPage extends StatefulWidget {
-  const RecordsGroupPage({Key? key}) : super(key: key);
+class GroupEditPage extends StatefulWidget {
+  const GroupEditPage({this.group, Key? key}) : super(key: key);
+
+  final Group? group;
 
   static void navigateTo(BuildContext context) => Navigator.push(
-      context, MaterialPageRoute(builder: (_) => const RecordsGroupPage()));
+      context, MaterialPageRoute(builder: (_) => const GroupEditPage()));
 
   @override
-  State<RecordsGroupPage> createState() => _RecordsGroupPageState();
+  State<GroupEditPage> createState() => _GroupEditPageState();
 }
 
-class _RecordsGroupPageState extends State<RecordsGroupPage> {
+class _GroupEditPageState extends State<GroupEditPage> {
   late final GroupPagesBloc bloc;
 
   @override
   void initState() {
-    bloc = Provider.of<GroupPagesBloc>(context, listen: false);
+    final recordsService = Provider.of<RecordsService>(context, listen: false);
+    final groupsService = Provider.of<GroupsService>(context, listen: false);
+    final itemsService = Provider.of<ItemsService>(context, listen: false);
+    bloc = GroupPagesBloc(groupsService, recordsService, itemsService);
+    bloc.init(group: widget.group);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PageAppBar(title: 'Add Records Group'),
+      appBar: PageAppBar(
+          title: 'Add Records Group', actionCallback: bloc.saveGroup),
       body: _buildBody(),
     );
   }
@@ -73,14 +80,13 @@ class _RecordsGroupPageState extends State<RecordsGroupPage> {
         supp.isDateAsTitle
             ? Container()
             : AppTextField(
-                errors: supp.errors,
                 text: supp.title,
                 onChanged: bloc.updateTitle,
                 hintText: '',
                 keyboardType: TextInputType.name,
                 textCapitalization: TextCapitalization.words,
                 label: 'Group Title',
-                errorName: 'title'),
+                error: 'title'),
       ],
     );
   }

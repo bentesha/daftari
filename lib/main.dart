@@ -25,9 +25,9 @@ void main() async {
     child: const MyApp(),
   );
 
-  await Hive.box(Constants.kGroupsBox).clear();
+/*   await Hive.box(Constants.kGroupsBox).clear();
   await Hive.box(Constants.kRecordsBox).clear();
-  await Hive.box(Constants.kItemsBox).clear(); 
+  await Hive.box(Constants.kItemsBox).clear();  */
 
   runApp(myApp);
 }

@@ -22,4 +22,11 @@ class GroupsService extends ChangeNotifier {
     _groupList.add(group);
     notifyListeners();
   }
+
+  Future<void> editGroup(Group group) async {
+    await _box.put(group.id, group);
+    final index = _groupList.indexWhere((e) => e.id == group.id);
+    _groupList[index] = group;
+    notifyListeners();
+  }
 }

@@ -23,10 +23,11 @@ class _$GroupSupplementsTearOff {
       required List<Record> recordList,
       required DateTime date,
       required String id,
-      String? title,
+      required String title,
       required Map<String, String?> errors,
       required Map<String, double> groupAmounts,
-      required bool isDateAsTitle}) {
+      required bool isDateAsTitle,
+      required bool canUseDateAsTitle}) {
     return _GroupPageSupplement(
       groupList: groupList,
       recordList: recordList,
@@ -36,6 +37,7 @@ class _$GroupSupplementsTearOff {
       errors: errors,
       groupAmounts: groupAmounts,
       isDateAsTitle: isDateAsTitle,
+      canUseDateAsTitle: canUseDateAsTitle,
     );
   }
 }
@@ -49,10 +51,11 @@ mixin _$GroupSupplements {
   List<Record> get recordList => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
-  String? get title => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
   Map<String, double> get groupAmounts => throw _privateConstructorUsedError;
   bool get isDateAsTitle => throw _privateConstructorUsedError;
+  bool get canUseDateAsTitle => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $GroupSupplementsCopyWith<GroupSupplements> get copyWith =>
@@ -69,10 +72,11 @@ abstract class $GroupSupplementsCopyWith<$Res> {
       List<Record> recordList,
       DateTime date,
       String id,
-      String? title,
+      String title,
       Map<String, String?> errors,
       Map<String, double> groupAmounts,
-      bool isDateAsTitle});
+      bool isDateAsTitle,
+      bool canUseDateAsTitle});
 }
 
 /// @nodoc
@@ -94,6 +98,7 @@ class _$GroupSupplementsCopyWithImpl<$Res>
     Object? errors = freezed,
     Object? groupAmounts = freezed,
     Object? isDateAsTitle = freezed,
+    Object? canUseDateAsTitle = freezed,
   }) {
     return _then(_value.copyWith(
       groupList: groupList == freezed
@@ -115,7 +120,7 @@ class _$GroupSupplementsCopyWithImpl<$Res>
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -127,6 +132,10 @@ class _$GroupSupplementsCopyWithImpl<$Res>
       isDateAsTitle: isDateAsTitle == freezed
           ? _value.isDateAsTitle
           : isDateAsTitle // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canUseDateAsTitle: canUseDateAsTitle == freezed
+          ? _value.canUseDateAsTitle
+          : canUseDateAsTitle // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -144,10 +153,11 @@ abstract class _$GroupPageSupplementCopyWith<$Res>
       List<Record> recordList,
       DateTime date,
       String id,
-      String? title,
+      String title,
       Map<String, String?> errors,
       Map<String, double> groupAmounts,
-      bool isDateAsTitle});
+      bool isDateAsTitle,
+      bool canUseDateAsTitle});
 }
 
 /// @nodoc
@@ -171,6 +181,7 @@ class __$GroupPageSupplementCopyWithImpl<$Res>
     Object? errors = freezed,
     Object? groupAmounts = freezed,
     Object? isDateAsTitle = freezed,
+    Object? canUseDateAsTitle = freezed,
   }) {
     return _then(_GroupPageSupplement(
       groupList: groupList == freezed
@@ -192,7 +203,7 @@ class __$GroupPageSupplementCopyWithImpl<$Res>
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -204,6 +215,10 @@ class __$GroupPageSupplementCopyWithImpl<$Res>
       isDateAsTitle: isDateAsTitle == freezed
           ? _value.isDateAsTitle
           : isDateAsTitle // ignore: cast_nullable_to_non_nullable
+              as bool,
+      canUseDateAsTitle: canUseDateAsTitle == freezed
+          ? _value.canUseDateAsTitle
+          : canUseDateAsTitle // ignore: cast_nullable_to_non_nullable
               as bool,
     ));
   }
@@ -217,10 +232,11 @@ class _$_GroupPageSupplement implements _GroupPageSupplement {
       required this.recordList,
       required this.date,
       required this.id,
-      this.title,
+      required this.title,
       required this.errors,
       required this.groupAmounts,
-      required this.isDateAsTitle});
+      required this.isDateAsTitle,
+      required this.canUseDateAsTitle});
 
   @override
   final List<Group> groupList;
@@ -231,17 +247,19 @@ class _$_GroupPageSupplement implements _GroupPageSupplement {
   @override
   final String id;
   @override
-  final String? title;
+  final String title;
   @override
   final Map<String, String?> errors;
   @override
   final Map<String, double> groupAmounts;
   @override
   final bool isDateAsTitle;
+  @override
+  final bool canUseDateAsTitle;
 
   @override
   String toString() {
-    return 'GroupSupplements(groupList: $groupList, recordList: $recordList, date: $date, id: $id, title: $title, errors: $errors, groupAmounts: $groupAmounts, isDateAsTitle: $isDateAsTitle)';
+    return 'GroupSupplements(groupList: $groupList, recordList: $recordList, date: $date, id: $id, title: $title, errors: $errors, groupAmounts: $groupAmounts, isDateAsTitle: $isDateAsTitle, canUseDateAsTitle: $canUseDateAsTitle)';
   }
 
   @override
@@ -259,7 +277,9 @@ class _$_GroupPageSupplement implements _GroupPageSupplement {
             const DeepCollectionEquality()
                 .equals(other.groupAmounts, groupAmounts) &&
             const DeepCollectionEquality()
-                .equals(other.isDateAsTitle, isDateAsTitle));
+                .equals(other.isDateAsTitle, isDateAsTitle) &&
+            const DeepCollectionEquality()
+                .equals(other.canUseDateAsTitle, canUseDateAsTitle));
   }
 
   @override
@@ -272,7 +292,8 @@ class _$_GroupPageSupplement implements _GroupPageSupplement {
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(errors),
       const DeepCollectionEquality().hash(groupAmounts),
-      const DeepCollectionEquality().hash(isDateAsTitle));
+      const DeepCollectionEquality().hash(isDateAsTitle),
+      const DeepCollectionEquality().hash(canUseDateAsTitle));
 
   @JsonKey(ignore: true)
   @override
@@ -287,10 +308,11 @@ abstract class _GroupPageSupplement implements GroupSupplements {
       required List<Record> recordList,
       required DateTime date,
       required String id,
-      String? title,
+      required String title,
       required Map<String, String?> errors,
       required Map<String, double> groupAmounts,
-      required bool isDateAsTitle}) = _$_GroupPageSupplement;
+      required bool isDateAsTitle,
+      required bool canUseDateAsTitle}) = _$_GroupPageSupplement;
 
   @override
   List<Group> get groupList;
@@ -301,13 +323,15 @@ abstract class _GroupPageSupplement implements GroupSupplements {
   @override
   String get id;
   @override
-  String? get title;
+  String get title;
   @override
   Map<String, String?> get errors;
   @override
   Map<String, double> get groupAmounts;
   @override
   bool get isDateAsTitle;
+  @override
+  bool get canUseDateAsTitle;
   @override
   @JsonKey(ignore: true)
   _$GroupPageSupplementCopyWith<_GroupPageSupplement> get copyWith =>

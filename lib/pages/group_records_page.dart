@@ -35,7 +35,13 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
     return PageAppBar(
       title: widget.group.title + ' Sales',
       actionIcon: Icons.edit_outlined,
+      actionCallback: _navigateToGroupEditPage,
     );
+  }
+
+  void _navigateToGroupEditPage() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (_) => GroupEditPage(group: widget.group)));
   }
 
   Widget _buildLoading(GroupSupplements supp) {
@@ -114,8 +120,9 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
         });
   }
 
-  _buildEmptyState(bool hasButton) {
+  _buildEmptyState(bool isItemListEmpty) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         /*   Image.network(
           Constants.kEmptySalesImage,
@@ -126,10 +133,11 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
         SizedBox(height: 20.dh),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 19.dw),
-          child: const AppText(
-              'No records in this group yet. Create one by clicking on the Add Button on the bottom-right corner.'),
+          child: AppText(
+              isItemListEmpty ? emptyItemMessage : emptyRecordMessage,
+              alignment: TextAlign.center),
         ),
-        hasButton
+        isItemListEmpty
             ? Builder(builder: (context) {
                 return AppTextButton(
                   onPressed: () => ItemEditPage.navigateTo(context),
@@ -143,4 +151,9 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
       ],
     );
   }
+
+  static const emptyItemMessage =
+      'No item has been added yet. Create one by clicking on the below button.';
+  static const emptyRecordMessage =
+      'No records in this group yet. Create one by clicking on the Add Button on the bottom-right corner.';
 }

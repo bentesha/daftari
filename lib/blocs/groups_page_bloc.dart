@@ -5,6 +5,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
       : super(GroupPagesState.initial()) {
     groupsService.addListener(() => _handleGroupListUpdates());
     itemsService.addListener(() => _handleItemListUpdates());
+    recordsService.addListener(() => _handleRecordsUpdates());
   }
 
   final GroupsService groupsService;
@@ -13,15 +14,29 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
 
   bool get isItemListEmpty => itemsService.getItemList.isEmpty;
 
+  double get getGroupTotalAmount {
+    final supp = state.supplements;
+    return recordsService.getRecordsTotalByGroup(supp.id);
+  }
+
   void init({Group? group}) {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
     final groupList = groupsService.getAll();
+    final groupsIdList = _getIdsFrom(groupList);
+    final groupAmounts = recordsService.getGroupsRecordsTotal(groupsIdList);
     itemsService.init();
-    supp = supp.copyWith(groupList: groupList);
+    supp = supp.copyWith(groupList: groupList, groupAmounts: groupAmounts);
 
     if (group != null) {
-      supp = supp.copyWith(id: group.id, title: group.title, date: group.date);
+      final recordList = recordsService.getRecordList
+          .where((e) => e.groupId == group.id)
+          .toList();
+      supp = supp.copyWith(
+          id: group.id,
+          title: group.title,
+          date: group.date,
+          recordList: recordList);
     }
     emit(GroupPagesState.content(supp));
   }
@@ -35,6 +50,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
 
   void _updateAttributes([String? title, DateTime? date, bool? isDateAsTitle]) {
     var supp = state.supplements;
+
     emit(GroupPagesState.loading(supp));
     supp = supp.copyWith(
         title: title ?? supp.title,
@@ -50,8 +66,11 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
+    final title =
+        supp.isDateAsTitle ? DateFormatter.convertToDOW(supp.date) : supp.title;
+
     final group =
-        Group(date: supp.date, title: supp.title, id: Utils.getRandomId());
+        Group(date: supp.date, title: title!, id: Utils.getRandomId());
     await groupsService.addGroup(group);
     emit(GroupPagesState.success(supp));
   }
@@ -61,14 +80,6 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
   List<Record> get getSpecificGroupRecords {
     final supp = state.supplements;
     return supp.recordList.where((e) => e.groupId == supp.id).toList();
-  }
-
-  Map<int, double> get getRecordsTotalAmount =>
-      recordsService.getAllRecordsTotal();
-
-  double get getGroupTotalAmount {
-    final supp = state.supplements;
-    return recordsService.getRecordsTotalByGroup(supp.id);
   }
 
   _validate() {
@@ -81,6 +92,14 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
     }
     supp = supp.copyWith(errors: errors);
     emit(GroupPagesState.content(supp));
+  }
+
+  List<String> _getIdsFrom(List<Group> groupList) {
+    final idList = <String>[];
+    for (Group group in groupList) {
+      idList.add(group.id);
+    }
+    return idList;
   }
 
   _handleGroupListUpdates() {
@@ -97,6 +116,15 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
     itemsService.init();
+    emit(GroupPagesState.content(supp));
+  }
+
+  _handleRecordsUpdates() {
+    var supp = state.supplements;
+    emit(GroupPagesState.loading(supp));
+    final recordList = recordsService.getRecordList;
+    final groupAmounts = recordsService.getGroupsTotalAmounts;
+    supp = supp.copyWith(recordList: recordList, groupAmounts: groupAmounts);
     emit(GroupPagesState.content(supp));
   }
 }

@@ -92,11 +92,13 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.network(
+          /*   Image.network(
             Constants.kEmptyItemImage,
             height: 100.dh,
             fit: BoxFit.contain,
-          ),
+          ), */
+          Icon(Icons.hourglass_empty,
+              size: 45.dw, color: AppColors.onBackground),
           SizedBox(height: 30.dh),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 19.dw),

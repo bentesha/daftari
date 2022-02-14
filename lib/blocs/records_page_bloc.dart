@@ -122,7 +122,6 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
   }
 
   _handleSelectedItemId() {
-    log('was in here');
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
     supp = supp.copyWith(itemId: itemsService.getSelectedItemId);

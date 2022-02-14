@@ -5,6 +5,14 @@ class ItemPageBloc extends Cubit<ItemPageState> {
 
   final ItemsService service;
 
+  void init() {
+    var supp = state.supplements;
+    emit(ItemPageState.loading(supp));
+    final itemList = service.getAll();
+    supp = supp.copyWith(itemList: itemList);
+    emit(ItemPageState.content(supp));
+  }
+
   void updateTitle(String title) => _updateItem(title: title);
 
   void updateUnit(String unit) => _updateItem(unit: unit);

@@ -89,4 +89,11 @@ class DateFormatter {
     final month = _getMonthShortForm(date.month);
     return '${date.day} $month ${date.year}';
   }
+
+  ///converts the date to date, ordinal & weekday format.
+  static String convertToDOW(DateTime date) {
+    final ordinal = DateFormatter.getOrdinalsFrom(date.day);
+    final weekDay = DateFormatter.getWeekDay(date.weekday);
+    return '${date.day}$ordinal, $weekDay';
+  }
 }

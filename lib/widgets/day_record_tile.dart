@@ -14,7 +14,7 @@ class GroupTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = group.title ?? group.getTitleFromDate;
+    final title = group.title;
     final formattedGroupAmount = Utils.convertToMoneyFormat(groupAmount);
 
     return AppTextButton(

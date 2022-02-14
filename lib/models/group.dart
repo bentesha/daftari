@@ -8,7 +8,7 @@ class Group {
   final String id;
 
   @HiveField(1)
-  final String? title;
+  final String title;
 
   @HiveField(2)
   final DateTime date;
@@ -19,10 +19,4 @@ class Group {
 
   Group copyWith({String? title}) =>
       Group(id: id, date: date, title: title ?? this.title);
-
-  String get getTitleFromDate {
-    final ordinal = DateFormatter.getOrdinalsFrom(date.day);
-    final weekDay = DateFormatter.getWeekDay(date.weekday);
-    return '${date.day}$ordinal, $weekDay';
-  }
 }

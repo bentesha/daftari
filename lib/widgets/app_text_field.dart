@@ -58,7 +58,7 @@ class _AppTextFieldState extends State<AppTextField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppText(widget.label, opacity: .85),
+          AppText(widget.label, opacity: .7),
           Container(
             height: widget.maxLines > 1 ? 90.dh : 40.dh,
             margin: EdgeInsets.only(top: 8.dh),

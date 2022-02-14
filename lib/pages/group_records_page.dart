@@ -33,8 +33,9 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
 
   _buildAppBar() {
     return PageAppBar(
-        title: widget.group.title ?? widget.group.getTitleFromDate + ' Sales',
-        hasAction: false);
+      title: widget.group.title + ' Sales',
+      actionIcon: Icons.edit_outlined,
+    );
   }
 
   Widget _buildLoading(GroupSupplements supp) {
@@ -91,55 +92,9 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
               );
   }
 
-  _buildEmptyItemState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.network(
-            Constants.kEmptySalesImage,
-            height: 100.dh,
-            fit: BoxFit.contain,
-          ),
-          SizedBox(height: 20.dh),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 19.dw),
-            child: const AppText(
-                'You have not added any items. Click the button below to add items'),
-          ),
-          SizedBox(height: 40.dh),
-          Builder(builder: (context) {
-            return AppTextButton(
-              onPressed: () => ItemEditPage.navigateTo(context),
-              height: 40.dh,
-              text: 'Add Item',
-              margin: EdgeInsets.symmetric(horizontal: 19.dw),
-            );
-          })
-        ],
-      ),
-    );
-  }
+  _buildEmptyItemState() => _buildEmptyState(true);
 
-  _buildEmptyRecordState() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Image.network(
-          Constants.kEmptySalesImage,
-          height: 100.dh,
-          fit: BoxFit.contain,
-        ),
-        SizedBox(height: 20.dh),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 19.dw),
-          child: const AppText(
-              'No records in this group yet. Create one by clicking on the Add Button on the bottom-right corner.'),
-        ),
-      ],
-    );
-  }
+  _buildEmptyRecordState() => _buildEmptyState(false);
 
   _buildAddItemButton() {
     return BlocBuilder<GroupPagesBloc, GroupPagesState>(
@@ -153,10 +108,39 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
                   onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) =>
-                              RecordEditPage(groupId: supp.id, record: null))),
+                          builder: (_) => RecordEditPage(groupId: supp.id))),
                   child: const Icon(Icons.add, color: AppColors.onPrimary),
                 );
         });
+  }
+
+  _buildEmptyState(bool hasButton) {
+    return Column(
+      children: [
+        /*   Image.network(
+          Constants.kEmptySalesImage,
+          height: 100.dh,
+          fit: BoxFit.contain,
+        ), */
+        Icon(Icons.hourglass_empty, size: 45.dw, color: AppColors.onBackground),
+        SizedBox(height: 20.dh),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 19.dw),
+          child: const AppText(
+              'No records in this group yet. Create one by clicking on the Add Button on the bottom-right corner.'),
+        ),
+        hasButton
+            ? Builder(builder: (context) {
+                return AppTextButton(
+                  onPressed: () => ItemEditPage.navigateTo(context),
+                  height: 40.dh,
+                  text: 'Add Item',
+                  margin:
+                      EdgeInsets.only(left: 19.dw, right: 19.dw, top: 40.dh),
+                );
+              })
+            : Container()
+      ],
+    );
   }
 }

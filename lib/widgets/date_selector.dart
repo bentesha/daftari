@@ -1,6 +1,6 @@
 import '../source.dart';
 
-class DateSelector extends StatefulWidget {
+class DateSelector extends StatelessWidget {
   const DateSelector({
     Key? key,
     required this.title,
@@ -15,43 +15,38 @@ class DateSelector extends StatefulWidget {
   final DateTime date;
 
   @override
-  State<DateSelector> createState() => _DateSelectorState();
-}
-
-class _DateSelectorState extends State<DateSelector> {
-  @override
   Widget build(BuildContext context) {
-    final date = DateFormatter.convertToDMY(widget.date);
+    final formattedDate = DateFormatter.convertToDMY(date);
+
+    _showDatePicker() async {
+      final selectedDate = await showDatePicker(
+          context: context,
+          initialDate: date,
+          firstDate: DateTime(2022),
+          lastDate: DateTime.now());
+
+      if (selectedDate != null) onDateSelected(selectedDate);
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         AppTextButton(
-          onPressed: widget.isEditable ? _showDatePicker : () {},
+          onPressed: isEditable ? _showDatePicker : () {},
           isFilled: false,
           padding: EdgeInsets.symmetric(horizontal: 19.dw),
           child: ListTile(
-            title: AppText(widget.title.toUpperCase(), opacity: .7),
+            title: AppText(title.toUpperCase(), opacity: .7),
             subtitle: Padding(
               padding: EdgeInsets.only(top: 5.dh),
-              child: AppText(date, weight: FontWeight.w500),
+              child: AppText(formattedDate, weight: FontWeight.w500),
             ),
-            trailing: widget.isEditable
+            trailing: isEditable
                 ? const Icon(Icons.chevron_right)
                 : Container(width: .1),
           ),
         ),
       ],
     );
-  }
-
-  _showDatePicker() async {
-    final selectedDate = await showDatePicker(
-        context: context,
-        initialDate: widget.date,
-        firstDate: DateTime(2022),
-        lastDate: DateTime(2030));
-
-    if (selectedDate != null) widget.onDateSelected(selectedDate);
   }
 }

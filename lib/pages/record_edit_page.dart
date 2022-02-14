@@ -31,7 +31,7 @@ class _RecordEditPageState extends State<RecordEditPage> {
           title: !isEditing ? 'Adding New Record' : 'Editing Record',
           actionCallback: isEditing ? bloc.editRecord : bloc.saveRecord),
       body: _buildBody(),
-      floatingActionButton: _buildAddItemButton(),
+      // floatingActionButton: _buildAddItemButton(),
     );
   }
 
@@ -76,7 +76,7 @@ class _RecordEditPageState extends State<RecordEditPage> {
           date: supp.date,
           isEditable: !isEditing,
         ),
-        const AppDivider(),
+        AppDivider(margin: EdgeInsets.only(bottom: 5.dh)),
         SizedBox(height: 6.dh),
         AppTextField(
           text: supp.quantity,

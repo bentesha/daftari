@@ -16,6 +16,7 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
     controller.text = '';
     final service = Provider.of<ItemsService>(context, listen: false);
     bloc = ItemPageBloc(service);
+    bloc.init();
     super.initState();
   }
 

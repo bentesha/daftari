@@ -3,14 +3,8 @@ import '../source.dart';
 class GroupPagesBloc extends Cubit<GroupPagesState> {
   GroupPagesBloc(this.groupsService, this.recordsService, this.itemsService)
       : super(GroupPagesState.initial()) {
-    groupsService.addListener(() {
-      log('I am here in the groups');
-      _handleGroupListUpdates();
-    });
-    itemsService.addListener(() {
-      log('I am here in the items');
-      _handleItemListUpdates();
-    });
+    groupsService.addListener(() => _handleGroupListUpdates());
+    itemsService.addListener(() => _handleItemListUpdates());
     recordsService.addListener(() => _handleRecordsUpdates());
   }
 

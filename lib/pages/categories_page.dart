@@ -1,7 +1,9 @@
 import '../source.dart';
 
 class CategoriesPage extends StatefulWidget {
-  const CategoriesPage({Key? key}) : super(key: key);
+  const CategoriesPage({Key? key, this.isFirstPage = false}) : super(key: key);
+
+  final bool isFirstPage;
 
   @override
   State<CategoriesPage> createState() => _CategoriesPageState();
@@ -9,14 +11,27 @@ class CategoriesPage extends StatefulWidget {
 
 class _CategoriesPageState extends State<CategoriesPage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  late final CategoryPageBloc bloc;
+
+  @override
+  void initState() {
+    final categoriesService =
+        Provider.of<CategoriesService>(context, listen: false);
+    final itemsService = Provider.of<ItemsService>(context, listen: false);
+    bloc = CategoryPageBloc(categoriesService, itemsService);
+    bloc.init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       drawer: const AppDrawer(Pages.categories_page),
-      appBar: _buildAppBar(),
+      appBar: widget.isFirstPage ? _buildAppBar2() : _buildAppBar(),
       body: _buildBody(),
+      floatingActionButton: const AddButton(nextPage: CategoryEditPage()),
+      bottomNavigationBar: _buildBottomNavBar(),
     );
   }
 
@@ -35,52 +50,85 @@ class _CategoriesPageState extends State<CategoriesPage> {
     return AppTopBar(showDrawerCallback: _openDrawer, title: "Categories");
   }
 
+  _buildAppBar2() {
+    return AppBar(
+      title: AppText('Categories',
+          style: Theme.of(context).appBarTheme.titleTextStyle),
+      automaticallyImplyLeading: false,
+    );
+  }
+
   _buildBody() {
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: [
-        _buildTitle(),
-        ListView.separated(
-          separatorBuilder: (_, __) => Container(
-            height: 1.5.dw,
-            color: AppColors.divider,
-          ),
-          itemCount: _categoriesList.length,
-          itemBuilder: (_, index) {
-            final category = _categoriesList[index];
-            return AppTextButton(
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => ItemPage(category.title))),
-                padding: EdgeInsets.symmetric(vertical: 5.dh),
-                isFilled: false,
-                child: category);
-          },
-          physics: const NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-        )
-      ],
+    return BlocBuilder<CategoryPageBloc, CategoryPagesState>(
+        bloc: bloc,
+        builder: (_, state) {
+          return state.when(
+              loading: _buildLoading,
+              content: _buildContent,
+              success: _buildContent);
+        });
+  }
+
+  Widget _buildLoading(CategoryPageSupplements supp) {
+    return const Center(
+      child: CircularProgressIndicator(),
     );
   }
 
-  _buildTitle() {
-    return PageTitle(
-      title: '4 Categories',
-      actionCallback: _navigateToCategoryPage,
-      actionIcon: Icons.add,
+  Widget _buildContent(CategoryPageSupplements supp) {
+    final categories = supp.categoryList;
+    if (categories.isEmpty) {
+      return const EmptyStateWidget(
+          decscription:
+              'No categories found. Start creating categories by clicking on the bottom-right corner add button.');
+    }
+
+    return ListView.separated(
+      separatorBuilder: (_, __) => Container(
+        height: 1.5.dw,
+        color: AppColors.divider,
+      ),
+      itemCount: categories.length,
+      itemBuilder: (_, index) {
+        final category = categories[index];
+        final numberOfItems = supp.itemList
+            .where((e) => e.categoryId == category.id)
+            .toList()
+            .length;
+
+        return AppTextButton(
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (_) => CategoryPage(category))),
+            padding: EdgeInsets.symmetric(vertical: 5.dh),
+            isFilled: false,
+            child: CategoryTile(
+                title: category.name, numberOfItems: numberOfItems));
+      },
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
     );
   }
 
-  void _navigateToCategoryPage() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (_) => const AddCategoryPage()));
+  _buildBottomNavBar() {
+    return BlocBuilder<CategoryPageBloc, CategoryPagesState>(
+        bloc: bloc,
+        builder: (_, state) {
+          return state.when(
+              loading: (_) => Container(height: .01),
+              content: _buildGoToSalesPage,
+              success: _buildGoToSalesPage);
+        });
   }
 
-  final _categoriesList = const <CategoryTile>[
-    CategoryTile(title: 'Drinks', numberOfItems: 4),
-    CategoryTile(title: 'Toiletries', numberOfItems: 21),
-    CategoryTile(title: 'Bags', numberOfItems: 10),
-    CategoryTile(title: 'Foods', numberOfItems: 5),
-  ];
+  Widget _buildGoToSalesPage(CategoryPageSupplements supp) {
+    if (supp.categoryList.isNotEmpty && supp.itemList.isNotEmpty) {
+      return AppTextButton(
+          height: 40.dh,
+          width: double.infinity,
+          onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (_) => const SalesRecordsPage()),
+              (route) => false));
+    }
+    return Container(height: .01);
+  }
 }

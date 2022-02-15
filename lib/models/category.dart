@@ -16,4 +16,9 @@ class Category {
   Category({required this.id, required this.description, required this.name});
 
   factory Category.empty() => Category(id: '', description: '', name: '');
+
+  Category copyWith({String? name, String? description, String? id}) {
+    return Category(
+        id: id ?? this.id, description: description, name: name ?? this.name);
+  }
 }

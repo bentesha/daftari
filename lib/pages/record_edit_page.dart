@@ -31,7 +31,6 @@ class _RecordEditPageState extends State<RecordEditPage> {
           title: !isEditing ? 'Adding New Record' : 'Editing Record',
           actionCallback: isEditing ? bloc.editRecord : bloc.saveRecord),
       body: _buildBody(),
-      // floatingActionButton: _buildAddItemButton(),
     );
   }
 
@@ -122,13 +121,5 @@ class _RecordEditPageState extends State<RecordEditPage> {
                     EdgeInsets.only(bottom: 20.dh, left: 15.dw, right: 15.dw))
           ]))
         : Container();
-  }
-
-  _buildAddItemButton() {
-    return FloatingActionButton(
-      onPressed: () => Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const RecordEditPage())),
-      child: const Icon(Icons.add, color: AppColors.onPrimary),
-    );
   }
 }

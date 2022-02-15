@@ -9,9 +9,12 @@ class ItemSupplements with _$ItemSupplements {
   const factory ItemSupplements(
       {required List<Item> itemList,
       required String title,
+      required String categoryId,
       required String unit,
       required String unitPrice,
+      required String id,
       required String query,
+      required String barcode,
       required String quantity,
       required Map<String, String?> errors}) = _ItemSupplements;
 
@@ -21,6 +24,9 @@ class ItemSupplements with _$ItemSupplements {
         errors: {},
         quantity: '',
         unit: '',
+        barcode: '',
+        id: '',
+        categoryId: '',
         unitPrice: '',
         itemList: [],
       );

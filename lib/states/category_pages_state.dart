@@ -4,9 +4,9 @@ part 'category_pages_state.freezed.dart';
 
 @freezed
 class CategoryPagesState with _$CategoryPagesState {
-  const factory CategoryPagesState.loading(Category category) = _Loading;
-  const factory CategoryPagesState.content(Category category) = _Content;
-  const factory CategoryPagesState.success(Category category) = _Success;
+  const factory CategoryPagesState.loading(CategoryPageSupplements supplements) = _Loading;
+  const factory CategoryPagesState.content(CategoryPageSupplements supplements) = _Content;
+  const factory CategoryPagesState.success(CategoryPageSupplements supplements) = _Success;
 
-  factory CategoryPagesState.initial() => CategoryPagesState.content(Category.empty());
+  factory CategoryPagesState.initial() => CategoryPagesState.content(CategoryPageSupplements.empty());
 }

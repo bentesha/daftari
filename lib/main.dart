@@ -4,10 +4,11 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   final appDirectory = await path_provider.getApplicationDocumentsDirectory();
+
   Hive
     ..init(appDirectory.path)
+    ..registerAdapter(CategoryAdapter())
     ..registerAdapter(ItemAdapter())
     ..registerAdapter(RecordAdapter())
     ..registerAdapter(GroupAdapter());
@@ -15,6 +16,7 @@ void main() async {
   await Hive.openBox(Constants.kItemsBox);
   await Hive.openBox(Constants.kRecordsBox);
   await Hive.openBox(Constants.kGroupsBox);
+  await Hive.openBox(Constants.kCategoriesBox);
 
   final myApp = MultiProvider(
     providers: [
@@ -30,6 +32,7 @@ void main() async {
   await Hive.box(Constants.kGroupsBox).clear();
   await Hive.box(Constants.kRecordsBox).clear();
   await Hive.box(Constants.kItemsBox).clear();
+  await Hive.box(Constants.kCategoriesBox).clear();
 
   runApp(myApp);
 }

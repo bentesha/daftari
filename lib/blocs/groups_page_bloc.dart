@@ -28,9 +28,6 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
     final canUseDateAsTitle = _checkIfCanUseDateAsTitle(group);
     itemsService.init();
 
-    log('can use date as title');
-    log(canUseDateAsTitle.toString());
-
     supp = supp.copyWith(
         groupList: groupList,
         groupAmounts: groupAmounts,
@@ -61,32 +58,6 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
     final group =
         groupsService.getGroupList.where((e) => e.title == dateTitle).toList();
     return group.isNotEmpty;
-  }
-
-  ///if it returns null then both options are true.
-  bool? _checkIfCanUseDateAsTitle([Group? group]) {
-    final isEditing = group != null;
-
-    final _date = group?.date ?? DateTime.now();
-    final currentGroupList = groupsService.getGroupList;
-    final currentDayGroupList = isEditing
-        ? groupsService.getGroupList
-            .where((e) => e.date.day == _date.day)
-            .toList()
-        : currentGroupList;
-
-    log(currentDayGroupList.toString());
-
-    final dayNumberOfGroups = currentDayGroupList.length;
-    if (dayNumberOfGroups == 1) {
-      final title = currentDayGroupList.first.title;
-      final didUseDateAsTitle = title == DateFormatter.convertToDOW(_date);
-      if (didUseDateAsTitle && isEditing) return false;
-      if (!didUseDateAsTitle && !isEditing) return false;
-      if (!didUseDateAsTitle && isEditing) return null;
-    }
-    if (dayNumberOfGroups > 1) return false;
-    return true;
   }
 
   void updateDate(DateTime date) => _updateAttributes(null, date);
@@ -125,12 +96,8 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
   void editGroup() async {
     var supp = state.supplements;
     supp = supp.copyWith(errors: {});
-    log(supp.canUseDateAsTitle.toString());
-    log(supp.isDateAsTitle.toString());
-    if (supp.canUseDateAsTitle && supp.isDateAsTitle) {
-    } else {
-      _validate();
-    }
+    final canIgnoreValidation = supp.canUseDateAsTitle && supp.isDateAsTitle;
+    if (!canIgnoreValidation) _validate();
 
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
@@ -149,10 +116,10 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
     emit(GroupPagesState.success(supp));
   }
 
-  List<Record> get getSpecificGroupRecords {
+/*    List<Record> get getSpecificGroupRecords {
     final supp = state.supplements;
     return supp.recordList.where((e) => e.groupId == supp.id).toList();
-  }
+  } */
 
   _validate() {
     var supp = state.supplements;
@@ -173,6 +140,30 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
       idList.add(group.id);
     }
     return idList;
+  }
+
+  ///if it returns null then both options are true. Check the options below
+  bool? _checkIfCanUseDateAsTitle([Group? group]) {
+    final isEditing = group != null;
+
+    final _date = group?.date ?? DateTime.now();
+    final currentGroupList = groupsService.getGroupList;
+    final currentDayGroupList = isEditing
+        ? groupsService.getGroupList
+            .where((e) => e.date.day == _date.day)
+            .toList()
+        : currentGroupList;
+
+    final dayNumberOfGroups = currentDayGroupList.length;
+    if (dayNumberOfGroups == 1) {
+      final title = currentDayGroupList.first.title;
+      final didUseDateAsTitle = title == DateFormatter.convertToDOW(_date);
+      if (didUseDateAsTitle && isEditing) return false;
+      if (!didUseDateAsTitle && !isEditing) return false;
+      if (!didUseDateAsTitle && isEditing) return null;
+    }
+    if (dayNumberOfGroups > 1) return false;
+    return true;
   }
 
   _handleGroupListUpdates() {
@@ -203,4 +194,9 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
 
   static const titleErrorMessage =
       'The title for today is already taken, because the current group was named with date as its title.\n\n Two options: \nAdd another record in the group you already created \n OR \n Rename the group that already exists using a custom title.';
+
+  ///SCENARIOS                                                  Adding                         Editing
+  ///used-date-as-title & alone-in-the-day                      ERROR                          ----can create a custom title
+  ///didnot-use-date-as-title & alone-in-the-day                can create custom title        ----can create a custom title or Can use date as a title
+  ///many-in-a-day                                              can create custom title        ----can create a custom title
 }

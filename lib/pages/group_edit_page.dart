@@ -136,9 +136,6 @@ class _GroupEditPageState extends State<GroupEditPage> {
     );
   }
 
-  ///SCENARIOS                                                  Adding                         Editing
-  ///used-date-as-title & alone-in-the-day                      ERROR                          ----can create a custom title
-  ///didnot-use-date-as-title & alone-in-the-day                can create custom title        ----can create a custom title or Can use date as a title
-  ///many-in-a-day                                              can create custom title        ----can create a custom title
+
 
 }

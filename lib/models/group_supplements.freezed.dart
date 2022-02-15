@@ -226,7 +226,7 @@ class __$GroupPageSupplementCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_GroupPageSupplement implements _GroupPageSupplement {
+class _$_GroupPageSupplement extends _GroupPageSupplement {
   const _$_GroupPageSupplement(
       {required this.groupList,
       required this.recordList,
@@ -236,7 +236,8 @@ class _$_GroupPageSupplement implements _GroupPageSupplement {
       required this.errors,
       required this.groupAmounts,
       required this.isDateAsTitle,
-      required this.canUseDateAsTitle});
+      required this.canUseDateAsTitle})
+      : super._();
 
   @override
   final List<Group> groupList;
@@ -302,7 +303,7 @@ class _$_GroupPageSupplement implements _GroupPageSupplement {
           this, _$identity);
 }
 
-abstract class _GroupPageSupplement implements GroupSupplements {
+abstract class _GroupPageSupplement extends GroupSupplements {
   const factory _GroupPageSupplement(
       {required List<Group> groupList,
       required List<Record> recordList,
@@ -313,6 +314,7 @@ abstract class _GroupPageSupplement implements GroupSupplements {
       required Map<String, double> groupAmounts,
       required bool isDateAsTitle,
       required bool canUseDateAsTitle}) = _$_GroupPageSupplement;
+  const _GroupPageSupplement._() : super._();
 
   @override
   List<Group> get groupList;

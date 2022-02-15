@@ -60,7 +60,7 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
   }
 
   Widget _buildContent(GroupSupplements supp) {
-    final recordList = bloc.getSpecificGroupRecords;
+    final recordList = supp.getSpecificGroupRecords;
     final totalAmount = Utils.convertToMoneyFormat(bloc.getGroupTotalAmount);
 
     return bloc.isItemListEmpty

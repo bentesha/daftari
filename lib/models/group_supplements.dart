@@ -4,6 +4,8 @@ part 'group_supplements.freezed.dart';
 
 @freezed
 class GroupSupplements with _$GroupSupplements {
+  const GroupSupplements._();
+
   const factory GroupSupplements({
     required List<Group> groupList,
     required List<Record> recordList,
@@ -26,4 +28,7 @@ class GroupSupplements with _$GroupSupplements {
       groupAmounts: {},
       canUseDateAsTitle: true,
       errors: {});
+
+  List<Record> get getSpecificGroupRecords =>
+      recordList.where((e) => e.groupId == id).toList();
 }

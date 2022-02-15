@@ -1,35 +1,23 @@
 import 'dart:async';
-
+import 'service.dart';
 import '../source.dart';
 
-class ItemsService extends ChangeNotifier {
-  static final _box = Hive.box(Constants.kItemsBox);
-  static final _itemList = <Item>[];
+class ItemsService extends Service<Item> {
+  static final box = Hive.box(Constants.kItemsBox);
+  ItemsService() : super(box);
+
   static var _selectedId = '';
 
-  List<Item> get getItemList => _itemList;
+  List<Item> get getItemList => super.getList;
   String get getSelectedItemId => _selectedId;
+  
+  Item? getItemById(String id) => box.get(id) as Item?;
 
-  List<Item> getAll() {
-    if (_box.isEmpty) return [];
+  List<Item> init() => super.getAll();
 
-    for (Item item in _box.values) {
-      final index = _itemList.indexWhere((e) => e.id == item.id);
-      if (index == -1) _itemList.add(item);
-    }
+  Future<void> addItem(Item item) async => super.add(item);
 
-    return _itemList;
-  }
-
-  List<Item> init() => getAll();
-
-  Item? getItemById(String id) => _box.get(id) as Item?;
-
-  Future<void> saveItem(Item item) async {
-    await _box.put(item.id, item);
-    _itemList.add(item);
-    notifyListeners();
-  }
+  Future<void> editItem(Item item) async => super.edit(item);
 
   void updateId(String id) {
     _selectedId = id;

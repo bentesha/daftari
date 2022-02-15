@@ -48,7 +48,7 @@ class ItemPageBloc extends Cubit<ItemPageState> {
         title: supp.title,
         unitPrice: double.parse(supp.unitPrice),
         quantity: double.parse(supp.quantity));
-    await service.saveItem(item);
+    await service.addItem(item);
     emit(ItemPageState.success(supp));
   }
 

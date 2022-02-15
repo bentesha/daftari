@@ -21,13 +21,15 @@ void main() async {
       ChangeNotifierProvider<ItemsService>(create: (_) => ItemsService()),
       ChangeNotifierProvider<GroupsService>(create: (_) => GroupsService()),
       ChangeNotifierProvider<RecordsService>(create: (_) => RecordsService()),
+      ChangeNotifierProvider<CategoriesService>(
+          create: (_) => CategoriesService()),
     ],
     child: const MyApp(),
   );
 
-/*   await Hive.box(Constants.kGroupsBox).clear();
+  await Hive.box(Constants.kGroupsBox).clear();
   await Hive.box(Constants.kRecordsBox).clear();
-  await Hive.box(Constants.kItemsBox).clear();  */
+  await Hive.box(Constants.kItemsBox).clear();
 
   runApp(myApp);
 }

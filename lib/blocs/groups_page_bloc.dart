@@ -3,8 +3,14 @@ import '../source.dart';
 class GroupPagesBloc extends Cubit<GroupPagesState> {
   GroupPagesBloc(this.groupsService, this.recordsService, this.itemsService)
       : super(GroupPagesState.initial()) {
-    groupsService.addListener(() => _handleGroupListUpdates());
-    itemsService.addListener(() => _handleItemListUpdates());
+    groupsService.addListener(() {
+      log('I am here in the groups');
+      _handleGroupListUpdates();
+    });
+    itemsService.addListener(() {
+      log('I am here in the items');
+      _handleItemListUpdates();
+    });
     recordsService.addListener(() => _handleRecordsUpdates());
   }
 
@@ -27,9 +33,6 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
     final groupAmounts = recordsService.getGroupsRecordsTotal(groupsIdList);
     final canUseDateAsTitle = _checkIfCanUseDateAsTitle(group);
     itemsService.init();
-
-    log('can use date as title');
-    log(canUseDateAsTitle.toString());
 
     supp = supp.copyWith(
         groupList: groupList,

@@ -1,11 +1,14 @@
 import '../source.dart';
 
 class ItemEditPage extends StatefulWidget {
-  const ItemEditPage({Key? key}) : super(key: key);
+  const ItemEditPage({Key? key, this.item, this.categoryId}) : super(key: key);
 
-  static void navigateTo(BuildContext context) {
+  final Item? item;
+  final String? categoryId;
+
+  static void navigateTo(BuildContext context, {Item? item}) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (_) => const ItemEditPage()));
+        context, MaterialPageRoute(builder: (_) => ItemEditPage(item: item)));
   }
 
   @override
@@ -19,6 +22,7 @@ class _ItemEditPageState extends State<ItemEditPage> {
   void initState() {
     final itemsService = Provider.of<ItemsService>(context, listen: false);
     bloc = ItemPageBloc(itemsService);
+    bloc.init(item: widget.item, categoryId: widget.categoryId);
     super.initState();
   }
 
@@ -59,9 +63,10 @@ class _ItemEditPageState extends State<ItemEditPage> {
     return ListView(padding: EdgeInsets.only(top: 19.dh), children: [
       AppTextField(
         text: supp.title,
-        onChanged: bloc.updateTitle,
+        onChanged: (title) => bloc.updateAttributes(title: title),
         hintText: 'e.g. Clothes',
         keyboardType: TextInputType.name,
+        textCapitalization: TextCapitalization.words,
         label: 'Title',
         error: errors['title'],
       ),
@@ -70,7 +75,7 @@ class _ItemEditPageState extends State<ItemEditPage> {
           Expanded(
             child: AppTextField(
               text: supp.unit,
-              onChanged: bloc.updateUnit,
+              onChanged: (unit) => bloc.updateAttributes(unit: unit),
               hintText: 'ea.',
               keyboardType: TextInputType.name,
               shouldShowErrorText: false,
@@ -81,7 +86,7 @@ class _ItemEditPageState extends State<ItemEditPage> {
           Expanded(
             child: AppTextField(
               text: supp.unitPrice,
-              onChanged: bloc.updateUnitPrice,
+              onChanged: (price) => bloc.updateAttributes(unitPrice: price),
               hintText: '0',
               keyboardType: TextInputType.number,
               shouldShowErrorText: false,
@@ -94,12 +99,16 @@ class _ItemEditPageState extends State<ItemEditPage> {
       _buildUnitTextFieldsErrors(errors),
       AppTextField(
         text: supp.quantity,
-        onChanged: bloc.updateQuantity,
+        onChanged: (quantity) => bloc.updateAttributes(quantity: quantity),
         hintText: '0',
         keyboardType: TextInputType.number,
         label: 'Quantity',
         error: errors['quantity'],
       ),
+      BarcodeField(
+          error: supp.errors['barcode'],
+          text: supp.barcode,
+          onChanged: (code) => bloc.updateAttributes(barcode: code)),
       _buildTotalOpeningValue(supp),
     ]);
   }

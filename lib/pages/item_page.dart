@@ -29,7 +29,6 @@ class _ItemPageState extends State<ItemPage> {
             children: titles
                 .map((e) => ItemTile(
                       Item.empty(),
-                      onPressed: () => _showBottomSheet(e, true),
                     ))
                 .toList()),
       ],

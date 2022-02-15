@@ -68,7 +68,11 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
 
   Widget _buildContent(GroupSupplements supp) {
     final groupList = supp.groupList;
-    if (groupList.isEmpty) return _buildEmptyState();
+    if (groupList.isEmpty) {
+      return const EmptyStateWidget(
+          decscription:
+              'No sales record has been added. Add one by clicking the button on a bottom-right corner.');
+    }
 
     return ListView.separated(
       itemCount: groupList.length,
@@ -84,31 +88,6 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
             groupAmount: supp.groupAmounts[group.id] ?? 0);
       },
       shrinkWrap: true,
-    );
-  }
-
-  _buildEmptyState() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          /*   Image.network(
-            Constants.kEmptyItemImage,
-            height: 100.dh,
-            fit: BoxFit.contain,
-          ), */
-          Icon(Icons.hourglass_empty,
-              size: 45.dw, color: AppColors.onBackground),
-          SizedBox(height: 30.dh),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 19.dw),
-            child: const AppText(
-              'No sales record has been added. Add one by clicking the button on a bottom-right corner.',
-              alignment: TextAlign.center,
-            ),
-          )
-        ],
-      ),
     );
   }
 

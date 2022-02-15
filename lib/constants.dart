@@ -5,6 +5,7 @@ class Constants {
   static const kItemsBox = 'items_box';
   static const kRecordsBox = 'records_box';
   static const kGroupsBox = 'groups_box';
+  static const kCategoriesBox = 'categories_box';
 
   static const kEmptySalesImage =
       'https://cdn.iconfinder.com/icons/1490292/1933585/128/raster.png?token=1644494244-toG%2FQInHDjG8qiJKaaex5d3%2BdGt1wl1PQyJ8lefVZMI%3D';

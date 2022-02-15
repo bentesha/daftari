@@ -21,17 +21,23 @@ class _$ItemSupplementsTearOff {
   _ItemSupplements call(
       {required List<Item> itemList,
       required String title,
+      required String categoryId,
       required String unit,
       required String unitPrice,
+      required String id,
       required String query,
+      required String barcode,
       required String quantity,
       required Map<String, String?> errors}) {
     return _ItemSupplements(
       itemList: itemList,
       title: title,
+      categoryId: categoryId,
       unit: unit,
       unitPrice: unitPrice,
+      id: id,
       query: query,
+      barcode: barcode,
       quantity: quantity,
       errors: errors,
     );
@@ -45,9 +51,12 @@ const $ItemSupplements = _$ItemSupplementsTearOff();
 mixin _$ItemSupplements {
   List<Item> get itemList => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  String get categoryId => throw _privateConstructorUsedError;
   String get unit => throw _privateConstructorUsedError;
   String get unitPrice => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
   String get query => throw _privateConstructorUsedError;
+  String get barcode => throw _privateConstructorUsedError;
   String get quantity => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
 
@@ -64,9 +73,12 @@ abstract class $ItemSupplementsCopyWith<$Res> {
   $Res call(
       {List<Item> itemList,
       String title,
+      String categoryId,
       String unit,
       String unitPrice,
+      String id,
       String query,
+      String barcode,
       String quantity,
       Map<String, String?> errors});
 }
@@ -84,9 +96,12 @@ class _$ItemSupplementsCopyWithImpl<$Res>
   $Res call({
     Object? itemList = freezed,
     Object? title = freezed,
+    Object? categoryId = freezed,
     Object? unit = freezed,
     Object? unitPrice = freezed,
+    Object? id = freezed,
     Object? query = freezed,
+    Object? barcode = freezed,
     Object? quantity = freezed,
     Object? errors = freezed,
   }) {
@@ -99,6 +114,10 @@ class _$ItemSupplementsCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      categoryId: categoryId == freezed
+          ? _value.categoryId
+          : categoryId // ignore: cast_nullable_to_non_nullable
+              as String,
       unit: unit == freezed
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
@@ -107,9 +126,17 @@ class _$ItemSupplementsCopyWithImpl<$Res>
           ? _value.unitPrice
           : unitPrice // ignore: cast_nullable_to_non_nullable
               as String,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       query: query == freezed
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
+              as String,
+      barcode: barcode == freezed
+          ? _value.barcode
+          : barcode // ignore: cast_nullable_to_non_nullable
               as String,
       quantity: quantity == freezed
           ? _value.quantity
@@ -133,9 +160,12 @@ abstract class _$ItemSupplementsCopyWith<$Res>
   $Res call(
       {List<Item> itemList,
       String title,
+      String categoryId,
       String unit,
       String unitPrice,
+      String id,
       String query,
+      String barcode,
       String quantity,
       Map<String, String?> errors});
 }
@@ -155,9 +185,12 @@ class __$ItemSupplementsCopyWithImpl<$Res>
   $Res call({
     Object? itemList = freezed,
     Object? title = freezed,
+    Object? categoryId = freezed,
     Object? unit = freezed,
     Object? unitPrice = freezed,
+    Object? id = freezed,
     Object? query = freezed,
+    Object? barcode = freezed,
     Object? quantity = freezed,
     Object? errors = freezed,
   }) {
@@ -170,6 +203,10 @@ class __$ItemSupplementsCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      categoryId: categoryId == freezed
+          ? _value.categoryId
+          : categoryId // ignore: cast_nullable_to_non_nullable
+              as String,
       unit: unit == freezed
           ? _value.unit
           : unit // ignore: cast_nullable_to_non_nullable
@@ -178,9 +215,17 @@ class __$ItemSupplementsCopyWithImpl<$Res>
           ? _value.unitPrice
           : unitPrice // ignore: cast_nullable_to_non_nullable
               as String,
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       query: query == freezed
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
+              as String,
+      barcode: barcode == freezed
+          ? _value.barcode
+          : barcode // ignore: cast_nullable_to_non_nullable
               as String,
       quantity: quantity == freezed
           ? _value.quantity
@@ -200,9 +245,12 @@ class _$_ItemSupplements extends _ItemSupplements {
   const _$_ItemSupplements(
       {required this.itemList,
       required this.title,
+      required this.categoryId,
       required this.unit,
       required this.unitPrice,
+      required this.id,
       required this.query,
+      required this.barcode,
       required this.quantity,
       required this.errors})
       : super._();
@@ -212,11 +260,17 @@ class _$_ItemSupplements extends _ItemSupplements {
   @override
   final String title;
   @override
+  final String categoryId;
+  @override
   final String unit;
   @override
   final String unitPrice;
   @override
+  final String id;
+  @override
   final String query;
+  @override
+  final String barcode;
   @override
   final String quantity;
   @override
@@ -224,7 +278,7 @@ class _$_ItemSupplements extends _ItemSupplements {
 
   @override
   String toString() {
-    return 'ItemSupplements(itemList: $itemList, title: $title, unit: $unit, unitPrice: $unitPrice, query: $query, quantity: $quantity, errors: $errors)';
+    return 'ItemSupplements(itemList: $itemList, title: $title, categoryId: $categoryId, unit: $unit, unitPrice: $unitPrice, id: $id, query: $query, barcode: $barcode, quantity: $quantity, errors: $errors)';
   }
 
   @override
@@ -234,9 +288,13 @@ class _$_ItemSupplements extends _ItemSupplements {
             other is _ItemSupplements &&
             const DeepCollectionEquality().equals(other.itemList, itemList) &&
             const DeepCollectionEquality().equals(other.title, title) &&
+            const DeepCollectionEquality()
+                .equals(other.categoryId, categoryId) &&
             const DeepCollectionEquality().equals(other.unit, unit) &&
             const DeepCollectionEquality().equals(other.unitPrice, unitPrice) &&
+            const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.query, query) &&
+            const DeepCollectionEquality().equals(other.barcode, barcode) &&
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
             const DeepCollectionEquality().equals(other.errors, errors));
   }
@@ -246,9 +304,12 @@ class _$_ItemSupplements extends _ItemSupplements {
       runtimeType,
       const DeepCollectionEquality().hash(itemList),
       const DeepCollectionEquality().hash(title),
+      const DeepCollectionEquality().hash(categoryId),
       const DeepCollectionEquality().hash(unit),
       const DeepCollectionEquality().hash(unitPrice),
+      const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(query),
+      const DeepCollectionEquality().hash(barcode),
       const DeepCollectionEquality().hash(quantity),
       const DeepCollectionEquality().hash(errors));
 
@@ -262,9 +323,12 @@ abstract class _ItemSupplements extends ItemSupplements {
   const factory _ItemSupplements(
       {required List<Item> itemList,
       required String title,
+      required String categoryId,
       required String unit,
       required String unitPrice,
+      required String id,
       required String query,
+      required String barcode,
       required String quantity,
       required Map<String, String?> errors}) = _$_ItemSupplements;
   const _ItemSupplements._() : super._();
@@ -274,11 +338,17 @@ abstract class _ItemSupplements extends ItemSupplements {
   @override
   String get title;
   @override
+  String get categoryId;
+  @override
   String get unit;
   @override
   String get unitPrice;
   @override
+  String get id;
+  @override
   String get query;
+  @override
+  String get barcode;
   @override
   String get quantity;
   @override

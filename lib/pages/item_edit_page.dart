@@ -17,11 +17,15 @@ class ItemEditPage extends StatefulWidget {
 
 class _ItemEditPageState extends State<ItemEditPage> {
   late final ItemPageBloc bloc;
+  late final bool hasNoCategoryId;
 
   @override
   void initState() {
-    final itemsService = Provider.of<ItemsService>(context, listen: false);
-    bloc = ItemPageBloc(itemsService);
+    hasNoCategoryId = widget.item == null && widget.categoryId == null;
+    final service = Provider.of<ItemsService>(context, listen: false);
+    final categoriesService =
+        Provider.of<CategoriesService>(context, listen: false);
+    bloc = ItemPageBloc(service, categoriesService);
     bloc.init(item: widget.item, categoryId: widget.categoryId);
     super.initState();
   }
@@ -60,15 +64,33 @@ class _ItemEditPageState extends State<ItemEditPage> {
   Widget _buildContent(ItemSupplements supp) {
     final errors = supp.errors;
 
-    return ListView(padding: EdgeInsets.only(top: 19.dh), children: [
+    return ListView(padding: EdgeInsets.zero, children: [
+      hasNoCategoryId
+          ? Column(
+              children: [
+                ValueSelector(
+                  title: 'Category',
+                  value: bloc.getSelectedCategory?.name,
+                  error: supp.errors['category'],
+                  isEditable: true,
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) =>
+                              ItemsSearchPage<Category>(supp.categoryList))),
+                ),
+                AppDivider(margin: EdgeInsets.only(bottom: 10.dh))
+              ],
+            )
+          : SizedBox(height: 19.dh),
       AppTextField(
-        text: supp.title,
-        onChanged: (title) => bloc.updateAttributes(title: title),
+        text: supp.name,
+        onChanged: (name) => bloc.updateAttributes(name: name),
         hintText: 'e.g. Clothes',
         keyboardType: TextInputType.name,
         textCapitalization: TextCapitalization.words,
-        label: 'Title',
-        error: errors['title'],
+        label: 'Name',
+        error: errors['name'],
       ),
       Row(
         children: [

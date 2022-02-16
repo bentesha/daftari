@@ -6,7 +6,8 @@ enum Pages {
   categories_page,
   purchases_page,
   expenses_page,
-  stock_adjustment_page
+  stock_adjustment_page,
+  items_page
 }
 
 class AppTopBar extends StatelessWidget implements PreferredSizeWidget {

@@ -8,19 +8,18 @@ class ItemSupplements with _$ItemSupplements {
 
   const factory ItemSupplements(
       {required List<Item> itemList,
-      required String title,
+      required List<Category> categoryList,
+      required String name,
       required String categoryId,
       required String unit,
       required String unitPrice,
       required String id,
-      required String query,
       required String barcode,
       required String quantity,
       required Map<String, String?> errors}) = _ItemSupplements;
 
   factory ItemSupplements.empty() => const ItemSupplements(
-        title: '',
-        query: '',
+        name: '',
         errors: {},
         quantity: '',
         unit: '',
@@ -29,6 +28,7 @@ class ItemSupplements with _$ItemSupplements {
         categoryId: '',
         unitPrice: '',
         itemList: [],
+        categoryList: [],
       );
 
   bool get canCalculateTotalPrice =>

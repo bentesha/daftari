@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
     final hasCategories = Hive.box(Constants.kCategoriesBox).isNotEmpty;
     final hasItems = Hive.box(Constants.kItemsBox).isNotEmpty;
 
-    if (!hasCategories || !hasItems) return const CategoriesPage();
+    if (!hasCategories || !hasItems) return const CategoriesPage(isFirstPage: true);
     return const SalesRecordsPage();
   }
 }

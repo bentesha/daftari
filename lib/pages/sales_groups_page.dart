@@ -28,7 +28,7 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
       drawer: const AppDrawer(Pages.sales_page),
       appBar: _buildAppBar(),
       body: _buildBody(),
-      floatingActionButton: _buildAddItemButton(),
+      floatingActionButton: const AddButton(nextPage: GroupEditPage()),
     );
   }
 
@@ -88,14 +88,6 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
             groupAmount: supp.groupAmounts[group.id] ?? 0);
       },
       shrinkWrap: true,
-    );
-  }
-
-  _buildAddItemButton() {
-    return FloatingActionButton(
-      onPressed: () => Navigator.push(
-          context, MaterialPageRoute(builder: (_) => const GroupEditPage())),
-      child: const Icon(Icons.add, color: AppColors.onPrimary),
     );
   }
 }

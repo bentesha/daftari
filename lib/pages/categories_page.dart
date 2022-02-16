@@ -96,7 +96,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             .toList()
             .length;
 
-        return AppTextButton(
+        return AppMaterialButton(
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(builder: (_) => CategoryPage(category))),
             padding: EdgeInsets.symmetric(vertical: 5.dh),
@@ -123,8 +123,11 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Widget _buildGoToSalesPage(CategoryPageSupplements supp) {
     if (supp.categoryList.isNotEmpty && supp.itemList.isNotEmpty) {
       return AppTextButton(
-          height: 40.dh,
+          height: 50.dh,
           width: double.infinity,
+          textColor: AppColors.accent,
+          backgroundColor: AppColors.secondary,
+          text: 'Go to homepage',
           onPressed: () => Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (_) => const SalesRecordsPage()),
               (route) => false));

@@ -15,7 +15,8 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   void initState() {
     final service = Provider.of<ItemsService>(context, listen: false);
-    bloc = ItemPageBloc(service);
+    final categoriesService = Provider.of<CategoriesService>(context, listen: false);
+    bloc = ItemPageBloc(service, categoriesService);
     bloc.init();
     super.initState();
   }

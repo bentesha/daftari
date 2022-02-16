@@ -13,7 +13,7 @@ class ItemTile extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 19.dw),
       isFilled: false,
       child: ListTile(
-        title: AppText(item.title),
+        title: AppText(item.name),
         trailing: AppText(item.getQuantityValue, weight: FontWeight.bold),
       ),
     );

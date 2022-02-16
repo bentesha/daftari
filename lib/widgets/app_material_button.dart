@@ -1,43 +1,34 @@
 import '../source.dart';
 
-class AppTextButton extends StatefulWidget {
-  const AppTextButton(
-      {this.icon,
-      this.padding,
+class AppMaterialButton extends StatefulWidget {
+  const AppMaterialButton(
+      {this.padding,
       this.margin,
       this.height,
       this.width,
-      this.text,
       this.alignment,
-      this.child,
-      this.withIcon = false,
+      required this.child,
       this.isFilled = true,
-      this.textStyle,
-      this.iconColor = AppColors.onPrimary,
-      this.textColor = AppColors.onPrimary,
       required this.onPressed,
       this.backgroundColor = AppColors.primary,
       Key? key})
       : super(key: key);
 
-  final IconData? icon;
   final double? height;
   final double? width;
   final VoidCallback onPressed;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
-  final String? text;
-  final bool withIcon, isFilled;
-  final Widget? child;
+  final bool isFilled;
+  final Widget child;
   final Alignment? alignment;
-  final TextStyle? textStyle;
-  final Color iconColor, textColor, backgroundColor;
+  final Color backgroundColor;
 
   @override
-  _AppTextButtonState createState() => _AppTextButtonState();
+  _AppMaterialButtonState createState() => _AppMaterialButtonState();
 }
 
-class _AppTextButtonState extends State<AppTextButton>
+class _AppMaterialButtonState extends State<AppMaterialButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController controller;
   late final Animation<Color?> animation;
@@ -66,7 +57,7 @@ class _AppTextButtonState extends State<AppTextButton>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: animation,
-      child: _child(),
+      child: widget.child,
       builder: (context, child) {
         return GestureDetector(
           onTap: () => controller.forward(),
@@ -81,30 +72,6 @@ class _AppTextButtonState extends State<AppTextButton>
         );
       },
     );
-  }
-
-  _child() {
-    final hasProvidedChild = widget.child != null;
-
-    return hasProvidedChild
-        ? widget.child
-        : widget.withIcon
-            ? Row(
-                mainAxisAlignment: widget.alignment == Alignment.centerLeft
-                    ? MainAxisAlignment.start
-                    : MainAxisAlignment.center,
-                children: [
-                    Icon(widget.icon ?? Icons.share,
-                        color: widget.iconColor, size: 22.dw),
-                    SizedBox(width: 15.dw),
-                    _text(),
-                  ])
-            : _text();
-  }
-
-  _text() {
-    return AppText(widget.text ?? 'Click Me',
-        weight: FontWeight.w500, color: widget.textColor);
   }
 
   @override

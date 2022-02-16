@@ -124,7 +124,10 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
   _handleSelectedItemId() {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
-    supp = supp.copyWith(itemId: itemsService.getSelectedItemId);
+    final id = itemsService.getSelectedItemId;
+    final item = itemsService.getItemById(id);
+    supp = supp.copyWith(
+        itemId: id, quantity: '1', sellingPrice: item!.unitPrice.toString());
     emit(RecordsPageState.content(supp));
   }
 }

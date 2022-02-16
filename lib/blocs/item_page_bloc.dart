@@ -1,11 +1,20 @@
 import '../source.dart';
 
 class ItemPageBloc extends Cubit<ItemPageState> {
-  ItemPageBloc(this.service) : super(ItemPageState.initial()) {
+  ItemPageBloc(this.service, this.categoriesService)
+      : super(ItemPageState.initial()) {
     service.addListener(() => _handleItemUpdates());
+    categoriesService.addListener(() => _handleCategoryUpdates());
   }
 
   final ItemsService service;
+  final CategoriesService categoriesService;
+
+  Category? get getSelectedCategory {
+    final id = state.supplements.categoryId;
+    final category = categoriesService.getCategoryById(id);
+    return category;
+  }
 
   ///Item should be specified when it is to be edited.
   ///Category is passed when item is created for the first time.
@@ -14,24 +23,20 @@ class ItemPageBloc extends Cubit<ItemPageState> {
     var supp = state.supplements;
     emit(ItemPageState.loading(supp));
     var itemList = service.getAll();
-
-    log(itemList.toString());
-    log(itemList.first.categoryId);
+    final categories = categoriesService.getAll();
 
     if (categoryId != null) {
-      log(categoryId);
-
       itemList = itemList.where((e) => e.categoryId == categoryId).toList();
       supp = supp.copyWith(categoryId: categoryId);
     }
 
-    supp = supp.copyWith(itemList: itemList);
+    supp = supp.copyWith(itemList: itemList, categoryList: categories);
 
     if (item != null) {
       supp = supp.copyWith(
         unit: item.unit,
         unitPrice: item.unitPrice.toString(),
-        title: item.title,
+        name: item.name,
         quantity: item.quantity.toString(),
         categoryId: item.categoryId,
         id: item.id,
@@ -42,7 +47,7 @@ class ItemPageBloc extends Cubit<ItemPageState> {
   }
 
   void updateAttributes(
-      {String? title,
+      {String? name,
       String? categoryId,
       String? unit,
       String? barcode,
@@ -52,7 +57,7 @@ class ItemPageBloc extends Cubit<ItemPageState> {
     emit(ItemPageState.loading(supp));
 
     supp = supp.copyWith(
-        title: title?.trim() ?? supp.title,
+        name: name?.trim() ?? supp.name,
         unit: unit?.trim() ?? supp.unit,
         categoryId: categoryId ?? supp.categoryId,
         unitPrice: unitPrice?.trim() ?? supp.unitPrice,
@@ -72,7 +77,7 @@ class ItemPageBloc extends Cubit<ItemPageState> {
         id: Utils.getRandomId(),
         categoryId: supp.categoryId,
         unit: supp.unit,
-        title: supp.title,
+        name: supp.name,
         barcode: supp.barcode,
         unitPrice: double.parse(supp.unitPrice),
         quantity: double.parse(supp.quantity));
@@ -91,36 +96,11 @@ class ItemPageBloc extends Cubit<ItemPageState> {
         id: supp.id,
         categoryId: supp.categoryId,
         unit: supp.unit,
-        title: supp.title,
+        name: supp.name,
         barcode: supp.barcode,
         unitPrice: double.parse(supp.unitPrice),
         quantity: double.parse(supp.quantity));
     await service.editItem(item);
-    emit(ItemPageState.success(supp));
-  }
-
-  void updateSearchQuery(String query) {
-    var supp = state.supplements;
-    emit(ItemPageState.loading(supp));
-    final list = service.getItemList
-        .where((e) => e.title.toLowerCase().startsWith(query.toLowerCase()))
-        .toList();
-    supp = supp.copyWith(itemList: list, query: query);
-    emit(ItemPageState.content(supp));
-  }
-
-  void clearQuery() {
-    var supp = state.supplements;
-    emit(ItemPageState.loading(supp));
-    final list = service.getItemList;
-    supp = supp.copyWith(itemList: list, query: '');
-    emit(ItemPageState.content(supp));
-  }
-
-  void updateId(String id) {
-    var supp = state.supplements;
-    emit(ItemPageState.loading(supp));
-    service.updateId(id);
     emit(ItemPageState.success(supp));
   }
 
@@ -129,8 +109,10 @@ class ItemPageBloc extends Cubit<ItemPageState> {
     final errors = <String, String?>{};
 
     emit(ItemPageState.loading(supp));
-    errors['title'] = InputValidation.validateText(supp.title, 'Title');
+    errors['name'] = InputValidation.validateText(supp.name, 'name');
     errors['unit'] = InputValidation.validateText(supp.unit, 'Unit');
+    errors['category'] =
+        InputValidation.validateText(supp.categoryId, 'Category');
 
     errors['unitPrice'] =
         InputValidation.validateNumber(supp.unitPrice, 'Unit Price');
@@ -142,11 +124,18 @@ class ItemPageBloc extends Cubit<ItemPageState> {
   }
 
   _handleItemUpdates() {
-    log('updating items');
     var supp = state.supplements;
     emit(ItemPageState.loading(supp));
     final items = service.getItemList;
     supp = supp.copyWith(itemList: items);
+    emit(ItemPageState.content(supp));
+  }
+
+  _handleCategoryUpdates() {
+    var supp = state.supplements;
+    emit(ItemPageState.loading(supp));
+    final id = categoriesService.getSelectedCategoryId;
+    supp = supp.copyWith(categoryId: id);
     emit(ItemPageState.content(supp));
   }
 }

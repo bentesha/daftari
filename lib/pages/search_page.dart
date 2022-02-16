@@ -1,28 +1,31 @@
-/* import '../source.dart';
+import '../source.dart';
 
-class ItemSearchPage extends StatefulWidget {
-  const ItemSearchPage({Key? key}) : super(key: key);
+class ItemsSearchPage<T> extends StatefulWidget {
+  const ItemsSearchPage(this.options, {Key? key}) : super(key: key);
+
+  final List<T> options;
 
   @override
-  State<ItemSearchPage> createState() => _ItemSearchPageState();
+  State<ItemsSearchPage<T>> createState() => _ItemsSearchPageState();
 }
 
-class _ItemSearchPageState extends State<ItemSearchPage> {
-  late final ItemPageBloc bloc;
+class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
+  late final SearchPageBloc<T> bloc;
   final controller = TextEditingController();
 
   @override
   void initState() {
-    controller.text = '';
-    final service = Provider.of<ItemsService>(context, listen: false);
-    bloc = ItemPageBloc(service);
-    bloc.init();
+    final categoriesService =
+        Provider.of<CategoriesService>(context, listen: false);
+    final itemsService = Provider.of<ItemsService>(context, listen: false);
+    bloc = SearchPageBloc(itemsService, categoriesService);
+    bloc.init(widget.options);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ItemPageBloc, ItemPageState>(
+    return BlocConsumer<SearchPageBloc<T>, SearchPageState<T>>(
         bloc: bloc,
         listener: (_, state) {
           final isSuccessful =
@@ -39,26 +42,27 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
         });
   }
 
-  Widget _buildLoading(ItemSupplements supp) {
+  Widget _buildLoading(SearchPageSupplements supp) {
     return const Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  Widget _buildContent(ItemSupplements supp) {
+  Widget _buildContent(SearchPageSupplements supp) {
     return Scaffold(
       appBar: _buildAppBar(supp),
-      body: _buildItems(supp.itemList),
+      body: _buildItems(),
     );
   }
 
-  _buildAppBar(ItemSupplements supp) {
+  _buildAppBar(SearchPageSupplements supp) {
     return AppBar(
       title: _buildTextField(supp),
     );
   }
 
-  _buildItems(List<Item> itemList) {
+  _buildItems() {
+    final itemList = widget.options;
     if (itemList.isEmpty) return _buildEmptyItemState();
 
     return ListView.separated(
@@ -76,16 +80,16 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
     );
   }
 
-  Widget _buildItemTile(Item item) {
+  Widget _buildItemTile(var item) {
     return AppTextButton(
       onPressed: () => bloc.updateId(item.id),
-      child: ListTile(title: AppText(item.title, weight: FontWeight.w500)),
+      child: ListTile(title: AppText(item.name, weight: FontWeight.w500)),
       isFilled: false,
       padding: EdgeInsets.symmetric(horizontal: 19.dw),
     );
   }
 
-  _buildTextField(ItemSupplements supp) {
+  _buildTextField(SearchPageSupplements supp) {
     controller.text = supp.query;
     controller.selection = TextSelection.fromPosition(
         TextPosition(offset: controller.text.length));
@@ -113,7 +117,7 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
           focusedBorder: border,
           enabledBorder: border,
           border: border,
-          hintText: 'Search Items',
+          hintText: 'Search',
           hintStyle: TextStyle(
             color: AppColors.onPrimary,
             fontSize: 20.dw,
@@ -128,4 +132,3 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
       borderRadius: BorderRadius.zero,
       borderSide: BorderSide(width: 1.2, color: AppColors.primary));
 }
- */

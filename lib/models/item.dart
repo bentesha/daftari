@@ -8,7 +8,7 @@ class Item {
   final String id;
 
   @HiveField(1)
-  final String title;
+  final String name;
 
   @HiveField(2)
   final String unit;
@@ -27,7 +27,7 @@ class Item {
 
   Item(
       {required this.id,
-      required this.title,
+      required this.name,
       required this.unit,
       required this.unitPrice,
       required this.quantity,
@@ -35,7 +35,7 @@ class Item {
       required this.barcode});
 
   factory Item.empty() => Item(
-      title: '',
+      name: '',
       id: '',
       unit: 'ea.',
       unitPrice: 0,
@@ -50,7 +50,7 @@ class Item {
 
   Item copyWith(
       {String? id,
-      String? title,
+      String? name,
       String? unit,
       double? unitPrice,
       String? categoryId,
@@ -58,7 +58,7 @@ class Item {
       double? quantity}) {
     return Item(
         id: id ?? this.id,
-        title: title ?? this.title,
+        name: name ?? this.name,
         unit: unit ?? this.unit,
         unitPrice: unitPrice ?? this.unitPrice,
         barcode: barcode ?? this.barcode,

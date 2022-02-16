@@ -63,97 +63,47 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
     final recordList = supp.getSpecificGroupRecords;
     final totalAmount = Utils.convertToMoneyFormat(bloc.getGroupTotalAmount);
 
-    return bloc.isItemListEmpty
-        ? _buildEmptyItemState()
-        : supp.recordList.isEmpty
-            ? _buildEmptyRecordState()
-            : ListView(
-                children: [
-                  ListView.separated(
-                    separatorBuilder: (_, index) =>
-                        const AppDivider(margin: EdgeInsets.zero),
-                    itemCount: recordList.length,
-                    itemBuilder: (_, index) => RecordTile(recordList[index]),
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                  ),
-                  AppDivider(
-                    height: 2,
-                    color: AppColors.secondary,
-                    margin: EdgeInsets.only(bottom: 8.dh),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 19.dw),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AppText('Total Amount'.toUpperCase(),
-                            weight: FontWeight.w500),
-                        AppText(totalAmount,
-                            weight: FontWeight.bold, size: 20.dw),
-                      ],
-                    ),
-                  )
-                ],
-              );
+    return supp.recordList.isEmpty
+        ? const EmptyStateWidget(decscription: emptyRecordMessage)
+        : ListView(
+            children: [
+              ListView.separated(
+                separatorBuilder: (_, index) =>
+                    const AppDivider(margin: EdgeInsets.zero),
+                itemCount: recordList.length,
+                itemBuilder: (_, index) => RecordTile(recordList[index]),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+              ),
+              AppDivider(
+                height: 2,
+                color: AppColors.secondary,
+                margin: EdgeInsets.only(bottom: 8.dh),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 19.dw),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AppText('Total Amount'.toUpperCase(),
+                        weight: FontWeight.w500),
+                    AppText(totalAmount, weight: FontWeight.bold, size: 20.dw),
+                  ],
+                ),
+              )
+            ],
+          );
   }
-
-  _buildEmptyItemState() => _buildEmptyState(true);
-
-  _buildEmptyRecordState() => _buildEmptyState(false);
 
   _buildAddItemButton() {
     return BlocBuilder<GroupPagesBloc, GroupPagesState>(
         bloc: bloc,
         builder: (_, state) {
           final supp = state.supplements;
-
-          return bloc.isItemListEmpty
-              ? Container()
-              : FloatingActionButton(
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => RecordEditPage(groupId: supp.id))),
-                  child: const Icon(Icons.add, color: AppColors.onPrimary),
-                );
+          return AddButton(nextPage: RecordEditPage(groupId: supp.id));
         });
   }
 
-  _buildEmptyState(bool isItemListEmpty) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        /*   Image.network(
-          Constants.kEmptySalesImage,
-          height: 100.dh,
-          fit: BoxFit.contain,
-        ), */
-        Icon(Icons.hourglass_empty, size: 45.dw, color: AppColors.onBackground),
-        SizedBox(height: 20.dh),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 19.dw),
-          child: AppText(
-              isItemListEmpty ? emptyItemMessage : emptyRecordMessage,
-              alignment: TextAlign.center),
-        ),
-        isItemListEmpty
-            ? Builder(builder: (context) {
-                return AppTextButton(
-                  onPressed: () => ItemEditPage.navigateTo(context),
-                  height: 40.dh,
-                  text: 'Add Item',
-                  margin:
-                      EdgeInsets.only(left: 19.dw, right: 19.dw, top: 40.dh),
-                );
-              })
-            : Container()
-      ],
-    );
-  }
-
-  static const emptyItemMessage =
-      'No item has been added yet. Create one by clicking on the below button.';
   static const emptyRecordMessage =
       'No records in this group yet. Create one by clicking on the Add Button on the bottom-right corner.';
 }

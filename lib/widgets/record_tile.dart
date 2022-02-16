@@ -19,7 +19,7 @@ class RecordTile extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppText(item.title, weight: FontWeight.w300),
+              AppText(item.name, weight: FontWeight.w300),
               AppText(record.getFormattedTotalAmount,
                   weight: FontWeight.w500, size: 16.dw)
             ],

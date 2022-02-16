@@ -63,11 +63,13 @@ class _RecordEditPageState extends State<RecordEditPage> {
       children: [
         ValueSelector(
           title: 'Item',
-          value: bloc.getSelectedItem?.title,
+          value: bloc.getSelectedItem?.name,
           error: supp.errors['item'],
           isEditable: !isEditing,
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (_) => const ItemSearchPage())),
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => ItemsSearchPage<Item>(supp.itemList))),
         ),
         DateSelector(
           title: 'Date',

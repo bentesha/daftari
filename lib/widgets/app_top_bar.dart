@@ -3,6 +3,8 @@ import '../source.dart';
 
 enum Pages {
   sales_page,
+  dashboard,
+  reports_page,
   categories_page,
   purchases_page,
   expenses_page,
@@ -18,43 +20,22 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   final VoidCallback showDrawerCallback;
   final String title;
 
-  static final month = DateFormatter.getCurrentMonth();
-  static final year = DateFormatter.getCurrentYear();
-
   @override
   Widget build(BuildContext context) {
     return Theme(
       data: ThemeData(
         iconTheme: const IconThemeData(color: AppColors.onPrimary),
-        appBarTheme: Theme.of(context).appBarTheme.copyWith(
-            titleTextStyle:
-                TextStyle(fontWeight: FontWeight.w600, fontSize: 20.dw)),
+        appBarTheme: Theme.of(context)
+            .appBarTheme
+            .copyWith(titleTextStyle: TextStyle(fontSize: 18.dw)),
       ),
       child: AppBar(
-        elevation: 0,
-        title: const Text('Bella Bella Boutique'),
-        leading: AppIconButton(
-          icon: Icons.menu,
-          onPressed: showDrawerCallback,
-        ),
-        bottom: PreferredSize(
-            child: Container(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 19.dw, bottom: 5.dw),
-                  child: AppText(
-                    '$month, $year $title'.toUpperCase(),
-                    color: AppColors.onPrimary,
-                    size: 14.dw,
-                  ),
-                )),
-            preferredSize: Size.fromHeight(60.dh)),
-      ),
+          elevation: 0, title: const Text('INVENTORY MANAGEMENT SYSTEM')),
     );
   }
 
-//  static final _appBar = AppBar();
+  static final _appBar = AppBar();
 
   @override
-  Size get preferredSize => Size(double.infinity, 60.dh);
+  Size get preferredSize => _appBar.preferredSize;
 }

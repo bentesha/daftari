@@ -52,7 +52,9 @@ class _ItemEditPageState extends State<ItemEditPage> {
   }
 
   _buildAppBar() {
-    return PageAppBar(title: 'Adding Item', actionCallback: bloc.saveItem);
+    return PageAppBar(
+        title: hasNoCategoryId ? 'Add Item' : 'Edit Item',
+        actionCallbacks: [bloc.saveItem]);
   }
 
   Widget _buildLoading(ItemSupplements supp) {
@@ -65,24 +67,24 @@ class _ItemEditPageState extends State<ItemEditPage> {
     final errors = supp.errors;
 
     return ListView(padding: EdgeInsets.zero, children: [
-      hasNoCategoryId
-          ? Column(
-              children: [
-                ValueSelector(
-                  title: 'Category',
-                  value: bloc.getSelectedCategory?.name,
-                  error: supp.errors['category'],
-                  isEditable: true,
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) =>
-                              ItemsSearchPage<Category>(supp.categoryList))),
-                ),
-                AppDivider(margin: EdgeInsets.only(bottom: 10.dh))
-              ],
-            )
-          : SizedBox(height: 19.dh),
+      /*  hasNoCategoryId
+          ? */
+      Column(
+        children: [
+          ValueSelector(
+            title: 'Category',
+            value: bloc.getSelectedCategory?.name,
+            error: supp.errors['category'],
+            isEditable: true,
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => const ItemsSearchPage<Category>())),
+          ),
+          AppDivider(margin: EdgeInsets.only(bottom: 10.dh))
+        ],
+      ),
+      // : SizedBox(height: 19.dh),
       AppTextField(
         text: supp.name,
         onChanged: (name) => bloc.updateAttributes(name: name),

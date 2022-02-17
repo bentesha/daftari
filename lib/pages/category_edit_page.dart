@@ -27,7 +27,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
     return Scaffold(
       appBar: PageAppBar(
         title: 'Add New Category',
-        actionCallback: bloc.save,
+        actionCallbacks: [bloc.save],
       ),
       body: _buildBody(),
     );

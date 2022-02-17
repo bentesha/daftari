@@ -52,13 +52,20 @@ class _GroupEditPageState extends State<GroupEditPage> {
       Navigator.of(context).popUntil((route) => route.isFirst);
 
   Widget _buildContent(GroupSupplements supp) {
-    final titleExistsError = supp.errors['TitleExists'];
+    final hasTitleError = supp.errors['title_exists'] != null;
 
     return Scaffold(
       appBar: PageAppBar(
           title: '${isEditing ? 'Edit' : 'Add'} Records Group',
-          hasAction: titleExistsError == null,
-          actionCallback: isEditing ? bloc.editGroup : bloc.saveGroup),
+          actionIcons: [
+            isEditing ? Icons.edit_outlined : Icons.done,
+            Icons.delete_outline
+          ],
+          actionCallbacks: hasTitleError
+              ? []
+              : isEditing
+                  ? [bloc.editGroup, null]
+                  : [bloc.saveGroup]),
       body: _buildGroupDetails(supp),
     );
   }
@@ -70,7 +77,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
   }
 
   Widget _buildGroupDetails(GroupSupplements supp) {
-    final titleExistsError = supp.errors['TitleExists'];
+    final titleExistsError = supp.errors['title_exists'];
     if (titleExistsError != null) return _buildTitleError(titleExistsError);
 
     return Column(
@@ -135,7 +142,4 @@ class _GroupEditPageState extends State<GroupEditPage> {
       ),
     );
   }
-
-
-
 }

@@ -15,7 +15,8 @@ class _CategoryPageState extends State<CategoryPage> {
   @override
   void initState() {
     final service = Provider.of<ItemsService>(context, listen: false);
-    final categoriesService = Provider.of<CategoriesService>(context, listen: false);
+    final categoriesService =
+        Provider.of<CategoriesService>(context, listen: false);
     bloc = ItemPageBloc(service, categoriesService);
     bloc.init();
     super.initState();
@@ -26,9 +27,8 @@ class _CategoryPageState extends State<CategoryPage> {
     return Scaffold(
       appBar: PageAppBar(
         title: widget.category.name + ' Category',
-        hasAction: true,
-        actionIcon: Icons.edit_outlined,
-        actionCallback: _navigateToCategoryEditPage,
+        actionIcons: const [Icons.edit_outlined],
+        actionCallbacks: [_navigateToCategoryEditPage],
       ),
       body: _buildBody(),
       floatingActionButton:
@@ -64,9 +64,7 @@ class _CategoryPageState extends State<CategoryPage> {
     final items =
         supp.itemList.where((e) => e.categoryId == widget.category.id).toList();
     if (items.isEmpty) {
-      return const EmptyStateWidget(
-          decscription:
-              'No items have been added in this category. Click on the add bottom right corner button to start creating items.');
+      return const EmptyStateWidget(message: emptyItemsMessage);
     }
 
     return ListView.separated(
@@ -80,4 +78,7 @@ class _CategoryPageState extends State<CategoryPage> {
       shrinkWrap: true,
     );
   }
+
+  static const emptyItemsMessage =
+      'No items have been added in this category. Click on the add bottom right corner button to start creating items.';
 }

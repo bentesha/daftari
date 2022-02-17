@@ -4,7 +4,7 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
   RecordsPageBloc(this.recordsService, this.itemsService)
       : super(RecordsPageState.initial()) {
     recordsService.addListener(() => _handleRecordsUpdates());
-    itemsService.addListener(() => _handleSelectedItemId());
+    itemsService.addListener(() => _handleItemUpdates());
   }
 
   final RecordsService recordsService;
@@ -121,13 +121,17 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
     emit(RecordsPageState.content(supp));
   }
 
-  _handleSelectedItemId() {
+  _handleItemUpdates() {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
     final id = itemsService.getSelectedItemId;
     final item = itemsService.getItemById(id);
+    final items = itemsService.getItemList;
     supp = supp.copyWith(
-        itemId: id, quantity: '1', sellingPrice: item!.unitPrice.toString());
+        itemId: id,
+        quantity: '1',
+        sellingPrice: item!.unitPrice.toString(),
+        itemList: items);
     emit(RecordsPageState.content(supp));
   }
 }

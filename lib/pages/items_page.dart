@@ -8,8 +8,6 @@ class ItemsPage extends StatefulWidget {
 }
 
 class _ItemsPageState extends State<ItemsPage> {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
-
   late final ItemPageBloc bloc;
 
   @override
@@ -25,33 +23,21 @@ class _ItemsPageState extends State<ItemsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: _buildAppBar(),
-      body: BlocBuilder<ItemPageBloc, ItemPageState>(
-          bloc: bloc,
-          builder: (_, state) {
-            return state.when(
-                loading: _buildLoading,
-                content: _buildContent,
-                success: _buildContent);
-          }),
+      body: _buildBody(),
+      appBar: const PageAppBar(title: 'Items'),
       floatingActionButton: const AddButton(nextPage: ItemEditPage()),
     );
   }
 
-  _buildAppBar() {
-    final isScaffoldStateNull = _scaffoldKey.currentState == null;
-    _openDrawer() {
-      if (isScaffoldStateNull) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
-          _scaffoldKey.currentState!.openDrawer();
+  _buildBody() {
+    return BlocBuilder<ItemPageBloc, ItemPageState>(
+        bloc: bloc,
+        builder: (_, state) {
+          return state.when(
+              loading: _buildLoading,
+              content: _buildContent,
+              success: _buildContent);
         });
-      } else {
-        _scaffoldKey.currentState!.openDrawer();
-      }
-    }
-
-    return AppTopBar(showDrawerCallback: _openDrawer, title: "Items List");
   }
 
   Widget _buildLoading(ItemSupplements supp) {
@@ -60,6 +46,9 @@ class _ItemsPageState extends State<ItemsPage> {
 
   Widget _buildContent(ItemSupplements supp) {
     final items = supp.itemList;
+    if (items.isEmpty) {
+      return const EmptyStateWidget(message: emptyItemsDesc);
+    }
 
     return ListView.separated(
       separatorBuilder: (_, __) => const AppDivider(margin: EdgeInsets.zero),
@@ -72,4 +61,7 @@ class _ItemsPageState extends State<ItemsPage> {
       shrinkWrap: true,
     );
   }
+
+  static const emptyItemsDesc =
+      'No Items have been added. Add one by clicking on the bottom-right corner button.';
 }

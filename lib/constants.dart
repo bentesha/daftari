@@ -1,5 +1,5 @@
 class Constants {
-  static const kFontFam = 'AndroidEuclid';
+  static const kFontFam = 'Avenir';
   static const kFontFam2 = 'AndroidEuclid';
 
   static const kItemsBox = 'items_box';

@@ -12,14 +12,16 @@ class CategoriesService extends Service<Category> {
 
   Category? getCategoryById(String id) => box.get(id) as Category?;
 
-  Future<void> addCategory(Category category) async => super.add(category);
+  Future<void> addCategory(Category category) async {
+    _selectedId = category.id;
+    super.add(category);
+  }
 
   Future<void> editCategory(Category category) async => super.edit(category);
 
   List<Category> init() => super.getAll();
 
   void updateId(String id) {
-    log('updating category Id');
     _selectedId = id;
     notifyListeners();
   }

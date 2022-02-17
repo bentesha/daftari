@@ -1,9 +1,7 @@
 import '../source.dart';
 
 class ItemsSearchPage<T> extends StatefulWidget {
-  const ItemsSearchPage(this.options, {Key? key}) : super(key: key);
-
-  final List<T> options;
+  const ItemsSearchPage({Key? key}) : super(key: key);
 
   @override
   State<ItemsSearchPage<T>> createState() => _ItemsSearchPageState();
@@ -12,6 +10,7 @@ class ItemsSearchPage<T> extends StatefulWidget {
 class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
   late final SearchPageBloc<T> bloc;
   final controller = TextEditingController();
+  final focusNode = FocusNode();
 
   @override
   void initState() {
@@ -19,7 +18,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
         Provider.of<CategoriesService>(context, listen: false);
     final itemsService = Provider.of<ItemsService>(context, listen: false);
     bloc = SearchPageBloc(itemsService, categoriesService);
-    bloc.init(widget.options);
+    bloc.init();
     super.initState();
   }
 
@@ -43,27 +42,43 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
   }
 
   Widget _buildLoading(SearchPageSupplements supp) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 
   Widget _buildContent(SearchPageSupplements supp) {
     return Scaffold(
       appBar: _buildAppBar(supp),
-      body: _buildItems(),
+      body: _buildItems(supp),
     );
   }
 
   _buildAppBar(SearchPageSupplements supp) {
+    final iconThemeData = Theme.of(context).iconTheme;
     return AppBar(
       title: _buildTextField(supp),
+      actions: [
+        AppIconButton(
+            icon: supp.query.isEmpty ? Icons.search : Icons.close,
+            onPressed: supp.query.isEmpty
+                ? () => focusNode.requestFocus()
+                : bloc.clearQuery,
+            iconThemeData: iconThemeData.copyWith(size: 24.dw)),
+        AppIconButton(
+            onPressed: _navigateToSpecificTypeWidget,
+            icon: Icons.add,
+            margin: EdgeInsets.only(right: 15.dw, left: 15.dw),
+            iconThemeData: iconThemeData.copyWith(size: 30.dw))
+      ],
     );
   }
 
-  _buildItems() {
-    final itemList = widget.options;
-    if (itemList.isEmpty) return _buildEmptyItemState();
+  _buildItems(SearchPageSupplements supp) {
+    final itemList = supp.options.whereType<T>().toList();
+    if (itemList.isEmpty) return _buildEmptyItemState(itemList, supp.query);
 
     return ListView.separated(
       separatorBuilder: (_, __) => const AppDivider(margin: EdgeInsets.zero),
@@ -74,10 +89,12 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
     );
   }
 
-  _buildEmptyItemState() {
-    return const Center(
-      child: AppText('No item matches your search keyword!'),
-    );
+  _buildEmptyItemState(List<T> options, String query) {
+    final type = T == Category ? 'category' : 'product';
+    final message = options.isEmpty && query.isEmpty
+        ? 'No $type has been recorded yet. Create one by clicking on the add button on the page top bar'
+        : 'No item matches your search keyword!';
+    return EmptyStateWidget(message: message);
   }
 
   Widget _buildItemTile(var item) {
@@ -98,6 +115,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
       padding: EdgeInsets.only(top: 3.dh),
       child: TextField(
         controller: controller,
+        focusNode: focusNode,
         onChanged: bloc.updateSearchQuery,
         maxLines: 1,
         minLines: 1,
@@ -110,10 +128,6 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
         ),
         cursorColor: AppColors.onPrimary,
         decoration: InputDecoration(
-          suffixIcon: AppIconButton(
-              icon: supp.query.isEmpty ? Icons.search : Icons.close,
-              onPressed: supp.query.isEmpty ? () {} : bloc.clearQuery,
-              iconThemeData: Theme.of(context).iconTheme.copyWith(size: 24.dw)),
           focusedBorder: border,
           enabledBorder: border,
           border: border,
@@ -131,4 +145,12 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
   final border = const OutlineInputBorder(
       borderRadius: BorderRadius.zero,
       borderSide: BorderSide(width: 1.2, color: AppColors.primary));
+
+  _navigateToSpecificTypeWidget() {
+    late Widget nextPage;
+
+    if (T == Category) nextPage = const CategoryEditPage();
+    if (T == Item) nextPage = const ItemEditPage();
+    Navigator.push(context, MaterialPageRoute(builder: (_) => nextPage));
+  }
 }

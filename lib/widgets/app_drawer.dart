@@ -1,11 +1,10 @@
 import 'package:inventory_management/pages/settings_page.dart';
-
 import '../source.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer(this.currentPage, {Key? key}) : super(key: key);
+  const AppDrawer({Key? key}) : super(key: key);
 
-  final Pages currentPage;
+  static final pageNotifier = ValueNotifier<Pages>(Pages.dashboard);
 
   @override
   Widget build(BuildContext context) {
@@ -59,80 +58,51 @@ class AppDrawer extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildListTile('Categories', Pages.categories_page),
+          _buildListTile('Dashboard', Pages.dashboard),
           _buildListTile('Sales', Pages.sales_page),
-          _buildListTile('Purchases', Pages.purchases_page),
           _buildListTile('Expenses', Pages.expenses_page),
+          _buildListTile('Purchases', Pages.purchases_page),
           _buildListTile('Stock Adjustment', Pages.stock_adjustment_page),
-          _buildListTile('Items List', Pages.items_page),
+          _buildListTile('Items', Pages.items_page),
+          _buildListTile('Categories', Pages.categories_page),
+          _buildListTile('Reports', Pages.reports_page),
         ],
       ),
     );
   }
 
   _buildListTile(String title, Pages page) {
-    final isCurrent = page == currentPage;
-    return Builder(builder: (context) {
-      return ListTile(
-        title: AppTextButton(
-          onPressed: () => _navigateTo(page, context),
-          isFilled: false,
-          alignment: Alignment.centerLeft,
-          height: 40.dh,
-          padding: EdgeInsets.only(left: 19.dw),
-          child: AppText(
-            title,
-            weight: FontWeight.w500,
-            color: isCurrent
-                ? AppColors.accent
-                : AppColors.onSecondary.withOpacity(.75),
-          ),
-        ),
-        contentPadding: EdgeInsets.zero,
-        dense: true,
-      );
-    });
-  }
+    return ValueListenableBuilder(
+        valueListenable: pageNotifier,
+        builder: (context, currentPage, child) {
+          final isCurrent = page == currentPage;
 
-  _navigateTo(Pages page, BuildContext context) {
-    if (page == currentPage) return;
-    Widget nextPage = const CategoriesPage();
-
-    switch (page) {
-      case Pages.sales_page:
-        nextPage = const SalesRecordsPage();
-        break;
-      case Pages.categories_page:
-        nextPage = const CategoriesPage();
-        break;
-      case Pages.purchases_page:
-        nextPage = const PurchasesPage();
-        break;
-      case Pages.expenses_page:
-        nextPage = const ExpensesPage();
-        break;
-      case Pages.stock_adjustment_page:
-        nextPage = const StockManagement();
-        break;
-      case Pages.items_page:
-        nextPage = const ItemsPage();
-        break;
-      default:
-    }
-    //closes the drawer in the page from which it naviagates to the other page.
-    Navigator.pop(context);
-    Navigator.push(context, MaterialPageRoute(builder: (_) => nextPage));
+          return ListTile(
+            title: AppTextButton(
+              onPressed: () => _navigateTo(page, context),
+              isFilled: false,
+              alignment: Alignment.centerLeft,
+              height: 40.dh,
+              padding: EdgeInsets.only(left: 19.dw),
+              child: AppText(
+                title,
+                weight: FontWeight.w500,
+                color: isCurrent
+                    ? AppColors.accent
+                    : AppColors.onSecondary.withOpacity(.75),
+              ),
+            ),
+            contentPadding: EdgeInsets.zero,
+            dense: true,
+          );
+        });
   }
 
   _buildSettingsButton() {
     return Builder(builder: (context) {
       return AppTextButton(
-        onPressed: () {
-          //closes the drawer
-          Navigator.pop(context);
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => const SettingsPage()));
-        },
+        onPressed: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => const SettingsPage())),
         text: 'Settings',
         height: 40.dh,
         isFilled: false,
@@ -141,5 +111,40 @@ class AppDrawer extends StatelessWidget {
         padding: EdgeInsets.only(left: 19.dw),
       );
     });
+  }
+
+  _navigateTo(Pages page, BuildContext context) {
+    if (page == pageNotifier.value) {
+      Navigator.pop(context);
+      return;
+    }
+
+    late Widget? nextPage;
+
+    pageNotifier.value = page;
+
+    switch (page) {
+      case Pages.dashboard:
+        Navigator.pop(context);
+        Navigator.popUntil(context, ((route) => route.isFirst));
+        return;
+      case Pages.sales_page:
+        nextPage = const SalesRecordsPage();
+        break;
+      case Pages.categories_page:
+        nextPage = const CategoriesPage();
+        break;
+      case Pages.items_page:
+        nextPage = const ItemsPage();
+        break;
+      case Pages.reports_page:
+        nextPage = const ReportsPage();
+        break;
+      default:
+        nextPage = null;
+    }
+    if (nextPage == null) return;
+
+    Navigator.push(context, MaterialPageRoute(builder: (_) => nextPage!));
   }
 }

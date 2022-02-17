@@ -10,29 +10,10 @@ class CategoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 18.dw),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AppText(title, weight: FontWeight.w500),
-              SizedBox(height: 5.dh),
-              AppText('$numberOfItems items', opacity: .75)
-            ],
-          ),
-          AppIconButton(
-            icon: Icons.chevron_right,
-            onPressed: () {},
-            iconThemeData: Theme.of(context)
-                .iconTheme
-                .copyWith(color: AppColors.secondary),
-          )
-        ],
-      ),
-    );
+    return ListTile(
+        title: AppText(title, weight: FontWeight.w500),
+        contentPadding: EdgeInsets.symmetric(horizontal: 18.dw),
+        subtitle: AppText('$numberOfItems item${numberOfItems > 1 ? 's' : ''}',
+            opacity: .75));
   }
 }

@@ -8,7 +8,6 @@ class SalesRecordsPage extends StatefulWidget {
 }
 
 class _SalesRecordsPageState extends State<SalesRecordsPage> {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   late final GroupPagesBloc bloc;
 
   @override
@@ -24,10 +23,8 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      drawer: const AppDrawer(Pages.sales_page),
-      appBar: _buildAppBar(),
       body: _buildBody(),
+      appBar: const PageAppBar(title: 'Sales'),
       floatingActionButton: const AddButton(nextPage: GroupEditPage()),
     );
   }
@@ -51,27 +48,10 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
     );
   }
 
-  _buildAppBar() {
-    final isScaffoldStateNull = _scaffoldKey.currentState == null;
-    _openDrawer() {
-      if (isScaffoldStateNull) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
-          _scaffoldKey.currentState!.openDrawer();
-        });
-      } else {
-        _scaffoldKey.currentState!.openDrawer();
-      }
-    }
-
-    return AppTopBar(showDrawerCallback: _openDrawer, title: "Sales Records");
-  }
-
   Widget _buildContent(GroupSupplements supp) {
     final groupList = supp.groupList;
     if (groupList.isEmpty) {
-      return const EmptyStateWidget(
-          decscription:
-              'No sales record has been added. Add one by clicking the button on a bottom-right corner.');
+      return const EmptyStateWidget(message: emptyGroupMessage);
     }
 
     return ListView.separated(
@@ -90,4 +70,7 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
       shrinkWrap: true,
     );
   }
+
+  static const emptyGroupMessage =
+      'No sales record has been added. Add one by clicking the button on a bottom-right corner.';
 }

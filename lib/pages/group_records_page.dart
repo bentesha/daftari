@@ -24,31 +24,6 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: _buildBody(),
-      floatingActionButton: _buildAddItemButton(),
-    );
-  }
-
-  _buildAppBar() {
-    return PageAppBar(
-      title: widget.group.title + ' Sales',
-      actionIcon: Icons.edit_outlined,
-      actionCallback: _navigateToGroupEditPage,
-    );
-  }
-
-  void _navigateToGroupEditPage() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (_) => GroupEditPage(group: widget.group)));
-  }
-
-  Widget _buildLoading(GroupSupplements supp) {
-    return const Center(child: CircularProgressIndicator());
-  }
-
-  _buildBody() {
     return BlocBuilder<GroupPagesBloc, GroupPagesState>(
         bloc: bloc,
         builder: (_, state) {
@@ -59,39 +34,43 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
         });
   }
 
+  Widget _buildLoading(GroupSupplements supp) {
+    return const Center(child: CircularProgressIndicator());
+  }
+
   Widget _buildContent(GroupSupplements supp) {
+    return Scaffold(
+      appBar: _buildAppBar(),
+      body: _buildRecords(supp),
+      floatingActionButton: _buildAddItemButton(),
+      bottomNavigationBar: _buildBottomNavBar(),
+    );
+  }
+
+  _buildAppBar() {
+    return PageAppBar(
+      title: widget.group.title + ' Sales',
+      actionIcons: const [Icons.edit_outlined, Icons.delete_outline],
+      actionCallbacks: [_navigateToGroupEditPage, null],
+    );
+  }
+
+  void _navigateToGroupEditPage() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (_) => GroupEditPage(group: widget.group)));
+  }
+
+  Widget _buildRecords(GroupSupplements supp) {
     final recordList = supp.getSpecificGroupRecords;
-    final totalAmount = Utils.convertToMoneyFormat(bloc.getGroupTotalAmount);
 
     return supp.recordList.isEmpty
-        ? const EmptyStateWidget(decscription: emptyRecordMessage)
-        : ListView(
-            children: [
-              ListView.separated(
-                separatorBuilder: (_, index) =>
-                    const AppDivider(margin: EdgeInsets.zero),
-                itemCount: recordList.length,
-                itemBuilder: (_, index) => RecordTile(recordList[index]),
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-              ),
-              AppDivider(
-                height: 2,
-                color: AppColors.secondary,
-                margin: EdgeInsets.only(bottom: 8.dh),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 19.dw),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppText('Total Amount'.toUpperCase(),
-                        weight: FontWeight.w500),
-                    AppText(totalAmount, weight: FontWeight.bold, size: 20.dw),
-                  ],
-                ),
-              )
-            ],
+        ? const EmptyStateWidget(message: emptyRecordMessage)
+        : ListView.separated(
+            separatorBuilder: (_, index) =>
+                const AppDivider(margin: EdgeInsets.zero),
+            itemCount: recordList.length,
+            itemBuilder: (_, index) => RecordTile(recordList[index]),
+            shrinkWrap: true,
           );
   }
 
@@ -102,6 +81,25 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
           final supp = state.supplements;
           return AddButton(nextPage: RecordEditPage(groupId: supp.id));
         });
+  }
+
+  _buildBottomNavBar() {
+    final totalAmount = bloc.getGroupTotalAmount;
+    final formatted = Utils.convertToMoneyFormat(bloc.getGroupTotalAmount);
+    if (totalAmount == 0) return Container(height: .001);
+
+    return Container(
+      color: AppColors.primary,
+      height: 55.dh,
+      padding: EdgeInsets.symmetric(horizontal: 19.dw),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          AppText('Total Amount'.toUpperCase(), color: AppColors.onPrimary),
+          AppText(formatted, size: 20.dw, color: AppColors.onPrimary),
+        ],
+      ),
+    );
   }
 
   static const emptyRecordMessage =

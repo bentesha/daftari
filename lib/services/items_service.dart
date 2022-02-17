@@ -10,12 +10,15 @@ class ItemsService extends Service<Item> {
 
   List<Item> get getItemList => super.getList;
   String get getSelectedItemId => _selectedId;
-  
+
   Item? getItemById(String id) => box.get(id) as Item?;
 
   List<Item> init() => super.getAll();
 
-  Future<void> addItem(Item item) async => super.add(item);
+  Future<void> addItem(Item item) async {
+    _selectedId = item.id;
+    super.add(item);
+  }
 
   Future<void> editItem(Item item) async => super.edit(item);
 

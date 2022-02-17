@@ -29,10 +29,11 @@ class _RecordEditPageState extends State<RecordEditPage> {
     return Scaffold(
       appBar: PageAppBar(
           title: !isEditing ? 'Adding New Record' : 'Editing Record',
-          actionCallback: isEditing ? bloc.editRecord : bloc.saveRecord),
+          actionCallbacks: isEditing ? [bloc.editRecord] : [bloc.saveRecord]),
       body: _buildBody(),
     );
   }
+  
 
   _buildBody() {
     return BlocConsumer<RecordsPageBloc, RecordsPageState>(
@@ -66,10 +67,8 @@ class _RecordEditPageState extends State<RecordEditPage> {
           value: bloc.getSelectedItem?.name,
           error: supp.errors['item'],
           isEditable: !isEditing,
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => ItemsSearchPage<Item>(supp.itemList))),
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (_) => const ItemsSearchPage<Item>())),
         ),
         DateSelector(
           title: 'Date',

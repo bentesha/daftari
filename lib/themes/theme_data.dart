@@ -22,7 +22,7 @@ class AppTheme {
             elevation: 0,
             titleTextStyle: TextStyle(
                 color: AppColors.onSecondary,
-                fontSize: 20,
+                fontSize: 18,
                 fontFamily: Constants.kFontFam,
                 fontWeight: FontWeight.w500)),
         progressIndicatorTheme: const ProgressIndicatorThemeData(

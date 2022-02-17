@@ -19,6 +19,8 @@ dependencies:
   path_provider: ^2.0.8
   uuid: ^3.0.5
   date_time_picker: ^2.1.0
+  state_notifier: ^0.7.2+1
+
 
 dev_dependencies:
   flutter_test:

@@ -1,16 +1,13 @@
 import '../source.dart';
 
 class CategoriesPage extends StatefulWidget {
-  const CategoriesPage({Key? key, this.isFirstPage = false}) : super(key: key);
-
-  final bool isFirstPage;
+  const CategoriesPage({Key? key}) : super(key: key);
 
   @override
   State<CategoriesPage> createState() => _CategoriesPageState();
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   late final CategoryPageBloc bloc;
 
   @override
@@ -26,35 +23,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      drawer: const AppDrawer(Pages.categories_page),
-      appBar: widget.isFirstPage ? _buildAppBar2() : _buildAppBar(),
+      appBar: const PageAppBar(title: 'Categories'),
       body: _buildBody(),
       floatingActionButton: const AddButton(nextPage: CategoryEditPage()),
-      bottomNavigationBar: _buildBottomNavBar(),
-    );
-  }
-
-  _buildAppBar() {
-    final isScaffoldStateNull = _scaffoldKey.currentState == null;
-    _openDrawer() {
-      if (isScaffoldStateNull) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
-          _scaffoldKey.currentState!.openDrawer();
-        });
-      } else {
-        _scaffoldKey.currentState!.openDrawer();
-      }
-    }
-
-    return AppTopBar(showDrawerCallback: _openDrawer, title: "Categories");
-  }
-
-  _buildAppBar2() {
-    return AppBar(
-      title: AppText('Categories',
-          style: Theme.of(context).appBarTheme.titleTextStyle),
-      automaticallyImplyLeading: false,
     );
   }
 
@@ -78,9 +49,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Widget _buildContent(CategoryPageSupplements supp) {
     final categories = supp.categoryList;
     if (categories.isEmpty) {
-      return const EmptyStateWidget(
-          decscription:
-              'No categories found. Start creating categories by clicking on the bottom-right corner add button.');
+      return const EmptyStateWidget(message: emptyCategoriesMessage);
     }
 
     return ListView.separated(
@@ -109,29 +78,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
     );
   }
 
-  _buildBottomNavBar() {
-    return BlocBuilder<CategoryPageBloc, CategoryPagesState>(
-        bloc: bloc,
-        builder: (_, state) {
-          return state.when(
-              loading: (_) => Container(height: .01),
-              content: _buildGoToSalesPage,
-              success: _buildGoToSalesPage);
-        });
-  }
-
-  Widget _buildGoToSalesPage(CategoryPageSupplements supp) {
-    if (supp.categoryList.isNotEmpty && supp.itemList.isNotEmpty) {
-      return AppTextButton(
-          height: 50.dh,
-          width: double.infinity,
-          textColor: AppColors.accent,
-          backgroundColor: AppColors.secondary,
-          text: 'Go to homepage',
-          onPressed: () => Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (_) => const SalesRecordsPage()),
-              (route) => false));
-    }
-    return Container(height: .01);
-  }
+  static const emptyCategoriesMessage =
+      'No categories found. Start creating categories by clicking on the bottom-right corner add button.';
 }

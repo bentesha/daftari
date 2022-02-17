@@ -46,7 +46,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
     } else {
       final doesTitleExist = _checkIfGroupTitleExists();
       if (doesTitleExist) {
-        supp = supp.copyWith(errors: {'TitleExists': titleErrorMessage});
+        supp = supp.copyWith(errors: {'title_exists': titleErrorMessage});
         emit(GroupPagesState.content(supp));
       }
     }
@@ -116,11 +116,6 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
     emit(GroupPagesState.success(supp));
   }
 
-/*    List<Record> get getSpecificGroupRecords {
-    final supp = state.supplements;
-    return supp.recordList.where((e) => e.groupId == supp.id).toList();
-  } */
-
   _validate() {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
@@ -174,8 +169,6 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
     emit(GroupPagesState.content(supp));
   }
 
-  ///Goal here is to rebuild the widget with the updates list so that the
-  ///isItemListEmpty getter gets called again.
   _handleItemListUpdates() {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
@@ -193,7 +186,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
   }
 
   static const titleErrorMessage =
-      'The title for today is already taken, because the current group was named with date as its title.\n\n Two options: \nAdd another record in the group you already created \n OR \n Rename the group that already exists using a custom title.';
+      'ONLY TWO RECORDING FORMATS ARE ALLOWED IN A DAY:\n\n1. Creating multiple custom-titled groups\n\n2. Using a respective day as a group for all sales records in that day';
 
   ///SCENARIOS                                                  Adding                         Editing
   ///used-date-as-title & alone-in-the-day                      ERROR                          ----can create a custom title

@@ -2,14 +2,14 @@ import '../source.dart';
 
 class EmptyStateWidget extends StatelessWidget {
   const EmptyStateWidget(
-      {required this.decscription,
+      {required this.message,
       Key? key,
       this.onPressed,
       this.hasButton = false,
       this.buttonText})
       : super(key: key);
 
-  final String decscription;
+  final String message;
   final VoidCallback? onPressed;
   final bool hasButton;
   final String? buttonText;
@@ -25,7 +25,7 @@ class EmptyStateWidget extends StatelessWidget {
           SizedBox(height: 30.dh),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 19.dw),
-            child: AppText(decscription, alignment: TextAlign.center),
+            child: AppText(message, alignment: TextAlign.center),
           ),
           hasButton
               ? Builder(builder: (context) {

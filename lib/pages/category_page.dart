@@ -10,14 +10,14 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
-  late final ItemPageBloc bloc;
+  late final ProductPageBloc bloc;
 
   @override
   void initState() {
-    final service = Provider.of<ItemsService>(context, listen: false);
+    final service = Provider.of<ProductsService>(context, listen: false);
     final categoriesService =
         Provider.of<CategoriesService>(context, listen: false);
-    bloc = ItemPageBloc(service, categoriesService);
+    bloc = ProductPageBloc(service, categoriesService);
     bloc.init();
     super.initState();
   }
@@ -32,7 +32,7 @@ class _CategoryPageState extends State<CategoryPage> {
       ),
       body: _buildBody(),
       floatingActionButton:
-          AddButton(nextPage: ItemEditPage(categoryId: widget.category.id)),
+          AddButton(nextPage: ProductEditPage(categoryId: widget.category.id)),
     );
   }
 
@@ -44,7 +44,7 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   _buildBody() {
-    return BlocBuilder<ItemPageBloc, ItemPageState>(
+    return BlocBuilder<ProductPageBloc, ProductPageState>(
         bloc: bloc,
         builder: (_, state) {
           return state.when(
@@ -54,15 +54,15 @@ class _CategoryPageState extends State<CategoryPage> {
         });
   }
 
-  Widget _buildLoading(ItemSupplements supp) {
+  Widget _buildLoading(ProductPageSupplements supp) {
     return const Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  Widget _buildContent(ItemSupplements supp) {
+  Widget _buildContent(ProductPageSupplements supp) {
     final items =
-        supp.itemList.where((e) => e.categoryId == widget.category.id).toList();
+        supp.productList.where((e) => e.categoryId == widget.category.id).toList();
     if (items.isEmpty) {
       return const EmptyStateWidget(message: emptyItemsMessage);
     }
@@ -72,7 +72,7 @@ class _CategoryPageState extends State<CategoryPage> {
       itemCount: items.length,
       itemBuilder: (_, index) {
         final item = items[index];
-        return ItemTile(item);
+        return ProductTile(item);
       },
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,

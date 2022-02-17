@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'item_supplements.dart';
+part of 'product_supplements.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,11 +15,11 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$ItemSupplementsTearOff {
-  const _$ItemSupplementsTearOff();
+class _$ProductPageSupplementsTearOff {
+  const _$ProductPageSupplementsTearOff();
 
-  _ItemSupplements call(
-      {required List<Item> itemList,
+  _ProductPageSupplements call(
+      {required List<Product> productList,
       required List<Category> categoryList,
       required String name,
       required String categoryId,
@@ -29,8 +29,8 @@ class _$ItemSupplementsTearOff {
       required String barcode,
       required String quantity,
       required Map<String, String?> errors}) {
-    return _ItemSupplements(
-      itemList: itemList,
+    return _ProductPageSupplements(
+      productList: productList,
       categoryList: categoryList,
       name: name,
       categoryId: categoryId,
@@ -45,11 +45,11 @@ class _$ItemSupplementsTearOff {
 }
 
 /// @nodoc
-const $ItemSupplements = _$ItemSupplementsTearOff();
+const $ProductPageSupplements = _$ProductPageSupplementsTearOff();
 
 /// @nodoc
-mixin _$ItemSupplements {
-  List<Item> get itemList => throw _privateConstructorUsedError;
+mixin _$ProductPageSupplements {
+  List<Product> get productList => throw _privateConstructorUsedError;
   List<Category> get categoryList => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get categoryId => throw _privateConstructorUsedError;
@@ -61,17 +61,17 @@ mixin _$ItemSupplements {
   Map<String, String?> get errors => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $ItemSupplementsCopyWith<ItemSupplements> get copyWith =>
+  $ProductPageSupplementsCopyWith<ProductPageSupplements> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ItemSupplementsCopyWith<$Res> {
-  factory $ItemSupplementsCopyWith(
-          ItemSupplements value, $Res Function(ItemSupplements) then) =
-      _$ItemSupplementsCopyWithImpl<$Res>;
+abstract class $ProductPageSupplementsCopyWith<$Res> {
+  factory $ProductPageSupplementsCopyWith(ProductPageSupplements value,
+          $Res Function(ProductPageSupplements) then) =
+      _$ProductPageSupplementsCopyWithImpl<$Res>;
   $Res call(
-      {List<Item> itemList,
+      {List<Product> productList,
       List<Category> categoryList,
       String name,
       String categoryId,
@@ -84,17 +84,17 @@ abstract class $ItemSupplementsCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ItemSupplementsCopyWithImpl<$Res>
-    implements $ItemSupplementsCopyWith<$Res> {
-  _$ItemSupplementsCopyWithImpl(this._value, this._then);
+class _$ProductPageSupplementsCopyWithImpl<$Res>
+    implements $ProductPageSupplementsCopyWith<$Res> {
+  _$ProductPageSupplementsCopyWithImpl(this._value, this._then);
 
-  final ItemSupplements _value;
+  final ProductPageSupplements _value;
   // ignore: unused_field
-  final $Res Function(ItemSupplements) _then;
+  final $Res Function(ProductPageSupplements) _then;
 
   @override
   $Res call({
-    Object? itemList = freezed,
+    Object? productList = freezed,
     Object? categoryList = freezed,
     Object? name = freezed,
     Object? categoryId = freezed,
@@ -106,10 +106,10 @@ class _$ItemSupplementsCopyWithImpl<$Res>
     Object? errors = freezed,
   }) {
     return _then(_value.copyWith(
-      itemList: itemList == freezed
-          ? _value.itemList
-          : itemList // ignore: cast_nullable_to_non_nullable
-              as List<Item>,
+      productList: productList == freezed
+          ? _value.productList
+          : productList // ignore: cast_nullable_to_non_nullable
+              as List<Product>,
       categoryList: categoryList == freezed
           ? _value.categoryList
           : categoryList // ignore: cast_nullable_to_non_nullable
@@ -151,14 +151,14 @@ class _$ItemSupplementsCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$ItemSupplementsCopyWith<$Res>
-    implements $ItemSupplementsCopyWith<$Res> {
-  factory _$ItemSupplementsCopyWith(
-          _ItemSupplements value, $Res Function(_ItemSupplements) then) =
-      __$ItemSupplementsCopyWithImpl<$Res>;
+abstract class _$ProductPageSupplementsCopyWith<$Res>
+    implements $ProductPageSupplementsCopyWith<$Res> {
+  factory _$ProductPageSupplementsCopyWith(_ProductPageSupplements value,
+          $Res Function(_ProductPageSupplements) then) =
+      __$ProductPageSupplementsCopyWithImpl<$Res>;
   @override
   $Res call(
-      {List<Item> itemList,
+      {List<Product> productList,
       List<Category> categoryList,
       String name,
       String categoryId,
@@ -171,19 +171,19 @@ abstract class _$ItemSupplementsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$ItemSupplementsCopyWithImpl<$Res>
-    extends _$ItemSupplementsCopyWithImpl<$Res>
-    implements _$ItemSupplementsCopyWith<$Res> {
-  __$ItemSupplementsCopyWithImpl(
-      _ItemSupplements _value, $Res Function(_ItemSupplements) _then)
-      : super(_value, (v) => _then(v as _ItemSupplements));
+class __$ProductPageSupplementsCopyWithImpl<$Res>
+    extends _$ProductPageSupplementsCopyWithImpl<$Res>
+    implements _$ProductPageSupplementsCopyWith<$Res> {
+  __$ProductPageSupplementsCopyWithImpl(_ProductPageSupplements _value,
+      $Res Function(_ProductPageSupplements) _then)
+      : super(_value, (v) => _then(v as _ProductPageSupplements));
 
   @override
-  _ItemSupplements get _value => super._value as _ItemSupplements;
+  _ProductPageSupplements get _value => super._value as _ProductPageSupplements;
 
   @override
   $Res call({
-    Object? itemList = freezed,
+    Object? productList = freezed,
     Object? categoryList = freezed,
     Object? name = freezed,
     Object? categoryId = freezed,
@@ -194,11 +194,11 @@ class __$ItemSupplementsCopyWithImpl<$Res>
     Object? quantity = freezed,
     Object? errors = freezed,
   }) {
-    return _then(_ItemSupplements(
-      itemList: itemList == freezed
-          ? _value.itemList
-          : itemList // ignore: cast_nullable_to_non_nullable
-              as List<Item>,
+    return _then(_ProductPageSupplements(
+      productList: productList == freezed
+          ? _value.productList
+          : productList // ignore: cast_nullable_to_non_nullable
+              as List<Product>,
       categoryList: categoryList == freezed
           ? _value.categoryList
           : categoryList // ignore: cast_nullable_to_non_nullable
@@ -241,9 +241,9 @@ class __$ItemSupplementsCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ItemSupplements extends _ItemSupplements {
-  const _$_ItemSupplements(
-      {required this.itemList,
+class _$_ProductPageSupplements extends _ProductPageSupplements {
+  const _$_ProductPageSupplements(
+      {required this.productList,
       required this.categoryList,
       required this.name,
       required this.categoryId,
@@ -256,7 +256,7 @@ class _$_ItemSupplements extends _ItemSupplements {
       : super._();
 
   @override
-  final List<Item> itemList;
+  final List<Product> productList;
   @override
   final List<Category> categoryList;
   @override
@@ -278,15 +278,16 @@ class _$_ItemSupplements extends _ItemSupplements {
 
   @override
   String toString() {
-    return 'ItemSupplements(itemList: $itemList, categoryList: $categoryList, name: $name, categoryId: $categoryId, unit: $unit, unitPrice: $unitPrice, id: $id, barcode: $barcode, quantity: $quantity, errors: $errors)';
+    return 'ProductPageSupplements(productList: $productList, categoryList: $categoryList, name: $name, categoryId: $categoryId, unit: $unit, unitPrice: $unitPrice, id: $id, barcode: $barcode, quantity: $quantity, errors: $errors)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _ItemSupplements &&
-            const DeepCollectionEquality().equals(other.itemList, itemList) &&
+            other is _ProductPageSupplements &&
+            const DeepCollectionEquality()
+                .equals(other.productList, productList) &&
             const DeepCollectionEquality()
                 .equals(other.categoryList, categoryList) &&
             const DeepCollectionEquality().equals(other.name, name) &&
@@ -303,7 +304,7 @@ class _$_ItemSupplements extends _ItemSupplements {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(itemList),
+      const DeepCollectionEquality().hash(productList),
       const DeepCollectionEquality().hash(categoryList),
       const DeepCollectionEquality().hash(name),
       const DeepCollectionEquality().hash(categoryId),
@@ -316,13 +317,14 @@ class _$_ItemSupplements extends _ItemSupplements {
 
   @JsonKey(ignore: true)
   @override
-  _$ItemSupplementsCopyWith<_ItemSupplements> get copyWith =>
-      __$ItemSupplementsCopyWithImpl<_ItemSupplements>(this, _$identity);
+  _$ProductPageSupplementsCopyWith<_ProductPageSupplements> get copyWith =>
+      __$ProductPageSupplementsCopyWithImpl<_ProductPageSupplements>(
+          this, _$identity);
 }
 
-abstract class _ItemSupplements extends ItemSupplements {
-  const factory _ItemSupplements(
-      {required List<Item> itemList,
+abstract class _ProductPageSupplements extends ProductPageSupplements {
+  const factory _ProductPageSupplements(
+      {required List<Product> productList,
       required List<Category> categoryList,
       required String name,
       required String categoryId,
@@ -331,11 +333,11 @@ abstract class _ItemSupplements extends ItemSupplements {
       required String id,
       required String barcode,
       required String quantity,
-      required Map<String, String?> errors}) = _$_ItemSupplements;
-  const _ItemSupplements._() : super._();
+      required Map<String, String?> errors}) = _$_ProductPageSupplements;
+  const _ProductPageSupplements._() : super._();
 
   @override
-  List<Item> get itemList;
+  List<Product> get productList;
   @override
   List<Category> get categoryList;
   @override
@@ -356,6 +358,6 @@ abstract class _ItemSupplements extends ItemSupplements {
   Map<String, String?> get errors;
   @override
   @JsonKey(ignore: true)
-  _$ItemSupplementsCopyWith<_ItemSupplements> get copyWith =>
+  _$ProductPageSupplementsCopyWith<_ProductPageSupplements> get copyWith =>
       throw _privateConstructorUsedError;
 }

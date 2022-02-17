@@ -20,23 +20,23 @@ class _$RecordsSupplementsTearOff {
 
   _RecordsSupplements call(
       {required List<Record> recordList,
-      required List<Item> itemList,
+      required List<Product> productList,
       required Map<String, String?> errors,
       required String quantity,
       required DateTime date,
       String? notes,
       required String sellingPrice,
-      required String itemId,
+      required String productId,
       required String groupId}) {
     return _RecordsSupplements(
       recordList: recordList,
-      itemList: itemList,
+      productList: productList,
       errors: errors,
       quantity: quantity,
       date: date,
       notes: notes,
       sellingPrice: sellingPrice,
-      itemId: itemId,
+      productId: productId,
       groupId: groupId,
     );
   }
@@ -48,13 +48,13 @@ const $RecordsSupplements = _$RecordsSupplementsTearOff();
 /// @nodoc
 mixin _$RecordsSupplements {
   List<Record> get recordList => throw _privateConstructorUsedError;
-  List<Item> get itemList => throw _privateConstructorUsedError;
+  List<Product> get productList => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
   String get quantity => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
   String? get notes => throw _privateConstructorUsedError;
   String get sellingPrice => throw _privateConstructorUsedError;
-  String get itemId => throw _privateConstructorUsedError;
+  String get productId => throw _privateConstructorUsedError;
   String get groupId => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -69,13 +69,13 @@ abstract class $RecordsSupplementsCopyWith<$Res> {
       _$RecordsSupplementsCopyWithImpl<$Res>;
   $Res call(
       {List<Record> recordList,
-      List<Item> itemList,
+      List<Product> productList,
       Map<String, String?> errors,
       String quantity,
       DateTime date,
       String? notes,
       String sellingPrice,
-      String itemId,
+      String productId,
       String groupId});
 }
 
@@ -91,13 +91,13 @@ class _$RecordsSupplementsCopyWithImpl<$Res>
   @override
   $Res call({
     Object? recordList = freezed,
-    Object? itemList = freezed,
+    Object? productList = freezed,
     Object? errors = freezed,
     Object? quantity = freezed,
     Object? date = freezed,
     Object? notes = freezed,
     Object? sellingPrice = freezed,
-    Object? itemId = freezed,
+    Object? productId = freezed,
     Object? groupId = freezed,
   }) {
     return _then(_value.copyWith(
@@ -105,10 +105,10 @@ class _$RecordsSupplementsCopyWithImpl<$Res>
           ? _value.recordList
           : recordList // ignore: cast_nullable_to_non_nullable
               as List<Record>,
-      itemList: itemList == freezed
-          ? _value.itemList
-          : itemList // ignore: cast_nullable_to_non_nullable
-              as List<Item>,
+      productList: productList == freezed
+          ? _value.productList
+          : productList // ignore: cast_nullable_to_non_nullable
+              as List<Product>,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -129,9 +129,9 @@ class _$RecordsSupplementsCopyWithImpl<$Res>
           ? _value.sellingPrice
           : sellingPrice // ignore: cast_nullable_to_non_nullable
               as String,
-      itemId: itemId == freezed
-          ? _value.itemId
-          : itemId // ignore: cast_nullable_to_non_nullable
+      productId: productId == freezed
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
               as String,
       groupId: groupId == freezed
           ? _value.groupId
@@ -150,13 +150,13 @@ abstract class _$RecordsSupplementsCopyWith<$Res>
   @override
   $Res call(
       {List<Record> recordList,
-      List<Item> itemList,
+      List<Product> productList,
       Map<String, String?> errors,
       String quantity,
       DateTime date,
       String? notes,
       String sellingPrice,
-      String itemId,
+      String productId,
       String groupId});
 }
 
@@ -174,13 +174,13 @@ class __$RecordsSupplementsCopyWithImpl<$Res>
   @override
   $Res call({
     Object? recordList = freezed,
-    Object? itemList = freezed,
+    Object? productList = freezed,
     Object? errors = freezed,
     Object? quantity = freezed,
     Object? date = freezed,
     Object? notes = freezed,
     Object? sellingPrice = freezed,
-    Object? itemId = freezed,
+    Object? productId = freezed,
     Object? groupId = freezed,
   }) {
     return _then(_RecordsSupplements(
@@ -188,10 +188,10 @@ class __$RecordsSupplementsCopyWithImpl<$Res>
           ? _value.recordList
           : recordList // ignore: cast_nullable_to_non_nullable
               as List<Record>,
-      itemList: itemList == freezed
-          ? _value.itemList
-          : itemList // ignore: cast_nullable_to_non_nullable
-              as List<Item>,
+      productList: productList == freezed
+          ? _value.productList
+          : productList // ignore: cast_nullable_to_non_nullable
+              as List<Product>,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -212,9 +212,9 @@ class __$RecordsSupplementsCopyWithImpl<$Res>
           ? _value.sellingPrice
           : sellingPrice // ignore: cast_nullable_to_non_nullable
               as String,
-      itemId: itemId == freezed
-          ? _value.itemId
-          : itemId // ignore: cast_nullable_to_non_nullable
+      productId: productId == freezed
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
               as String,
       groupId: groupId == freezed
           ? _value.groupId
@@ -229,19 +229,19 @@ class __$RecordsSupplementsCopyWithImpl<$Res>
 class _$_RecordsSupplements implements _RecordsSupplements {
   const _$_RecordsSupplements(
       {required this.recordList,
-      required this.itemList,
+      required this.productList,
       required this.errors,
       required this.quantity,
       required this.date,
       this.notes,
       required this.sellingPrice,
-      required this.itemId,
+      required this.productId,
       required this.groupId});
 
   @override
   final List<Record> recordList;
   @override
-  final List<Item> itemList;
+  final List<Product> productList;
   @override
   final Map<String, String?> errors;
   @override
@@ -253,13 +253,13 @@ class _$_RecordsSupplements implements _RecordsSupplements {
   @override
   final String sellingPrice;
   @override
-  final String itemId;
+  final String productId;
   @override
   final String groupId;
 
   @override
   String toString() {
-    return 'RecordsSupplements(recordList: $recordList, itemList: $itemList, errors: $errors, quantity: $quantity, date: $date, notes: $notes, sellingPrice: $sellingPrice, itemId: $itemId, groupId: $groupId)';
+    return 'RecordsSupplements(recordList: $recordList, productList: $productList, errors: $errors, quantity: $quantity, date: $date, notes: $notes, sellingPrice: $sellingPrice, productId: $productId, groupId: $groupId)';
   }
 
   @override
@@ -269,14 +269,15 @@ class _$_RecordsSupplements implements _RecordsSupplements {
             other is _RecordsSupplements &&
             const DeepCollectionEquality()
                 .equals(other.recordList, recordList) &&
-            const DeepCollectionEquality().equals(other.itemList, itemList) &&
+            const DeepCollectionEquality()
+                .equals(other.productList, productList) &&
             const DeepCollectionEquality().equals(other.errors, errors) &&
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
             const DeepCollectionEquality().equals(other.date, date) &&
             const DeepCollectionEquality().equals(other.notes, notes) &&
             const DeepCollectionEquality()
                 .equals(other.sellingPrice, sellingPrice) &&
-            const DeepCollectionEquality().equals(other.itemId, itemId) &&
+            const DeepCollectionEquality().equals(other.productId, productId) &&
             const DeepCollectionEquality().equals(other.groupId, groupId));
   }
 
@@ -284,13 +285,13 @@ class _$_RecordsSupplements implements _RecordsSupplements {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(recordList),
-      const DeepCollectionEquality().hash(itemList),
+      const DeepCollectionEquality().hash(productList),
       const DeepCollectionEquality().hash(errors),
       const DeepCollectionEquality().hash(quantity),
       const DeepCollectionEquality().hash(date),
       const DeepCollectionEquality().hash(notes),
       const DeepCollectionEquality().hash(sellingPrice),
-      const DeepCollectionEquality().hash(itemId),
+      const DeepCollectionEquality().hash(productId),
       const DeepCollectionEquality().hash(groupId));
 
   @JsonKey(ignore: true)
@@ -302,19 +303,19 @@ class _$_RecordsSupplements implements _RecordsSupplements {
 abstract class _RecordsSupplements implements RecordsSupplements {
   const factory _RecordsSupplements(
       {required List<Record> recordList,
-      required List<Item> itemList,
+      required List<Product> productList,
       required Map<String, String?> errors,
       required String quantity,
       required DateTime date,
       String? notes,
       required String sellingPrice,
-      required String itemId,
+      required String productId,
       required String groupId}) = _$_RecordsSupplements;
 
   @override
   List<Record> get recordList;
   @override
-  List<Item> get itemList;
+  List<Product> get productList;
   @override
   Map<String, String?> get errors;
   @override
@@ -326,7 +327,7 @@ abstract class _RecordsSupplements implements RecordsSupplements {
   @override
   String get sellingPrice;
   @override
-  String get itemId;
+  String get productId;
   @override
   String get groupId;
   @override

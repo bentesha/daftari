@@ -20,7 +20,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
   void initState() {
     final recordsService = Provider.of<RecordsService>(context, listen: false);
     final groupsService = Provider.of<GroupsService>(context, listen: false);
-    final itemsService = Provider.of<ItemsService>(context, listen: false);
+    final itemsService = Provider.of<ProductsService>(context, listen: false);
     bloc = GroupPagesBloc(groupsService, recordsService, itemsService);
 
     final group = widget.group;

@@ -18,7 +18,7 @@ class RecordAdapter extends TypeAdapter<Record> {
     };
     return Record(
       id: fields[0] as String,
-      item: fields[4] as Item,
+      product: fields[4] as Product,
       date: fields[3] as DateTime,
       sellingPrice: fields[7] as double,
       notes: fields[2] as String?,
@@ -41,7 +41,7 @@ class RecordAdapter extends TypeAdapter<Record> {
       ..writeByte(3)
       ..write(obj.date)
       ..writeByte(4)
-      ..write(obj.item)
+      ..write(obj.product)
       ..writeByte(5)
       ..write(obj.quantity)
       ..writeByte(6)

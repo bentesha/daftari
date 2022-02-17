@@ -6,23 +6,23 @@ part 'records_supplements.freezed.dart';
 class RecordsSupplements with _$RecordsSupplements {
   const factory RecordsSupplements({
     required List<Record> recordList,
-    required List<Item> itemList,
+    required List<Product> productList,
     required Map<String, String?> errors,
     required String quantity,
     required DateTime date,
     String? notes,
     required String sellingPrice,
-    required String itemId,
+    required String productId,
     required String groupId,
   }) = _RecordsSupplements;
 
   factory RecordsSupplements.empty() => RecordsSupplements(
       recordList: [],
-      itemList: [],
+      productList: [],
       errors: <String, String?>{},
       date: DateTime.now(),
       notes: null,
-      itemId: '',
+      productId: '',
       groupId: '',
       sellingPrice: '',
       quantity: '');

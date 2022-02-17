@@ -1,21 +1,21 @@
 import '../source.dart';
 
 class CategoryPageBloc extends Cubit<CategoryPagesState> {
-  CategoryPageBloc(this.categoriesService, this.itemsService)
+  CategoryPageBloc(this.categoriesService, this.productsService)
       : super(CategoryPagesState.initial()) {
     categoriesService.addListener(() => _handleCategoryUpdates());
-    itemsService.addListener(() => _handleItemUpdates());
+    productsService.addListener(() => _handleItemUpdates());
   }
 
   final CategoriesService categoriesService;
-  final ItemsService itemsService;
+  final ProductsService productsService;
 
   void init({Category? category}) {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
     final categories = categoriesService.getAll();
-    final items = itemsService.getAll();
-    supp = supp.copyWith(categoryList: categories, itemList: items);
+    final products = productsService.getAll();
+    supp = supp.copyWith(categoryList: categories, productList: products);
     if (category != null) supp = supp.copyWith(category: category);
     emit(CategoryPagesState.content(supp));
   }
@@ -79,8 +79,8 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
   _handleItemUpdates() {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
-    final items = itemsService.getItemList;
-    supp = supp.copyWith(itemList: items);
+    final products = productsService.getProductList;
+    supp = supp.copyWith(productList: products);
     emit(CategoryPagesState.content(supp));
   }
 }

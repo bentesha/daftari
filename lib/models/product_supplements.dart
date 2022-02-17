@@ -1,13 +1,13 @@
 import '../source.dart';
 
-part 'item_supplements.freezed.dart';
+part 'product_supplements.freezed.dart';
 
 @freezed
-class ItemSupplements with _$ItemSupplements {
-  const ItemSupplements._();
+class ProductPageSupplements with _$ProductPageSupplements {
+  const ProductPageSupplements._();
 
-  const factory ItemSupplements(
-      {required List<Item> itemList,
+  const factory ProductPageSupplements(
+      {required List<Product> productList,
       required List<Category> categoryList,
       required String name,
       required String categoryId,
@@ -16,9 +16,9 @@ class ItemSupplements with _$ItemSupplements {
       required String id,
       required String barcode,
       required String quantity,
-      required Map<String, String?> errors}) = _ItemSupplements;
+      required Map<String, String?> errors}) = _ProductPageSupplements;
 
-  factory ItemSupplements.empty() => const ItemSupplements(
+  factory ProductPageSupplements.empty() => const ProductPageSupplements(
         name: '',
         errors: {},
         quantity: '',
@@ -27,7 +27,7 @@ class ItemSupplements with _$ItemSupplements {
         id: '',
         categoryId: '',
         unitPrice: '',
-        itemList: [],
+        productList: [],
         categoryList: [],
       );
 

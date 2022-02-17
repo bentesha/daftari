@@ -16,7 +16,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
   void initState() {
     final categoriesService =
         Provider.of<CategoriesService>(context, listen: false);
-    final itemsService = Provider.of<ItemsService>(context, listen: false);
+    final itemsService = Provider.of<ProductsService>(context, listen: false);
     bloc = CategoryPageBloc(categoriesService, itemsService);
     bloc.init(category: widget.category);
     super.initState();

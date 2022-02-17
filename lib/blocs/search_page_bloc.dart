@@ -1,13 +1,13 @@
 import '../source.dart';
 
 class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
-  SearchPageBloc(this.itemsService, this.categoriesService)
+  SearchPageBloc(this.productService, this.categoriesService)
       : super(SearchPageState<T>.initial()) {
-    itemsService.addListener(() => _handleItemUpdates());
+    productService.addListener(() => _handleItemUpdates());
     categoriesService.addListener(() => _handleCategoryUpdates());
   }
 
-  final ItemsService itemsService;
+  final ProductsService productService;
   final CategoriesService categoriesService;
 
   var _options = [];
@@ -15,7 +15,7 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
   void init() {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
-    if (T == Item) _options = itemsService.getAll();
+    if (T == Product) _options = productService.getAll();
     if (T == Category) _options = categoriesService.getAll();
     final options = _options.whereType<T>().toList();
     supp = supp.copyWith(options: options);
@@ -44,7 +44,7 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
   void updateId(String id) {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
-    if (T == Item) itemsService.updateId(id);
+    if (T == Product) productService.updateId(id);
     if (T == Category) categoriesService.updateId(id);
     emit(SearchPageState.success(supp));
   }
@@ -52,7 +52,7 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
   _handleItemUpdates() {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
-    final items = itemsService.getItemList.whereType<T>().toList();
+    final items = productService.getProductList.whereType<T>().toList();
     supp = supp.copyWith(options: items);
     emit(SearchPageState.content(supp));
   }

@@ -9,10 +9,10 @@ class CategoryPageSupplements with _$CategoryPageSupplements {
   const factory CategoryPageSupplements({
     required Category category,
     required List<Category> categoryList,
-    required List<Item> itemList,
+    required List<Product> productList,
     required Map<String, String?> errors,
   }) = _CategoryPageSupplements;
 
   factory CategoryPageSupplements.empty() => CategoryPageSupplements(
-      category: Category.empty(), categoryList: [], itemList: [], errors: {});
+      category: Category.empty(), categoryList: [], productList: [], errors: {});
 }

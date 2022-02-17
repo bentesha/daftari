@@ -14,7 +14,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   void initState() {
     final categoriesService =
         Provider.of<CategoriesService>(context, listen: false);
-    final itemsService = Provider.of<ItemsService>(context, listen: false);
+    final itemsService = Provider.of<ProductsService>(context, listen: false);
     bloc = CategoryPageBloc(categoriesService, itemsService);
     bloc.init();
     super.initState();
@@ -60,7 +60,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       itemCount: categories.length,
       itemBuilder: (_, index) {
         final category = categories[index];
-        final numberOfItems = supp.itemList
+        final numberOfItems = supp.productList
             .where((e) => e.categoryId == category.id)
             .toList()
             .length;

@@ -1,9 +1,9 @@
 import '../source.dart';
 
-part 'item.g.dart';
+part 'product.g.dart';
 
 @HiveType(typeId: 0)
-class Item {
+class Product {
   @HiveField(0)
   final String id;
 
@@ -25,7 +25,7 @@ class Item {
   @HiveField(6)
   final String barcode;
 
-  Item(
+  Product(
       {required this.id,
       required this.name,
       required this.unit,
@@ -34,7 +34,7 @@ class Item {
       required this.categoryId,
       required this.barcode});
 
-  factory Item.empty() => Item(
+  factory Product.empty() => Product(
       name: '',
       id: '',
       unit: 'ea.',
@@ -48,7 +48,7 @@ class Item {
 
   String get getUnitPrice => Utils.convertToMoneyFormat(unitPrice);
 
-  Item copyWith(
+  Product copyWith(
       {String? id,
       String? name,
       String? unit,
@@ -56,7 +56,7 @@ class Item {
       String? categoryId,
       String? barcode,
       double? quantity}) {
-    return Item(
+    return Product(
         id: id ?? this.id,
         name: name ?? this.name,
         unit: unit ?? this.unit,

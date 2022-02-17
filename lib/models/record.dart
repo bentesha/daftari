@@ -23,7 +23,7 @@ class Record {
   final DateTime date;
 
   @HiveField(4)
-  final Item item;
+  final Product product;
 
   @HiveField(5)
   final double quantity;
@@ -36,7 +36,7 @@ class Record {
 
   Record({
     required this.id,
-    required this.item,
+    required this.product,
     required this.date,
     required this.sellingPrice,
     this.notes,
@@ -49,7 +49,7 @@ class Record {
         id: '',
         groupId: '',
         date: DateTime.now(),
-        item: Item.empty(),
+        product: Product.empty(),
         quantity: 0,
         type: RecordsTypes.sales,
         sellingPrice: 0,
@@ -67,7 +67,7 @@ class Record {
         groupId: this.id,
         type: type,
         quantity: quantity ?? this.quantity,
-        item: item,
+        product: product,
         notes: notes,
       );
 

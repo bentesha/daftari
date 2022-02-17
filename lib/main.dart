@@ -9,18 +9,18 @@ void main() async {
   Hive
     ..init(appDirectory.path)
     ..registerAdapter(CategoryAdapter())
-    ..registerAdapter(ItemAdapter())
+    ..registerAdapter(ProductAdapter())
     ..registerAdapter(RecordAdapter())
     ..registerAdapter(GroupAdapter());
 
-  await Hive.openBox(Constants.kItemsBox);
+  await Hive.openBox(Constants.kProductsBox);
   await Hive.openBox(Constants.kRecordsBox);
   await Hive.openBox(Constants.kGroupsBox);
   await Hive.openBox(Constants.kCategoriesBox);
 
   final myApp = MultiProvider(
     providers: [
-      ChangeNotifierProvider<ItemsService>(create: (_) => ItemsService()),
+      ChangeNotifierProvider<ProductsService>(create: (_) => ProductsService()),
       ChangeNotifierProvider<GroupsService>(create: (_) => GroupsService()),
       ChangeNotifierProvider<RecordsService>(create: (_) => RecordsService()),
       ChangeNotifierProvider<CategoriesService>(
@@ -31,7 +31,7 @@ void main() async {
 
   await Hive.box(Constants.kGroupsBox).clear();
   await Hive.box(Constants.kRecordsBox).clear();
-  await Hive.box(Constants.kItemsBox).clear();
+  await Hive.box(Constants.kProductsBox).clear();
   await Hive.box(Constants.kCategoriesBox).clear();
 
   runApp(myApp);

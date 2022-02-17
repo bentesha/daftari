@@ -1,18 +1,18 @@
 import '../source.dart';
 
 class GroupPagesBloc extends Cubit<GroupPagesState> {
-  GroupPagesBloc(this.groupsService, this.recordsService, this.itemsService)
+  GroupPagesBloc(this.groupsService, this.recordsService, this.productsService)
       : super(GroupPagesState.initial()) {
     groupsService.addListener(() => _handleGroupListUpdates());
-    itemsService.addListener(() => _handleItemListUpdates());
+    productsService.addListener(() => _handleItemListUpdates());
     recordsService.addListener(() => _handleRecordsUpdates());
   }
 
   final GroupsService groupsService;
   final RecordsService recordsService;
-  final ItemsService itemsService;
+  final ProductsService productsService;
 
-  bool get isItemListEmpty => itemsService.getItemList.isEmpty;
+  bool get isItemListEmpty => productsService.getProductList.isEmpty;
 
   double get getGroupTotalAmount {
     final supp = state.supplements;
@@ -26,7 +26,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
     final groupsIdList = _getIdsFrom(groupList);
     final groupAmounts = recordsService.getGroupsRecordsTotal(groupsIdList);
     final canUseDateAsTitle = _checkIfCanUseDateAsTitle(group);
-    itemsService.init();
+    productsService.init();
 
     supp = supp.copyWith(
         groupList: groupList,
@@ -172,7 +172,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
   _handleItemListUpdates() {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
-    itemsService.init();
+    productsService.init();
     emit(GroupPagesState.content(supp));
   }
 

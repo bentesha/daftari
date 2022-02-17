@@ -8,14 +8,14 @@ class ItemsPage extends StatefulWidget {
 }
 
 class _ItemsPageState extends State<ItemsPage> {
-  late final ItemPageBloc bloc;
+  late final ProductPageBloc bloc;
 
   @override
   void initState() {
-    final service = Provider.of<ItemsService>(context, listen: false);
+    final service = Provider.of<ProductsService>(context, listen: false);
     final categoriesService =
         Provider.of<CategoriesService>(context, listen: false);
-    bloc = ItemPageBloc(service, categoriesService);
+    bloc = ProductPageBloc(service, categoriesService);
     bloc.init();
     super.initState();
   }
@@ -25,12 +25,12 @@ class _ItemsPageState extends State<ItemsPage> {
     return Scaffold(
       body: _buildBody(),
       appBar: const PageAppBar(title: 'Items'),
-      floatingActionButton: const AddButton(nextPage: ItemEditPage()),
+      floatingActionButton: const AddButton(nextPage: ProductEditPage()),
     );
   }
 
   _buildBody() {
-    return BlocBuilder<ItemPageBloc, ItemPageState>(
+    return BlocBuilder<ProductPageBloc, ProductPageState>(
         bloc: bloc,
         builder: (_, state) {
           return state.when(
@@ -40,12 +40,12 @@ class _ItemsPageState extends State<ItemsPage> {
         });
   }
 
-  Widget _buildLoading(ItemSupplements supp) {
+  Widget _buildLoading(ProductPageSupplements supp) {
     return const Center(child: CircularProgressIndicator());
   }
 
-  Widget _buildContent(ItemSupplements supp) {
-    final items = supp.itemList;
+  Widget _buildContent(ProductPageSupplements supp) {
+    final items = supp.productList;
     if (items.isEmpty) {
       return const EmptyStateWidget(message: emptyItemsDesc);
     }
@@ -55,7 +55,7 @@ class _ItemsPageState extends State<ItemsPage> {
       itemCount: items.length,
       itemBuilder: (_, index) {
         final item = items[index];
-        return ItemTile(item);
+        return ProductTile(item);
       },
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,

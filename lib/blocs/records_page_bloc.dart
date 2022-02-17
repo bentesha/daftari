@@ -1,19 +1,19 @@
 import '../source.dart';
 
 class RecordsPageBloc extends Cubit<RecordsPageState> {
-  RecordsPageBloc(this.recordsService, this.itemsService)
+  RecordsPageBloc(this.recordsService, this.productsService)
       : super(RecordsPageState.initial()) {
     recordsService.addListener(() => _handleRecordsUpdates());
-    itemsService.addListener(() => _handleItemUpdates());
+    productsService.addListener(() => _handleProductUpdates());
   }
 
   final RecordsService recordsService;
-  final ItemsService itemsService;
+  final ProductsService productsService;
 
-  bool get hasItems => itemsService.getItemList.isNotEmpty;
+  bool get hasProducts => productsService.getProductList.isNotEmpty;
 
-  Item? get getSelectedItem =>
-      itemsService.getItemById(state.supplements.itemId);
+  Product? get getSelectedProduct =>
+      productsService.getProductById(state.supplements.productId);
 
   Record? _record;
 
@@ -21,9 +21,9 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
     final recordList = recordsService.getAll();
-    final itemList = itemsService.getAll();
+    final productList = productsService.getAll();
     supp = supp.copyWith(
-        itemList: itemList,
+        productList: productList,
         recordList: recordList,
         groupId: groupId ?? supp.groupId);
     if (record != null) {
@@ -33,7 +33,7 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
           quantity: record.quantity.toString(),
           date: record.date,
           notes: record.notes,
-          itemId: record.item.id);
+          productId: record.product.id);
     }
     emit(RecordsPageState.content(supp));
   }
@@ -67,7 +67,7 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
-    final index = supp.itemList.indexWhere((e) => e.id == supp.itemId);
+    final index = supp.productList.indexWhere((e) => e.id == supp.productId);
 
     final record = Record(
       date: supp.date,
@@ -75,7 +75,7 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
       groupId: supp.groupId,
       type: RecordsTypes.sales,
       quantity: double.parse(supp.quantity),
-      item: supp.itemList[index],
+      product: supp.productList[index],
       sellingPrice: double.parse(supp.sellingPrice),
       notes: supp.notes,
     );
@@ -104,9 +104,9 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
 
     final errors = <String, String?>{};
 
-    errors['item'] = InputValidation.validateText(supp.itemId, 'Item');
+    errors['product'] = InputValidation.validateText(supp.productId, 'product');
     errors['price'] =
-        InputValidation.validateNumber(supp.sellingPrice, 'Item Price');
+        InputValidation.validateNumber(supp.sellingPrice, 'price');
     errors['quantity'] =
         InputValidation.validateNumber(supp.quantity, 'Quantity');
 
@@ -121,17 +121,17 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
     emit(RecordsPageState.content(supp));
   }
 
-  _handleItemUpdates() {
+  _handleProductUpdates() {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
-    final id = itemsService.getSelectedItemId;
-    final item = itemsService.getItemById(id);
-    final items = itemsService.getItemList;
+    final id = productsService.getSelectedProductId;
+    final product = productsService.getProductById(id);
+    final products = productsService.getProductList;
     supp = supp.copyWith(
-        itemId: id,
+        productId: id,
         quantity: '1',
-        sellingPrice: item!.unitPrice.toString(),
-        itemList: items);
+        sellingPrice: product!.unitPrice.toString(),
+        productList: products);
     emit(RecordsPageState.content(supp));
   }
 }

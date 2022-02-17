@@ -17,7 +17,7 @@ class _RecordEditPageState extends State<RecordEditPage> {
   @override
   void initState() {
     final recordsService = Provider.of<RecordsService>(context, listen: false);
-    final itemsService = Provider.of<ItemsService>(context, listen: false);
+    final itemsService = Provider.of<ProductsService>(context, listen: false);
     bloc = RecordsPageBloc(recordsService, itemsService);
     isEditing = widget.record != null;
     bloc.init(widget.groupId, widget.record);
@@ -64,11 +64,11 @@ class _RecordEditPageState extends State<RecordEditPage> {
       children: [
         ValueSelector(
           title: 'Item',
-          value: bloc.getSelectedItem?.name,
+          value: bloc.getSelectedProduct?.name,
           error: supp.errors['item'],
           isEditable: !isEditing,
           onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (_) => const ItemsSearchPage<Item>())),
+              MaterialPageRoute(builder: (_) => const ItemsSearchPage<Product>())),
         ),
         DateSelector(
           title: 'Date',

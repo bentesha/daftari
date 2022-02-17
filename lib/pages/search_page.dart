@@ -16,7 +16,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
   void initState() {
     final categoriesService =
         Provider.of<CategoriesService>(context, listen: false);
-    final itemsService = Provider.of<ItemsService>(context, listen: false);
+    final itemsService = Provider.of<ProductsService>(context, listen: false);
     bloc = SearchPageBloc(itemsService, categoriesService);
     bloc.init();
     super.initState();
@@ -150,7 +150,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
     late Widget nextPage;
 
     if (T == Category) nextPage = const CategoryEditPage();
-    if (T == Item) nextPage = const ItemEditPage();
+    if (T == Product) nextPage = const ProductEditPage();
     Navigator.push(context, MaterialPageRoute(builder: (_) => nextPage));
   }
 }

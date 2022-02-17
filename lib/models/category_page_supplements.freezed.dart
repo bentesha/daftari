@@ -21,12 +21,12 @@ class _$CategoryPageSupplementsTearOff {
   _CategoryPageSupplements call(
       {required Category category,
       required List<Category> categoryList,
-      required List<Item> itemList,
+      required List<Product> productList,
       required Map<String, String?> errors}) {
     return _CategoryPageSupplements(
       category: category,
       categoryList: categoryList,
-      itemList: itemList,
+      productList: productList,
       errors: errors,
     );
   }
@@ -39,7 +39,7 @@ const $CategoryPageSupplements = _$CategoryPageSupplementsTearOff();
 mixin _$CategoryPageSupplements {
   Category get category => throw _privateConstructorUsedError;
   List<Category> get categoryList => throw _privateConstructorUsedError;
-  List<Item> get itemList => throw _privateConstructorUsedError;
+  List<Product> get productList => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -55,7 +55,7 @@ abstract class $CategoryPageSupplementsCopyWith<$Res> {
   $Res call(
       {Category category,
       List<Category> categoryList,
-      List<Item> itemList,
+      List<Product> productList,
       Map<String, String?> errors});
 }
 
@@ -72,7 +72,7 @@ class _$CategoryPageSupplementsCopyWithImpl<$Res>
   $Res call({
     Object? category = freezed,
     Object? categoryList = freezed,
-    Object? itemList = freezed,
+    Object? productList = freezed,
     Object? errors = freezed,
   }) {
     return _then(_value.copyWith(
@@ -84,10 +84,10 @@ class _$CategoryPageSupplementsCopyWithImpl<$Res>
           ? _value.categoryList
           : categoryList // ignore: cast_nullable_to_non_nullable
               as List<Category>,
-      itemList: itemList == freezed
-          ? _value.itemList
-          : itemList // ignore: cast_nullable_to_non_nullable
-              as List<Item>,
+      productList: productList == freezed
+          ? _value.productList
+          : productList // ignore: cast_nullable_to_non_nullable
+              as List<Product>,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -106,7 +106,7 @@ abstract class _$CategoryPageSupplementsCopyWith<$Res>
   $Res call(
       {Category category,
       List<Category> categoryList,
-      List<Item> itemList,
+      List<Product> productList,
       Map<String, String?> errors});
 }
 
@@ -126,7 +126,7 @@ class __$CategoryPageSupplementsCopyWithImpl<$Res>
   $Res call({
     Object? category = freezed,
     Object? categoryList = freezed,
-    Object? itemList = freezed,
+    Object? productList = freezed,
     Object? errors = freezed,
   }) {
     return _then(_CategoryPageSupplements(
@@ -138,10 +138,10 @@ class __$CategoryPageSupplementsCopyWithImpl<$Res>
           ? _value.categoryList
           : categoryList // ignore: cast_nullable_to_non_nullable
               as List<Category>,
-      itemList: itemList == freezed
-          ? _value.itemList
-          : itemList // ignore: cast_nullable_to_non_nullable
-              as List<Item>,
+      productList: productList == freezed
+          ? _value.productList
+          : productList // ignore: cast_nullable_to_non_nullable
+              as List<Product>,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -156,7 +156,7 @@ class _$_CategoryPageSupplements extends _CategoryPageSupplements {
   const _$_CategoryPageSupplements(
       {required this.category,
       required this.categoryList,
-      required this.itemList,
+      required this.productList,
       required this.errors})
       : super._();
 
@@ -165,13 +165,13 @@ class _$_CategoryPageSupplements extends _CategoryPageSupplements {
   @override
   final List<Category> categoryList;
   @override
-  final List<Item> itemList;
+  final List<Product> productList;
   @override
   final Map<String, String?> errors;
 
   @override
   String toString() {
-    return 'CategoryPageSupplements(category: $category, categoryList: $categoryList, itemList: $itemList, errors: $errors)';
+    return 'CategoryPageSupplements(category: $category, categoryList: $categoryList, productList: $productList, errors: $errors)';
   }
 
   @override
@@ -182,7 +182,8 @@ class _$_CategoryPageSupplements extends _CategoryPageSupplements {
             const DeepCollectionEquality().equals(other.category, category) &&
             const DeepCollectionEquality()
                 .equals(other.categoryList, categoryList) &&
-            const DeepCollectionEquality().equals(other.itemList, itemList) &&
+            const DeepCollectionEquality()
+                .equals(other.productList, productList) &&
             const DeepCollectionEquality().equals(other.errors, errors));
   }
 
@@ -191,7 +192,7 @@ class _$_CategoryPageSupplements extends _CategoryPageSupplements {
       runtimeType,
       const DeepCollectionEquality().hash(category),
       const DeepCollectionEquality().hash(categoryList),
-      const DeepCollectionEquality().hash(itemList),
+      const DeepCollectionEquality().hash(productList),
       const DeepCollectionEquality().hash(errors));
 
   @JsonKey(ignore: true)
@@ -205,7 +206,7 @@ abstract class _CategoryPageSupplements extends CategoryPageSupplements {
   const factory _CategoryPageSupplements(
       {required Category category,
       required List<Category> categoryList,
-      required List<Item> itemList,
+      required List<Product> productList,
       required Map<String, String?> errors}) = _$_CategoryPageSupplements;
   const _CategoryPageSupplements._() : super._();
 
@@ -214,7 +215,7 @@ abstract class _CategoryPageSupplements extends CategoryPageSupplements {
   @override
   List<Category> get categoryList;
   @override
-  List<Item> get itemList;
+  List<Product> get productList;
   @override
   Map<String, String?> get errors;
   @override

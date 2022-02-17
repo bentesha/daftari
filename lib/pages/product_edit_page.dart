@@ -1,32 +1,32 @@
 import '../source.dart';
 
-class ItemEditPage extends StatefulWidget {
-  const ItemEditPage({Key? key, this.item, this.categoryId}) : super(key: key);
+class ProductEditPage extends StatefulWidget {
+  const ProductEditPage({Key? key, this.product, this.categoryId}) : super(key: key);
 
-  final Item? item;
+  final Product? product;
   final String? categoryId;
 
-  static void navigateTo(BuildContext context, {Item? item}) {
+  static void navigateTo(BuildContext context, {Product? Product}) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (_) => ItemEditPage(item: item)));
+        context, MaterialPageRoute(builder: (_) => ProductEditPage(product: Product)));
   }
 
   @override
-  State<ItemEditPage> createState() => _ItemEditPageState();
+  State<ProductEditPage> createState() => _ProductEditPageState();
 }
 
-class _ItemEditPageState extends State<ItemEditPage> {
-  late final ItemPageBloc bloc;
+class _ProductEditPageState extends State<ProductEditPage> {
+  late final ProductPageBloc bloc;
   late final bool hasNoCategoryId;
 
   @override
   void initState() {
-    hasNoCategoryId = widget.item == null && widget.categoryId == null;
-    final service = Provider.of<ItemsService>(context, listen: false);
+    hasNoCategoryId = widget.product == null && widget.categoryId == null;
+    final service = Provider.of<ProductsService>(context, listen: false);
     final categoriesService =
         Provider.of<CategoriesService>(context, listen: false);
-    bloc = ItemPageBloc(service, categoriesService);
-    bloc.init(item: widget.item, categoryId: widget.categoryId);
+    bloc = ProductPageBloc(service, categoriesService);
+    bloc.init(product: widget.product, categoryId: widget.categoryId);
     super.initState();
   }
 
@@ -34,7 +34,7 @@ class _ItemEditPageState extends State<ItemEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: BlocConsumer<ItemPageBloc, ItemPageState>(
+      body: BlocConsumer<ProductPageBloc, ProductPageState>(
           bloc: bloc,
           listener: (_, state) {
             final isSaved =
@@ -53,17 +53,17 @@ class _ItemEditPageState extends State<ItemEditPage> {
 
   _buildAppBar() {
     return PageAppBar(
-        title: hasNoCategoryId ? 'Add Item' : 'Edit Item',
-        actionCallbacks: [bloc.saveItem]);
+        title: hasNoCategoryId ? 'Add Product' : 'Edit Product',
+        actionCallbacks: [bloc.saveProduct]);
   }
 
-  Widget _buildLoading(ItemSupplements supp) {
+  Widget _buildLoading(ProductPageSupplements supp) {
     return const Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  Widget _buildContent(ItemSupplements supp) {
+  Widget _buildContent(ProductPageSupplements supp) {
     final errors = supp.errors;
 
     return ListView(padding: EdgeInsets.zero, children: [
@@ -137,7 +137,7 @@ class _ItemEditPageState extends State<ItemEditPage> {
     ]);
   }
 
-  _buildTotalOpeningValue(ItemSupplements supp) {
+  _buildTotalOpeningValue(ProductPageSupplements supp) {
     if (!supp.canCalculateTotalPrice) return Container();
 
     return Column(

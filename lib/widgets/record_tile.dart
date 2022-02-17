@@ -7,7 +7,7 @@ class RecordTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final item = record.item;
+    final item = record.product;
 
     return AppTextButton(
       padding: EdgeInsets.symmetric(horizontal: 19.dw, vertical: 8.dh),

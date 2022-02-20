@@ -7,14 +7,14 @@ class ProductTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppTextButton(
+    return AppMaterialButton(
       onPressed: () => Navigator.push(context,
           MaterialPageRoute(builder: (_) => ProductEditPage(product: product))),
       padding: EdgeInsets.symmetric(horizontal: 19.dw),
       isFilled: false,
       child: ListTile(
         title: AppText(product.name),
-        trailing: AppText(product.getQuantityValue, weight: FontWeight.bold),
+        trailing: AppText(product.getUnitPrice, weight: FontWeight.bold),
       ),
     );
   }

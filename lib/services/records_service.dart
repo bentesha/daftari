@@ -20,6 +20,8 @@ class RecordsService extends ChangeNotifier {
     return _recordList;
   }
 
+  void init() => getAll();
+
   Future<void> addRecord(Record record) async {
     await _box.add(record);
     _recordList.add(record);
@@ -62,16 +64,4 @@ class RecordsService extends ChangeNotifier {
   }
 
   double getRecordsTotalByGroup(String id) => _getTotalRecordsAmount(id);
-
-  double getRecordsTotalByDay(int day) => _getTotalRecordsAmount(null, day);
-
-  Map<int, double> getAllRecordsTotalByDay() {
-    final days = DateFormatter.getDaysInMonth();
-    final amountsMap = <int, double>{};
-    for (int day = 1; day <= days; day++) {
-      final amountsList = getRecordsTotalByDay(day);
-      amountsMap[day] = amountsList;
-    }
-    return amountsMap;
-  }
 }

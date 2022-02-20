@@ -26,7 +26,8 @@ class ProductPageBloc extends Cubit<ProductPageState> {
     final categories = categoriesService.getAll();
 
     if (categoryId != null) {
-      productList = productList.where((e) => e.categoryId == categoryId).toList();
+      productList =
+          productList.where((e) => e.categoryId == categoryId).toList();
       supp = supp.copyWith(categoryId: categoryId);
     }
 

@@ -43,13 +43,9 @@ class _GroupEditPageState extends State<GroupEditPage> {
           final isSuccessful =
               state.maybeWhen(success: (_) => true, orElse: () => false);
 
-          if (isSuccessful && !isEditing) Navigator.pop(context);
-          if (isSuccessful && isEditing) _popUntilSalesGroupsPage();
+          if (isSuccessful) Navigator.pop(context);
         });
   }
-
-  _popUntilSalesGroupsPage() =>
-      Navigator.of(context).popUntil((route) => route.isFirst);
 
   Widget _buildContent(GroupSupplements supp) {
     final hasTitleError = supp.errors['title_exists'] != null;
@@ -57,14 +53,11 @@ class _GroupEditPageState extends State<GroupEditPage> {
     return Scaffold(
       appBar: PageAppBar(
           title: '${isEditing ? 'Edit' : 'Add'} Records Group',
-          actionIcons: [
-            isEditing ? Icons.edit_outlined : Icons.done,
-            Icons.delete_outline
-          ],
+          actionIcons: const [Icons.done],
           actionCallbacks: hasTitleError
               ? []
               : isEditing
-                  ? [bloc.editGroup, null]
+                  ? [bloc.editGroup]
                   : [bloc.saveGroup]),
       body: _buildGroupDetails(supp),
     );

@@ -24,9 +24,10 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
     emit(GroupPagesState.loading(supp));
     final groupList = groupsService.getAll();
     final groupsIdList = _getIdsFrom(groupList);
+    recordsService.init();
     final groupAmounts = recordsService.getGroupsRecordsTotal(groupsIdList);
     final canUseDateAsTitle = _checkIfCanUseDateAsTitle(group);
-    productsService.init();
+    //  productsService.getAll();
 
     supp = supp.copyWith(
         groupList: groupList,
@@ -164,15 +165,18 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
   _handleGroupListUpdates() {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
+    final editedGroupId = groupsService.getEditedGroupId;
+    final title =
+        groupsService.getGroupById(editedGroupId)?.title ?? supp.title;
     final groupList = groupsService.getGroupList;
-    supp = supp.copyWith(groupList: groupList);
+    supp = supp.copyWith(groupList: groupList, title: title);
     emit(GroupPagesState.content(supp));
   }
 
   _handleItemListUpdates() {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
-    productsService.init();
+    productsService.getAll();
     emit(GroupPagesState.content(supp));
   }
 

@@ -114,11 +114,6 @@ class AppDrawer extends StatelessWidget {
   }
 
   _navigateTo(Pages page, BuildContext context) {
-    if (page == pageNotifier.value) {
-      Navigator.pop(context);
-      return;
-    }
-
     late Widget? nextPage;
 
     pageNotifier.value = page;

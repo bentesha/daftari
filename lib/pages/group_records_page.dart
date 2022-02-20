@@ -40,18 +40,18 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
 
   Widget _buildContent(GroupSupplements supp) {
     return Scaffold(
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(supp.title),
       body: _buildRecords(supp),
       floatingActionButton: _buildAddItemButton(),
       bottomNavigationBar: _buildBottomNavBar(),
     );
   }
 
-  _buildAppBar() {
+  _buildAppBar(String title) {
     return PageAppBar(
-      title: widget.group.title + ' Sales',
-      actionIcons: const [Icons.edit_outlined, Icons.delete_outline],
-      actionCallbacks: [_navigateToGroupEditPage, null],
+      title: title + ' Sales',
+      actionIcons: const [Icons.edit_outlined],
+      actionCallbacks: [_navigateToGroupEditPage],
     );
   }
 

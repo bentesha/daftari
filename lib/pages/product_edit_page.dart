@@ -6,9 +6,9 @@ class ProductEditPage extends StatefulWidget {
   final Product? product;
   final String? categoryId;
 
-  static void navigateTo(BuildContext context, {Product? Product}) {
+  static void navigateTo(BuildContext context, {Product? product}) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (_) => ProductEditPage(product: Product)));
+        context, MaterialPageRoute(builder: (_) => ProductEditPage(product: product)));
   }
 
   @override

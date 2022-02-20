@@ -2,7 +2,7 @@ class Constants {
   static const kFontFam = 'Avenir';
   static const kFontFam2 = 'AndroidEuclid';
 
-  static const kProductsBox = 'items_box';
+  static const kProductsBox = 'products_box';
   static const kRecordsBox = 'records_box';
   static const kGroupsBox = 'groups_box';
   static const kCategoriesBox = 'categories_box';

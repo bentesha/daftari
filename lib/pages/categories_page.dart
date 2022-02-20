@@ -65,13 +65,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
             .toList()
             .length;
 
-        return AppMaterialButton(
-            onPressed: () => Navigator.push(context,
-                MaterialPageRoute(builder: (_) => CategoryPage(category))),
-            padding: EdgeInsets.symmetric(vertical: 5.dh),
-            isFilled: false,
-            child: CategoryTile(
-                title: category.name, numberOfItems: numberOfItems));
+        return CategoryTile(category: category, numberOfItems: numberOfItems);
       },
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,

@@ -9,7 +9,7 @@ class RecordTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final item = record.product;
 
-    return AppTextButton(
+    return AppMaterialButton(
       padding: EdgeInsets.symmetric(horizontal: 19.dw, vertical: 8.dh),
       isFilled: false,
       onPressed: () => _onPressed(context),

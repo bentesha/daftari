@@ -13,14 +13,12 @@ class ProductsService extends Service<Product> {
 
   Product? getProductById(String id) => box.get(id) as Product?;
 
-  List<Product> init() => super.getAll();
-
   Future<void> addProduct(Product product) async {
     _selectedId = product.id;
-    super.add(Product);
+    await super.add(product);
   }
 
-  Future<void> editProduct(Product product) async => super.edit(Product);
+  Future<void> editProduct(Product product) async => await super.edit(product);
 
   void updateId(String id) {
     _selectedId = id;

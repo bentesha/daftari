@@ -13,12 +13,10 @@ enum Pages {
 }
 
 class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
-  const AppTopBar(
-      {Key? key, required this.title, required this.showDrawerCallback})
+  const AppTopBar({Key? key, required this.showDrawerCallback})
       : super(key: key);
 
   final VoidCallback showDrawerCallback;
-  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +27,8 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
             .appBarTheme
             .copyWith(titleTextStyle: TextStyle(fontSize: 18.dw)),
       ),
-      child: AppBar(
-          elevation: 0, title: const Text('INVENTORY MANAGEMENT SYSTEM')),
+      child:
+          AppBar(elevation: 0, title: const Text('DAFTARI'), centerTitle: true),
     );
   }
 

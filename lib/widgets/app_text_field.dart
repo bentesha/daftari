@@ -35,7 +35,7 @@ class _AppTextFieldState extends State<AppTextField> {
   final controller = TextEditingController();
   final isVisibleNotifier = ValueNotifier<bool>(false);
 
-  @override
+/*   @override
   void initState() {
     final text = widget.text ?? '';
     final isEditing = text.trim().isNotEmpty;
@@ -47,11 +47,15 @@ class _AppTextFieldState extends State<AppTextField> {
 
     super.initState();
   }
-
+ */
   @override
   Widget build(BuildContext context) {
     final hasError = widget.error != null;
     final border = hasError ? _errorBorder : _inputBorder;
+
+    controller.text = widget.text ?? '';
+    controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: controller.text.length));
 
     return Padding(
       padding: EdgeInsets.only(left: 19.dw, right: 19.dw, bottom: 20.dh),

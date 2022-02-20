@@ -33,7 +33,6 @@ class _RecordEditPageState extends State<RecordEditPage> {
       body: _buildBody(),
     );
   }
-  
 
   _buildBody() {
     return BlocConsumer<RecordsPageBloc, RecordsPageState>(
@@ -60,6 +59,7 @@ class _RecordEditPageState extends State<RecordEditPage> {
   }
 
   Widget _buildContent(RecordsSupplements supp) {
+    log(supp.quantity);
     return Column(
       children: [
         ValueSelector(
@@ -67,8 +67,10 @@ class _RecordEditPageState extends State<RecordEditPage> {
           value: bloc.getSelectedProduct?.name,
           error: supp.errors['item'],
           isEditable: !isEditing,
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (_) => const ItemsSearchPage<Product>())),
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => const ItemsSearchPage<Product>())),
         ),
         DateSelector(
           title: 'Date',

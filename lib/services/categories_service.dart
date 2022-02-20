@@ -14,12 +14,11 @@ class CategoriesService extends Service<Category> {
 
   Future<void> addCategory(Category category) async {
     _selectedId = category.id;
-    super.add(category);
+    await super.add(category);
   }
 
-  Future<void> editCategory(Category category) async => super.edit(category);
-
-  List<Category> init() => super.getAll();
+  Future<void> editCategory(Category category) async =>
+      await super.edit(category);
 
   void updateId(String id) {
     _selectedId = id;

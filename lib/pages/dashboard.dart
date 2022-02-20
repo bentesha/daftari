@@ -26,6 +26,6 @@ class Dashboard extends StatelessWidget {
       }
     }
 
-    return AppTopBar(showDrawerCallback: _openDrawer, title: "Dashboard");
+    return AppTopBar(showDrawerCallback: _openDrawer);
   }
 }

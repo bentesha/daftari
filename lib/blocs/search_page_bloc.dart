@@ -1,6 +1,6 @@
 import '../source.dart';
 
-class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
+class SearchPageBloc<T> extends Cubit<SearchPageState<T>> with ServicesInitializer {
   SearchPageBloc(this.productService, this.categoriesService)
       : super(SearchPageState<T>.initial()) {
     productService.addListener(() => _handleItemUpdates());
@@ -15,8 +15,9 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
   void init() {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
-    if (T == Product) _options = productService.getAll();
-    if (T == Category) _options = categoriesService.getAll();
+    _initServices();
+    if (T == Product) _options = productService.getProductList;
+    if (T == Category) _options = categoriesService.getCategoryList;
     final options = _options.whereType<T>().toList();
     supp = supp.copyWith(options: options);
     emit(SearchPageState.content(supp));
@@ -64,5 +65,10 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
         categoriesService.getCategoryList.whereType<T>().toList();
     supp = supp.copyWith(options: categories);
     emit(SearchPageState.content(supp));
+  }
+
+  _initServices() {
+    if (T == Product) initServices(productService);
+    if (T == Category) initServices(null, null, null, categoriesService);
   }
 }

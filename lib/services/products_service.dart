@@ -18,6 +18,9 @@ class ProductsService extends Service<Product> {
     await super.add(product);
   }
 
+  ///Gets all products from the Hive database
+  void init() => super.getAll();
+
   Future<void> editProduct(Product product) async => await super.edit(product);
 
   void updateId(String id) {

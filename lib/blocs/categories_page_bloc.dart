@@ -1,6 +1,7 @@
 import '../source.dart';
 
-class CategoryPageBloc extends Cubit<CategoryPagesState> {
+class CategoryPageBloc extends Cubit<CategoryPagesState>
+    with ServicesInitializer {
   CategoryPageBloc(this.categoriesService, this.productsService)
       : super(CategoryPagesState.initial()) {
     categoriesService.addListener(() => _handleCategoryUpdates());
@@ -13,8 +14,9 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
   void init({Category? category}) {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
-    final categories = categoriesService.getAll();
-    final products = productsService.getAll();
+    initServices(productsService, null, null, categoriesService);
+    final categories = categoriesService.getCategoryList;
+    final products = productsService.getProductList;
     supp = supp.copyWith(categoryList: categories, productList: products);
     if (category != null) supp = supp.copyWith(category: category);
     emit(CategoryPagesState.content(supp));

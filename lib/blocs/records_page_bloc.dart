@@ -1,6 +1,6 @@
 import '../source.dart';
 
-class RecordsPageBloc extends Cubit<RecordsPageState> {
+class RecordsPageBloc extends Cubit<RecordsPageState> with ServicesInitializer {
   RecordsPageBloc(this.recordsService, this.productsService)
       : super(RecordsPageState.initial()) {
     recordsService.addListener(() => _handleRecordsUpdates());
@@ -20,13 +20,15 @@ class RecordsPageBloc extends Cubit<RecordsPageState> {
   void init([String? groupId, Record? record]) {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
-    final recordList = recordsService.getAll();
-    final productList = productsService.getAll();
+    initServices(productsService, recordsService);
+    final recordList = recordsService.getRecordList;
+    final productList = productsService.getProductList;
     supp = supp.copyWith(
         productList: productList,
         recordList: recordList,
         groupId: groupId ?? supp.groupId);
     if (record != null) {
+      log(record.groupId);
       _record = record;
       supp = supp.copyWith(
           sellingPrice: record.sellingPrice.toString(),

@@ -10,6 +10,8 @@ class CategoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final shouldUsePlural = numberOfItems > 1 || numberOfItems == 0;
+
     return AppMaterialButton(
       onPressed: () => Navigator.push(
           context, MaterialPageRoute(builder: (_) => CategoryPage(category))),
@@ -17,8 +19,7 @@ class CategoryTile extends StatelessWidget {
       isFilled: false,
       child: ListTile(
           title: AppText(category.name, weight: FontWeight.w500),
-          subtitle: AppText(
-              '$numberOfItems item${numberOfItems > 1 ? 's' : ''}',
+          subtitle: AppText('$numberOfItems item${shouldUsePlural ? 's' : ''}',
               opacity: .75)),
     );
   }

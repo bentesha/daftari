@@ -1,13 +1,13 @@
 import '../source.dart';
 
-class ProductPageBloc extends Cubit<ProductPageState> {
-  ProductPageBloc(this.service, this.categoriesService)
+class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
+  ProductPageBloc(this.productsService, this.categoriesService)
       : super(ProductPageState.initial()) {
-    service.addListener(() => _handleproductUpdates());
+    productsService.addListener(() => _handleproductUpdates());
     categoriesService.addListener(() => _handleCategoryUpdates());
   }
 
-  final ProductsService service;
+  final ProductsService productsService;
   final CategoriesService categoriesService;
 
   Category? get getSelectedCategory {
@@ -22,8 +22,9 @@ class ProductPageBloc extends Cubit<ProductPageState> {
   void init({Product? product, String? categoryId}) {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
-    var productList = service.getAll();
-    final categories = categoriesService.getAll();
+    initServices(productsService, null, null, categoriesService);
+    var productList = productsService.getProductList;
+    final categories = categoriesService.getCategoryList;
 
     if (categoryId != null) {
       productList =
@@ -82,7 +83,7 @@ class ProductPageBloc extends Cubit<ProductPageState> {
         barcode: supp.barcode,
         unitPrice: double.parse(supp.unitPrice),
         quantity: double.parse(supp.quantity));
-    await service.addProduct(product);
+    await productsService.addProduct(product);
     emit(ProductPageState.success(supp));
   }
 
@@ -101,7 +102,7 @@ class ProductPageBloc extends Cubit<ProductPageState> {
         barcode: supp.barcode,
         unitPrice: double.parse(supp.unitPrice),
         quantity: double.parse(supp.quantity));
-    await service.editProduct(product);
+    await productsService.editProduct(product);
     emit(ProductPageState.success(supp));
   }
 
@@ -127,7 +128,7 @@ class ProductPageBloc extends Cubit<ProductPageState> {
   _handleproductUpdates() {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
-    final products = service.getProductList;
+    final products = productsService.getProductList;
     supp = supp.copyWith(productList: products);
     emit(ProductPageState.content(supp));
   }

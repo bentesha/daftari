@@ -1,6 +1,6 @@
 import '../source.dart';
 
-class GroupPagesBloc extends Cubit<GroupPagesState> {
+class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
   GroupPagesBloc(this.groupsService, this.recordsService, this.productsService)
       : super(GroupPagesState.initial()) {
     groupsService.addListener(() => _handleGroupListUpdates());
@@ -16,18 +16,17 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
 
   double get getGroupTotalAmount {
     final supp = state.supplements;
-    return recordsService.getRecordsTotalByGroup(supp.id);
+    final groupsTotals = recordsService.getGroupsTotalAmounts;
+    return groupsTotals[supp.id] ?? 0;
   }
 
   void init({Group? group}) {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
-    final groupList = groupsService.getAll();
-    final groupsIdList = _getIdsFrom(groupList);
-    recordsService.init();
-    final groupAmounts = recordsService.getGroupsRecordsTotal(groupsIdList);
+    initServices(productsService, recordsService, groupsService);
+    final groupAmounts = recordsService.getGroupsTotalAmounts;
+    final groupList = groupsService.getGroupList;
     final canUseDateAsTitle = _checkIfCanUseDateAsTitle(group);
-    //  productsService.getAll();
 
     supp = supp.copyWith(
         groupList: groupList,
@@ -130,14 +129,6 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
     emit(GroupPagesState.content(supp));
   }
 
-  List<String> _getIdsFrom(List<Group> groupList) {
-    final idList = <String>[];
-    for (Group group in groupList) {
-      idList.add(group.id);
-    }
-    return idList;
-  }
-
   ///if it returns null then both options are true. Check the options below
   bool? _checkIfCanUseDateAsTitle([Group? group]) {
     final isEditing = group != null;
@@ -176,7 +167,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> {
   _handleItemListUpdates() {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
-    productsService.getAll();
+    productsService.getProductList;
     emit(GroupPagesState.content(supp));
   }
 

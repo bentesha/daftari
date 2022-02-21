@@ -17,6 +17,9 @@ class CategoriesService extends Service<Category> {
     await super.add(category);
   }
 
+  ///Gets all categories from the Hive database
+  void init() => super.getAll();
+
   Future<void> editCategory(Category category) async =>
       await super.edit(category);
 

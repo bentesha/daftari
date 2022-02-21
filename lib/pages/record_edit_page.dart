@@ -104,24 +104,7 @@ class _RecordEditPageState extends State<RecordEditPage> {
           label: 'Notes',
           maxLines: 3,
         ),
-        _buildDeleteRecord(),
       ],
     );
-  }
-
-  _buildDeleteRecord() {
-    return isEditing
-        ? Expanded(
-            child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-            AppTextButton(
-                onPressed: () {},
-                height: 40.dh,
-                text: 'Delete',
-                backgroundColor: AppColors.surface,
-                textColor: AppColors.error,
-                margin:
-                    EdgeInsets.only(bottom: 20.dh, left: 15.dw, right: 15.dw))
-          ]))
-        : Container();
   }
 }

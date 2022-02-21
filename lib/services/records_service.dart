@@ -20,7 +20,12 @@ class RecordsService extends ChangeNotifier {
     return _recordList;
   }
 
-  void init() => getAll();
+  ///Gets all the records from Hive, and calculates the total records amount in
+  ///each sales group
+  void init() {
+    getAll();
+    getGroupsRecordsTotals();
+  }
 
   Future<void> addRecord(Record record) async {
     await _box.add(record);
@@ -34,20 +39,35 @@ class RecordsService extends ChangeNotifier {
   Future<void> editRecord(Record record) async {
     _box.put(record.id, record);
     final index = _recordList.indexWhere((e) => e.id == record.id);
+    final beforeEditRecordAmount = _recordList[index].totalAmount;
     _recordList[index] = record;
 
-    final beforeEditAmount = _groupsAmounts[record.groupId]!;
-    final groupTotalAmount = getRecordsTotalByGroup(record.groupId);
+    final beforeEditGroupAmount = _groupsAmounts[record.groupId]!;
     _groupsAmounts[record.groupId] =
-        groupTotalAmount - beforeEditAmount + record.totalAmount;
+        beforeEditGroupAmount - beforeEditRecordAmount + record.totalAmount;
     notifyListeners();
   }
 
-  double _getTotalRecordsAmount([String? id, int? day]) {
+  Map<String, double> getGroupsRecordsTotals() {
+    final groupsIds = _getGroupsIds();
+    for (String id in groupsIds) {
+      _groupsAmounts[id] = _getTotalRecordsAmount(id);
+    }
+    return _groupsAmounts;
+  }
+
+  List<String> _getGroupsIds() {
+    final idList = <String>[];
+    for (Record record in _recordList) {
+      if (idList.contains(record.groupId)) continue;
+      idList.add(record.groupId);
+    }
+    return idList;
+  }
+
+  double _getTotalRecordsAmount(String id) {
     double sales = 0;
-    final list = _recordList.where((e) {
-      return id != null ? e.groupId == id : e.date.day == day;
-    }).toList();
+    final list = _recordList.where((e) => e.groupId == id).toList();
     if (list.isEmpty) return 0;
 
     for (Record record in list) {
@@ -55,13 +75,4 @@ class RecordsService extends ChangeNotifier {
     }
     return sales;
   }
-
-  Map<String, double> getGroupsRecordsTotal(List<String> idList) {
-    for (String id in idList) {
-      _groupsAmounts[id] = _getTotalRecordsAmount(id);
-    }
-    return _groupsAmounts;
-  }
-
-  double getRecordsTotalByGroup(String id) => _getTotalRecordsAmount(id);
 }

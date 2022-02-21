@@ -56,20 +56,18 @@ class Record {
       );
 
   Record copyWith(
-          {String? id,
-          double? sellingPrice,
-          double? quantity,
-          String? notes}) =>
-      Record(
-        sellingPrice: sellingPrice ?? this.sellingPrice,
-        date: date,
-        id: id ?? this.id,
-        groupId: this.id,
-        type: type,
-        quantity: quantity ?? this.quantity,
-        product: product,
-        notes: notes,
-      );
+      {String? id, double? sellingPrice, double? quantity, String? notes}) {
+    return Record(
+      sellingPrice: sellingPrice ?? this.sellingPrice,
+      date: date,
+      id: id ?? this.id,
+      groupId: groupId,
+      type: type,
+      quantity: quantity ?? this.quantity,
+      product: product,
+      notes: notes,
+    );
+  }
 
   double get totalAmount => sellingPrice * quantity;
 

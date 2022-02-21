@@ -13,12 +13,19 @@ class Category {
   @HiveField(2)
   final String? description;
 
-  Category({required this.id, required this.description, required this.name});
+  @HiveField(3)
+  final String? type;
+
+  Category({required this.id, this.description, this.type, required this.name});
 
   factory Category.empty() => Category(id: '', description: '', name: '');
 
-  Category copyWith({String? name, String? description, String? id}) {
+  Category copyWith(
+      {String? name, String? description, String? id, String? type}) {
     return Category(
-        id: id ?? this.id, description: description, name: name ?? this.name);
+        id: id ?? this.id,
+        description: description,
+        name: name ?? this.name,
+        type: type ?? this.type);
   }
 }

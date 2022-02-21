@@ -11,13 +11,16 @@ class CategoryEditPage extends StatefulWidget {
 
 class _CategoryEditPageState extends State<CategoryEditPage> {
   late final CategoryPageBloc bloc;
+  late final bool isEditing;
 
   @override
   void initState() {
+    isEditing = widget.category != null;
     final categoriesService =
         Provider.of<CategoriesService>(context, listen: false);
     final itemsService = Provider.of<ProductsService>(context, listen: false);
-    bloc = CategoryPageBloc(categoriesService, itemsService);
+    final typeService = Provider.of<TypeService>(context, listen: false);
+    bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
     bloc.init(category: widget.category);
     super.initState();
   }
@@ -59,7 +62,17 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
   Widget _buildContent(CategoryPageSupplements supp) {
     return Column(
       children: [
-        SizedBox(height: 15.dh),
+        ValueSelector(
+          title: 'Type',
+          value: supp.category.type,
+          error: supp.errors['type'],
+          isEditable: !isEditing,
+          onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => const ItemsSearchPage<CategoryType>())),
+        ),
+        AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
         AppTextField(
             text: supp.category.name,
             onChanged: bloc.updateName,

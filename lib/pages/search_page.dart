@@ -17,7 +17,8 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
     final categoriesService =
         Provider.of<CategoriesService>(context, listen: false);
     final itemsService = Provider.of<ProductsService>(context, listen: false);
-    bloc = SearchPageBloc(itemsService, categoriesService);
+    final typeService = Provider.of<TypeService>(context, listen: false);
+    bloc = SearchPageBloc(itemsService, categoriesService, typeService);
     bloc.init();
     super.initState();
   }
@@ -67,11 +68,13 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
                 ? () => focusNode.requestFocus()
                 : bloc.clearQuery,
             iconThemeData: iconThemeData.copyWith(size: 24.dw)),
-        AppIconButton(
-            onPressed: _navigateToSpecificTypeWidget,
-            icon: Icons.add,
-            margin: EdgeInsets.only(right: 15.dw, left: 15.dw),
-            iconThemeData: iconThemeData.copyWith(size: 30.dw))
+        T == CategoryType
+            ? SizedBox(width: 15.dw)
+            : AppIconButton(
+                onPressed: _navigateToSpecificTypeWidget,
+                icon: Icons.add,
+                margin: EdgeInsets.only(right: 15.dw, left: 15.dw),
+                iconThemeData: iconThemeData.copyWith(size: 30.dw))
       ],
     );
   }
@@ -99,7 +102,8 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
 
   Widget _buildItemTile(var item) {
     return AppTextButton(
-      onPressed: () => bloc.updateId(item.id),
+      onPressed: () =>
+          T == CategoryType ? bloc.updateType(item) : bloc.updateId(item.id),
       child: ListTile(title: AppText(item.name, weight: FontWeight.w500)),
       isFilled: false,
       padding: EdgeInsets.symmetric(horizontal: 19.dw),

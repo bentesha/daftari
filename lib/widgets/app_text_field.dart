@@ -55,10 +55,6 @@ class _AppTextFieldState extends State<AppTextField> {
     final hasError = widget.error != null;
     final border = hasError ? _errorBorder : _inputBorder;
 
-    /*   controller.text = widget.text ?? '';
-    controller.selection = TextSelection.fromPosition(
-        TextPosition(offset: controller.text.length)); */
-
     return Padding(
       padding: EdgeInsets.only(left: 19.dw, right: 19.dw, bottom: 20.dh),
       child: Column(

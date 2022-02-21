@@ -67,8 +67,6 @@ class _ProductEditPageState extends State<ProductEditPage> {
     final errors = supp.errors;
 
     return ListView(padding: EdgeInsets.zero, children: [
-      /*  hasNoCategoryId
-          ? */
       Column(
         children: [
           ValueSelector(
@@ -84,7 +82,6 @@ class _ProductEditPageState extends State<ProductEditPage> {
           AppDivider(margin: EdgeInsets.only(bottom: 10.dh))
         ],
       ),
-      // : SizedBox(height: 19.dh),
       AppTextField(
         text: supp.name,
         onChanged: (name) => bloc.updateAttributes(name: name),

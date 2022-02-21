@@ -11,18 +11,21 @@ void main() async {
     ..registerAdapter(CategoryAdapter())
     ..registerAdapter(ProductAdapter())
     ..registerAdapter(RecordAdapter())
+    ..registerAdapter(ExpenseAdapter())
     ..registerAdapter(GroupAdapter());
 
   await Hive.openBox(Constants.kProductsBox);
   await Hive.openBox(Constants.kRecordsBox);
   await Hive.openBox(Constants.kGroupsBox);
   await Hive.openBox(Constants.kCategoriesBox);
+  await Hive.openBox(Constants.kExpenseBox);
 
   final myApp = MultiProvider(
     providers: [
       ChangeNotifierProvider<ProductsService>(create: (_) => ProductsService()),
       ChangeNotifierProvider<GroupsService>(create: (_) => GroupsService()),
       ChangeNotifierProvider<RecordsService>(create: (_) => RecordsService()),
+      ChangeNotifierProvider<TypeService>(create: (_) => TypeService()),
       ChangeNotifierProvider<CategoriesService>(
           create: (_) => CategoriesService()),
     ],

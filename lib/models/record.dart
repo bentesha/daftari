@@ -2,12 +2,6 @@ import '../source.dart';
 
 part 'record.g.dart';
 
-class RecordsTypes {
-  static const expenses = 'expenses';
-  static const purchases = 'purchases';
-  static const sales = 'sales';
-}
-
 @HiveType(typeId: 1)
 class Record {
   @HiveField(0)
@@ -29,9 +23,6 @@ class Record {
   final double quantity;
 
   @HiveField(6)
-  final String type;
-
-  @HiveField(7)
   final double sellingPrice;
 
   Record({
@@ -42,7 +33,6 @@ class Record {
     this.notes,
     required this.groupId,
     required this.quantity,
-    required this.type,
   });
 
   factory Record.empty() => Record(
@@ -51,7 +41,6 @@ class Record {
         date: DateTime.now(),
         product: Product.empty(),
         quantity: 0,
-        type: RecordsTypes.sales,
         sellingPrice: 0,
       );
 
@@ -62,7 +51,6 @@ class Record {
       date: date,
       id: id ?? this.id,
       groupId: groupId,
-      type: type,
       quantity: quantity ?? this.quantity,
       product: product,
       notes: notes,

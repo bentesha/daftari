@@ -20,18 +20,17 @@ class RecordAdapter extends TypeAdapter<Record> {
       id: fields[0] as String,
       product: fields[4] as Product,
       date: fields[3] as DateTime,
-      sellingPrice: fields[7] as double,
+      sellingPrice: fields[6] as double,
       notes: fields[2] as String?,
       groupId: fields[1] as String,
       quantity: fields[5] as double,
-      type: fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Record obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -45,8 +44,6 @@ class RecordAdapter extends TypeAdapter<Record> {
       ..writeByte(5)
       ..write(obj.quantity)
       ..writeByte(6)
-      ..write(obj.type)
-      ..writeByte(7)
       ..write(obj.sellingPrice);
   }
 

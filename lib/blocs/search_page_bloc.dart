@@ -1,14 +1,17 @@
 import '../source.dart';
 
-class SearchPageBloc<T> extends Cubit<SearchPageState<T>> with ServicesInitializer {
-  SearchPageBloc(this.productService, this.categoriesService)
+class SearchPageBloc<T> extends Cubit<SearchPageState<T>>
+    with ServicesInitializer {
+  SearchPageBloc(this.productService, this.categoriesService, this.typeService)
       : super(SearchPageState<T>.initial()) {
     productService.addListener(() => _handleItemUpdates());
+    categoriesService.addListener(() => _handleCategoryUpdates());
     categoriesService.addListener(() => _handleCategoryUpdates());
   }
 
   final ProductsService productService;
   final CategoriesService categoriesService;
+  final TypeService typeService;
 
   var _options = [];
 
@@ -16,8 +19,7 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> with ServicesInitializ
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
     _initServices();
-    if (T == Product) _options = productService.getProductList;
-    if (T == Category) _options = categoriesService.getCategoryList;
+    _options = _getOptions();
     final options = _options.whereType<T>().toList();
     supp = supp.copyWith(options: options);
     emit(SearchPageState.content(supp));
@@ -50,6 +52,13 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> with ServicesInitializ
     emit(SearchPageState.success(supp));
   }
 
+  void updateType(CategoryType type) {
+    var supp = state.supplements;
+    emit(SearchPageState.loading(supp));
+    typeService.updateType(type);
+    emit(SearchPageState.success(supp));
+  }
+
   _handleItemUpdates() {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
@@ -70,5 +79,12 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> with ServicesInitializ
   _initServices() {
     if (T == Product) initServices(productService);
     if (T == Category) initServices(null, null, null, categoriesService);
+  }
+
+  List _getOptions() {
+    if (T == Product) return productService.getProductList;
+    if (T == Category) return categoriesService.getCategoryList;
+    if (T == CategoryType) return Constants.kCategoryTypesList;
+    return [];
   }
 }

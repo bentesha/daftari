@@ -9,3 +9,5 @@ export 'category_page_supplements.dart';
 export 'package:freezed_annotation/freezed_annotation.dart';
 export 'package:hive/hive.dart';
 export 'search_page_supplements.dart';
+export 'category_type.dart';
+export 'expense.dart';

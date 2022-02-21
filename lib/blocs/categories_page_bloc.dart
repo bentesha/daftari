@@ -2,14 +2,17 @@ import '../source.dart';
 
 class CategoryPageBloc extends Cubit<CategoryPagesState>
     with ServicesInitializer {
-  CategoryPageBloc(this.categoriesService, this.productsService)
+  CategoryPageBloc(
+      this.categoriesService, this.productsService, this.typeService)
       : super(CategoryPagesState.initial()) {
     categoriesService.addListener(() => _handleCategoryUpdates());
     productsService.addListener(() => _handleItemUpdates());
+    typeService.addListener(() => _handleTypeUpdates());
   }
 
   final CategoriesService categoriesService;
   final ProductsService productsService;
+  final TypeService typeService;
 
   void init({Category? category}) {
     var supp = state.supplements;
@@ -65,6 +68,8 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
 
     emit(CategoryPagesState.loading(supp));
     errors['name'] = InputValidation.validateText(supp.category.name, 'Name');
+    errors['type'] =
+        InputValidation.validateText(supp.category.type ?? '', 'Type');
 
     supp = supp.copyWith(errors: errors);
     emit(CategoryPagesState.content(supp));
@@ -83,6 +88,15 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
     emit(CategoryPagesState.loading(supp));
     final products = productsService.getProductList;
     supp = supp.copyWith(productList: products);
+    emit(CategoryPagesState.content(supp));
+  }
+
+  _handleTypeUpdates() {
+    var supp = state.supplements;
+    emit(CategoryPagesState.loading(supp));
+    final type = typeService.getSelectedType;
+    final category = supp.category.copyWith(type: type.name);
+    supp = supp.copyWith(category: category);
     emit(CategoryPagesState.content(supp));
   }
 }

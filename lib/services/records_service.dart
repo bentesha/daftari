@@ -71,8 +71,9 @@ class RecordsService extends ChangeNotifier {
     if (list.isEmpty) return 0;
 
     for (Record record in list) {
-      if (record.type == RecordsTypes.sales) sales += record.totalAmount;
+      sales += record.totalAmount;
     }
+
     return sales;
   }
 }

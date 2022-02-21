@@ -28,7 +28,6 @@ class RecordsPageBloc extends Cubit<RecordsPageState> with ServicesInitializer {
         recordList: recordList,
         groupId: groupId ?? supp.groupId);
     if (record != null) {
-      log(record.groupId);
       _record = record;
       supp = supp.copyWith(
           sellingPrice: record.sellingPrice.toString(),
@@ -75,7 +74,6 @@ class RecordsPageBloc extends Cubit<RecordsPageState> with ServicesInitializer {
       date: supp.date,
       id: Utils.getRandomId(),
       groupId: supp.groupId,
-      type: RecordsTypes.sales,
       quantity: double.parse(supp.quantity),
       product: supp.productList[index],
       sellingPrice: double.parse(supp.sellingPrice),

@@ -59,7 +59,6 @@ class _RecordEditPageState extends State<RecordEditPage> {
   }
 
   Widget _buildContent(RecordsSupplements supp) {
-    log(supp.quantity);
     return Column(
       children: [
         ValueSelector(

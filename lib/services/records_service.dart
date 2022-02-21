@@ -25,6 +25,7 @@ class RecordsService extends ChangeNotifier {
   Future<void> addRecord(Record record) async {
     await _box.add(record);
     _recordList.add(record);
+
     final groupIdAmount = _groupsAmounts[record.groupId] ?? 0;
     _groupsAmounts[record.groupId] = groupIdAmount + record.totalAmount;
     notifyListeners();
@@ -56,11 +57,10 @@ class RecordsService extends ChangeNotifier {
   }
 
   Map<String, double> getGroupsRecordsTotal(List<String> idList) {
-    final amounts = <String, double>{};
     for (String id in idList) {
-      amounts[id] = _getTotalRecordsAmount(id);
+      _groupsAmounts[id] = _getTotalRecordsAmount(id);
     }
-    return amounts;
+    return _groupsAmounts;
   }
 
   double getRecordsTotalByGroup(String id) => _getTotalRecordsAmount(id);

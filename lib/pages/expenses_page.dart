@@ -1,4 +1,5 @@
 import 'package:inventory_management/pages/day_expenses_page.dart';
+import 'package:inventory_management/widgets/bottom_total_amount_tile.dart';
 
 import '../source.dart';
 
@@ -26,10 +27,10 @@ class _ExpensesPageState extends State<ExpensesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildBody(),
-      appBar: const PageAppBar(title: 'Expenses'),
-      floatingActionButton: const AddButton(nextPage: ExpenseEditPage()),
-    );
+        body: _buildBody(),
+        appBar: const PageAppBar(title: 'Expenses'),
+        floatingActionButton: const AddButton(nextPage: ExpenseEditPage()),
+        bottomNavigationBar: _buildBottomNavBar());
   }
 
   Widget _buildBody() {
@@ -89,6 +90,16 @@ class _ExpensesPageState extends State<ExpensesPage> {
         trailing: AppText(formattedAmount, weight: FontWeight.bold),
       ),
     );
+  }
+
+  _buildBottomNavBar() {
+    return BlocBuilder(
+        bloc: bloc,
+        builder: (_, __) {
+          final monthAmount = bloc.getMonthTotal;
+          if (monthAmount == 0) return Container();
+          return BottomTotalAmountTile(bloc.getMonthTotal);
+        });
   }
 
   static const emptyGroupMessage =

@@ -1,3 +1,4 @@
+import '../widgets/bottom_total_amount_tile.dart';
 import '../source.dart';
 
 class GroupRecordsPage extends StatefulWidget {
@@ -40,11 +41,10 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
 
   Widget _buildContent(GroupSupplements supp) {
     return Scaffold(
-      appBar: _buildAppBar(supp.title),
-      body: _buildRecords(supp),
-      floatingActionButton: _buildAddItemButton(),
-      bottomNavigationBar: _buildBottomNavBar(),
-    );
+        appBar: _buildAppBar(supp.title),
+        body: _buildRecords(supp),
+        floatingActionButton: _buildAddItemButton(),
+        bottomNavigationBar: BottomTotalAmountTile(bloc.getGroupTotalAmount));
   }
 
   _buildAppBar(String title) {
@@ -81,25 +81,6 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
           final supp = state.supplements;
           return AddButton(nextPage: RecordEditPage(groupId: supp.id));
         });
-  }
-
-  _buildBottomNavBar() {
-    final totalAmount = bloc.getGroupTotalAmount;
-    final formatted = Utils.convertToMoneyFormat(bloc.getGroupTotalAmount);
-    if (totalAmount == 0) return Container(height: .001);
-
-    return Container(
-      color: AppColors.primary,
-      height: 55.dh,
-      padding: EdgeInsets.symmetric(horizontal: 19.dw),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          AppText('Total Amount'.toUpperCase(), color: AppColors.onPrimary),
-          AppText(formatted, size: 20.dw, color: AppColors.onPrimary),
-        ],
-      ),
-    );
   }
 
   static const emptyRecordMessage =

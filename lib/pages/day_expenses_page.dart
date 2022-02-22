@@ -52,7 +52,6 @@ class _DayExpensesPageState extends State<DayExpensesPage> {
   }
 
   Widget _buildContent(ExpenseSupplements supp) {
-    log('updating');
     return ListView.separated(
       itemCount: supp.expenses.length,
       separatorBuilder: (_, __) => const AppDivider(margin: EdgeInsets.zero),

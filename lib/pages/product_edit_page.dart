@@ -1,14 +1,15 @@
 import '../source.dart';
 
 class ProductEditPage extends StatefulWidget {
-  const ProductEditPage({Key? key, this.product, this.categoryId}) : super(key: key);
+  const ProductEditPage({Key? key, this.product, this.categoryId})
+      : super(key: key);
 
   final Product? product;
   final String? categoryId;
 
   static void navigateTo(BuildContext context, {Product? product}) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (_) => ProductEditPage(product: product)));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (_) => ProductEditPage(product: product)));
   }
 
   @override
@@ -18,9 +19,11 @@ class ProductEditPage extends StatefulWidget {
 class _ProductEditPageState extends State<ProductEditPage> {
   late final ProductPageBloc bloc;
   late final bool hasNoCategoryId;
+  late final bool isEditing;
 
   @override
   void initState() {
+    isEditing = widget.product != null;
     hasNoCategoryId = widget.product == null && widget.categoryId == null;
     final service = Provider.of<ProductsService>(context, listen: false);
     final categoriesService =
@@ -54,7 +57,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
   _buildAppBar() {
     return PageAppBar(
         title: hasNoCategoryId ? 'Add Product' : 'Edit Product',
-        actionCallbacks: [bloc.saveProduct]);
+        actionCallbacks: [isEditing ? bloc.editProduct : bloc.saveProduct]);
   }
 
   Widget _buildLoading(ProductPageSupplements supp) {
@@ -77,7 +80,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
             onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (_) => const ItemsSearchPage<Category>())),
+                    builder: (_) => ItemsSearchPage<Category>(
+                          categoryType: CategoryType.products(),
+                        ))),
           ),
           AppDivider(margin: EdgeInsets.only(bottom: 10.dh))
         ],

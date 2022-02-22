@@ -14,6 +14,7 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
   List<int> get getDaysWithExpenses => expensesService.getDaysWithExpenses();
   double? getAmountByDay(int day) => expensesService.getDayTotalAmounts[day];
   Category? getCategoryById(String id) => categoriesService.getCategoryById(id);
+  double get getMonthTotal => expensesService.getMonthlyTotal;
 
   int? _day;
 

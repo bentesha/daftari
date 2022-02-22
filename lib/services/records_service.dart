@@ -1,51 +1,42 @@
 import 'dart:async';
 import '../source.dart';
+import 'service.dart';
 
-class RecordsService extends ChangeNotifier {
+class RecordsService extends Service<Record> {
   static final _box = Hive.box(Constants.kRecordsBox);
-  static final _recordList = <Record>[];
-  static final _groupsAmounts = <String, double>{};
+  RecordsService() : super(_box);
 
-  List<Record> get getRecordList => _recordList;
+  final _groupsAmounts = <String, double>{};
   Map<String, double> get getGroupsTotalAmounts => _groupsAmounts;
 
-  ///Gets all the records from Hive, and calculates the total records amount in
-  ///each sales group
   void init() {
-    _getAll();
+    super.getAll();
     _getGroupsRecordsTotals();
   }
 
-  Future<void> addRecord(Record record) async {
-    await _box.add(record);
-    _recordList.add(record);
+  @override
+  Future<void> add(var item) async {
+    await _box.put(item.id, item);
 
-    final groupIdAmount = _groupsAmounts[record.groupId] ?? 0;
-    _groupsAmounts[record.groupId] = groupIdAmount + record.totalAmount;
+    final groupIdAmount = _groupsAmounts[item.groupId] ?? 0;
+    _groupsAmounts[item.groupId] = groupIdAmount + item.totalAmount;
+    super.refresh();
     notifyListeners();
   }
 
-  Future<void> editRecord(Record record) async {
-    await _box.put(record.id, record);
-    final index = _recordList.indexWhere((e) => e.id == record.id);
-    final beforeEditRecordAmount = _recordList[index].totalAmount;
-    _recordList[index] = record;
+  @override
+  Future<void> edit(var item) async {
+    await _box.put(item.id, item);
 
-    final beforeEditGroupAmount = _groupsAmounts[record.groupId]!;
-    _groupsAmounts[record.groupId] =
-        beforeEditGroupAmount - beforeEditRecordAmount + record.totalAmount;
+    final index = super.getList.indexWhere((e) => e.id == item.id);
+    final beforeEditRecordAmount = super.getList[index].totalAmount;
+
+    final beforeEditGroupAmount = _groupsAmounts[item.groupId]!;
+    _groupsAmounts[item.groupId] =
+        beforeEditGroupAmount - beforeEditRecordAmount + item.totalAmount;
+
+    super.refresh();
     notifyListeners();
-  }
-
-  List<Record> _getAll() {
-    if (_box.isEmpty) return [];
-
-    for (Record record in _box.values) {
-      final index = _recordList.indexWhere((e) => e.id == record.id);
-      if (index == -1) _recordList.add(record);
-    }
-
-    return _recordList;
   }
 
   Map<String, double> _getGroupsRecordsTotals() {
@@ -58,7 +49,7 @@ class RecordsService extends ChangeNotifier {
 
   List<String> _getGroupsIds() {
     final idList = <String>[];
-    for (Record record in _recordList) {
+    for (Record record in super.getList) {
       if (idList.contains(record.groupId)) continue;
       idList.add(record.groupId);
     }
@@ -67,7 +58,7 @@ class RecordsService extends ChangeNotifier {
 
   double _getTotalRecordsAmount(String id) {
     double sales = 0;
-    final list = _recordList.where((e) => e.groupId == id).toList();
+    final list = super.getList.where((e) => e.groupId == id).toList();
     if (list.isEmpty) return 0;
 
     for (Record record in list) {

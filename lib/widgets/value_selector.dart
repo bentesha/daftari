@@ -16,8 +16,16 @@ class ValueSelector extends StatelessWidget {
   final String? error;
   final bool isEditable;
 
+  static const defaultText = 'Tap to select';
+
   @override
   Widget build(BuildContext context) {
+    final _value = value == null
+        ? defaultText
+        : value!.trim().isEmpty
+            ? defaultText
+            : value!;
+    final notSelectedYet = _value == defaultText;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -29,9 +37,9 @@ class ValueSelector extends StatelessWidget {
             title: AppText(title.toUpperCase(), opacity: .7),
             subtitle: Padding(
               padding: EdgeInsets.only(top: 5.dh),
-              child: AppText(value ?? 'Tap to select',
-                  opacity: value == null ? .5 : 1,
-                  weight: value == null ? FontWeight.w100 : FontWeight.w500),
+              child: AppText(_value,
+                  opacity: notSelectedYet ? .5 : 1,
+                  weight: notSelectedYet ? FontWeight.w100 : FontWeight.w500),
             ),
             trailing: isEditable
                 ? const Icon(Icons.chevron_right)

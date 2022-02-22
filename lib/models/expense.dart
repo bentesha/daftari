@@ -28,4 +28,9 @@ class Expense {
 
   factory Expense.empty() =>
       Expense(id: '', categoryId: '', date: DateTime.now(), amount: 0);
+
+  @override
+  String toString() {
+    return 'amount: $amount';
+  }
 }

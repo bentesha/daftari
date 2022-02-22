@@ -3,7 +3,7 @@ import '../source.dart';
 class TypeService extends ChangeNotifier {
   static var _selectedType = CategoryType.expenses();
 
-  List<CategoryType> get getCategoryList => Constants.kCategoryTypesList;
+  List<CategoryType> get getCategoryTypeList => kCategoryTypesList;
 
   CategoryType get getSelectedType => _selectedType;
 
@@ -11,4 +11,9 @@ class TypeService extends ChangeNotifier {
     _selectedType = type;
     notifyListeners();
   }
+
+  static final kCategoryTypesList = <CategoryType>[
+    CategoryType.expenses(),
+    CategoryType.products()
+  ];
 }

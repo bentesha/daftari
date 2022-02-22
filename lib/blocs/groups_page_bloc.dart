@@ -23,7 +23,10 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
   void init({Group? group}) {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
-    initServices(productsService, recordsService, groupsService);
+    initServices(
+        productsService: productsService,
+        recordsService: recordsService,
+        groupsService: groupsService);
     final groupAmounts = recordsService.getGroupsTotalAmounts;
     final groupList = groupsService.getGroupList;
     final canUseDateAsTitle = _checkIfCanUseDateAsTitle(group);

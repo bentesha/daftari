@@ -19,3 +19,4 @@ export 'add_button.dart';
 export 'barcode_field.dart';
 export 'app_material_button.dart';
 export 'group_tile.dart';
+export 'expense_tile.dart';

@@ -17,7 +17,8 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   void init({Category? category}) {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
-    initServices(productsService, null, null, categoriesService);
+    initServices(
+        productsService: productsService, categoriesService: categoriesService);
     final categories = categoriesService.getCategoryList;
     final products = productsService.getProductList;
     supp = supp.copyWith(categoryList: categories, productList: products);

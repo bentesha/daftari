@@ -9,22 +9,11 @@ class RecordsService extends ChangeNotifier {
   List<Record> get getRecordList => _recordList;
   Map<String, double> get getGroupsTotalAmounts => _groupsAmounts;
 
-  List<Record> getAll() {
-    if (_box.isEmpty) return [];
-
-    for (Record record in _box.values) {
-      final index = _recordList.indexWhere((e) => e.id == record.id);
-      if (index == -1) _recordList.add(record);
-    }
-
-    return _recordList;
-  }
-
   ///Gets all the records from Hive, and calculates the total records amount in
   ///each sales group
   void init() {
-    getAll();
-    getGroupsRecordsTotals();
+    _getAll();
+    _getGroupsRecordsTotals();
   }
 
   Future<void> addRecord(Record record) async {
@@ -37,7 +26,7 @@ class RecordsService extends ChangeNotifier {
   }
 
   Future<void> editRecord(Record record) async {
-    _box.put(record.id, record);
+    await _box.put(record.id, record);
     final index = _recordList.indexWhere((e) => e.id == record.id);
     final beforeEditRecordAmount = _recordList[index].totalAmount;
     _recordList[index] = record;
@@ -48,7 +37,18 @@ class RecordsService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, double> getGroupsRecordsTotals() {
+  List<Record> _getAll() {
+    if (_box.isEmpty) return [];
+
+    for (Record record in _box.values) {
+      final index = _recordList.indexWhere((e) => e.id == record.id);
+      if (index == -1) _recordList.add(record);
+    }
+
+    return _recordList;
+  }
+
+  Map<String, double> _getGroupsRecordsTotals() {
     final groupsIds = _getGroupsIds();
     for (String id in groupsIds) {
       _groupsAmounts[id] = _getTotalRecordsAmount(id);

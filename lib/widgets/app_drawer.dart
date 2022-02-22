@@ -135,6 +135,9 @@ class AppDrawer extends StatelessWidget {
       case Pages.reports_page:
         nextPage = const ReportsPage();
         break;
+      case Pages.expenses_page:
+        nextPage = const ExpensesPage();
+        break;
       default:
         nextPage = null;
     }

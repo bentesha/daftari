@@ -19,17 +19,23 @@ class _$ExpenseSupplementsTearOff {
   const _$ExpenseSupplementsTearOff();
 
   _ExpenseSupplements call(
-      {required Map<String, String?> errors,
+      {required List<Expense> expenses,
+      required List<Category> categories,
+      required Map<String, String?> errors,
       required String amount,
       required DateTime date,
       String? notes,
-      required String categoryId}) {
+      required String id,
+      required Category category}) {
     return _ExpenseSupplements(
+      expenses: expenses,
+      categories: categories,
       errors: errors,
       amount: amount,
       date: date,
       notes: notes,
-      categoryId: categoryId,
+      id: id,
+      category: category,
     );
   }
 }
@@ -39,11 +45,14 @@ const $ExpenseSupplements = _$ExpenseSupplementsTearOff();
 
 /// @nodoc
 mixin _$ExpenseSupplements {
+  List<Expense> get expenses => throw _privateConstructorUsedError;
+  List<Category> get categories => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
   String get amount => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
   String? get notes => throw _privateConstructorUsedError;
-  String get categoryId => throw _privateConstructorUsedError;
+  String get id => throw _privateConstructorUsedError;
+  Category get category => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ExpenseSupplementsCopyWith<ExpenseSupplements> get copyWith =>
@@ -56,11 +65,14 @@ abstract class $ExpenseSupplementsCopyWith<$Res> {
           ExpenseSupplements value, $Res Function(ExpenseSupplements) then) =
       _$ExpenseSupplementsCopyWithImpl<$Res>;
   $Res call(
-      {Map<String, String?> errors,
+      {List<Expense> expenses,
+      List<Category> categories,
+      Map<String, String?> errors,
       String amount,
       DateTime date,
       String? notes,
-      String categoryId});
+      String id,
+      Category category});
 }
 
 /// @nodoc
@@ -74,13 +86,24 @@ class _$ExpenseSupplementsCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? expenses = freezed,
+    Object? categories = freezed,
     Object? errors = freezed,
     Object? amount = freezed,
     Object? date = freezed,
     Object? notes = freezed,
-    Object? categoryId = freezed,
+    Object? id = freezed,
+    Object? category = freezed,
   }) {
     return _then(_value.copyWith(
+      expenses: expenses == freezed
+          ? _value.expenses
+          : expenses // ignore: cast_nullable_to_non_nullable
+              as List<Expense>,
+      categories: categories == freezed
+          ? _value.categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<Category>,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -97,10 +120,14 @@ class _$ExpenseSupplementsCopyWithImpl<$Res>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
-      categoryId: categoryId == freezed
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
+      category: category == freezed
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as Category,
     ));
   }
 }
@@ -113,11 +140,14 @@ abstract class _$ExpenseSupplementsCopyWith<$Res>
       __$ExpenseSupplementsCopyWithImpl<$Res>;
   @override
   $Res call(
-      {Map<String, String?> errors,
+      {List<Expense> expenses,
+      List<Category> categories,
+      Map<String, String?> errors,
       String amount,
       DateTime date,
       String? notes,
-      String categoryId});
+      String id,
+      Category category});
 }
 
 /// @nodoc
@@ -133,13 +163,24 @@ class __$ExpenseSupplementsCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? expenses = freezed,
+    Object? categories = freezed,
     Object? errors = freezed,
     Object? amount = freezed,
     Object? date = freezed,
     Object? notes = freezed,
-    Object? categoryId = freezed,
+    Object? id = freezed,
+    Object? category = freezed,
   }) {
     return _then(_ExpenseSupplements(
+      expenses: expenses == freezed
+          ? _value.expenses
+          : expenses // ignore: cast_nullable_to_non_nullable
+              as List<Expense>,
+      categories: categories == freezed
+          ? _value.categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<Category>,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -156,10 +197,14 @@ class __$ExpenseSupplementsCopyWithImpl<$Res>
           ? _value.notes
           : notes // ignore: cast_nullable_to_non_nullable
               as String?,
-      categoryId: categoryId == freezed
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
               as String,
+      category: category == freezed
+          ? _value.category
+          : category // ignore: cast_nullable_to_non_nullable
+              as Category,
     ));
   }
 }
@@ -168,12 +213,19 @@ class __$ExpenseSupplementsCopyWithImpl<$Res>
 
 class _$_ExpenseSupplements implements _ExpenseSupplements {
   const _$_ExpenseSupplements(
-      {required this.errors,
+      {required this.expenses,
+      required this.categories,
+      required this.errors,
       required this.amount,
       required this.date,
       this.notes,
-      required this.categoryId});
+      required this.id,
+      required this.category});
 
+  @override
+  final List<Expense> expenses;
+  @override
+  final List<Category> categories;
   @override
   final Map<String, String?> errors;
   @override
@@ -183,11 +235,13 @@ class _$_ExpenseSupplements implements _ExpenseSupplements {
   @override
   final String? notes;
   @override
-  final String categoryId;
+  final String id;
+  @override
+  final Category category;
 
   @override
   String toString() {
-    return 'ExpenseSupplements(errors: $errors, amount: $amount, date: $date, notes: $notes, categoryId: $categoryId)';
+    return 'ExpenseSupplements(expenses: $expenses, categories: $categories, errors: $errors, amount: $amount, date: $date, notes: $notes, id: $id, category: $category)';
   }
 
   @override
@@ -195,22 +249,28 @@ class _$_ExpenseSupplements implements _ExpenseSupplements {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ExpenseSupplements &&
+            const DeepCollectionEquality().equals(other.expenses, expenses) &&
+            const DeepCollectionEquality()
+                .equals(other.categories, categories) &&
             const DeepCollectionEquality().equals(other.errors, errors) &&
             const DeepCollectionEquality().equals(other.amount, amount) &&
             const DeepCollectionEquality().equals(other.date, date) &&
             const DeepCollectionEquality().equals(other.notes, notes) &&
-            const DeepCollectionEquality()
-                .equals(other.categoryId, categoryId));
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.category, category));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(expenses),
+      const DeepCollectionEquality().hash(categories),
       const DeepCollectionEquality().hash(errors),
       const DeepCollectionEquality().hash(amount),
       const DeepCollectionEquality().hash(date),
       const DeepCollectionEquality().hash(notes),
-      const DeepCollectionEquality().hash(categoryId));
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(category));
 
   @JsonKey(ignore: true)
   @override
@@ -220,12 +280,19 @@ class _$_ExpenseSupplements implements _ExpenseSupplements {
 
 abstract class _ExpenseSupplements implements ExpenseSupplements {
   const factory _ExpenseSupplements(
-      {required Map<String, String?> errors,
+      {required List<Expense> expenses,
+      required List<Category> categories,
+      required Map<String, String?> errors,
       required String amount,
       required DateTime date,
       String? notes,
-      required String categoryId}) = _$_ExpenseSupplements;
+      required String id,
+      required Category category}) = _$_ExpenseSupplements;
 
+  @override
+  List<Expense> get expenses;
+  @override
+  List<Category> get categories;
   @override
   Map<String, String?> get errors;
   @override
@@ -235,7 +302,9 @@ abstract class _ExpenseSupplements implements ExpenseSupplements {
   @override
   String? get notes;
   @override
-  String get categoryId;
+  String get id;
+  @override
+  Category get category;
   @override
   @JsonKey(ignore: true)
   _$ExpenseSupplementsCopyWith<_ExpenseSupplements> get copyWith =>

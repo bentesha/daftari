@@ -1,7 +1,9 @@
 import '../source.dart';
 
 class ItemsSearchPage<T> extends StatefulWidget {
-  const ItemsSearchPage({Key? key}) : super(key: key);
+  const ItemsSearchPage({this.categoryType, Key? key}) : super(key: key);
+
+  final CategoryType? categoryType;
 
   @override
   State<ItemsSearchPage<T>> createState() => _ItemsSearchPageState();
@@ -19,7 +21,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
     final itemsService = Provider.of<ProductsService>(context, listen: false);
     final typeService = Provider.of<TypeService>(context, listen: false);
     bloc = SearchPageBloc(itemsService, categoriesService, typeService);
-    bloc.init();
+    bloc.init(widget.categoryType);
     super.initState();
   }
 
@@ -93,7 +95,11 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
   }
 
   _buildEmptyItemState(List<T> options, String query) {
-    final type = T == Category ? 'category' : 'product';
+    final type = T == Category
+        ? widget.categoryType!.name == CategoryType.expenses().name
+            ? 'expense category'
+            : 'product category'
+        : 'product';
     final message = options.isEmpty && query.isEmpty
         ? 'No $type has been recorded yet. Create one by clicking on the add button on the page top bar'
         : 'No item matches your search keyword!';

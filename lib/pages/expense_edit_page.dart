@@ -1,7 +1,7 @@
 import '../source.dart';
 
 class ExpenseEditPage extends StatefulWidget {
-  const ExpenseEditPage(this.expense, {Key? key}) : super(key: key);
+  const ExpenseEditPage({this.expense, Key? key}) : super(key: key);
 
   final Expense? expense;
 
@@ -10,15 +10,18 @@ class ExpenseEditPage extends StatefulWidget {
 }
 
 class _ExpenseEditPageState extends State<ExpenseEditPage> {
-  late final RecordsPageBloc bloc;
+  late final ExpensePagesBloc bloc;
   late final bool isEditing;
 
   @override
   void initState() {
-    final recordsService = Provider.of<RecordsService>(context, listen: false);
-    final itemsService = Provider.of<ProductsService>(context, listen: false);
-    bloc = RecordsPageBloc(recordsService, itemsService);
-    //bloc.init(widget.expense);
+    isEditing = widget.expense != null;
+    final expensesService =
+        Provider.of<ExpensesService>(context, listen: false);
+    final categoriesService =
+        Provider.of<CategoriesService>(context, listen: false);
+    bloc = ExpensePagesBloc(expensesService, categoriesService);
+    bloc.init(widget.expense);
     super.initState();
   }
 
@@ -26,14 +29,14 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PageAppBar(
-          title: !isEditing ? 'Adding New Record' : 'Editing Record',
-          actionCallbacks: isEditing ? [bloc.editRecord] : [bloc.saveRecord]),
+          title: !isEditing ? 'Adding New Expense' : 'Editing Expense',
+          actionCallbacks: isEditing ? [bloc.editExpense] : [bloc.saveExpense]),
       body: _buildBody(),
     );
   }
 
   _buildBody() {
-    return BlocConsumer<RecordsPageBloc, RecordsPageState>(
+    return BlocConsumer<ExpensePagesBloc, ExpensePagesState>(
         bloc: bloc,
         listener: (_, state) {
           final isSuccessful =
@@ -50,36 +53,33 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
         });
   }
 
-  Widget _buildLoading(RecordsSupplements supp) {
+  Widget _buildLoading(ExpenseSupplements supp) {
     return const Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  Widget _buildContent(RecordsSupplements supp) {
+  Widget _buildContent(ExpenseSupplements supp) {
     return Column(
       children: [
         ValueSelector(
           title: 'Category',
-          value: bloc.getSelectedProduct?.name,
-          error: supp.errors['item'],
+          value: supp.category.name,
+          error: supp.errors['category'],
           isEditable: !isEditing,
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => const ItemsSearchPage<Product>())),
+          onPressed: _navigateToCategoryPicker,
         ),
         DateSelector(
           title: 'Date',
           onDateSelected: bloc.updateDate,
           date: supp.date,
-          isEditable: true,
+          isEditable: false,
         ),
         AppDivider(margin: EdgeInsets.only(bottom: 5.dh)),
         SizedBox(height: 6.dh),
         AppTextField(
-          text: supp.quantity,
-          onChanged: bloc.updateQuantity,
+          text: supp.amount,
+          onChanged: bloc.updateAmount,
           hintText: '',
           keyboardType: TextInputType.number,
           label: 'Amount',
@@ -96,5 +96,13 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
         ),
       ],
     );
+  }
+
+  _navigateToCategoryPicker() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => ItemsSearchPage<Category>(
+                categoryType: CategoryType.expenses())));
   }
 }

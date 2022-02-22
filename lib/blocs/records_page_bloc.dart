@@ -20,7 +20,8 @@ class RecordsPageBloc extends Cubit<RecordsPageState> with ServicesInitializer {
   void init([String? groupId, Record? record]) {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
-    initServices(productsService, recordsService);
+    initServices(
+        productsService: productsService, recordsService: recordsService);
     final recordList = recordsService.getRecordList;
     final productList = productsService.getProductList;
     supp = supp.copyWith(

@@ -2,15 +2,15 @@ import '../source.dart';
 import 'service.dart';
 
 class GroupsService extends Service<Group> {
-  static final box = Hive.box(Constants.kGroupsBox);
-  GroupsService() : super(box);
+  static final _box = Hive.box(Constants.kGroupsBox);
+  GroupsService() : super(_box);
 
   static var _selectedId = '';
 
   String get getEditedGroupId => _selectedId;
   List<Group> get getGroupList => super.getList;
 
-  Group? getGroupById(String id) => box.get(id) as Group?;
+  Group? getGroupById(String id) => _box.get(id) as Group?;
 
   ///Gets all groups from the Hive database
   void init() => super.getAll();

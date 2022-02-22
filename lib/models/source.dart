@@ -11,3 +11,4 @@ export 'package:hive/hive.dart';
 export 'search_page_supplements.dart';
 export 'category_type.dart';
 export 'expense.dart';
+export 'expense_supplements.dart';

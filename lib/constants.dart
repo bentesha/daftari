@@ -15,9 +15,4 @@ class Constants {
 
   static const kEmptyItemImage =
       'https://cdn.iconfinder.com/icons/1490259/1933552/128/raster.png?token=1644494244-Zjs4jQDqJ236wJL7WgbW%2F3bHCqe6Ze5etzd3k2wLUnI%3D';
-
-  static final kCategoryTypesList = <CategoryType>[
-    CategoryType.expenses(),
-    CategoryType.products()
-  ];
 }

@@ -1,9 +1,11 @@
 import '../source.dart';
 
 class ExpenseEditPage extends StatefulWidget {
-  const ExpenseEditPage({this.expense, Key? key}) : super(key: key);
+  const ExpenseEditPage({this.expense, this.groupId, Key? key})
+      : super(key: key);
 
   final Expense? expense;
+  final String? groupId;
 
   @override
   State<ExpenseEditPage> createState() => _ExpenseEditPageState();
@@ -20,7 +22,10 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
         Provider.of<ExpensesService>(context, listen: false);
     final categoriesService =
         Provider.of<CategoriesService>(context, listen: false);
-    bloc = ExpensePagesBloc(expensesService, categoriesService);
+    final groupsService = Provider.of<GroupsService>(context, listen: false);
+
+    bloc = ExpensePagesBloc(expensesService, categoriesService, groupsService);
+
     bloc.init(widget.expense);
     super.initState();
   }

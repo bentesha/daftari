@@ -15,8 +15,6 @@ class GroupsService extends Service<Group> {
   ///Gets all groups from the Hive database
   void init() => super.getAll();
 
-  Future<void> addGroup(Group group) async => await super.add(group);
-
   Future<void> editGroup(Group group) async {
     _selectedId = group.id;
     await super.edit(group);

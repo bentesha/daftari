@@ -10,17 +10,14 @@ class ExpensesService extends Service<Expense> {
     _getDayTotalAmounts();
   }
 
-  var _monthlyTotal = 0.0;
-  final _dailyAmounts = <int, double>{};
-  Map<int, double> get getDayTotalAmounts => _dailyAmounts;
-  double get getMonthlyTotal => _monthlyTotal;
+  final _dailyAmounts = <String, double>{};
+  Map<String, double> get getDayTotalAmounts => _dailyAmounts;
 
   @override
   Future<void> add(var item) async {
     await _box.put(item.id, item);
-    final groupIdAmount = _dailyAmounts[item.date.day] ?? 0;
-    _dailyAmounts[item.date.day] = groupIdAmount + item.amount;
-    _monthlyTotal += item.amount;
+    final groupIdAmount = _dailyAmounts[item.groupId] ?? 0;
+    _dailyAmounts[item.groupId] = groupIdAmount + item.amount;
 
     super.refresh();
     notifyListeners();
@@ -32,28 +29,25 @@ class ExpensesService extends Service<Expense> {
 
     final index = super.getList.indexWhere((e) => e.id == item.id);
     final beforeEditExpenseAmount = super.getList[index].amount;
-    final beforeEditDayAmount = _dailyAmounts[item.date.day]!;
-    _dailyAmounts[item.date.day] =
+    final beforeEditDayAmount = _dailyAmounts[item.groupId]!;
+    _dailyAmounts[item.groupId] =
         beforeEditDayAmount - beforeEditExpenseAmount + item.amount;
-    _monthlyTotal = _monthlyTotal - beforeEditExpenseAmount + item.amount;
 
     super.refresh();
     notifyListeners();
   }
 
   void _getDayTotalAmounts() {
-    _monthlyTotal = 0.0;
-    final days = getDaysWithExpenses();
-    for (int day in days) {
-      final dayAmount = _getExpensesAmountByDay(day);
-      _dailyAmounts[day] = dayAmount;
-      _monthlyTotal += dayAmount;
+    final groupsIds = _getGroupsIds();
+    for (String id in groupsIds) {
+      final dayAmount = _getExpensesAmountByDay(id);
+      _dailyAmounts[id] = dayAmount;
     }
   }
 
-  double _getExpensesAmountByDay(int day) {
+  double _getExpensesAmountByDay(String id) {
     double expenses = 0;
-    final list = super.getList.where((e) => e.date.day == day).toList();
+    final list = super.getList.where((e) => e.groupId == id).toList();
     if (list.isEmpty) return 0;
 
     for (Expense expense in list) {
@@ -63,13 +57,12 @@ class ExpensesService extends Service<Expense> {
     return expenses;
   }
 
-  List<int> getDaysWithExpenses() {
-    final days = <int>[];
+  List<String> _getGroupsIds() {
+    final idList = <String>[];
     for (Expense expense in super.getList) {
-      final day = expense.date.day;
-      if (days.contains(day)) continue;
-      days.add(day);
+      if (idList.contains(expense.groupId)) continue;
+      idList.add(expense.groupId);
     }
-    return days;
+    return idList;
   }
 }

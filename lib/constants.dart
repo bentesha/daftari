@@ -1,5 +1,3 @@
-import 'models/source.dart';
-
 class Constants {
   static const kFontFam = 'Avenir';
   static const kFontFam2 = 'AndroidEuclid';

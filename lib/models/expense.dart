@@ -19,15 +19,19 @@ class Expense {
   @HiveField(4)
   final double amount;
 
+  @HiveField(5)
+  final String groupId;
+
   Expense(
       {required this.id,
+      required this.groupId,
       required this.date,
       required this.amount,
       this.notes,
       required this.categoryId});
 
-  factory Expense.empty() =>
-      Expense(id: '', categoryId: '', date: DateTime.now(), amount: 0);
+  factory Expense.empty() => Expense(
+      id: '', categoryId: '', date: DateTime.now(), amount: 0, groupId: '');
 
   @override
   String toString() {

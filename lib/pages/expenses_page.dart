@@ -1,6 +1,5 @@
-import 'package:inventory_management/pages/day_expenses_page.dart';
-import 'package:inventory_management/widgets/bottom_total_amount_tile.dart';
-
+import '../widgets/expenses_group_tile.dart';
+import '../pages/day_expenses_page.dart';
 import '../source.dart';
 
 class ExpensesPage extends StatefulWidget {
@@ -19,7 +18,8 @@ class _ExpensesPageState extends State<ExpensesPage> {
         Provider.of<ExpensesService>(context, listen: false);
     final categoriesService =
         Provider.of<CategoriesService>(context, listen: false);
-    bloc = ExpensePagesBloc(expensesService, categoriesService);
+    final groupsService = Provider.of<GroupsService>(context, listen: false);
+    bloc = ExpensePagesBloc(expensesService, categoriesService, groupsService);
     bloc.init();
     super.initState();
   }
@@ -29,8 +29,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
     return Scaffold(
         body: _buildBody(),
         appBar: const PageAppBar(title: 'Expenses'),
-        floatingActionButton: const AddButton(nextPage: ExpenseEditPage()),
-        bottomNavigationBar: _buildBottomNavBar());
+        floatingActionButton: const AddButton(nextPage: DayExpensesPage()));
   }
 
   Widget _buildBody() {
@@ -53,53 +52,20 @@ class _ExpensesPageState extends State<ExpensesPage> {
   }
 
   Widget _buildContent(ExpenseSupplements supp) {
-    final expenseList = supp.expenses;
-    if (expenseList.isEmpty) {
+    if (supp.groups.isEmpty) {
       return const EmptyStateWidget(message: emptyGroupMessage);
     }
 
-    final daysWithExpenses = bloc.getDaysWithExpenses;
-
     return ListView.separated(
+      padding: EdgeInsets.zero,
       separatorBuilder: (_, __) => const AppDivider(),
       itemBuilder: (_, i) {
-        final day = daysWithExpenses[i];
-        final dayExpenses =
-            expenseList.where((e) => e.date.day == day).toList();
-        if (dayExpenses.isEmpty) return Container();
-        return _buildDayExpenses(dayExpenses);
+        final group = supp.groups[i];
+        final groupAmount = bloc.getAmountByGroup(group.id);
+        return ExpensesGroupTile(group, groupAmount ?? 0);
       },
-      itemCount: daysWithExpenses.length,
+      itemCount: supp.groups.length,
     );
-  }
-
-  Widget _buildDayExpenses(List<Expense> expenseList) {
-    final date = expenseList.first.date;
-    final formattedDay = DateFormatter.convertToDOW(date);
-    final amount = bloc.getAmountByDay(date.day);
-    final formattedAmount = Utils.convertToMoneyFormat(amount ?? 0);
-    return AppMaterialButton(
-      onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (_) => DayExpensesPage(date.day, formattedDay))),
-      isFilled: false,
-      padding: EdgeInsets.symmetric(horizontal: 19.dw),
-      child: ListTile(
-        title: AppText(formattedDay),
-        trailing: AppText(formattedAmount, weight: FontWeight.bold),
-      ),
-    );
-  }
-
-  _buildBottomNavBar() {
-    return BlocBuilder(
-        bloc: bloc,
-        builder: (_, __) {
-          final monthAmount = bloc.getMonthTotal;
-          if (monthAmount == 0) return Container();
-          return BottomTotalAmountTile(bloc.getMonthTotal);
-        });
   }
 
   static const emptyGroupMessage =

@@ -38,7 +38,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
         canUseDateAsTitle: canUseDateAsTitle ?? true);
 
     if (group != null) {
-      final recordList = recordsService.getRecordList
+      final recordList = recordsService.getList
           .where((e) => e.groupId == group.id)
           .toList();
       supp = supp.copyWith(
@@ -92,7 +92,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
         supp.isDateAsTitle ? DateFormatter.convertToDOW(supp.date) : supp.title;
 
     final group = Group(date: supp.date, title: title, id: Utils.getRandomId());
-    await groupsService.addGroup(group);
+    await groupsService.add(group);
     emit(GroupPagesState.success(supp));
   }
 
@@ -177,7 +177,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
   _handleRecordsUpdates() {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
-    final recordList = recordsService.getRecordList;
+    final recordList = recordsService.getList;
     final groupAmounts = recordsService.getGroupsTotalAmounts;
     supp = supp.copyWith(recordList: recordList, groupAmounts: groupAmounts);
     emit(GroupPagesState.content(supp));

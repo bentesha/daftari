@@ -22,7 +22,7 @@ class RecordsPageBloc extends Cubit<RecordsPageState> with ServicesInitializer {
     emit(RecordsPageState.loading(supp));
     initServices(
         productsService: productsService, recordsService: recordsService);
-    final recordList = recordsService.getRecordList;
+    final recordList = recordsService.getList;
     final productList = productsService.getProductList;
     supp = supp.copyWith(
         productList: productList,
@@ -80,7 +80,7 @@ class RecordsPageBloc extends Cubit<RecordsPageState> with ServicesInitializer {
       sellingPrice: double.parse(supp.sellingPrice),
       notes: supp.notes,
     );
-    await recordsService.addRecord(record);
+    await recordsService.add(record);
     emit(RecordsPageState.success(supp));
   }
 
@@ -95,7 +95,7 @@ class RecordsPageBloc extends Cubit<RecordsPageState> with ServicesInitializer {
         quantity: double.parse(supp.quantity),
         sellingPrice: double.parse(supp.sellingPrice),
         notes: supp.notes);
-    await recordsService.editRecord(record);
+    await recordsService.edit(record);
     emit(RecordsPageState.success(supp));
   }
 
@@ -118,7 +118,7 @@ class RecordsPageBloc extends Cubit<RecordsPageState> with ServicesInitializer {
   _handleRecordsUpdates() {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
-    supp = supp.copyWith(recordList: recordsService.getRecordList);
+    supp = supp.copyWith(recordList: recordsService.getList);
     emit(RecordsPageState.content(supp));
   }
 

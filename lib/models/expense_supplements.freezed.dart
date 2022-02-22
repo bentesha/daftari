@@ -21,20 +21,24 @@ class _$ExpenseSupplementsTearOff {
   _ExpenseSupplements call(
       {required List<Expense> expenses,
       required List<Category> categories,
+      required List<Group> groups,
       required Map<String, String?> errors,
       required String amount,
       required DateTime date,
       String? notes,
       required String id,
+      required Group group,
       required Category category}) {
     return _ExpenseSupplements(
       expenses: expenses,
       categories: categories,
+      groups: groups,
       errors: errors,
       amount: amount,
       date: date,
       notes: notes,
       id: id,
+      group: group,
       category: category,
     );
   }
@@ -47,11 +51,13 @@ const $ExpenseSupplements = _$ExpenseSupplementsTearOff();
 mixin _$ExpenseSupplements {
   List<Expense> get expenses => throw _privateConstructorUsedError;
   List<Category> get categories => throw _privateConstructorUsedError;
+  List<Group> get groups => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
   String get amount => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
   String? get notes => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
+  Group get group => throw _privateConstructorUsedError;
   Category get category => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -67,11 +73,13 @@ abstract class $ExpenseSupplementsCopyWith<$Res> {
   $Res call(
       {List<Expense> expenses,
       List<Category> categories,
+      List<Group> groups,
       Map<String, String?> errors,
       String amount,
       DateTime date,
       String? notes,
       String id,
+      Group group,
       Category category});
 }
 
@@ -88,11 +96,13 @@ class _$ExpenseSupplementsCopyWithImpl<$Res>
   $Res call({
     Object? expenses = freezed,
     Object? categories = freezed,
+    Object? groups = freezed,
     Object? errors = freezed,
     Object? amount = freezed,
     Object? date = freezed,
     Object? notes = freezed,
     Object? id = freezed,
+    Object? group = freezed,
     Object? category = freezed,
   }) {
     return _then(_value.copyWith(
@@ -104,6 +114,10 @@ class _$ExpenseSupplementsCopyWithImpl<$Res>
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
               as List<Category>,
+      groups: groups == freezed
+          ? _value.groups
+          : groups // ignore: cast_nullable_to_non_nullable
+              as List<Group>,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -124,6 +138,10 @@ class _$ExpenseSupplementsCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      group: group == freezed
+          ? _value.group
+          : group // ignore: cast_nullable_to_non_nullable
+              as Group,
       category: category == freezed
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -142,11 +160,13 @@ abstract class _$ExpenseSupplementsCopyWith<$Res>
   $Res call(
       {List<Expense> expenses,
       List<Category> categories,
+      List<Group> groups,
       Map<String, String?> errors,
       String amount,
       DateTime date,
       String? notes,
       String id,
+      Group group,
       Category category});
 }
 
@@ -165,11 +185,13 @@ class __$ExpenseSupplementsCopyWithImpl<$Res>
   $Res call({
     Object? expenses = freezed,
     Object? categories = freezed,
+    Object? groups = freezed,
     Object? errors = freezed,
     Object? amount = freezed,
     Object? date = freezed,
     Object? notes = freezed,
     Object? id = freezed,
+    Object? group = freezed,
     Object? category = freezed,
   }) {
     return _then(_ExpenseSupplements(
@@ -181,6 +203,10 @@ class __$ExpenseSupplementsCopyWithImpl<$Res>
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
               as List<Category>,
+      groups: groups == freezed
+          ? _value.groups
+          : groups // ignore: cast_nullable_to_non_nullable
+              as List<Group>,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -201,6 +227,10 @@ class __$ExpenseSupplementsCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      group: group == freezed
+          ? _value.group
+          : group // ignore: cast_nullable_to_non_nullable
+              as Group,
       category: category == freezed
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -215,17 +245,21 @@ class _$_ExpenseSupplements implements _ExpenseSupplements {
   const _$_ExpenseSupplements(
       {required this.expenses,
       required this.categories,
+      required this.groups,
       required this.errors,
       required this.amount,
       required this.date,
       this.notes,
       required this.id,
+      required this.group,
       required this.category});
 
   @override
   final List<Expense> expenses;
   @override
   final List<Category> categories;
+  @override
+  final List<Group> groups;
   @override
   final Map<String, String?> errors;
   @override
@@ -237,11 +271,13 @@ class _$_ExpenseSupplements implements _ExpenseSupplements {
   @override
   final String id;
   @override
+  final Group group;
+  @override
   final Category category;
 
   @override
   String toString() {
-    return 'ExpenseSupplements(expenses: $expenses, categories: $categories, errors: $errors, amount: $amount, date: $date, notes: $notes, id: $id, category: $category)';
+    return 'ExpenseSupplements(expenses: $expenses, categories: $categories, groups: $groups, errors: $errors, amount: $amount, date: $date, notes: $notes, id: $id, group: $group, category: $category)';
   }
 
   @override
@@ -252,11 +288,13 @@ class _$_ExpenseSupplements implements _ExpenseSupplements {
             const DeepCollectionEquality().equals(other.expenses, expenses) &&
             const DeepCollectionEquality()
                 .equals(other.categories, categories) &&
+            const DeepCollectionEquality().equals(other.groups, groups) &&
             const DeepCollectionEquality().equals(other.errors, errors) &&
             const DeepCollectionEquality().equals(other.amount, amount) &&
             const DeepCollectionEquality().equals(other.date, date) &&
             const DeepCollectionEquality().equals(other.notes, notes) &&
             const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality().equals(other.group, group) &&
             const DeepCollectionEquality().equals(other.category, category));
   }
 
@@ -265,11 +303,13 @@ class _$_ExpenseSupplements implements _ExpenseSupplements {
       runtimeType,
       const DeepCollectionEquality().hash(expenses),
       const DeepCollectionEquality().hash(categories),
+      const DeepCollectionEquality().hash(groups),
       const DeepCollectionEquality().hash(errors),
       const DeepCollectionEquality().hash(amount),
       const DeepCollectionEquality().hash(date),
       const DeepCollectionEquality().hash(notes),
       const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(group),
       const DeepCollectionEquality().hash(category));
 
   @JsonKey(ignore: true)
@@ -282,17 +322,21 @@ abstract class _ExpenseSupplements implements ExpenseSupplements {
   const factory _ExpenseSupplements(
       {required List<Expense> expenses,
       required List<Category> categories,
+      required List<Group> groups,
       required Map<String, String?> errors,
       required String amount,
       required DateTime date,
       String? notes,
       required String id,
+      required Group group,
       required Category category}) = _$_ExpenseSupplements;
 
   @override
   List<Expense> get expenses;
   @override
   List<Category> get categories;
+  @override
+  List<Group> get groups;
   @override
   Map<String, String?> get errors;
   @override
@@ -303,6 +347,8 @@ abstract class _ExpenseSupplements implements ExpenseSupplements {
   String? get notes;
   @override
   String get id;
+  @override
+  Group get group;
   @override
   Category get category;
   @override

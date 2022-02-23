@@ -1,4 +1,4 @@
-import '../pages/day_expenses_page.dart';
+import '../pages/group_expenses_page.dart';
 import '../source.dart';
 
 class ExpensesGroupTile extends StatelessWidget {
@@ -14,7 +14,7 @@ class ExpensesGroupTile extends StatelessWidget {
     final formattedAmount = Utils.convertToMoneyFormat(groupAmount);
     return AppMaterialButton(
       onPressed: () => Navigator.push(context,
-          MaterialPageRoute(builder: (_) => DayExpensesPage(group: group))),
+          MaterialPageRoute(builder: (_) => GroupExpensesPage(group: group))),
       isFilled: false,
       padding: EdgeInsets.symmetric(horizontal: 19.dw),
       child: ListTile(

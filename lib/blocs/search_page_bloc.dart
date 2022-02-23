@@ -66,7 +66,7 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>>
   _handleItemUpdates() {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
-    final items = productsService.getProductList.whereType<T>().toList();
+    final items = productsService.getList.whereType<T>().toList();
     supp = supp.copyWith(options: items);
     emit(SearchPageState.content(supp));
   }
@@ -74,7 +74,7 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>>
   _handleCategoryUpdates() {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
-    var categories = categoriesService.getCategoryList;
+    var categories = categoriesService.getList;
     categories = categories.where((e) => e.type == _categoryType).toList();
     final options = categories.whereType<T>().toList();
     supp = supp.copyWith(options: options);
@@ -91,10 +91,10 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>>
   }
 
   List _getOptions() {
-    if (T == Product) return productsService.getProductList;
+    if (T == Product) return productsService.getList;
     if (T == CategoryType) return typeService.getCategoryTypeList;
     if (T == Category) {
-      final categories = categoriesService.getCategoryList;
+      final categories = categoriesService.getList;
       return categories.where((e) => e.type == _categoryType).toList();
     }
 

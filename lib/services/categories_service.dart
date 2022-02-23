@@ -8,11 +8,8 @@ class CategoriesService extends Service<Category> {
   static var _selectedId = '';
   static var _category = Category.empty();
 
-  List<Category> get getCategoryList => super.getList;
   String get getSelectedCategoryId => _selectedId;
   Category get getCurrent => _category;
-
-  Category? getCategoryById(String id) => box.get(id) as Category?;
 
   Future<void> addCategory(Category category) async {
     _selectedId = category.id;

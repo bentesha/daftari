@@ -34,6 +34,8 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
         margin: EdgeInsets.only(right: 19.dw));
   }
 
+  static final _appBar = AppBar();
+
   @override
-  Size get preferredSize => Size(double.infinity, 50.dh);
+  Size get preferredSize => _appBar.preferredSize;
 }

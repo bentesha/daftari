@@ -16,8 +16,8 @@ class _RecordEditPageState extends State<RecordEditPage> {
 
   @override
   void initState() {
-    final recordsService = Provider.of<RecordsService>(context, listen: false);
-    final itemsService = Provider.of<ProductsService>(context, listen: false);
+    final recordsService = getService<RecordsService>(context);
+    final itemsService = getService<ProductsService>(context);
     bloc = RecordsPageBloc(recordsService, itemsService);
     isEditing = widget.record != null;
     bloc.init(widget.groupId, widget.record);

@@ -12,20 +12,17 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
 
   Category? get getSelectedCategory {
     final id = state.supplements.categoryId;
-    final category = categoriesService.getCategoryById(id);
+    final category = categoriesService.getById(id);
     return category;
   }
 
-  ///product should be specified when it is to be edited.
-  ///Category is passed when product is created for the first time.
-  ///Also category is needed on category page that displays all products of the same ID
   void init({Product? product, String? categoryId}) {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
     initServices(
         productsService: productsService, categoriesService: categoriesService);
-    var productList = productsService.getProductList;
-    final categories = categoriesService.getCategoryList;
+    var productList = productsService.getList;
+    final categories = categoriesService.getList;
 
     if (categoryId != null) {
       productList =
@@ -103,7 +100,7 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
         barcode: supp.barcode,
         unitPrice: double.parse(supp.unitPrice),
         quantity: double.parse(supp.quantity));
-    await productsService.editProduct(product);
+    await productsService.edit(product);
     emit(ProductPageState.success(supp));
   }
 
@@ -129,7 +126,7 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
   _handleproductUpdates() {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
-    final products = productsService.getProductList;
+    final products = productsService.getList;
     supp = supp.copyWith(productList: products);
     emit(ProductPageState.content(supp));
   }

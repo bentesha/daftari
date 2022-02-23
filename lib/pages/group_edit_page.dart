@@ -18,9 +18,9 @@ class _GroupEditPageState extends State<GroupEditPage> {
 
   @override
   void initState() {
-    final recordsService = Provider.of<RecordsService>(context, listen: false);
-    final groupsService = Provider.of<GroupsService>(context, listen: false);
-    final itemsService = Provider.of<ProductsService>(context, listen: false);
+    final recordsService = getService<RecordsService>(context);
+    final groupsService = getService<GroupsService>(context);
+    final itemsService = getService<ProductsService>(context);
     bloc = GroupPagesBloc(groupsService, recordsService, itemsService);
 
     final group = widget.group;

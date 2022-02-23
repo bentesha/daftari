@@ -14,10 +14,9 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   void initState() {
-    final service = Provider.of<ProductsService>(context, listen: false);
-    final categoriesService =
-        Provider.of<CategoriesService>(context, listen: false);
-    bloc = ProductPageBloc(service, categoriesService);
+    final productsService = getService<ProductsService>(context);
+    final categoriesService = getService<CategoriesService>(context);
+    bloc = ProductPageBloc(productsService, categoriesService);
     bloc.init();
     super.initState();
   }
@@ -61,8 +60,9 @@ class _CategoryPageState extends State<CategoryPage> {
   }
 
   Widget _buildContent(ProductPageSupplements supp) {
-    final items =
-        supp.productList.where((e) => e.categoryId == widget.category.id).toList();
+    final items = supp.productList
+        .where((e) => e.categoryId == widget.category.id)
+        .toList();
     if (items.isEmpty) {
       return const EmptyStateWidget(message: emptyItemsMessage);
     }

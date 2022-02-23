@@ -18,15 +18,11 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
   @override
   void initState() {
     isEditing = widget.expense != null;
-    final expensesService =
-        Provider.of<ExpensesService>(context, listen: false);
-    final categoriesService =
-        Provider.of<CategoriesService>(context, listen: false);
-    final groupsService = Provider.of<GroupsService>(context, listen: false);
-
+    final groupsService = getService<GroupsService>(context);
+    final expensesService = getService<ExpensesService>(context);
+    final categoriesService = getService<CategoriesService>(context);
     bloc = ExpensePagesBloc(expensesService, categoriesService, groupsService);
-
-    bloc.init(widget.expense);
+    bloc.init(Pages.expense_edit_page, widget.expense, widget.groupId);
     super.initState();
   }
 

@@ -15,9 +15,9 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
 
   @override
   void initState() {
-    final recordsService = Provider.of<RecordsService>(context, listen: false);
-    final groupsService = Provider.of<GroupsService>(context, listen: false);
-    final itemsService = Provider.of<ProductsService>(context, listen: false);
+    final recordsService =getService<RecordsService>(context);
+    final groupsService =getService<GroupsService>(context);
+    final itemsService =getService<ProductsService>(context);
     bloc = GroupPagesBloc(groupsService, recordsService, itemsService);
     bloc.init(group: widget.group);
     super.initState();

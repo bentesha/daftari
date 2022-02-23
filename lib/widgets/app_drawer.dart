@@ -60,7 +60,7 @@ class AppDrawer extends StatelessWidget {
         children: [
           _buildListTile('Dashboard', Pages.dashboard),
           _buildListTile('Sales', Pages.sales_page),
-          _buildListTile('Expenses', Pages.expenses_page),
+          _buildListTile('Expenses', Pages.group_expenses_page),
           _buildListTile('Purchases', Pages.purchases_page),
           _buildListTile('Stock Adjustment', Pages.stock_adjustment_page),
           _buildListTile('Items', Pages.items_page),
@@ -135,8 +135,8 @@ class AppDrawer extends StatelessWidget {
       case Pages.reports_page:
         nextPage = const ReportsPage();
         break;
-      case Pages.expenses_page:
-        nextPage = const ExpensesPage();
+      case Pages.group_expenses_page:
+        nextPage = const ExpensesGroupsPage();
         break;
       default:
         nextPage = null;

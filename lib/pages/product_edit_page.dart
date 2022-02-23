@@ -25,9 +25,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
   void initState() {
     isEditing = widget.product != null;
     hasNoCategoryId = widget.product == null && widget.categoryId == null;
-    final service = Provider.of<ProductsService>(context, listen: false);
-    final categoriesService =
-        Provider.of<CategoriesService>(context, listen: false);
+    final service = getService<ProductsService>(context);
+    final categoriesService = getService<CategoriesService>(context);
     bloc = ProductPageBloc(service, categoriesService);
     bloc.init(product: widget.product, categoryId: widget.categoryId);
     super.initState();

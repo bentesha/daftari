@@ -24,11 +24,13 @@ class Group {
 
   factory Group.empty() => Group(id: '', date: DateTime.now(), title: '');
 
-  Group copyWith({String? title, DateTime? date, String? type}) => Group(
-      id: id,
-      date: date ?? this.date,
-      title: title ?? this.title,
-      type: type ?? this.type);
+  Group copyWith({String? title, DateTime? date, String? type, String? id}) {
+    return Group(
+        id: id ?? this.id,
+        date: date ?? this.date,
+        title: title ?? this.title,
+        type: type ?? this.type);
+  }
 
   @override
   String toString() {

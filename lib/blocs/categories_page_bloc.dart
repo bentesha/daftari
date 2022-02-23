@@ -19,8 +19,8 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
     emit(CategoryPagesState.loading(supp));
     initServices(
         productsService: productsService, categoriesService: categoriesService);
-    final categories = categoriesService.getCategoryList;
-    final products = productsService.getProductList;
+    final categories = categoriesService.getList;
+    final products = productsService.getList;
     supp = supp.copyWith(categoryList: categories, productList: products);
     if (category != null) supp = supp.copyWith(category: category);
     emit(CategoryPagesState.content(supp));
@@ -79,7 +79,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   _handleCategoryUpdates() {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
-    final categories = categoriesService.getCategoryList;
+    final categories = categoriesService.getList;
     supp = supp.copyWith(categoryList: categories);
     emit(CategoryPagesState.content(supp));
   }
@@ -87,7 +87,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   _handleItemUpdates() {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
-    final products = productsService.getProductList;
+    final products = productsService.getList;
     supp = supp.copyWith(productList: products);
     emit(CategoryPagesState.content(supp));
   }

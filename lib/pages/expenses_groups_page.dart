@@ -1,26 +1,24 @@
 import '../widgets/expenses_group_tile.dart';
-import '../pages/day_expenses_page.dart';
+import 'group_expenses_page.dart';
 import '../source.dart';
 
-class ExpensesPage extends StatefulWidget {
-  const ExpensesPage({Key? key}) : super(key: key);
+class ExpensesGroupsPage extends StatefulWidget {
+  const ExpensesGroupsPage({Key? key}) : super(key: key);
 
   @override
-  State<ExpensesPage> createState() => _ExpensesPageState();
+  State<ExpensesGroupsPage> createState() => _ExpensesGroupsPageState();
 }
 
-class _ExpensesPageState extends State<ExpensesPage> {
+class _ExpensesGroupsPageState extends State<ExpensesGroupsPage> {
   late final ExpensePagesBloc bloc;
 
   @override
   void initState() {
-    final expensesService =
-        Provider.of<ExpensesService>(context, listen: false);
-    final categoriesService =
-        Provider.of<CategoriesService>(context, listen: false);
-    final groupsService = Provider.of<GroupsService>(context, listen: false);
+    final expensesService = getService<ExpensesService>(context);
+    final categoriesService = getService<CategoriesService>(context);
+    final groupsService = getService<GroupsService>(context);
     bloc = ExpensePagesBloc(expensesService, categoriesService, groupsService);
-    bloc.init();
+    bloc.init(Pages.expenses_groups_page);
     super.initState();
   }
 
@@ -29,7 +27,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
     return Scaffold(
         body: _buildBody(),
         appBar: const PageAppBar(title: 'Expenses'),
-        floatingActionButton: const AddButton(nextPage: DayExpensesPage()));
+        floatingActionButton: const AddButton(nextPage: GroupExpensesPage()));
   }
 
   Widget _buildBody() {
@@ -58,7 +56,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
 
     return ListView.separated(
       padding: EdgeInsets.zero,
-      separatorBuilder: (_, __) => const AppDivider(),
+      separatorBuilder: (_, __) => const AppDivider(margin: EdgeInsets.zero),
       itemBuilder: (_, i) {
         final group = supp.groups[i];
         final groupAmount = bloc.getAmountByGroup(group.id);

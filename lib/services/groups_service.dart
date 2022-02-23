@@ -6,11 +6,7 @@ class GroupsService extends Service<Group> {
   GroupsService() : super(_box);
 
   static var _selectedId = '';
-
   String get getEditedGroupId => _selectedId;
-  List<Group> get getGroupList => super.getList;
-
-  Group? getGroupById(String id) => _box.get(id) as Group?;
 
   ///Gets all groups from the Hive database
   void init() => super.getAll();

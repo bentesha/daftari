@@ -10,10 +10,10 @@ class RecordsPageBloc extends Cubit<RecordsPageState> with ServicesInitializer {
   final RecordsService recordsService;
   final ProductsService productsService;
 
-  bool get hasProducts => productsService.getProductList.isNotEmpty;
+  bool get hasProducts => productsService.getList.isNotEmpty;
 
   Product? get getSelectedProduct =>
-      productsService.getProductById(state.supplements.productId);
+      productsService.getById(state.supplements.productId);
 
   Record? _record;
 
@@ -23,7 +23,7 @@ class RecordsPageBloc extends Cubit<RecordsPageState> with ServicesInitializer {
     initServices(
         productsService: productsService, recordsService: recordsService);
     final recordList = recordsService.getList;
-    final productList = productsService.getProductList;
+    final productList = productsService.getList;
     supp = supp.copyWith(
         productList: productList,
         recordList: recordList,
@@ -126,8 +126,8 @@ class RecordsPageBloc extends Cubit<RecordsPageState> with ServicesInitializer {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
     final id = productsService.getSelectedProductId;
-    final product = productsService.getProductById(id);
-    final products = productsService.getProductList;
+    final product = productsService.getById(id);
+    final products = productsService.getList;
     supp = supp.copyWith(
         productId: id,
         quantity: '1',

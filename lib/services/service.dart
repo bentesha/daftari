@@ -22,6 +22,8 @@ class Service<T> extends ChangeNotifier {
   ///updates the items list so that getList methods works for listeners
   void refresh() => getAll(true);
 
+  T? getById(String id) => _box.get(id) as T?;
+
   Future<void> add(var item) async {
     await _box.put(item.id, item);
     _list.add(item);

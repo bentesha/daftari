@@ -16,11 +16,10 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
 
   @override
   void initState() {
-    final categoriesService =
-        Provider.of<CategoriesService>(context, listen: false);
-    final itemsService = Provider.of<ProductsService>(context, listen: false);
-    final typeService = Provider.of<TypeService>(context, listen: false);
-    bloc = SearchPageBloc(itemsService, categoriesService, typeService);
+    final productsService = getService<ProductsService>(context);
+    final categoriesService = getService<CategoriesService>(context);
+    final typeService = getService<TypeService>(context);
+    bloc = SearchPageBloc(productsService, categoriesService, typeService);
     bloc.init(widget.categoryType);
     super.initState();
   }

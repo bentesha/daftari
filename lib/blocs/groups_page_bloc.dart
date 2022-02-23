@@ -12,7 +12,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
   final RecordsService recordsService;
   final ProductsService productsService;
 
-  bool get isItemListEmpty => productsService.getProductList.isEmpty;
+  bool get isItemListEmpty => productsService.getList.isEmpty;
 
   double get getGroupTotalAmount {
     final supp = state.supplements;
@@ -28,7 +28,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
         recordsService: recordsService,
         groupsService: groupsService);
     final groupAmounts = recordsService.getGroupsTotalAmounts;
-    final groupList = groupsService.getGroupList;
+    final groupList = groupsService.getList;
     final canUseDateAsTitle = _checkIfCanUseDateAsTitle(group);
 
     supp = supp.copyWith(
@@ -59,7 +59,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
   bool _checkIfGroupTitleExists() {
     final dateTitle = DateFormatter.convertToDOW(DateTime.now());
     final group =
-        groupsService.getGroupList.where((e) => e.title == dateTitle).toList();
+        groupsService.getList.where((e) => e.title == dateTitle).toList();
     return group.isNotEmpty;
   }
 
@@ -137,9 +137,9 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
     final isEditing = group != null;
 
     final _date = group?.date ?? DateTime.now();
-    final currentGroupList = groupsService.getGroupList;
+    final currentGroupList = groupsService.getList;
     final currentDayGroupList = isEditing
-        ? groupsService.getGroupList
+        ? groupsService.getList
             .where((e) => e.date.day == _date.day)
             .toList()
         : currentGroupList;
@@ -161,8 +161,8 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
     emit(GroupPagesState.loading(supp));
     final editedGroupId = groupsService.getEditedGroupId;
     final title =
-        groupsService.getGroupById(editedGroupId)?.title ?? supp.title;
-    final groupList = groupsService.getGroupList;
+        groupsService.getById(editedGroupId)?.title ?? supp.title;
+    final groupList = groupsService.getList;
     supp = supp.copyWith(groupList: groupList, title: title);
     emit(GroupPagesState.content(supp));
   }
@@ -170,7 +170,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
   _handleItemListUpdates() {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
-    productsService.getProductList;
+    productsService.getList;
     emit(GroupPagesState.content(supp));
   }
 

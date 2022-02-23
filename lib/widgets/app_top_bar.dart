@@ -7,7 +7,9 @@ enum Pages {
   reports_page,
   categories_page,
   purchases_page,
-  expenses_page,
+  expenses_groups_page,
+  group_expenses_page,
+  expense_edit_page,
   stock_adjustment_page,
   items_page
 }

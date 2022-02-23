@@ -15,11 +15,9 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
   final GroupsService groupsService;
 
   double? getAmountByGroup(String id) => expensesService.getDayTotalAmounts[id];
-  Category? getCategoryById(String id) => categoriesService.getCategoryById(id);
+  Category? getCategoryById(String id) => categoriesService.getById(id);
 
-  String? _groupId;
-
-  void init([Expense? expense, String? groupId]) {
+  void init(Pages page, [Expense? expense, String? groupId]) {
     var supp = state.supplements;
     emit(ExpensePagesState.loading(supp));
     initServices(
@@ -27,38 +25,9 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
         categoriesService: categoriesService,
         groupsService: groupsService);
 
-    var expenses = expensesService.getList;
-    if (groupId != null) {
-      _groupId = groupId;
-      log('I was given the group id');
-      final group = groupsService.getGroupById(groupId);
-      log('hello');
-      log(group!.id);
-      log('hello there');
-      supp = supp.copyWith(group: group);
-      expenses = expenses.where((e) => e.groupId == groupId).toList();
-    }
-
-    final categories = categoriesService.getCategoryList
-        .where((e) => e.type == CategoryType.expenses().name)
-        .toList();
-    final groups = groupsService.getList
-        .where((e) => e.type == GroupType.expenses)
-        .toList();
-
-    supp = supp.copyWith(
-        expenses: expenses, categories: categories, groups: groups);
-    if (expense != null) {
-      final category = categoriesService.getCategoryById(expense.categoryId);
-      final group = groupsService.getGroupById(expense.groupId);
-      supp = supp.copyWith(
-          amount: expense.amount.toString(),
-          id: expense.id,
-          group: group!,
-          category: category!,
-          notes: expense.notes);
-    }
-    emit(ExpensePagesState.content(supp));
+    _initExpensesGroupsPage(page);
+    _initGroupExpensesPage(page, groupId);
+    _initExpensesEditPage(page, expense, groupId);
   }
 
   void saveExpense() {
@@ -100,13 +69,42 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
 
   void updateAmount(String amount) => _updateAttributes(amount: amount);
 
-  void updateTitle(String title) => _updateAttributes(title: title);
+  void updateGroupTitle(String title) => _updateAttributes(title: title);
 
   void updateNotes(String notes) => _updateAttributes(notes: notes);
 
   void updateGroupDate(DateTime date) => _updateAttributes(groupDate: date);
 
   void updateDate(DateTime date) => _updateAttributes(date: date);
+
+  void saveGroup() {
+    _validateGroupDetails();
+
+    var supp = state.supplements;
+    final hasErrors = InputValidation.checkErrors(supp.errors);
+    if (hasErrors) return;
+    emit(ExpensePagesState.loading(supp));
+    final group = Group(
+        id: Utils.getRandomId(),
+        date: supp.group.date,
+        title: supp.group.title,
+        type: CategoryType.expenses().name);
+    //copying the id
+    supp = supp.copyWith(group: group);
+    groupsService.add(group);
+    emit(ExpensePagesState.content(supp));
+  }
+
+  void editGroup() {
+    _validateGroupDetails();
+
+    var supp = state.supplements;
+    final hasErrors = InputValidation.checkErrors(supp.errors);
+    if (hasErrors) return;
+    emit(ExpensePagesState.loading(supp));
+    groupsService.edit(supp.group);
+    emit(ExpensePagesState.content(supp));
+  }
 
   void _updateAttributes(
       {String? amount,
@@ -138,28 +136,6 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
     emit(ExpensePagesState.content(supp));
   }
 
-  void saveGroup() {
-    _validateGroupDetails();
-
-    var supp = state.supplements;
-    final hasErrors = InputValidation.checkErrors(supp.errors);
-    if (hasErrors) return;
-    emit(ExpensePagesState.loading(supp));
-    groupsService.add(supp.group);
-    emit(ExpensePagesState.content(supp));
-  }
-
-  void editGroup() {
-    _validateGroupDetails();
-
-    var supp = state.supplements;
-    final hasErrors = InputValidation.checkErrors(supp.errors);
-    if (hasErrors) return;
-    emit(ExpensePagesState.loading(supp));
-    groupsService.edit(supp.group);
-    emit(ExpensePagesState.content(supp));
-  }
-
   _validateGroupDetails() {
     var supp = state.supplements;
     emit(ExpensePagesState.loading(supp));
@@ -167,6 +143,54 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
     final errors = <String, String?>{};
     errors['title'] = InputValidation.validateText(supp.group.title, 'Title');
     supp = supp.copyWith(errors: errors);
+    emit(ExpensePagesState.content(supp));
+  }
+
+  void _initExpensesGroupsPage(Pages page) {
+    if (page != Pages.expenses_groups_page) return;
+
+    var supp = state.supplements;
+    final groups = groupsService.getList;
+    final expenses = expensesService.getList;
+    supp = supp.copyWith(groups: groups, expenses: expenses);
+    emit(ExpensePagesState.content(supp));
+  }
+
+  void _initGroupExpensesPage(Pages page, [String? groupId]) {
+    if (page != Pages.group_expenses_page) return;
+
+    var supp = state.supplements;
+    if (groupId == null) {
+      supp = ExpenseSupplements.empty();
+    } else {
+      final expenses =
+          expensesService.getList.where((e) => e.groupId == groupId).toList();
+      final group = groupsService.getById(groupId);
+      supp = supp.copyWith(expenses: expenses, group: group!);
+    }
+    emit(ExpensePagesState.content(supp));
+  }
+
+  void _initExpensesEditPage(Pages page, [Expense? expense, String? groupId]) {
+    if (page != Pages.expense_edit_page) return;
+
+    var supp = state.supplements;
+    if (groupId != null) {
+      //adding a new expense:
+      supp = ExpenseSupplements.empty();
+      supp = supp.copyWith(group: supp.group.copyWith(id: groupId));
+    }
+    if (expense != null) {
+      //editing existing expense
+      final category = categoriesService.getById(expense.categoryId);
+      supp = supp.copyWith(
+          group: supp.group.copyWith(id: expense.groupId),
+          date: expense.date,
+          amount: expense.amount.toString(),
+          category: category!,
+          id: expense.id,
+          notes: expense.notes);
+    }
     emit(ExpensePagesState.content(supp));
   }
 
@@ -180,7 +204,9 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
   _handleExpenseUpdates() {
     var supp = state.supplements;
     emit(ExpensePagesState.loading(supp));
-    var expenses = expensesService.getList;
+    var expenses = expensesService.getList
+        .where((e) => e.groupId == supp.group.id)
+        .toList();
     supp = supp.copyWith(expenses: expenses);
     emit(ExpensePagesState.content(supp));
   }
@@ -191,7 +217,6 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
     var groups = groupsService.getList
         .where((e) => e.type == GroupType.expenses)
         .toList();
-
     supp = supp.copyWith(groups: groups);
     emit(ExpensePagesState.content(supp));
   }

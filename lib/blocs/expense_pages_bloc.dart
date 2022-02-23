@@ -150,7 +150,9 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
     if (page != Pages.expenses_groups_page) return;
 
     var supp = state.supplements;
-    final groups = groupsService.getList;
+    final groups = groupsService.getList
+        .where((e) => e.type == GroupType.expenses)
+        .toList();
     final expenses = expensesService.getList;
     supp = supp.copyWith(groups: groups, expenses: expenses);
     emit(ExpensePagesState.content(supp));

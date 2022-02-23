@@ -23,7 +23,7 @@ class _ItemsPageState extends State<ItemsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _buildBody(),
-      appBar: const PageAppBar(title: 'Items'),
+      appBar: const PageAppBar(title: 'Products'),
       floatingActionButton: const AddButton(nextPage: ProductEditPage()),
     );
   }

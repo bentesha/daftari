@@ -62,9 +62,9 @@ class _RecordEditPageState extends State<RecordEditPage> {
     return Column(
       children: [
         ValueSelector(
-          title: 'Item',
+          title: 'Product',
           value: bloc.getSelectedProduct?.name,
-          error: supp.errors['item'],
+          error: supp.errors['product'],
           isEditable: !isEditing,
           onPressed: () => Navigator.push(
               context,

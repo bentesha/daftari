@@ -28,7 +28,8 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
         recordsService: recordsService,
         groupsService: groupsService);
     final groupAmounts = recordsService.getGroupsTotalAmounts;
-    final groupList = groupsService.getList;
+    final groupList =
+        groupsService.getList.where((e) => e.type == GroupType.sales).toList();
     final canUseDateAsTitle = _checkIfCanUseDateAsTitle(group);
 
     supp = supp.copyWith(
@@ -38,9 +39,8 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
         canUseDateAsTitle: canUseDateAsTitle ?? true);
 
     if (group != null) {
-      final recordList = recordsService.getList
-          .where((e) => e.groupId == group.id)
-          .toList();
+      final recordList =
+          recordsService.getList.where((e) => e.groupId == group.id).toList();
       supp = supp.copyWith(
           id: group.id,
           title: group.title,
@@ -58,8 +58,9 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
 
   bool _checkIfGroupTitleExists() {
     final dateTitle = DateFormatter.convertToDOW(DateTime.now());
-    final group =
-        groupsService.getList.where((e) => e.title == dateTitle).toList();
+    final groups =
+        groupsService.getList.where((e) => e.type == GroupType.sales).toList();
+    final group = groups.where((e) => e.title == dateTitle).toList();
     return group.isNotEmpty;
   }
 
@@ -137,11 +138,10 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
     final isEditing = group != null;
 
     final _date = group?.date ?? DateTime.now();
-    final currentGroupList = groupsService.getList;
+    final currentGroupList =
+        groupsService.getList.where((e) => e.type == GroupType.sales).toList();
     final currentDayGroupList = isEditing
-        ? groupsService.getList
-            .where((e) => e.date.day == _date.day)
-            .toList()
+        ? groupsService.getList.where((e) => e.date.day == _date.day).toList()
         : currentGroupList;
 
     final dayNumberOfGroups = currentDayGroupList.length;
@@ -160,9 +160,9 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
     final editedGroupId = groupsService.getEditedGroupId;
-    final title =
-        groupsService.getById(editedGroupId)?.title ?? supp.title;
-    final groupList = groupsService.getList;
+    final title = groupsService.getById(editedGroupId)?.title ?? supp.title;
+    final groupList =
+        groupsService.getList.where((e) => e.type == GroupType.sales).toList();
     supp = supp.copyWith(groupList: groupList, title: title);
     emit(GroupPagesState.content(supp));
   }

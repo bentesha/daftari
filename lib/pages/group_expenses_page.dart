@@ -14,7 +14,7 @@ class GroupExpensesPage extends StatefulWidget {
 class _GroupExpensesPageState extends State<GroupExpensesPage> {
   late final ExpensePagesBloc bloc;
   late final bool isEditing;
-  final _actionActiveNotifier = ValueNotifier<bool>(false);
+  final _isActionActiveNotifier = ValueNotifier<bool>(false);
 
   @override
   void initState() {
@@ -30,8 +30,8 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
 
   _initAppAction() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (widget.group != null) _actionActiveNotifier.value = false;
-      if (widget.group == null) _actionActiveNotifier.value = true;
+      if (widget.group != null) _isActionActiveNotifier.value = false;
+      if (widget.group == null) _isActionActiveNotifier.value = true;
     });
   }
 
@@ -153,21 +153,21 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
 
   _buildAction() {
     return ValueListenableBuilder<bool>(
-        valueListenable: _actionActiveNotifier,
+        valueListenable: _isActionActiveNotifier,
         builder: (_, isActive, child) {
           return AppIconButton(
               icon: isActive ? Icons.done : Icons.edit_outlined,
               margin: EdgeInsets.only(right: 19.dw),
               onPressed: !isActive
-                  ? () => _actionActiveNotifier.value = true
+                  ? () => _isActionActiveNotifier.value = true
                   : isEditing
                       ? () {
                           bloc.editGroup();
-                          _actionActiveNotifier.value = false;
+                          _isActionActiveNotifier.value = false;
                         }
                       : () {
                           bloc.saveGroup();
-                          _actionActiveNotifier.value = false;
+                          _isActionActiveNotifier.value = false;
                         });
         });
   }

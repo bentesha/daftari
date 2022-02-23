@@ -63,8 +63,9 @@ class AppDrawer extends StatelessWidget {
           _buildListTile('Expenses', Pages.group_expenses_page),
           _buildListTile('Purchases', Pages.purchases_page),
           _buildListTile('Stock Adjustment', Pages.stock_adjustment_page),
-          _buildListTile('Items', Pages.items_page),
-          _buildListTile('Categories', Pages.categories_page),
+          _buildListTile('Products', Pages.products_page),
+          _buildListTile('Products Categories', Pages.products_categories_page),
+          _buildListTile('Expenses Categories', Pages.expenses_categories_page),
           _buildListTile('Reports', Pages.reports_page),
         ],
       ),
@@ -126,10 +127,13 @@ class AppDrawer extends StatelessWidget {
       case Pages.sales_page:
         nextPage = const SalesRecordsPage();
         break;
-      case Pages.categories_page:
-        nextPage = const CategoriesPage();
+      case Pages.expenses_categories_page:
+        nextPage = CategoriesPage(CategoryType.expenses());
         break;
-      case Pages.items_page:
+      case Pages.products_categories_page:
+        nextPage = CategoriesPage(CategoryType.products());
+        break;
+      case Pages.products_page:
         nextPage = const ItemsPage();
         break;
       case Pages.reports_page:

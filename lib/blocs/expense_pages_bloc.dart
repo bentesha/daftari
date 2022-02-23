@@ -77,7 +77,7 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
 
   void updateDate(DateTime date) => _updateAttributes(date: date);
 
-  void saveGroup() {
+  void saveGroup() async {
     _validateGroupDetails();
 
     var supp = state.supplements;
@@ -89,20 +89,20 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
         date: supp.group.date,
         title: supp.group.title,
         type: CategoryType.expenses().name);
-    //copying the id
+    //copying the group-id
     supp = supp.copyWith(group: group);
-    groupsService.add(group);
+    await groupsService.add(group);
     emit(ExpensePagesState.content(supp));
   }
 
-  void editGroup() {
+  void editGroup() async {
     _validateGroupDetails();
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
     emit(ExpensePagesState.loading(supp));
-    groupsService.edit(supp.group);
+    await groupsService.edit(supp.group);
     emit(ExpensePagesState.content(supp));
   }
 
@@ -122,29 +122,25 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
     emit(ExpensePagesState.content(supp));
   }
 
-  _validate() {
+  _validate([bool isValidatingGroupDetails = false]) {
     var supp = state.supplements;
     emit(ExpensePagesState.loading(supp));
 
     final errors = <String, String?>{};
-    errors['category'] =
-        InputValidation.validateText(supp.category.id, 'Category');
 
-    errors['amount'] = InputValidation.validateNumber(supp.amount, 'Amount');
+    if (isValidatingGroupDetails) {
+      errors['title'] = InputValidation.validateText(supp.group.title, 'Title');
+    } else {
+      errors['category'] =
+          InputValidation.validateText(supp.category.id, 'Category');
+      errors['amount'] = InputValidation.validateNumber(supp.amount, 'Amount');
+    }
 
     supp = supp.copyWith(errors: errors);
     emit(ExpensePagesState.content(supp));
   }
 
-  _validateGroupDetails() {
-    var supp = state.supplements;
-    emit(ExpensePagesState.loading(supp));
-
-    final errors = <String, String?>{};
-    errors['title'] = InputValidation.validateText(supp.group.title, 'Title');
-    supp = supp.copyWith(errors: errors);
-    emit(ExpensePagesState.content(supp));
-  }
+  _validateGroupDetails() => _validate(true);
 
   void _initExpensesGroupsPage(Pages page) {
     if (page != Pages.expenses_groups_page) return;
@@ -163,8 +159,10 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
 
     var supp = state.supplements;
     if (groupId == null) {
+      //is adding new group
       supp = ExpenseSupplements.empty();
     } else {
+      //is viewing existing group
       final expenses =
           expensesService.getList.where((e) => e.groupId == groupId).toList();
       final group = groupsService.getById(groupId);
@@ -178,12 +176,12 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
 
     var supp = state.supplements;
     if (groupId != null) {
-      //adding a new expense:
+      //is adding a new expense:
       supp = ExpenseSupplements.empty();
       supp = supp.copyWith(group: supp.group.copyWith(id: groupId));
     }
     if (expense != null) {
-      //editing existing expense
+      //is editing existing expense
       final category = categoriesService.getById(expense.categoryId);
       supp = supp.copyWith(
           group: supp.group.copyWith(id: expense.groupId),
@@ -196,6 +194,7 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
     emit(ExpensePagesState.content(supp));
   }
 
+  ///handling selected category on expense-edit-page
   _handleCategoryUpdates() {
     var supp = state.supplements;
     emit(ExpensePagesState.loading(supp));
@@ -203,6 +202,7 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
     emit(ExpensePagesState.content(supp));
   }
 
+  ///handling expenses on the group-expenses-page
   _handleExpenseUpdates() {
     var supp = state.supplements;
     emit(ExpensePagesState.loading(supp));
@@ -213,6 +213,7 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
     emit(ExpensePagesState.content(supp));
   }
 
+  ///handling expense groups on the expenses-groups-page
   _handleGroupUpdates() {
     var supp = state.supplements;
     emit(ExpensePagesState.loading(supp));

@@ -23,12 +23,12 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
     final categoriesService = getService<CategoriesService>(context);
     final groupsService = getService<GroupsService>(context);
     bloc = ExpensePagesBloc(expensesService, categoriesService, groupsService);
-    _initAppAction();
+    _initAppBarAction();
     bloc.init(Pages.group_expenses_page, null, widget.group?.id);
     super.initState();
   }
 
-  _initAppAction() {
+  _initAppBarAction() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.group != null) _isActionActiveNotifier.value = false;
       if (widget.group == null) _isActionActiveNotifier.value = true;
@@ -132,10 +132,10 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
     return BlocBuilder<ExpensePagesBloc, ExpensePagesState>(
         bloc: bloc,
         builder: (_, state) {
-          final hasNoGroup = state.supplements.group.id.isEmpty;
+          final groupId = state.supplements.group.id;
+          final hasNoGroup = groupId.isEmpty;
           if (hasNoGroup) return Container();
-          return AddButton(
-              nextPage: ExpenseEditPage(groupId: widget.group?.id));
+          return AddButton(nextPage: ExpenseEditPage(groupId: groupId));
         });
   }
 
@@ -143,9 +143,8 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
     return BlocBuilder<ExpensePagesBloc, ExpensePagesState>(
         bloc: bloc,
         builder: (_, state) {
-          final totalAmount = widget.group != null
-              ? bloc.getAmountByGroup(widget.group!.id) ?? 0.0
-              : 0.0;
+          final groupId = state.supplements.group.id;
+          final totalAmount = bloc.getAmountByGroup(groupId) ?? 0.0;
           if (totalAmount == 0) return Container(height: .0001);
           return BottomTotalAmountTile(totalAmount);
         });
@@ -160,16 +159,13 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
               margin: EdgeInsets.only(right: 19.dw),
               onPressed: !isActive
                   ? () => _isActionActiveNotifier.value = true
-                  : isEditing
-                      ? () {
-                          bloc.editGroup();
-                          _isActionActiveNotifier.value = false;
-                        }
-                      : () {
-                          bloc.saveGroup();
-                          _isActionActiveNotifier.value = false;
-                        });
+                  : _actionCallback);
         });
+  }
+
+  _actionCallback() {
+    isEditing ? bloc.editGroup() : bloc.saveGroup();
+    _isActionActiveNotifier.value = false;
   }
 
   static const emptyExpensesMessage = 'No items have been added yet.';

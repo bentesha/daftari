@@ -5,13 +5,14 @@ enum Pages {
   sales_page,
   dashboard,
   reports_page,
-  categories_page,
+  products_categories_page,
+  expenses_categories_page,
   purchases_page,
   expenses_groups_page,
   group_expenses_page,
   expense_edit_page,
   stock_adjustment_page,
-  items_page
+  products_page
 }
 
 class AppTopBar extends StatelessWidget implements PreferredSizeWidget {

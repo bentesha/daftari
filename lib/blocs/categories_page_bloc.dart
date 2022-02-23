@@ -14,14 +14,20 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   final ProductsService productsService;
   final TypeService typeService;
 
-  void init({Category? category}) {
+  void init({Category? category, CategoryType? categoryType}) {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
     initServices(
         productsService: productsService, categoriesService: categoriesService);
-    final categories = categoriesService.getList;
+    if (categoryType != null) {
+      final categories = categoriesService.getList
+          .where((e) => e.type == categoryType.name)
+          .toList();
+      supp = supp.copyWith(categoryList: categories);
+    }
+
     final products = productsService.getList;
-    supp = supp.copyWith(categoryList: categories, productList: products);
+    supp = supp.copyWith(productList: products);
     if (category != null) supp = supp.copyWith(category: category);
     emit(CategoryPagesState.content(supp));
   }

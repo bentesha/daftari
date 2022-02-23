@@ -1,7 +1,9 @@
 import '../source.dart';
 
 class CategoriesPage extends StatefulWidget {
-  const CategoriesPage({Key? key}) : super(key: key);
+  const CategoriesPage(this.categoryType, {Key? key}) : super(key: key);
+
+  final CategoryType categoryType;
 
   @override
   State<CategoriesPage> createState() => _CategoriesPageState();
@@ -16,7 +18,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     final itemsService = getService<ProductsService>(context);
     final typeService = getService<TypeService>(context);
     bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
-    bloc.init();
+    bloc.init(categoryType :widget.categoryType);
     super.initState();
   }
 
@@ -52,23 +54,28 @@ class _CategoriesPageState extends State<CategoriesPage> {
       return const EmptyStateWidget(message: emptyCategoriesMessage);
     }
 
-    return ListView.separated(
-      separatorBuilder: (_, __) => Container(
-        height: 1.5.dw,
-        color: AppColors.divider,
-      ),
-      itemCount: categories.length,
-      itemBuilder: (_, index) {
-        final category = categories[index];
-        final numberOfItems = supp.productList
-            .where((e) => e.categoryId == category.id)
-            .toList()
-            .length;
+    return Column(
+      children: [
+        ListView.separated(
+          separatorBuilder: (_, __) => Container(
+            height: 1.5.dw,
+            color: AppColors.divider,
+          ),
+          itemCount: categories.length,
+          itemBuilder: (_, index) {
+            final category = categories[index];
+            final numberOfItems = supp.productList
+                .where((e) => e.categoryId == category.id)
+                .toList()
+                .length;
 
-        return CategoryTile(category: category, numberOfItems: numberOfItems);
-      },
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
+            return CategoryTile(
+                category: category, numberOfItems: numberOfItems);
+          },
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+        ),
+      ],
     );
   }
 

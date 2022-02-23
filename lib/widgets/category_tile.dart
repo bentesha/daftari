@@ -19,8 +19,10 @@ class CategoryTile extends StatelessWidget {
       isFilled: false,
       child: ListTile(
           title: AppText(category.name, weight: FontWeight.w500),
-          subtitle: AppText('$numberOfItems item${shouldUsePlural ? 's' : ''}',
-              opacity: .75)),
+          subtitle: category.type == CategoryType.expenses().name
+              ? Container()
+              : AppText('$numberOfItems item${shouldUsePlural ? 's' : ''}',
+                  opacity: .75)),
     );
   }
 }

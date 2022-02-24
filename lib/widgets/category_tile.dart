@@ -11,18 +11,22 @@ class CategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final shouldUsePlural = numberOfItems > 1 || numberOfItems == 0;
+    final isProductsCategory = category.type == CategoryType.products().name;
+    final title = AppText(category.name, weight: FontWeight.bold);
 
-    return AppMaterialButton(
-      onPressed: () => Navigator.push(
-          context, MaterialPageRoute(builder: (_) => CategoryPage(category))),
-      padding: EdgeInsets.symmetric(horizontal: 19.dw),
-      isFilled: false,
-      child: ListTile(
-          title: AppText(category.name, weight: FontWeight.w500),
-          subtitle: category.type == CategoryType.expenses().name
-              ? Container()
-              : AppText('$numberOfItems item${shouldUsePlural ? 's' : ''}',
-                  opacity: .75)),
-    );
+    return isProductsCategory
+        ? AppMaterialButton(
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (_) => CategoryPage(category))),
+            padding: EdgeInsets.symmetric(horizontal: 19.dw),
+            isFilled: false,
+            child: ListTile(
+                title: title,
+                subtitle: AppText(
+                    '$numberOfItems item${shouldUsePlural ? 's' : ''}',
+                    opacity: .75)))
+        : ListTile(
+            title: title,
+            contentPadding: EdgeInsets.symmetric(horizontal: 19.dw));
   }
 }

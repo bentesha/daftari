@@ -116,7 +116,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
                 hintText: '',
                 keyboardType: TextInputType.name,
                 textCapitalization: TextCapitalization.words,
-                label: 'Group Title',
+                label: 'Title',
                 error: supp.errors['title']),
       ],
     );

@@ -18,7 +18,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     final itemsService = getService<ProductsService>(context);
     final typeService = getService<TypeService>(context);
     bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
-    bloc.init(categoryType :widget.categoryType);
+    bloc.init(categoryType: widget.categoryType);
     super.initState();
   }
 
@@ -51,7 +51,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Widget _buildContent(CategoryPageSupplements supp) {
     final categories = supp.categoryList;
     if (categories.isEmpty) {
-      return const EmptyStateWidget(message: emptyCategoriesMessage);
+      return EmptyStateWidget(message: _emptyCategoriesMessage());
     }
 
     return Column(
@@ -79,6 +79,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
     );
   }
 
-  static const emptyCategoriesMessage =
-      'No categories found. Start creating categories by clicking on the bottom-right corner add button.';
+  _emptyCategoriesMessage() =>
+      'No ${widget.categoryType == CategoryType.expenses() ? 'expenses' : 'products'} categories found. Start creating categories by clicking on the bottom-right corner add button.';
 }

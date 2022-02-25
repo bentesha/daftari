@@ -62,5 +62,5 @@ class _ItemsPageState extends State<ItemsPage> {
   }
 
   static const emptyItemsDesc =
-      'No Items have been added. Add one by clicking on the bottom-right corner button.';
+      'No products have been added. Add one by clicking on the bottom-right corner button.';
 }

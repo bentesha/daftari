@@ -28,7 +28,7 @@ class _RecordEditPageState extends State<RecordEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PageAppBar(
-          title: !isEditing ? 'Adding New Record' : 'Editing Record',
+          title: !isEditing ? 'New Record' : 'Edit Record',
           actionCallbacks: isEditing ? [bloc.editRecord] : [bloc.saveRecord]),
       body: _buildBody(),
     );
@@ -69,7 +69,8 @@ class _RecordEditPageState extends State<RecordEditPage> {
           onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) => const ItemsSearchPage<Product>())),
+                  builder: (_) => ItemsSearchPage<Product>(
+                      categoryType: CategoryType.products()))),
         ),
         DateSelector(
           title: 'Date',

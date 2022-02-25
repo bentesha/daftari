@@ -1,9 +1,11 @@
 import '../source.dart';
 
 class CategoryEditPage extends StatefulWidget {
-  const CategoryEditPage({Key? key, this.category}) : super(key: key);
+  const CategoryEditPage({Key? key, this.category, this.categoryType})
+      : super(key: key);
 
   final Category? category;
+  final CategoryType? categoryType;
 
   @override
   State<CategoryEditPage> createState() => _CategoryEditPageState();
@@ -20,7 +22,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
     final itemsService = getService<ProductsService>(context);
     final typeService = getService<TypeService>(context);
     bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
-    bloc.init(category: widget.category);
+    bloc.init(widget.categoryType, widget.category);
     super.initState();
   }
 
@@ -28,7 +30,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PageAppBar(
-        title: 'Add New Category',
+        title: 'New Category',
         actionCallbacks: [bloc.save],
       ),
       body: _buildBody(),
@@ -69,7 +71,8 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
           onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (_) => const ItemsSearchPage<CategoryType>())),
+                  builder: (_) => ItemsSearchPage<CategoryType>(
+                      categoryType: widget.categoryType))),
         ),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
         AppTextField(

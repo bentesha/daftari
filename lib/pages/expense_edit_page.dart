@@ -30,7 +30,7 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PageAppBar(
-          title: !isEditing ? 'Adding New Expense' : 'Editing Expense',
+          title: !isEditing ? 'New Expense' : 'Edit Expense',
           actionCallbacks: isEditing ? [bloc.editExpense] : [bloc.saveExpense]),
       body: _buildBody(),
     );
@@ -69,12 +69,6 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
           error: supp.errors['category'],
           isEditable: !isEditing,
           onPressed: _navigateToCategoryPicker,
-        ),
-        DateSelector(
-          title: 'Date',
-          onDateSelected: bloc.updateDate,
-          date: supp.date,
-          isEditable: false,
         ),
         AppDivider(margin: EdgeInsets.only(bottom: 5.dh)),
         SizedBox(height: 6.dh),

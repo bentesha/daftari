@@ -30,8 +30,7 @@ class _CategoryPageState extends State<CategoryPage> {
         actionCallbacks: [_navigateToCategoryEditPage],
       ),
       body: _buildBody(),
-      floatingActionButton:
-          AddButton(nextPage: ProductEditPage(categoryId: widget.category.id)),
+      floatingActionButton: const AddButton(nextPage: CategoryEditPage()),
     );
   }
 

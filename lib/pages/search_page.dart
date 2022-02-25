@@ -1,7 +1,8 @@
 import '../source.dart';
 
 class ItemsSearchPage<T> extends StatefulWidget {
-  const ItemsSearchPage({this.categoryType, Key? key}) : super(key: key);
+  const ItemsSearchPage({required this.categoryType, Key? key})
+      : super(key: key);
 
   final CategoryType? categoryType;
 
@@ -158,7 +159,9 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
   _navigateToSpecificTypeWidget() {
     late Widget nextPage;
 
-    if (T == Category) nextPage = const CategoryEditPage();
+    if (T == Category) {
+      nextPage = CategoryEditPage(categoryType: widget.categoryType);
+    }
     if (T == Product) nextPage = const ProductEditPage();
     Navigator.push(context, MaterialPageRoute(builder: (_) => nextPage));
   }

@@ -52,7 +52,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
 
     return Scaffold(
       appBar: PageAppBar(
-          title: '${isEditing ? 'Edit' : 'Add'} Records Group',
+          title: '${isEditing ? 'Edit' : 'New'} Sales Group',
           actionIcons: const [Icons.done],
           actionCallbacks: hasTitleError
               ? []

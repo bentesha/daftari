@@ -12,7 +12,7 @@ class CategoryTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final shouldUsePlural = numberOfItems > 1 || numberOfItems == 0;
     final isProductsCategory = category.type == CategoryType.products().name;
-    final title = AppText(category.name, weight: FontWeight.bold);
+    final title = AppText(category.name, weight: FontWeight.w500);
 
     return isProductsCategory
         ? AppMaterialButton(

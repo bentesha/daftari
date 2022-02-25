@@ -11,23 +11,28 @@ class CategoriesPage extends StatefulWidget {
 
 class _CategoriesPageState extends State<CategoriesPage> {
   late final CategoryPageBloc bloc;
+  late final bool isProductsCategory;
 
   @override
   void initState() {
+    isProductsCategory =
+        widget.categoryType.name == CategoryType.products().name;
     final categoriesService = getService<CategoriesService>(context);
     final itemsService = getService<ProductsService>(context);
     final typeService = getService<TypeService>(context);
     bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
-    bloc.init(categoryType: widget.categoryType);
+    bloc.init(widget.categoryType);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PageAppBar(title: 'Categories'),
+      appBar: PageAppBar(
+          title: '${isProductsCategory ? 'Products' : 'Expenses'} Categories'),
       body: _buildBody(),
-      floatingActionButton: const AddButton(nextPage: CategoryEditPage()),
+      floatingActionButton: AddButton(
+          nextPage: CategoryEditPage(categoryType: widget.categoryType)),
     );
   }
 
@@ -80,5 +85,5 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 
   _emptyCategoriesMessage() =>
-      'No ${widget.categoryType == CategoryType.expenses() ? 'expenses' : 'products'} categories found. Start creating categories by clicking on the bottom-right corner add button.';
+      'No ${isProductsCategory ? 'products' : 'expenses'} categories found. Start creating categories by clicking on the bottom-right corner add button.';
 }

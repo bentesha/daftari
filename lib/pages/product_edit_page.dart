@@ -55,7 +55,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   _buildAppBar() {
     return PageAppBar(
-        title: hasNoCategoryId ? 'Add Product' : 'Edit Product',
+        title: hasNoCategoryId ? 'New Product' : 'Edit Product',
         actionCallbacks: [isEditing ? bloc.editProduct : bloc.saveProduct]);
   }
 

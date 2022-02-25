@@ -13,9 +13,6 @@ class Expense {
   @HiveField(2)
   final String? notes;
 
-  @HiveField(3)
-  final DateTime date;
-
   @HiveField(4)
   final double amount;
 
@@ -25,13 +22,12 @@ class Expense {
   Expense(
       {required this.id,
       required this.groupId,
-      required this.date,
       required this.amount,
       this.notes,
       required this.categoryId});
 
-  factory Expense.empty() => Expense(
-      id: '', categoryId: '', date: DateTime.now(), amount: 0, groupId: '');
+  factory Expense.empty() =>
+      Expense(id: '', categoryId: '', amount: 0, groupId: '');
 
   @override
   String toString() {

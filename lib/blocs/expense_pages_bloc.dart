@@ -42,7 +42,6 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
     final expense = Expense(
         groupId: supp.group.id,
         amount: double.parse(supp.amount),
-        date: DateTime.now(),
         categoryId: supp.category.id,
         id: Utils.getRandomId());
     expensesService.add(expense);
@@ -59,7 +58,6 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
     emit(ExpensePagesState.loading(supp));
     final expense = Expense(
         amount: double.parse(supp.amount),
-        date: supp.date,
         categoryId: supp.category.id,
         groupId: supp.group.id,
         id: supp.id);
@@ -74,8 +72,6 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
   void updateNotes(String notes) => _updateAttributes(notes: notes);
 
   void updateGroupDate(DateTime date) => _updateAttributes(groupDate: date);
-
-  void updateDate(DateTime date) => _updateAttributes(date: date);
 
   void saveGroup() async {
     _validateGroupDetails();
@@ -106,19 +102,18 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
     emit(ExpensePagesState.content(supp));
   }
 
-  void _updateAttributes(
-      {String? amount,
-      String? notes,
-      DateTime? groupDate,
-      String? title,
-      DateTime? date}) {
+  void _updateAttributes({
+    String? amount,
+    String? notes,
+    DateTime? groupDate,
+    String? title,
+  }) {
     var supp = state.supplements;
     emit(ExpensePagesState.loading(supp));
     supp = supp.copyWith(
         notes: supp.notes,
-        group: supp.group.copyWith(title: title, date: date),
-        amount: amount ?? supp.amount,
-        date: date ?? supp.date);
+        group: supp.group.copyWith(title: title, date: groupDate),
+        amount: amount ?? supp.amount);
     emit(ExpensePagesState.content(supp));
   }
 
@@ -185,7 +180,6 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
       final category = categoriesService.getById(expense.categoryId);
       supp = supp.copyWith(
           group: supp.group.copyWith(id: expense.groupId),
-          date: expense.date,
           amount: expense.amount.toString(),
           category: category!,
           id: expense.id,

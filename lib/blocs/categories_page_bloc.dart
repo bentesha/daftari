@@ -14,20 +14,20 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   final ProductsService productsService;
   final TypeService typeService;
 
-  void init({Category? category, CategoryType? categoryType}) {
+  void init([CategoryType? type, Category? category]) {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
     initServices(
         productsService: productsService, categoriesService: categoriesService);
-    if (categoryType != null) {
-      final categories = categoriesService.getList
-          .where((e) => e.type == categoryType.name)
-          .toList();
-      supp = supp.copyWith(categoryList: categories);
+    var categories = categoriesService.getList;
+
+    if (type != null) {
+      categories = categories.where((e) => e.type == type.name).toList();
+      supp = supp.copyWith(category: supp.category.copyWith(type: type.name));
     }
 
     final products = productsService.getList;
-    supp = supp.copyWith(productList: products);
+    supp = supp.copyWith(productList: products, categoryList: categories);
     if (category != null) supp = supp.copyWith(category: category);
     emit(CategoryPagesState.content(supp));
   }
@@ -85,7 +85,9 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   _handleCategoryUpdates() {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
-    final categories = categoriesService.getList;
+    final currentType = supp.category.type;
+    final categories =
+        categoriesService.getList.where((e) => e.type == currentType).toList();
     supp = supp.copyWith(categoryList: categories);
     emit(CategoryPagesState.content(supp));
   }

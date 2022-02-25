@@ -37,22 +37,6 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: _buildBody(),
-      floatingActionButton: _buildAddButton(),
-      bottomNavigationBar: _buildBottomNavBar(),
-    );
-  }
-
-  _buildAppBar() {
-    return AppBar(
-        title: AppText('Expenses',
-            size: 22.dw, style: Theme.of(context).appBarTheme.titleTextStyle!),
-        actions: [_buildAction()]);
-  }
-
-  Widget _buildBody() {
     return BlocBuilder<ExpensePagesBloc, ExpensePagesState>(
       bloc: bloc,
       builder: (_, state) {
@@ -65,13 +49,37 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
     );
   }
 
+  Widget _buildContent(ExpenseSupplements supp) {
+    return Scaffold(
+      appBar: _buildAppBar(supp.group.id),
+      body: _buildBody(supp),
+      floatingActionButton: _buildAddButton(supp.group.id),
+      bottomNavigationBar: _buildBottomNavBar(supp.group.id),
+    );
+  }
+
+  _buildAppBar(String groupId) {
+    final hasNoGroup = groupId.isEmpty;
+    return AppBar(
+        title: AppText('Expenses',
+            size: 22.dw, style: Theme.of(context).appBarTheme.titleTextStyle!),
+        actions: [
+          hasNoGroup
+              ? AppIconButton(
+                  icon: Icons.done,
+                  margin: EdgeInsets.only(right: 19.dw),
+                  onPressed: bloc.saveGroup)
+              : Container()
+        ]);
+  }
+
   Widget _buildLoading(ExpenseSupplements supp) {
     return const Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  Widget _buildContent(ExpenseSupplements supp) {
+  Widget _buildBody(ExpenseSupplements supp) {
     return ListView(
       children: [
         DateSelector(
@@ -87,7 +95,7 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
             hintText: '',
             keyboardType: TextInputType.name,
             textCapitalization: TextCapitalization.words,
-            label: 'GROUP TITLE'),
+            label: 'TITLE'),
         _buildItems(supp),
       ],
     );
@@ -128,44 +136,16 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
         child: EmptyStateWidget(message: message));
   }
 
-  _buildAddButton() {
-    return BlocBuilder<ExpensePagesBloc, ExpensePagesState>(
-        bloc: bloc,
-        builder: (_, state) {
-          final groupId = state.supplements.group.id;
-          final hasNoGroup = groupId.isEmpty;
-          if (hasNoGroup) return Container();
-          return AddButton(nextPage: ExpenseEditPage(groupId: groupId));
-        });
+  _buildAddButton(String groupId) {
+    final hasNoGroup = groupId.isEmpty;
+    if (hasNoGroup) return Container();
+    return AddButton(nextPage: ExpenseEditPage(groupId: groupId));
   }
 
-  _buildBottomNavBar() {
-    return BlocBuilder<ExpensePagesBloc, ExpensePagesState>(
-        bloc: bloc,
-        builder: (_, state) {
-          final groupId = state.supplements.group.id;
-          final totalAmount = bloc.getAmountByGroup(groupId) ?? 0.0;
-          if (totalAmount == 0) return Container(height: .0001);
-          return BottomTotalAmountTile(totalAmount);
-        });
-  }
-
-  _buildAction() {
-    return ValueListenableBuilder<bool>(
-        valueListenable: _isActionActiveNotifier,
-        builder: (_, isActive, child) {
-          return AppIconButton(
-              icon: isActive ? Icons.done : Icons.edit_outlined,
-              margin: EdgeInsets.only(right: 19.dw),
-              onPressed: !isActive
-                  ? () => _isActionActiveNotifier.value = true
-                  : _actionCallback);
-        });
-  }
-
-  _actionCallback() {
-    isEditing ? bloc.editGroup() : bloc.saveGroup();
-    _isActionActiveNotifier.value = false;
+  _buildBottomNavBar(String groupId) {
+    final totalAmount = bloc.getAmountByGroup(groupId) ?? 0.0;
+    if (totalAmount == 0) return Container(height: .0001);
+    return BottomTotalAmountTile(totalAmount);
   }
 
   static const emptyExpensesMessage = 'No items have been added yet.';

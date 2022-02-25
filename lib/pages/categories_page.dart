@@ -69,13 +69,8 @@ class _CategoriesPageState extends State<CategoriesPage> {
           itemCount: categories.length,
           itemBuilder: (_, index) {
             final category = categories[index];
-            final numberOfItems = supp.productList
-                .where((e) => e.categoryId == category.id)
-                .toList()
-                .length;
 
-            return CategoryTile(
-                category: category, numberOfItems: numberOfItems);
+            return CategoryTile(category: category);
           },
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,

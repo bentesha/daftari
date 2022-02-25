@@ -67,7 +67,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
           title: 'Type',
           value: supp.category.type,
           error: supp.errors['type'],
-          isEditable: !isEditing,
+          isEditable: widget.categoryType != null ? false : !isEditing,
           onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(

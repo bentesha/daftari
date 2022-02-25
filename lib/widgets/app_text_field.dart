@@ -14,6 +14,7 @@ class AppTextField extends StatefulWidget {
       this.isPassword = false,
       this.isLoginPassword = false,
       this.shouldShowErrorText = true,
+      this.isUpdatingOnRebuild = false,
       Key? key})
       : super(key: key);
 
@@ -25,7 +26,10 @@ class AppTextField extends StatefulWidget {
   final double? letterSpacing;
   final TextInputType keyboardType;
   final TextCapitalization textCapitalization;
-  final bool isPassword, isLoginPassword, shouldShowErrorText;
+  final bool isPassword,
+      isLoginPassword,
+      shouldShowErrorText,
+      isUpdatingOnRebuild;
 
   @override
   _AppTextFieldState createState() => _AppTextFieldState();
@@ -37,23 +41,27 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   void initState() {
+    super.initState();
     final text = widget.text ?? '';
     final isEditing = text.trim().isNotEmpty;
     if (isEditing) {
-      controller.text = text;
+      controller.text = widget.text ?? '';
       controller.selection = TextSelection.fromPosition(
           TextPosition(offset: controller.text.length));
+      TextPosition(offset: controller.text.length);
     }
-
-    controller.addListener(() => widget.onChanged(controller.text));
-
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final hasError = widget.error != null;
     final border = hasError ? _errorBorder : _inputBorder;
+
+    if (widget.isUpdatingOnRebuild) {
+      controller.text = widget.text ?? '';
+      controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: controller.text.length));
+    }
 
     return Padding(
       padding: EdgeInsets.only(left: 19.dw, right: 19.dw, bottom: 20.dh),
@@ -69,9 +77,10 @@ class _AppTextFieldState extends State<AppTextField> {
                 builder: (context, isVisible, snapshot) {
                   return TextField(
                       controller: controller,
-                      // onChanged: widget.onChanged,
+                      onChanged: widget.onChanged,
                       maxLines: widget.maxLines,
                       minLines: 1,
+                      onTap: _onTap,
                       keyboardType: widget.keyboardType,
                       textCapitalization: widget.textCapitalization,
                       style: TextStyle(
@@ -139,6 +148,13 @@ class _AppTextFieldState extends State<AppTextField> {
                     color: AppColors.accent),
               )
             : emptyContainer;
+  }
+
+  void _onTap() {
+    if (widget.isUpdatingOnRebuild) {
+       controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: controller.text.length));
+    }
   }
 
   final _inputBorder = const UnderlineInputBorder(

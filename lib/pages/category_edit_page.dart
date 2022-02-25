@@ -30,8 +30,8 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PageAppBar(
-        title: 'New Category',
-        actionCallbacks: [bloc.save],
+        title: '${isEditing ? 'New' : 'Edit'} Category',
+        actionCallbacks: [isEditing ? bloc.edit : bloc.save],
       ),
       body: _buildBody(),
     );

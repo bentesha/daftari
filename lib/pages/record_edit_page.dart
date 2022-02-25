@@ -87,6 +87,7 @@ class _RecordEditPageState extends State<RecordEditPage> {
           keyboardType: TextInputType.number,
           label: 'Quantity',
           error: supp.errors['quantity'],
+          isUpdatingOnRebuild: true,
         ),
         AppTextField(
           text: supp.sellingPrice,
@@ -95,6 +96,7 @@ class _RecordEditPageState extends State<RecordEditPage> {
           keyboardType: TextInputType.number,
           label: 'Price per item',
           error: supp.errors['price'],
+          isUpdatingOnRebuild: true,
         ),
         AppTextField(
           error: supp.errors['notes'],

@@ -30,7 +30,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PageAppBar(
-        title: '${isEditing ? 'New' : 'Edit'} Category',
+        title: '${!isEditing ? 'New' : 'Edit'} Category',
         actionCallbacks: [isEditing ? bloc.edit : bloc.save],
       ),
       body: _buildBody(),
@@ -63,17 +63,19 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
   Widget _buildContent(CategoryPageSupplements supp) {
     return Column(
       children: [
-        ValueSelector(
-          title: 'Type',
-          value: supp.category.type,
-          error: supp.errors['type'],
-          isEditable: widget.categoryType != null ? false : !isEditing,
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => ItemsSearchPage<CategoryType>(
-                      categoryType: widget.categoryType))),
-        ),
+        widget.categoryType != null
+            ? Container()
+            : ValueSelector(
+                title: 'Type',
+                value: supp.category.type,
+                error: supp.errors['type'],
+                isEditable: !isEditing,
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => ItemsSearchPage<CategoryType>(
+                            categoryType: widget.categoryType))),
+              ),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
         AppTextField(
             text: supp.category.name,

@@ -1,4 +1,7 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:inventory_management/pages/settings_page.dart';
+import 'package:inventory_management/pages/write_off_groups_page.dart';
 import '../source.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -62,10 +65,10 @@ class AppDrawer extends StatelessWidget {
           _buildListTile('Sales', Pages.sales_page),
           _buildListTile('Expenses', Pages.group_expenses_page),
           _buildListTile('Purchases', Pages.purchases_page),
-          _buildListTile('Stock Adjustment', Pages.stock_adjustment_page),
           _buildListTile('Products', Pages.products_page),
           _buildListTile('Products Categories', Pages.products_categories_page),
           _buildListTile('Expenses Categories', Pages.expenses_categories_page),
+          _buildListTile('Stock Writeoffs', Pages.stock_write_offs_page),
           _buildListTile('Reports', Pages.reports_page),
         ],
       ),
@@ -142,6 +145,9 @@ class AppDrawer extends StatelessWidget {
       case Pages.group_expenses_page:
         nextPage = const ExpensesGroupsPage();
         break;
+      case Pages.stock_write_offs_page:
+        nextPage = const WriteOffGroupsPage();
+        break;
       default:
         nextPage = null;
     }
@@ -149,4 +155,21 @@ class AppDrawer extends StatelessWidget {
 
     Navigator.push(context, MaterialPageRoute(builder: (_) => nextPage!));
   }
+}
+
+enum Pages {
+  sales_page,
+  dashboard,
+  reports_page,
+  products_categories_page,
+  expenses_categories_page,
+  purchases_page,
+  expenses_groups_page,
+  group_expenses_page,
+  expense_edit_page,
+  write_off_groups_page,
+  group_write_offs_page,
+  write_offs_edit_page,
+  stock_write_offs_page,
+  products_page
 }

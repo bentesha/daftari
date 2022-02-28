@@ -12,6 +12,7 @@ void main() async {
     ..registerAdapter(ProductAdapter())
     ..registerAdapter(RecordAdapter())
     ..registerAdapter(ExpenseAdapter())
+    ..registerAdapter(WriteOffAdapter())
     ..registerAdapter(GroupAdapter());
 
   await Hive.openBox(Constants.kProductsBox);
@@ -19,6 +20,7 @@ void main() async {
   await Hive.openBox(Constants.kGroupsBox);
   await Hive.openBox(Constants.kCategoriesBox);
   await Hive.openBox(Constants.kExpenseBox);
+  await Hive.openBox(Constants.kWriteOffsBox);
 
   final myApp = MultiProvider(
     providers: [
@@ -26,6 +28,10 @@ void main() async {
       ChangeNotifierProvider<GroupsService>(create: (_) => GroupsService()),
       ChangeNotifierProvider<RecordsService>(create: (_) => RecordsService()),
       ChangeNotifierProvider<TypeService>(create: (_) => TypeService()),
+      ChangeNotifierProvider<WriteOffsTypesService>(
+          create: (_) => WriteOffsTypesService()),
+      ChangeNotifierProvider<WriteOffsService>(
+          create: (_) => WriteOffsService()),
       ChangeNotifierProvider<ExpensesService>(create: (_) => ExpensesService()),
       ChangeNotifierProvider<CategoriesService>(
           create: (_) => CategoriesService()),
@@ -37,6 +43,7 @@ void main() async {
   await Hive.box(Constants.kRecordsBox).clear();
   await Hive.box(Constants.kProductsBox).clear();
   await Hive.box(Constants.kCategoriesBox).clear();
+  await Hive.box(Constants.kWriteOffsBox).clear();
   await Hive.box(Constants.kExpenseBox).clear(); */
 
   runApp(myApp);

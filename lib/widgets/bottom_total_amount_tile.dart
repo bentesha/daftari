@@ -1,9 +1,11 @@
 import '../source.dart';
 
 class BottomTotalAmountTile extends StatelessWidget {
-  const BottomTotalAmountTile(this.totalAmount, {Key? key}) : super(key: key);
+  const BottomTotalAmountTile(this.totalAmount, {this.title, Key? key})
+      : super(key: key);
 
   final double totalAmount;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,8 @@ class BottomTotalAmountTile extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppText('Total Amount'.toUpperCase(), color: AppColors.onPrimary),
+          AppText((title ?? 'Total Amount').toUpperCase(),
+              color: AppColors.onPrimary),
           AppText(formatted, size: 18.dw, color: AppColors.onPrimary),
         ],
       ),

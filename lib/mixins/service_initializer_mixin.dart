@@ -4,6 +4,7 @@ mixin ServicesInitializer {
   void initServices(
       {ProductsService? productsService,
       RecordsService? recordsService,
+      WriteOffsService? writeOffService,
       GroupsService? groupsService,
       ExpensesService? expensesService,
       CategoriesService? categoriesService}) {
@@ -12,5 +13,6 @@ mixin ServicesInitializer {
     if (groupsService != null) groupsService.init();
     if (categoriesService != null) categoriesService.init();
     if (expensesService != null) expensesService.init();
+    if (writeOffService != null) writeOffService.init();
   }
 }

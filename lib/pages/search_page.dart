@@ -1,8 +1,7 @@
 import '../source.dart';
 
 class ItemsSearchPage<T> extends StatefulWidget {
-  const ItemsSearchPage({required this.categoryType, Key? key})
-      : super(key: key);
+  const ItemsSearchPage({this.categoryType, Key? key}) : super(key: key);
 
   final CategoryType? categoryType;
 
@@ -20,7 +19,9 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
     final productsService = getService<ProductsService>(context);
     final categoriesService = getService<CategoriesService>(context);
     final typeService = getService<TypeService>(context);
-    bloc = SearchPageBloc(productsService, categoriesService, typeService);
+    final writeOffsTypesService = getService<WriteOffsTypesService>(context);
+    bloc = SearchPageBloc(
+        productsService, categoriesService, typeService, writeOffsTypesService);
     bloc.init(widget.categoryType);
     super.initState();
   }
@@ -70,7 +71,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
                 ? () => focusNode.requestFocus()
                 : bloc.clearQuery,
             iconThemeData: iconThemeData.copyWith(size: 24.dw)),
-        T == CategoryType
+        T == CategoryType || T == WriteOffType
             ? SizedBox(width: 15.dw)
             : AppIconButton(
                 onPressed: _navigateToSpecificTypeWidget,
@@ -108,8 +109,11 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
 
   Widget _buildItemTile(var item) {
     return AppTextButton(
-      onPressed: () =>
-          T == CategoryType ? bloc.updateType(item) : bloc.updateId(item.id),
+      onPressed: () => T == CategoryType
+          ? bloc.updateType(item)
+          : T == WriteOffType
+              ? bloc.updateWriteOffType(item)
+              : bloc.updateId(item.id),
       child: ListTile(title: AppText(item.name, weight: FontWeight.w500)),
       isFilled: false,
       padding: EdgeInsets.symmetric(horizontal: 19.dw),

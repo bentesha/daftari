@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import '../source.dart';
 
 part 'group.g.dart';
@@ -32,13 +34,19 @@ class Group {
         type: type ?? this.type);
   }
 
+  bool get isWriteOffGroup =>
+      type != GroupType.expenses && type != GroupType.sales;
+
   @override
   String toString() {
-    return 'Group: $title';
+    return 'Group: $title, Type: $type';
   }
 }
 
 class GroupType {
   static const expenses = 'Expenses';
   static const sales = 'Sales';
+  static const spoilage_write_offs = 'Spoilage Write-Offs';
+  static const expiry_write_offs = 'Expiry Write-Offs';
+  static const theft_write_offs = 'Theft Write-Offs';
 }

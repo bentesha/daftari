@@ -1,20 +1,6 @@
 // ignore_for_file: constant_identifier_names
 import '../source.dart';
 
-enum Pages {
-  sales_page,
-  dashboard,
-  reports_page,
-  products_categories_page,
-  expenses_categories_page,
-  purchases_page,
-  expenses_groups_page,
-  group_expenses_page,
-  expense_edit_page,
-  stock_adjustment_page,
-  products_page
-}
-
 class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   const AppTopBar({Key? key, required this.showDrawerCallback})
       : super(key: key);

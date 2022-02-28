@@ -18,11 +18,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
   @override
   void initState() {
     isEditing = widget.category != null;
-    final categoriesService = getService<CategoriesService>(context);
-    final itemsService = getService<ProductsService>(context);
-    final typeService = getService<TypeService>(context);
-    bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
-    bloc.init(widget.categoryType, widget.category);
+    _initBloc();
     super.initState();
   }
 
@@ -97,5 +93,13 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
         ),
       ],
     );
+  }
+
+  _initBloc() {
+    final categoriesService = getService<CategoriesService>(context);
+    final itemsService = getService<ProductsService>(context);
+    final typeService = getService<TypeService>(context);
+    bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
+    bloc.init(widget.categoryType, widget.category);
   }
 }

@@ -12,7 +12,7 @@ class _WriteOffGroupsPageState extends State<WriteOffGroupsPage> {
 
   @override
   void initState() {
-     final groupsService = getService<GroupsService>(context);
+    final groupsService = getService<GroupsService>(context);
     final writeOffsService = getService<WriteOffsService>(context);
     final writeOffsTypesService = getService<WriteOffsTypesService>(context);
     final productsService = getService<ProductsService>(context);

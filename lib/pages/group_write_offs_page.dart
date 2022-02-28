@@ -1,4 +1,3 @@
-import 'package:inventory_management/widgets/bottom_total_amount_tile.dart';
 import '../source.dart';
 
 class GroupWriteOffsPage extends StatefulWidget {
@@ -18,22 +17,9 @@ class _GroupWriteOffsPageState extends State<GroupWriteOffsPage> {
   @override
   void initState() {
     isEditing = widget.group != null;
-    final groupsService = getService<GroupsService>(context);
-    final writeOffsService = getService<WriteOffsService>(context);
-    final writeOffsTypesService = getService<WriteOffsTypesService>(context);
-    final productsService = getService<ProductsService>(context);
-    bloc = WriteOffPagesBloc(writeOffsService, writeOffsTypesService,
-        productsService, groupsService);
     _initAppBarAction();
-    bloc.init(Pages.group_write_offs_page, null, widget.group?.id);
+    _initBloc();
     super.initState();
-  }
-
-  _initAppBarAction() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (widget.group != null) _isActionActiveNotifier.value = false;
-      if (widget.group == null) _isActionActiveNotifier.value = true;
-    });
   }
 
   @override
@@ -129,11 +115,7 @@ class _GroupWriteOffsPageState extends State<GroupWriteOffsPage> {
           itemCount: writeOffs.length,
           separatorBuilder: (_, __) =>
               const AppDivider(margin: EdgeInsets.zero),
-          itemBuilder: (_, i) {
-            final writeOff = writeOffs[i];
-            // final category = bloc.getCategoryById(expense.categoryId);
-            return WriteOffTile(writeOff);
-          },
+          itemBuilder: (_, i) => WriteOffTile(writeOffs[i]),
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
         ),
@@ -152,6 +134,23 @@ class _GroupWriteOffsPageState extends State<GroupWriteOffsPage> {
     final hasNoGroup = groupId.isEmpty;
     if (hasNoGroup) return Container();
     return AddButton(nextPage: WriteOffEditPage(groupId: groupId));
+  }
+
+  _initBloc() {
+    final groupsService = getService<GroupsService>(context);
+    final writeOffsService = getService<WriteOffsService>(context);
+    final writeOffsTypesService = getService<WriteOffsTypesService>(context);
+    final productsService = getService<ProductsService>(context);
+    bloc = WriteOffPagesBloc(writeOffsService, writeOffsTypesService,
+        productsService, groupsService);
+    bloc.init(Pages.group_write_offs_page, null, widget.group?.id);
+  }
+
+  _initAppBarAction() {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (widget.group != null) _isActionActiveNotifier.value = false;
+      if (widget.group == null) _isActionActiveNotifier.value = true;
+    });
   }
 
   static const emptyExpensesMessage = 'No products have been added yet.';

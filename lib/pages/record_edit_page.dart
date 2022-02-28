@@ -16,11 +16,8 @@ class _RecordEditPageState extends State<RecordEditPage> {
 
   @override
   void initState() {
-    final recordsService = getService<RecordsService>(context);
-    final itemsService = getService<ProductsService>(context);
-    bloc = RecordsPageBloc(recordsService, itemsService);
     isEditing = widget.record != null;
-    bloc.init(widget.groupId, widget.record);
+    _initBloc();
     super.initState();
   }
 
@@ -109,5 +106,12 @@ class _RecordEditPageState extends State<RecordEditPage> {
         ),
       ],
     );
+  }
+
+  _initBloc() {
+    final recordsService = getService<RecordsService>(context);
+    final itemsService = getService<ProductsService>(context);
+    bloc = RecordsPageBloc(recordsService, itemsService);
+    bloc.init(widget.groupId, widget.record);
   }
 }

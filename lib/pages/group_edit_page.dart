@@ -18,14 +18,8 @@ class _GroupEditPageState extends State<GroupEditPage> {
 
   @override
   void initState() {
-    final recordsService = getService<RecordsService>(context);
-    final groupsService = getService<GroupsService>(context);
-    final itemsService = getService<ProductsService>(context);
-    bloc = GroupPagesBloc(groupsService, recordsService, itemsService);
-
-    final group = widget.group;
-    isEditing = group != null;
-    bloc.init(group: group);
+    isEditing = widget.group != null;
+    _initBloc();
     super.initState();
   }
 
@@ -64,8 +58,10 @@ class _GroupEditPageState extends State<GroupEditPage> {
   }
 
   Widget _buildLoading(GroupSupplements supp) {
-    return const Center(
-      child: CircularProgressIndicator(),
+    return const Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 
@@ -134,5 +130,13 @@ class _GroupEditPageState extends State<GroupEditPage> {
         ],
       ),
     );
+  }
+
+  _initBloc() {
+    final recordsService = getService<RecordsService>(context);
+    final groupsService = getService<GroupsService>(context);
+    final itemsService = getService<ProductsService>(context);
+    bloc = GroupPagesBloc(groupsService, recordsService, itemsService);
+    bloc.init(group: widget.group);
   }
 }

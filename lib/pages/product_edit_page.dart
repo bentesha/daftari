@@ -25,10 +25,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
   void initState() {
     isEditing = widget.product != null;
     hasNoCategoryId = widget.product == null && widget.categoryId == null;
-    final service = getService<ProductsService>(context);
-    final categoriesService = getService<CategoriesService>(context);
-    bloc = ProductPageBloc(service, categoriesService);
-    bloc.init(product: widget.product, categoryId: widget.categoryId);
+    _initBloc();
     super.initState();
   }
 
@@ -183,5 +180,12 @@ class _ProductEditPageState extends State<ProductEditPage> {
       padding: EdgeInsets.only(bottom: 5.dh),
       child: AppText('* $error', color: AppColors.error),
     );
+  }
+
+  _initBloc() {
+    final service = getService<ProductsService>(context);
+    final categoriesService = getService<CategoriesService>(context);
+    bloc = ProductPageBloc(service, categoriesService);
+    bloc.init(product: widget.product, categoryId: widget.categoryId);
   }
 }

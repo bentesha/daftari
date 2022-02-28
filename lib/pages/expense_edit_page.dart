@@ -18,11 +18,7 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
   @override
   void initState() {
     isEditing = widget.expense != null;
-    final groupsService = getService<GroupsService>(context);
-    final expensesService = getService<ExpensesService>(context);
-    final categoriesService = getService<CategoriesService>(context);
-    bloc = ExpensePagesBloc(expensesService, categoriesService, groupsService);
-    bloc.init(Pages.expense_edit_page, widget.expense, widget.groupId);
+    _initBloc();
     super.initState();
   }
 
@@ -99,5 +95,13 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
         MaterialPageRoute(
             builder: (_) => ItemsSearchPage<Category>(
                 categoryType: CategoryType.expenses())));
+  }
+
+  _initBloc() {
+    final groupsService = getService<GroupsService>(context);
+    final expensesService = getService<ExpensesService>(context);
+    final categoriesService = getService<CategoriesService>(context);
+    bloc = ExpensePagesBloc(expensesService, categoriesService, groupsService);
+    bloc.init(Pages.expense_edit_page, widget.expense, widget.groupId);
   }
 }

@@ -17,11 +17,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   void initState() {
     isProductsCategory =
         widget.categoryType.name == CategoryType.products().name;
-    final categoriesService = getService<CategoriesService>(context);
-    final itemsService = getService<ProductsService>(context);
-    final typeService = getService<TypeService>(context);
-    bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
-    bloc.init(widget.categoryType);
+    _initBloc();
     super.initState();
   }
 
@@ -81,4 +77,12 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   _emptyCategoriesMessage() =>
       'No ${isProductsCategory ? 'products' : 'expenses'} categories found. Start creating categories by clicking on the bottom-right corner add button.';
+
+  _initBloc() {
+    final categoriesService = getService<CategoriesService>(context);
+    final itemsService = getService<ProductsService>(context);
+    final typeService = getService<TypeService>(context);
+    bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
+    bloc.init(widget.categoryType);
+  }
 }

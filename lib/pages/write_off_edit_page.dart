@@ -18,13 +18,7 @@ class _WriteOffEditPageState extends State<WriteOffEditPage> {
   @override
   void initState() {
     isEditing = widget.writeOff != null;
-    final groupsService = getService<GroupsService>(context);
-    final writeOffsService = getService<WriteOffsService>(context);
-    final writeOffsTypesService = getService<WriteOffsTypesService>(context);
-    final productsService = getService<ProductsService>(context);
-    bloc = WriteOffPagesBloc(writeOffsService, writeOffsTypesService,
-        productsService, groupsService);
-    bloc.init(Pages.write_offs_edit_page, widget.writeOff, widget.groupId);
+    _initBloc();
     super.initState();
   }
 
@@ -89,5 +83,15 @@ class _WriteOffEditPageState extends State<WriteOffEditPage> {
   _navigateToProductsPicker() {
     Navigator.push(context,
         MaterialPageRoute(builder: (_) => const ItemsSearchPage<Product>()));
+  }
+
+  _initBloc() {
+    final groupsService = getService<GroupsService>(context);
+    final writeOffsService = getService<WriteOffsService>(context);
+    final writeOffsTypesService = getService<WriteOffsTypesService>(context);
+    final productsService = getService<ProductsService>(context);
+    bloc = WriteOffPagesBloc(writeOffsService, writeOffsTypesService,
+        productsService, groupsService);
+    bloc.init(Pages.write_offs_edit_page, widget.writeOff, widget.groupId);
   }
 }

@@ -15,3 +15,5 @@ export 'expense_supplements.dart';
 export 'write_off_supplements.dart';
 export 'write_off.dart';
 export 'write_off_type.dart';
+export 'opening_stock_item.dart';
+export 'opening_stock_supplements.dart';

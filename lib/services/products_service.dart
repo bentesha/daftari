@@ -8,6 +8,7 @@ class ProductsService extends Service<Product> {
 
   static var _selectedId = '';
   String get getSelectedProductId => _selectedId;
+  Product? get getCurrent => super.getById(_selectedId);
 
   Future<void> addProduct(Product product) async {
     _selectedId = product.id;

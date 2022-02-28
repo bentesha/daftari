@@ -24,7 +24,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _buildListTile(String title) {
     return AppMaterialButton(
-      onPressed: () {},
+      onPressed: _navigateToOpeningStockPage,
       isFilled: false,
       child: ListTile(
         title: Row(
@@ -39,5 +39,10 @@ class _SettingsPageState extends State<SettingsPage> {
         contentPadding: EdgeInsets.symmetric(horizontal: 19.dw),
       ),
     );
+  }
+
+  _navigateToOpeningStockPage() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (_) => const OpeningStockPage()));
   }
 }

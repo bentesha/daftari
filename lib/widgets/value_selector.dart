@@ -56,7 +56,7 @@ class ValueSelector extends StatelessWidget {
 
     return hasError
         ? Padding(
-            padding: EdgeInsets.symmetric(horizontal: 19.dw),
+            padding: EdgeInsets.symmetric(horizontal: 19.dw, vertical: 8.dh),
             child: AppText(
               error!,
               color: AppColors.error,

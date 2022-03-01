@@ -26,19 +26,14 @@ void main() async {
 
   final myApp = MultiProvider(
     providers: [
-      ChangeNotifierProvider<ProductsService>(create: (_) => ProductsService()),
-      ChangeNotifierProvider<GroupsService>(create: (_) => GroupsService()),
-      ChangeNotifierProvider<RecordsService>(create: (_) => RecordsService()),
-      ChangeNotifierProvider<CategoryTypesService>(create: (_) => CategoryTypesService()),
-      ChangeNotifierProvider<WriteOffsTypesService>(
-          create: (_) => WriteOffsTypesService()),
-      ChangeNotifierProvider<WriteOffsService>(
-          create: (_) => WriteOffsService()),
-      ChangeNotifierProvider<ExpensesService>(create: (_) => ExpensesService()),
-      ChangeNotifierProvider<OpeningStockItemsService>(
-          create: (_) => OpeningStockItemsService()),
-      ChangeNotifierProvider<CategoriesService>(
-          create: (_) => CategoriesService()),
+      _createProvider<ProductsService>(ProductsService()),
+      _createProvider<GroupsService>(GroupsService()),
+      _createProvider<RecordsService>(RecordsService()),
+      _createProvider<CategoriesService>(CategoriesService()),
+      _createProvider<CategoryTypesService>(CategoryTypesService()),
+      _createProvider<WriteOffsService>(WriteOffsService()),
+      _createProvider<WriteOffsTypesService>(WriteOffsTypesService()),
+      _createProvider<ExpensesService>(ExpensesService()),
     ],
     child: const MyApp(),
   );
@@ -53,3 +48,6 @@ void main() async {
 
   runApp(myApp);
 }
+
+_createProvider<T extends ChangeNotifier>(var service) =>
+    ChangeNotifierProvider<T>(create: (_) => service);

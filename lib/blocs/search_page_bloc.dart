@@ -1,8 +1,5 @@
 import '../source.dart';
 
-typedef ExpenseCategory = Category;
-typedef ProductsCategory = Category;
-
 class SearchPageBloc<T> extends Cubit<SearchPageState<T>>
     with ServicesInitializer {
   SearchPageBloc(this.productsService, this.categoriesService,

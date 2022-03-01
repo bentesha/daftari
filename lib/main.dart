@@ -29,7 +29,7 @@ void main() async {
       ChangeNotifierProvider<ProductsService>(create: (_) => ProductsService()),
       ChangeNotifierProvider<GroupsService>(create: (_) => GroupsService()),
       ChangeNotifierProvider<RecordsService>(create: (_) => RecordsService()),
-      ChangeNotifierProvider<TypeService>(create: (_) => TypeService()),
+      ChangeNotifierProvider<CategoryTypesService>(create: (_) => CategoryTypesService()),
       ChangeNotifierProvider<WriteOffsTypesService>(
           create: (_) => WriteOffsTypesService()),
       ChangeNotifierProvider<WriteOffsService>(

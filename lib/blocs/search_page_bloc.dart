@@ -5,8 +5,8 @@ typedef ProductsCategory = Category;
 
 class SearchPageBloc<T> extends Cubit<SearchPageState<T>>
     with ServicesInitializer {
-  SearchPageBloc(this.productsService, this.categoriesService, this.typeService,
-      this.writeOffTypesService)
+  SearchPageBloc(this.productsService, this.categoriesService,
+      this.categoryTypesService, this.writeOffTypesService)
       : super(SearchPageState<T>.initial()) {
     productsService.addListener(() => _handleItemUpdates());
     categoriesService.addListener(() => _handleCategoryUpdates());
@@ -14,7 +14,7 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>>
 
   final ProductsService productsService;
   final CategoriesService categoriesService;
-  final TypeService typeService;
+  final CategoryTypesService categoryTypesService;
   final WriteOffsTypesService writeOffTypesService;
 
   var _options = [];
@@ -61,7 +61,7 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>>
   void updateType(CategoryType type) {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
-    typeService.updateType(type);
+    categoryTypesService.updateType(type);
     emit(SearchPageState.success(supp));
   }
 
@@ -101,8 +101,8 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>>
 
   List _getOptions() {
     if (T == Product) return productsService.getList;
-    if (T == CategoryType) return typeService.getCategoryTypeList;
-    if (T == WriteOffType) return writeOffTypesService.getWriteOffTypesList;
+    if (T == CategoryType) return categoryTypesService.getTypeList;
+    if (T == WriteOffType) return writeOffTypesService.getTypeList;
     if (T == Category) {
       final categories = categoriesService.getList;
       return categories.where((e) => e.type == _categoryType).toList();

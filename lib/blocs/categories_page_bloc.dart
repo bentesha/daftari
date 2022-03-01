@@ -12,7 +12,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
 
   final CategoriesService categoriesService;
   final ProductsService productsService;
-  final TypeService typeService;
+  final CategoryTypesService typeService;
 
   void init([CategoryType? type, Category? category]) {
     var supp = state.supplements;
@@ -65,7 +65,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
     if (hasErrors) return;
 
     emit(CategoryPagesState.loading(supp));
-    await categoriesService.editCategory(supp.category);
+    await categoriesService.edit(supp.category);
     emit(CategoryPagesState.success(supp));
   }
 

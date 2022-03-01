@@ -1,3 +1,4 @@
+import '../widgets/expenses_group_tile.dart';
 import 'group_expenses_page.dart';
 import '../source.dart';
 
@@ -59,7 +60,7 @@ class _ExpensesGroupsPageState extends State<ExpensesGroupsPage> {
       itemBuilder: (_, i) {
         final group = supp.groups[i];
         final groupAmount = bloc.getAmountByGroup(group.id);
-        return WriteOffsGroupTile(group, groupAmount ?? 0);
+        return ExpensesGroupTile(group, groupAmount ?? 0);
       },
       itemCount: supp.groups.length,
     );

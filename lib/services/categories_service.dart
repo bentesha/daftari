@@ -20,9 +20,6 @@ class CategoriesService extends Service<Category> {
   ///Gets all categories from the Hive database
   void init() => super.getAll();
 
-  Future<void> editCategory(Category category) async =>
-      await super.edit(category);
-
   void updateId(String id) {
     _selectedId = id;
     _category = super.getList.where((e) => e.id == id).toList().first;

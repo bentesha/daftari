@@ -9,3 +9,4 @@ export 'expenses_service.dart';
 export 'write_offs_service.dart';
 export 'write_offs_types_service.dart';
 export 'opening_stock_items_service.dart';
+export 'category_types_service.dart';

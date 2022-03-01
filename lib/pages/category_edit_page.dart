@@ -98,7 +98,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
   _initBloc() {
     final categoriesService = getService<CategoriesService>(context);
     final itemsService = getService<ProductsService>(context);
-    final typeService = getService<TypeService>(context);
+    final typeService = getService<CategoryTypesService>(context);
     bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
     bloc.init(widget.categoryType, widget.category);
   }

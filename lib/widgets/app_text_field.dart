@@ -15,6 +15,7 @@ class AppTextField extends StatefulWidget {
       this.isLoginPassword = false,
       this.shouldShowErrorText = true,
       this.isUpdatingOnRebuild = false,
+      this.isEnabled = true,
       Key? key})
       : super(key: key);
 
@@ -27,6 +28,7 @@ class AppTextField extends StatefulWidget {
   final TextInputType keyboardType;
   final TextCapitalization textCapitalization;
   final bool isPassword,
+      isEnabled,
       isLoginPassword,
       shouldShowErrorText,
       isUpdatingOnRebuild;
@@ -81,6 +83,7 @@ class _AppTextFieldState extends State<AppTextField> {
                       maxLines: widget.maxLines,
                       minLines: 1,
                       onTap: _onTap,
+                      enabled: widget.isEnabled,
                       keyboardType: widget.keyboardType,
                       textCapitalization: widget.textCapitalization,
                       style: TextStyle(
@@ -152,7 +155,7 @@ class _AppTextFieldState extends State<AppTextField> {
 
   void _onTap() {
     if (widget.isUpdatingOnRebuild) {
-       controller.selection = TextSelection.fromPosition(
+      controller.selection = TextSelection.fromPosition(
           TextPosition(offset: controller.text.length));
     }
   }

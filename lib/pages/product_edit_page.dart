@@ -65,7 +65,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
   Widget _buildContent(ProductPageSupplements supp) {
     return ListView(padding: EdgeInsets.zero, children: [
       _buildProductDetails(supp),
-      _buildOpeningStockDetails(supp),
+      isEditing && !supp.hasAddedOpeningStockDetails
+          ? Container()
+          : _buildOpeningStockDetails(supp),
     ]);
   }
 
@@ -165,6 +167,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         hintText: '0',
         keyboardType: TextInputType.number,
         label: 'Quantity',
+        isEnabled: !isEditing,
         error: errors['quantity'],
       ),
       AppTextField(
@@ -173,6 +176,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         hintText: '0',
         keyboardType: TextInputType.number,
         label: 'Unit Value',
+        isEnabled: !isEditing,
         error: errors['unitValue'],
       ),
       _buildTotalOpeningValue(supp)
@@ -226,5 +230,6 @@ class _ProductEditPageState extends State<ProductEditPage> {
         getService<OpeningStockItemsService>(context);
     bloc = ProductPageBloc(
         productsService, categoriesService, openingStockItemsService);
+    bloc.init(product: widget.product);
   }
 }

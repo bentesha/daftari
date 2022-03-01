@@ -8,8 +8,11 @@ class OpeningStockItemsService extends Service<OpeningStockItem> {
 
   var _totalAmount = 0.0;
   double get getTotalValue => _totalAmount;
-  OpeningStockItem getByProductId(String id) =>
-      super.getList.where((e) => e.product.id == id).toList().first;
+  OpeningStockItem? getByProductId(String id) {
+    final items = super.getList.where((e) => e.product.id == id).toList();
+    if (items.isNotEmpty) return items.first;
+    return null;
+  }
 
   void init() {
     super.getAll();

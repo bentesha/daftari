@@ -16,9 +16,11 @@ class ProductPageSupplements with _$ProductPageSupplements {
       required String id,
       required String barcode,
       required String quantity,
+      required String unitValue,
+      required OpeningStockItem openingStockItem,
       required Map<String, String?> errors}) = _ProductPageSupplements;
 
-  factory ProductPageSupplements.empty() => const ProductPageSupplements(
+  factory ProductPageSupplements.empty() => ProductPageSupplements(
         name: '',
         errors: {},
         quantity: '',
@@ -27,13 +29,18 @@ class ProductPageSupplements with _$ProductPageSupplements {
         id: '',
         categoryId: '',
         unitPrice: '',
+        unitValue: '',
         productList: [],
         categoryList: [],
+        openingStockItem: OpeningStockItem.empty(),
       );
 
   bool get canCalculateTotalPrice =>
-      double.tryParse(unitPrice) != null && double.tryParse(quantity) != null;
+      double.tryParse(unitValue) != null && double.tryParse(quantity) != null;
 
-  String get getQuantityValue => Utils.convertToMoneyFormat(
-      double.parse(unitPrice) * double.parse(quantity));
+  String get getStockValue => Utils.convertToMoneyFormat(
+      double.parse(unitValue) * double.parse(quantity));
+
+  bool get hasAddedOpeningStockDetails =>
+      unitValue.isNotEmpty || quantity.isNotEmpty;
 }

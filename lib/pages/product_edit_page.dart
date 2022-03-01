@@ -63,11 +63,26 @@ class _ProductEditPageState extends State<ProductEditPage> {
   }
 
   Widget _buildContent(ProductPageSupplements supp) {
+    return ListView(padding: EdgeInsets.zero, children: [
+      _buildProductDetails(supp),
+      _buildOpeningStockDetails(supp),
+    ]);
+  }
+
+  _buildProductDetails(ProductPageSupplements supp) {
     final errors = supp.errors;
 
-    return ListView(padding: EdgeInsets.zero, children: [
-      Column(
+    return Padding(
+      padding: EdgeInsets.only(top: 10.dh),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: EdgeInsets.only(left: 19.dw),
+            child: const AppText('PRODUCT DETAILS',
+                weight: FontWeight.bold, opacity: .7),
+          ),
+          SizedBox(height: 10.dh),
           ValueSelector(
             title: 'Category',
             value: bloc.getSelectedCategory?.name,
@@ -80,45 +95,70 @@ class _ProductEditPageState extends State<ProductEditPage> {
                           categoryType: CategoryType.products(),
                         ))),
           ),
-          AppDivider(margin: EdgeInsets.only(bottom: 10.dh))
+          AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
+          AppTextField(
+            text: supp.name,
+            onChanged: (name) => bloc.updateAttributes(name: name),
+            hintText: 'e.g. Clothes',
+            keyboardType: TextInputType.name,
+            textCapitalization: TextCapitalization.words,
+            label: 'Name',
+            error: errors['name'],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: AppTextField(
+                  text: supp.unit,
+                  onChanged: (unit) => bloc.updateAttributes(unit: unit),
+                  hintText: 'ea.',
+                  keyboardType: TextInputType.name,
+                  shouldShowErrorText: false,
+                  label: 'Unit',
+                  error: errors['unit'],
+                ),
+              ),
+              Expanded(
+                child: AppTextField(
+                  text: supp.unitPrice,
+                  onChanged: (price) => bloc.updateAttributes(unitPrice: price),
+                  hintText: '0',
+                  keyboardType: TextInputType.number,
+                  shouldShowErrorText: false,
+                  label: 'Unit Price',
+                  error: errors['unitPrice'],
+                ),
+              ),
+            ],
+          ),
+          _buildUnitTextFieldsErrors(errors),
+          BarcodeField(
+              error: supp.errors['barcode'],
+              text: supp.barcode,
+              onChanged: (code) => bloc.updateAttributes(barcode: code)),
         ],
       ),
-      AppTextField(
-        text: supp.name,
-        onChanged: (name) => bloc.updateAttributes(name: name),
-        hintText: 'e.g. Clothes',
-        keyboardType: TextInputType.name,
-        textCapitalization: TextCapitalization.words,
-        label: 'Name',
-        error: errors['name'],
-      ),
-      Row(
-        children: [
-          Expanded(
-            child: AppTextField(
-              text: supp.unit,
-              onChanged: (unit) => bloc.updateAttributes(unit: unit),
-              hintText: 'ea.',
-              keyboardType: TextInputType.name,
-              shouldShowErrorText: false,
-              label: 'Unit',
-              error: errors['unit'],
-            ),
-          ),
-          Expanded(
-            child: AppTextField(
-              text: supp.unitPrice,
-              onChanged: (price) => bloc.updateAttributes(unitPrice: price),
-              hintText: '0',
-              keyboardType: TextInputType.number,
-              shouldShowErrorText: false,
-              label: 'Unit Price',
-              error: errors['unitPrice'],
-            ),
-          ),
-        ],
-      ),
-      _buildUnitTextFieldsErrors(errors),
+    );
+  }
+
+  _buildOpeningStockDetails(ProductPageSupplements supp) {
+    return ExpansionTile(
+        title: const AppText('OPENING STOCK DETAILS',
+            weight: FontWeight.bold, opacity: .7),
+        children: _openingStockDetails(supp),
+        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+        tilePadding: EdgeInsets.symmetric(horizontal: 19.dw));
+  }
+
+  List<Widget> _openingStockDetails(ProductPageSupplements supp) {
+    final errors = supp.errors;
+    return [
+      DateSelector(
+          title: 'DATE',
+          onDateSelected: (date) => bloc.updateAttributes(date: date),
+          isEditable: !isEditing,
+          date: supp.openingStockItem.date),
+      SizedBox(height: 8.dh),
       AppTextField(
         text: supp.quantity,
         onChanged: (quantity) => bloc.updateAttributes(quantity: quantity),
@@ -127,35 +167,32 @@ class _ProductEditPageState extends State<ProductEditPage> {
         label: 'Quantity',
         error: errors['quantity'],
       ),
-      BarcodeField(
-          error: supp.errors['barcode'],
-          text: supp.barcode,
-          onChanged: (code) => bloc.updateAttributes(barcode: code)),
-      _buildTotalOpeningValue(supp),
-    ]);
+      AppTextField(
+        text: supp.quantity,
+        onChanged: (value) => bloc.updateAttributes(unitValue: value),
+        hintText: '0',
+        keyboardType: TextInputType.number,
+        label: 'Unit Value',
+        error: errors['unitValue'],
+      ),
+      _buildTotalOpeningValue(supp)
+    ];
   }
 
   _buildTotalOpeningValue(ProductPageSupplements supp) {
     if (!supp.canCalculateTotalPrice) return Container();
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AppDivider(
-          color: AppColors.secondary,
-          margin: EdgeInsets.only(bottom: 10.dh),
-          height: 2,
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 19.dw),
-          child: const AppText('Opening Value', opacity: .7),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 19.dw, top: 10.dh),
-          child: AppText(supp.getQuantityValue,
-              weight: FontWeight.w500, size: 20.dw),
-        )
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 19.dw),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const AppText('Product Value', opacity: .7),
+          SizedBox(height: 8.dh),
+          AppText(supp.getStockValue, weight: FontWeight.bold),
+          SizedBox(height: 8.dh),
+        ],
+      ),
     );
   }
 
@@ -183,9 +220,11 @@ class _ProductEditPageState extends State<ProductEditPage> {
   }
 
   _initBloc() {
-    final service = getService<ProductsService>(context);
+    final productsService = getService<ProductsService>(context);
     final categoriesService = getService<CategoriesService>(context);
-    bloc = ProductPageBloc(service, categoriesService);
-    bloc.init(product: widget.product, categoryId: widget.categoryId);
+    final openingStockItemsService =
+        getService<OpeningStockItemsService>(context);
+    bloc = ProductPageBloc(
+        productsService, categoriesService, openingStockItemsService);
   }
 }

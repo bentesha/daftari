@@ -22,12 +22,14 @@ class _$OpeningStockSupplementsTearOff {
       {required OpeningStockItem openingStockItem,
       required String quantity,
       required String unitPrice,
+      required String unitValue,
       required Map<String, String?> errors,
       required List<OpeningStockItem> openingStockItems}) {
     return _OpeningStockSupplements(
       openingStockItem: openingStockItem,
       quantity: quantity,
       unitPrice: unitPrice,
+      unitValue: unitValue,
       errors: errors,
       openingStockItems: openingStockItems,
     );
@@ -42,6 +44,7 @@ mixin _$OpeningStockSupplements {
   OpeningStockItem get openingStockItem => throw _privateConstructorUsedError;
   String get quantity => throw _privateConstructorUsedError;
   String get unitPrice => throw _privateConstructorUsedError;
+  String get unitValue => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
   List<OpeningStockItem> get openingStockItems =>
       throw _privateConstructorUsedError;
@@ -60,6 +63,7 @@ abstract class $OpeningStockSupplementsCopyWith<$Res> {
       {OpeningStockItem openingStockItem,
       String quantity,
       String unitPrice,
+      String unitValue,
       Map<String, String?> errors,
       List<OpeningStockItem> openingStockItems});
 }
@@ -78,6 +82,7 @@ class _$OpeningStockSupplementsCopyWithImpl<$Res>
     Object? openingStockItem = freezed,
     Object? quantity = freezed,
     Object? unitPrice = freezed,
+    Object? unitValue = freezed,
     Object? errors = freezed,
     Object? openingStockItems = freezed,
   }) {
@@ -93,6 +98,10 @@ class _$OpeningStockSupplementsCopyWithImpl<$Res>
       unitPrice: unitPrice == freezed
           ? _value.unitPrice
           : unitPrice // ignore: cast_nullable_to_non_nullable
+              as String,
+      unitValue: unitValue == freezed
+          ? _value.unitValue
+          : unitValue // ignore: cast_nullable_to_non_nullable
               as String,
       errors: errors == freezed
           ? _value.errors
@@ -117,6 +126,7 @@ abstract class _$OpeningStockSupplementsCopyWith<$Res>
       {OpeningStockItem openingStockItem,
       String quantity,
       String unitPrice,
+      String unitValue,
       Map<String, String?> errors,
       List<OpeningStockItem> openingStockItems});
 }
@@ -138,6 +148,7 @@ class __$OpeningStockSupplementsCopyWithImpl<$Res>
     Object? openingStockItem = freezed,
     Object? quantity = freezed,
     Object? unitPrice = freezed,
+    Object? unitValue = freezed,
     Object? errors = freezed,
     Object? openingStockItems = freezed,
   }) {
@@ -153,6 +164,10 @@ class __$OpeningStockSupplementsCopyWithImpl<$Res>
       unitPrice: unitPrice == freezed
           ? _value.unitPrice
           : unitPrice // ignore: cast_nullable_to_non_nullable
+              as String,
+      unitValue: unitValue == freezed
+          ? _value.unitValue
+          : unitValue // ignore: cast_nullable_to_non_nullable
               as String,
       errors: errors == freezed
           ? _value.errors
@@ -173,6 +188,7 @@ class _$_OpeningStockSupplements implements _OpeningStockSupplements {
       {required this.openingStockItem,
       required this.quantity,
       required this.unitPrice,
+      required this.unitValue,
       required this.errors,
       required this.openingStockItems});
 
@@ -183,13 +199,15 @@ class _$_OpeningStockSupplements implements _OpeningStockSupplements {
   @override
   final String unitPrice;
   @override
+  final String unitValue;
+  @override
   final Map<String, String?> errors;
   @override
   final List<OpeningStockItem> openingStockItems;
 
   @override
   String toString() {
-    return 'OpeningStockSupplements(openingStockItem: $openingStockItem, quantity: $quantity, unitPrice: $unitPrice, errors: $errors, openingStockItems: $openingStockItems)';
+    return 'OpeningStockSupplements(openingStockItem: $openingStockItem, quantity: $quantity, unitPrice: $unitPrice, unitValue: $unitValue, errors: $errors, openingStockItems: $openingStockItems)';
   }
 
   @override
@@ -201,6 +219,7 @@ class _$_OpeningStockSupplements implements _OpeningStockSupplements {
                 .equals(other.openingStockItem, openingStockItem) &&
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
             const DeepCollectionEquality().equals(other.unitPrice, unitPrice) &&
+            const DeepCollectionEquality().equals(other.unitValue, unitValue) &&
             const DeepCollectionEquality().equals(other.errors, errors) &&
             const DeepCollectionEquality()
                 .equals(other.openingStockItems, openingStockItems));
@@ -212,6 +231,7 @@ class _$_OpeningStockSupplements implements _OpeningStockSupplements {
       const DeepCollectionEquality().hash(openingStockItem),
       const DeepCollectionEquality().hash(quantity),
       const DeepCollectionEquality().hash(unitPrice),
+      const DeepCollectionEquality().hash(unitValue),
       const DeepCollectionEquality().hash(errors),
       const DeepCollectionEquality().hash(openingStockItems));
 
@@ -227,6 +247,7 @@ abstract class _OpeningStockSupplements implements OpeningStockSupplements {
           {required OpeningStockItem openingStockItem,
           required String quantity,
           required String unitPrice,
+          required String unitValue,
           required Map<String, String?> errors,
           required List<OpeningStockItem> openingStockItems}) =
       _$_OpeningStockSupplements;
@@ -237,6 +258,8 @@ abstract class _OpeningStockSupplements implements OpeningStockSupplements {
   String get quantity;
   @override
   String get unitPrice;
+  @override
+  String get unitValue;
   @override
   Map<String, String?> get errors;
   @override

@@ -1,5 +1,3 @@
-import 'package:inventory_management/services/opening_stock_items_service.dart';
-
 import '../source.dart';
 
 mixin ServicesInitializer {

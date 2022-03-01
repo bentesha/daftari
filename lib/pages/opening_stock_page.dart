@@ -1,6 +1,4 @@
 import 'package:inventory_management/widgets/opening_stock_item_tile.dart';
-
-import '../services/opening_stock_items_service.dart';
 import '../source.dart';
 
 class OpeningStockPage extends StatefulWidget {

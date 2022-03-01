@@ -12,9 +12,12 @@ class _ProductsPageState extends State<ProductsPage> {
 
   @override
   void initState() {
-    final service = getService<ProductsService>(context);
+    final productsService = getService<ProductsService>(context);
     final categoriesService = getService<CategoriesService>(context);
-    bloc = ProductPageBloc(service, categoriesService);
+    final openingStockItemsService =
+        getService<OpeningStockItemsService>(context);
+    bloc = ProductPageBloc(
+        productsService, categoriesService, openingStockItemsService);
     bloc.init();
     super.initState();
   }

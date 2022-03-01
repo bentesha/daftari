@@ -1,5 +1,3 @@
-import 'package:inventory_management/services/opening_stock_items_service.dart';
-
 import '../source.dart';
 
 class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState>
@@ -24,6 +22,7 @@ class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState>
       supp = supp.copyWith(
           openingStockItem: openingStockItem,
           quantity: openingStockItem.quantity.toString(),
+          unitValue: openingStockItem.unitValue.toString(),
           unitPrice: openingStockItem.product.unitPrice.toString());
     }
 
@@ -33,6 +32,8 @@ class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState>
   }
 
   void updateQuantity(String quantity) => _updateAttributes(quantity: quantity);
+
+  void updateUnitValue(String value) => _updateAttributes(unitValue: value);
 
   void updateUnitPrice(String price) => _updateAttributes(unitPrice: price);
 
@@ -50,6 +51,7 @@ class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState>
         date: supp.openingStockItem.date,
         product: supp.openingStockItem.product
             .copyWith(unitPrice: double.parse(supp.unitPrice)),
+        unitValue: double.parse(supp.unitValue),
         quantity: double.parse(supp.quantity));
     await openingStockItemsService.add(item);
     emit(OpeningStockPagesState.success(supp));
@@ -67,18 +69,23 @@ class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState>
         date: supp.openingStockItem.date,
         product: supp.openingStockItem.product
             .copyWith(unitPrice: double.parse(supp.unitPrice)),
+        unitValue: double.parse(supp.unitValue),
         quantity: double.parse(supp.quantity));
     await openingStockItemsService.edit(item);
     emit(OpeningStockPagesState.success(supp));
   }
 
   void _updateAttributes(
-      {String? unitPrice, String? quantity, DateTime? date}) {
+      {String? unitPrice,
+      String? quantity,
+      DateTime? date,
+      String? unitValue}) {
     var supp = state.supplements;
     emit(OpeningStockPagesState.loading(supp));
 
     supp = supp.copyWith(
       unitPrice: unitPrice?.trim() ?? supp.unitPrice,
+      unitValue: unitValue?.trim() ?? supp.unitValue,
       quantity: quantity?.trim() ?? supp.quantity,
       openingStockItem: supp.openingStockItem.copyWith(date: date),
     );

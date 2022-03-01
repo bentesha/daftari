@@ -1,7 +1,8 @@
 import '../source.dart';
 
 class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
-  ProductPageBloc(this.productsService, this.categoriesService)
+  ProductPageBloc(this.productsService, this.categoriesService,
+      this.openingStockItemsService)
       : super(ProductPageState.initial()) {
     productsService.addListener(() => _handleproductUpdates());
     categoriesService.addListener(() => _handleCategoryUpdates());
@@ -9,6 +10,7 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
 
   final ProductsService productsService;
   final CategoriesService categoriesService;
+  final OpeningStockItemsService openingStockItemsService;
 
   Category? get getSelectedCategory {
     final id = state.supplements.categoryId;
@@ -20,7 +22,9 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
     initServices(
-        productsService: productsService, categoriesService: categoriesService);
+        productsService: productsService,
+        categoriesService: categoriesService,
+        openingStockItemsService: openingStockItemsService);
     var productList = productsService.getList;
     final categories = categoriesService.getList;
 
@@ -33,15 +37,18 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     supp = supp.copyWith(productList: productList, categoryList: categories);
 
     if (product != null) {
+      final openingStockItem =
+          openingStockItemsService.getByProductId(product.id);
       supp = supp.copyWith(
-        unit: product.unit,
-        unitPrice: product.unitPrice.toString(),
-        name: product.name,
-        quantity: product.quantity.toString(),
-        categoryId: product.categoryId,
-        id: product.id,
-        barcode: product.barcode,
-      );
+          unit: product.unit,
+          unitPrice: product.unitPrice.toString(),
+          name: product.name,
+          categoryId: product.categoryId,
+          id: product.id,
+          barcode: product.barcode,
+          openingStockItem: openingStockItem,
+          unitValue: openingStockItem.unitValue.toString(),
+          quantity: openingStockItem.quantity.toString());
     }
     emit(ProductPageState.content(supp));
   }
@@ -51,6 +58,8 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
       String? categoryId,
       String? unit,
       String? barcode,
+      String? unitValue,
+      DateTime? date,
       String? unitPrice,
       String? quantity}) {
     var supp = state.supplements;
@@ -60,6 +69,8 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
         name: name?.trim() ?? supp.name,
         unit: unit?.trim() ?? supp.unit,
         categoryId: categoryId ?? supp.categoryId,
+        unitValue: unitValue?.trim() ?? supp.unitValue,
+        openingStockItem: supp.openingStockItem.copyWith(date: date),
         unitPrice: unitPrice?.trim() ?? supp.unitPrice,
         quantity: quantity?.trim() ?? supp.quantity,
         barcode: barcode?.trim() ?? supp.barcode);
@@ -79,9 +90,16 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
         unit: supp.unit,
         name: supp.name,
         barcode: supp.barcode,
-        unitPrice: double.parse(supp.unitPrice),
-        quantity: double.parse(supp.quantity));
+        unitPrice: double.parse(supp.unitPrice));
     await productsService.addProduct(product);
+
+    final openingStockItem = OpeningStockItem(
+        id: Utils.getRandomId(),
+        date: supp.openingStockItem.date,
+        product: product,
+        unitValue: double.parse(supp.unitValue),
+        quantity: double.parse(supp.quantity));
+    await openingStockItemsService.add(openingStockItem);
     emit(ProductPageState.success(supp));
   }
 
@@ -98,8 +116,7 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
         unit: supp.unit,
         name: supp.name,
         barcode: supp.barcode,
-        unitPrice: double.parse(supp.unitPrice),
-        quantity: double.parse(supp.quantity));
+        unitPrice: double.parse(supp.unitPrice));
     await productsService.edit(product);
     emit(ProductPageState.success(supp));
   }
@@ -113,11 +130,15 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     errors['unit'] = InputValidation.validateText(supp.unit, 'Unit');
     errors['category'] =
         InputValidation.validateText(supp.categoryId, 'Category');
-
     errors['unitPrice'] =
         InputValidation.validateNumber(supp.unitPrice, 'Unit Price');
-    errors['quantity'] =
-        InputValidation.validateNumber(supp.quantity, 'Quantity');
+
+    if (supp.hasAddedOpeningStockDetails) {
+      errors['unitValue'] =
+          InputValidation.validateNumber(supp.unitValue, 'Unit Value');
+      errors['quantity'] =
+          InputValidation.validateNumber(supp.quantity, 'Quantity');
+    }
 
     supp = supp.copyWith(errors: errors);
     emit(ProductPageState.content(supp));

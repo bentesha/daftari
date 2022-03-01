@@ -16,9 +16,6 @@ class Product {
   @HiveField(3)
   final double unitPrice;
 
-  @HiveField(4)
-  final double quantity;
-
   @HiveField(5)
   final String categoryId;
 
@@ -30,21 +27,11 @@ class Product {
       required this.name,
       required this.unit,
       required this.unitPrice,
-      required this.quantity,
       required this.categoryId,
       required this.barcode});
 
   factory Product.empty() => Product(
-      name: '',
-      id: '',
-      unit: 'ea.',
-      unitPrice: 0,
-      quantity: 0,
-      barcode: '',
-      categoryId: '');
-
-  String get getQuantityValue =>
-      Utils.convertToMoneyFormat(quantity * unitPrice);
+      name: '', id: '', unit: 'ea.', unitPrice: 0, barcode: '', categoryId: '');
 
   String get getUnitPrice => Utils.convertToMoneyFormat(unitPrice);
 
@@ -62,7 +49,6 @@ class Product {
         unit: unit ?? this.unit,
         unitPrice: unitPrice ?? this.unitPrice,
         barcode: barcode ?? this.barcode,
-        quantity: quantity ?? this.quantity,
         categoryId: categoryId ?? this.categoryId);
   }
 }

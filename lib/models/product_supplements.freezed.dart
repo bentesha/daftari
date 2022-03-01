@@ -28,6 +28,8 @@ class _$ProductPageSupplementsTearOff {
       required String id,
       required String barcode,
       required String quantity,
+      required String unitValue,
+      required OpeningStockItem openingStockItem,
       required Map<String, String?> errors}) {
     return _ProductPageSupplements(
       productList: productList,
@@ -39,6 +41,8 @@ class _$ProductPageSupplementsTearOff {
       id: id,
       barcode: barcode,
       quantity: quantity,
+      unitValue: unitValue,
+      openingStockItem: openingStockItem,
       errors: errors,
     );
   }
@@ -58,6 +62,8 @@ mixin _$ProductPageSupplements {
   String get id => throw _privateConstructorUsedError;
   String get barcode => throw _privateConstructorUsedError;
   String get quantity => throw _privateConstructorUsedError;
+  String get unitValue => throw _privateConstructorUsedError;
+  OpeningStockItem get openingStockItem => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -80,6 +86,8 @@ abstract class $ProductPageSupplementsCopyWith<$Res> {
       String id,
       String barcode,
       String quantity,
+      String unitValue,
+      OpeningStockItem openingStockItem,
       Map<String, String?> errors});
 }
 
@@ -103,6 +111,8 @@ class _$ProductPageSupplementsCopyWithImpl<$Res>
     Object? id = freezed,
     Object? barcode = freezed,
     Object? quantity = freezed,
+    Object? unitValue = freezed,
+    Object? openingStockItem = freezed,
     Object? errors = freezed,
   }) {
     return _then(_value.copyWith(
@@ -142,6 +152,14 @@ class _$ProductPageSupplementsCopyWithImpl<$Res>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as String,
+      unitValue: unitValue == freezed
+          ? _value.unitValue
+          : unitValue // ignore: cast_nullable_to_non_nullable
+              as String,
+      openingStockItem: openingStockItem == freezed
+          ? _value.openingStockItem
+          : openingStockItem // ignore: cast_nullable_to_non_nullable
+              as OpeningStockItem,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -167,6 +185,8 @@ abstract class _$ProductPageSupplementsCopyWith<$Res>
       String id,
       String barcode,
       String quantity,
+      String unitValue,
+      OpeningStockItem openingStockItem,
       Map<String, String?> errors});
 }
 
@@ -192,6 +212,8 @@ class __$ProductPageSupplementsCopyWithImpl<$Res>
     Object? id = freezed,
     Object? barcode = freezed,
     Object? quantity = freezed,
+    Object? unitValue = freezed,
+    Object? openingStockItem = freezed,
     Object? errors = freezed,
   }) {
     return _then(_ProductPageSupplements(
@@ -231,6 +253,14 @@ class __$ProductPageSupplementsCopyWithImpl<$Res>
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as String,
+      unitValue: unitValue == freezed
+          ? _value.unitValue
+          : unitValue // ignore: cast_nullable_to_non_nullable
+              as String,
+      openingStockItem: openingStockItem == freezed
+          ? _value.openingStockItem
+          : openingStockItem // ignore: cast_nullable_to_non_nullable
+              as OpeningStockItem,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -252,6 +282,8 @@ class _$_ProductPageSupplements extends _ProductPageSupplements {
       required this.id,
       required this.barcode,
       required this.quantity,
+      required this.unitValue,
+      required this.openingStockItem,
       required this.errors})
       : super._();
 
@@ -274,11 +306,15 @@ class _$_ProductPageSupplements extends _ProductPageSupplements {
   @override
   final String quantity;
   @override
+  final String unitValue;
+  @override
+  final OpeningStockItem openingStockItem;
+  @override
   final Map<String, String?> errors;
 
   @override
   String toString() {
-    return 'ProductPageSupplements(productList: $productList, categoryList: $categoryList, name: $name, categoryId: $categoryId, unit: $unit, unitPrice: $unitPrice, id: $id, barcode: $barcode, quantity: $quantity, errors: $errors)';
+    return 'ProductPageSupplements(productList: $productList, categoryList: $categoryList, name: $name, categoryId: $categoryId, unit: $unit, unitPrice: $unitPrice, id: $id, barcode: $barcode, quantity: $quantity, unitValue: $unitValue, openingStockItem: $openingStockItem, errors: $errors)';
   }
 
   @override
@@ -298,6 +334,9 @@ class _$_ProductPageSupplements extends _ProductPageSupplements {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.barcode, barcode) &&
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
+            const DeepCollectionEquality().equals(other.unitValue, unitValue) &&
+            const DeepCollectionEquality()
+                .equals(other.openingStockItem, openingStockItem) &&
             const DeepCollectionEquality().equals(other.errors, errors));
   }
 
@@ -313,6 +352,8 @@ class _$_ProductPageSupplements extends _ProductPageSupplements {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(barcode),
       const DeepCollectionEquality().hash(quantity),
+      const DeepCollectionEquality().hash(unitValue),
+      const DeepCollectionEquality().hash(openingStockItem),
       const DeepCollectionEquality().hash(errors));
 
   @JsonKey(ignore: true)
@@ -333,6 +374,8 @@ abstract class _ProductPageSupplements extends ProductPageSupplements {
       required String id,
       required String barcode,
       required String quantity,
+      required String unitValue,
+      required OpeningStockItem openingStockItem,
       required Map<String, String?> errors}) = _$_ProductPageSupplements;
   const _ProductPageSupplements._() : super._();
 
@@ -354,6 +397,10 @@ abstract class _ProductPageSupplements extends ProductPageSupplements {
   String get barcode;
   @override
   String get quantity;
+  @override
+  String get unitValue;
+  @override
+  OpeningStockItem get openingStockItem;
   @override
   Map<String, String?> get errors;
   @override

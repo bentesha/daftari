@@ -1,4 +1,3 @@
-import 'package:inventory_management/services/opening_stock_items_service.dart';
 import 'app.dart';
 import 'source.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -44,7 +43,7 @@ void main() async {
     child: const MyApp(),
   );
 
-/*  await Hive.box(Constants.kGroupsBox).clear();
+/*   await Hive.box(Constants.kGroupsBox).clear();
   await Hive.box(Constants.kRecordsBox).clear();
   await Hive.box(Constants.kProductsBox).clear();
   await Hive.box(Constants.kCategoriesBox).clear();

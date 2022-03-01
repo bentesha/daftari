@@ -8,6 +8,7 @@ class OpeningStockSupplements with _$OpeningStockSupplements {
           {required OpeningStockItem openingStockItem,
           required String quantity,
           required String unitPrice,
+          required String unitValue,
           required Map<String, String?> errors,
           required List<OpeningStockItem> openingStockItems}) =
       _OpeningStockSupplements;
@@ -16,6 +17,7 @@ class OpeningStockSupplements with _$OpeningStockSupplements {
       openingStockItem: OpeningStockItem.empty(),
       quantity: '',
       unitPrice: '',
+      unitValue: '',
       errors: <String, String?>{},
       openingStockItems: <OpeningStockItem>[]);
 }

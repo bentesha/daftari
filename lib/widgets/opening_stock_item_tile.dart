@@ -9,19 +9,18 @@ class OpeningStockItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final date = DateFormatter.convertToDMY(openingStockItem.date);
-    final value = Utils.convertToMoneyFormat(openingStockItem.value);
-    final unitPrice =
-        Utils.convertToMoneyFormat(openingStockItem.product.unitPrice);
-    final quantity = openingStockItem.product.quantity;
+    final totalValue = Utils.convertToMoneyFormat(openingStockItem.totalValue);
+    final unitValue = Utils.convertToMoneyFormat(openingStockItem.unitValue);
+    final quantity = openingStockItem.quantity;
 
     return AppMaterialButton(
         isFilled: false,
         padding: EdgeInsets.symmetric(horizontal: 19.dw),
         child: ListTile(
             title: AppText(openingStockItem.product.name),
-            subtitle: AppText('$date @ $quantity x $unitPrice',
+            subtitle: AppText('$date @ $quantity x $unitValue',
                 opacity: .7, size: 14.dw),
-            trailing: AppText(value, weight: FontWeight.bold)),
+            trailing: AppText(totalValue, weight: FontWeight.bold)),
         onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(

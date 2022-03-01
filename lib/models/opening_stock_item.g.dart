@@ -20,22 +20,25 @@ class OpeningStockItemAdapter extends TypeAdapter<OpeningStockItem> {
       id: fields[0] as String,
       date: fields[1] as DateTime,
       product: fields[2] as Product,
-      quantity: fields[4] as double,
+      unitValue: fields[4] as double,
+      quantity: fields[3] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, OpeningStockItem obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.date)
       ..writeByte(2)
       ..write(obj.product)
+      ..writeByte(3)
+      ..write(obj.quantity)
       ..writeByte(4)
-      ..write(obj.quantity);
+      ..write(obj.unitValue);
   }
 
   @override

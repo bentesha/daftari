@@ -14,10 +14,10 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   void initState() {
-    final service = Provider.of<ProductsService>(context, listen: false);
-    final categoriesService =
-        Provider.of<CategoriesService>(context, listen: false);
-    bloc = ProductPageBloc(service, categoriesService);
+    final productsService = getService<ProductsService>(context);
+    final categoriesService = getService<CategoriesService>(context);
+    final openingStockItemsService = getService<OpeningStockItemsService>(context);
+    bloc = ProductPageBloc(productsService, categoriesService, openingStockItemsService);
     bloc.init();
     super.initState();
   }

@@ -8,6 +8,8 @@ class OpeningStockItemsService extends Service<OpeningStockItem> {
 
   var _totalAmount = 0.0;
   double get getTotalValue => _totalAmount;
+  OpeningStockItem getByProductId(String id) =>
+      super.getList.where((e) => e.product.id == id).toList().first;
 
   void init() {
     super.getAll();
@@ -18,7 +20,7 @@ class OpeningStockItemsService extends Service<OpeningStockItem> {
   Future<void> add(var item) async {
     await _box.put(item.id, item);
 
-    _totalAmount += item.value;
+    _totalAmount += item.totalValue;
     super.refresh();
     notifyListeners();
   }
@@ -28,7 +30,7 @@ class OpeningStockItemsService extends Service<OpeningStockItem> {
     await _box.put(item.id, item);
 
     final index = super.getList.indexWhere((e) => e.id == item.id);
-    final beforeEditRecordAmount = super.getList[index].value;
+    final beforeEditRecordAmount = super.getList[index].totalValue;
 
     _totalAmount = _totalAmount - beforeEditRecordAmount + item.value;
 
@@ -39,7 +41,7 @@ class OpeningStockItemsService extends Service<OpeningStockItem> {
   double _getItemsTotalAmount() {
     double _totalAmount = 0.0;
     for (OpeningStockItem item in super.getList) {
-      _totalAmount += item.value;
+      _totalAmount += item.totalValue;
     }
     return _totalAmount;
   }

@@ -65,9 +65,6 @@ class AppDrawer extends StatelessWidget {
           _buildListTile('Sales', Pages.sales_page),
           _buildListTile('Expenses', Pages.group_expenses_page),
           _buildListTile('Purchases', Pages.purchases_page),
-          _buildListTile('Products', Pages.products_page),
-          _buildListTile('Products Categories', Pages.products_categories_page),
-          _buildListTile('Expenses Categories', Pages.expenses_categories_page),
           _buildListTile('Stock Writeoffs', Pages.stock_write_offs_page),
           _buildListTile('Reports', Pages.reports_page),
         ],
@@ -103,18 +100,7 @@ class AppDrawer extends StatelessWidget {
   }
 
   _buildSettingsButton() {
-    return Builder(builder: (context) {
-      return AppTextButton(
-        onPressed: () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => const SettingsPage())),
-        text: 'Settings',
-        height: 40.dh,
-        isFilled: false,
-        margin: EdgeInsets.only(bottom: 20.dh),
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.only(left: 19.dw),
-      );
-    });
+    return _buildListTile('Settings', Pages.settings_page);
   }
 
   _navigateTo(Pages page, BuildContext context) {
@@ -130,15 +116,6 @@ class AppDrawer extends StatelessWidget {
       case Pages.sales_page:
         nextPage = const SalesRecordsPage();
         break;
-      case Pages.expenses_categories_page:
-        nextPage = CategoriesPage(CategoryType.expenses());
-        break;
-      case Pages.products_categories_page:
-        nextPage = CategoriesPage(CategoryType.products());
-        break;
-      case Pages.products_page:
-        nextPage = const ItemsPage();
-        break;
       case Pages.reports_page:
         nextPage = const ReportsPage();
         break;
@@ -147,6 +124,9 @@ class AppDrawer extends StatelessWidget {
         break;
       case Pages.stock_write_offs_page:
         nextPage = const WriteOffGroupsPage();
+        break;
+      case Pages.settings_page:
+        nextPage = const SettingsPage();
         break;
       default:
         nextPage = null;
@@ -171,5 +151,7 @@ enum Pages {
   group_write_offs_page,
   write_offs_edit_page,
   stock_write_offs_page,
-  products_page
+  products_page,
+  settings_page,
+  opening_stock
 }

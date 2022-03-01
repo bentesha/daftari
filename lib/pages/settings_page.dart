@@ -17,20 +17,24 @@ class _SettingsPageState extends State<SettingsPage> {
   _buildBody() {
     return ListView(
       children: [
-        _buildListTile('Opening Stock'),
+        _buildListTile(Icons.inventory, 'Opening Stock', Pages.opening_stock),
+        _buildListTile(Icons.qr_code, 'Products', Pages.products_page),
+        _buildListTile(Icons.category, 'Products Categories',
+            Pages.products_categories_page),
+        _buildListTile(Icons.category, 'Expense Categories',
+            Pages.expenses_categories_page),
       ],
     );
   }
 
-  _buildListTile(String title) {
+  _buildListTile(IconData icon, String title, Pages nextPage) {
     return AppMaterialButton(
-      onPressed: _navigateToOpeningStockPage,
+      onPressed: () => _navigateToOpeningStockPage(nextPage),
       isFilled: false,
       child: ListTile(
         title: Row(
           children: [
-            Icon(Icons.inventory_2_outlined,
-                color: AppColors.onBackground, size: 22.dw),
+            Icon(icon, color: AppColors.onBackground, size: 22.dw),
             SizedBox(width: 15.dw),
             AppText(title, weight: FontWeight.w500),
           ],
@@ -41,8 +45,25 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  _navigateToOpeningStockPage() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (_) => const OpeningStockPage()));
+  _navigateToOpeningStockPage(Pages page) {
+    late final Widget nextPage;
+
+    switch (page) {
+      case Pages.opening_stock:
+        nextPage = const OpeningStockPage();
+        break;
+      case Pages.products_page:
+        nextPage = const ProductsPage();
+        break;
+      case Pages.products_categories_page:
+        nextPage = CategoriesPage(CategoryType.products());
+        break;
+      case Pages.expenses_categories_page:
+        nextPage = CategoriesPage(CategoryType.expenses());
+        break;
+      default:
+    }
+
+    Navigator.push(context, MaterialPageRoute(builder: (_) => nextPage));
   }
 }

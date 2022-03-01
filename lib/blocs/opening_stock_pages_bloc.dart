@@ -92,8 +92,8 @@ class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState>
     emit(OpeningStockPagesState.loading(supp));
     errors['product'] = InputValidation.validateText(
         supp.openingStockItem.product.id, 'Product');
-    errors['unitPrice'] =
-        InputValidation.validateNumber(supp.unitPrice, 'Unit Price');
+    errors['unitValue'] =
+        InputValidation.validateNumber(supp.unitPrice, 'Unit Value');
     errors['quantity'] =
         InputValidation.validateNumber(supp.quantity, 'Quantity');
 

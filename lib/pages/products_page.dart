@@ -1,13 +1,13 @@
 import '../source.dart';
 
-class ItemsPage extends StatefulWidget {
-  const ItemsPage({Key? key}) : super(key: key);
+class ProductsPage extends StatefulWidget {
+  const ProductsPage({Key? key}) : super(key: key);
 
   @override
-  State<ItemsPage> createState() => _ItemsPageState();
+  State<ProductsPage> createState() => _ProductsPageState();
 }
 
-class _ItemsPageState extends State<ItemsPage> {
+class _ProductsPageState extends State<ProductsPage> {
   late final ProductPageBloc bloc;
 
   @override

@@ -12,8 +12,7 @@ class WriteOffsGroupTile extends StatelessWidget {
     final formattedDay = DateFormatter.convertToDOW(group.date);
     final formattedAmount = Utils.convertToMoneyFormat(groupAmount);
     return AppMaterialButton(
-      onPressed: () => Navigator.push(context,
-          MaterialPageRoute(builder: (_) => GroupWriteOffsPage(group: group))),
+      onPressed: () => push(GroupWriteOffsPage(group: group)),
       isFilled: false,
       padding: EdgeInsets.symmetric(horizontal: 19.dw),
       child: ListTile(

@@ -40,7 +40,7 @@ class _WriteOffEditPageState extends State<WriteOffEditPage> {
           final isSuccessful =
               state.maybeWhen(success: (_) => true, orElse: () => false);
 
-          if (isSuccessful) Navigator.pop(context);
+          if (isSuccessful) pop();
         },
         builder: (_, state) {
           return state.when(
@@ -80,10 +80,7 @@ class _WriteOffEditPageState extends State<WriteOffEditPage> {
     );
   }
 
-  _navigateToProductsPicker() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (_) => const ItemsSearchPage<Product>()));
-  }
+  _navigateToProductsPicker() => push(const ItemsSearchPage<Product>());
 
   _initBloc() {
     final groupsService = getService<GroupsService>(context);

@@ -39,7 +39,7 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
           final isSuccessful =
               state.maybeWhen(success: (_) => true, orElse: () => false);
 
-          if (isSuccessful) Navigator.pop(context);
+          if (isSuccessful) pop();
         },
         builder: (_, state) {
           return state.when(
@@ -89,13 +89,8 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
     );
   }
 
-  _navigateToCategoryPicker() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => ItemsSearchPage<Category>(
-                categoryType: CategoryType.expenses())));
-  }
+  _navigateToCategoryPicker() =>
+      push(ItemsSearchPage<Category>(categoryType: CategoryType.expenses()));
 
   _initBloc() {
     final groupsService = getService<GroupsService>(context);

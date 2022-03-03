@@ -80,10 +80,7 @@ class _GroupWriteOffsPageState extends State<GroupWriteOffsPage> {
           value: supp.group.type,
           error: supp.errors['type'],
           isEditable: !isEditing,
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => const ItemsSearchPage<WriteOffType>())),
+          onPressed: () => push(const ItemsSearchPage<WriteOffType>()),
         ),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
         AppTextField(

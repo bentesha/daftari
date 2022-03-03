@@ -13,8 +13,7 @@ class ExpensesGroupTile extends StatelessWidget {
     final formattedDay = DateFormatter.convertToDOW(group.date);
     final formattedAmount = Utils.convertToMoneyFormat(groupAmount);
     return AppMaterialButton(
-      onPressed: () => Navigator.push(context,
-          MaterialPageRoute(builder: (_) => GroupExpensesPage(group: group))),
+      onPressed: () =>push(GroupExpensesPage(group: group)),
       isFilled: false,
       padding: EdgeInsets.symmetric(horizontal: 19.dw),
       child: ListTile(

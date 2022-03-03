@@ -37,7 +37,7 @@ class _GroupEditPageState extends State<GroupEditPage> {
           final isSuccessful =
               state.maybeWhen(success: (_) => true, orElse: () => false);
 
-          if (isSuccessful) Navigator.pop(context);
+          if (isSuccessful) pop();
         });
   }
 

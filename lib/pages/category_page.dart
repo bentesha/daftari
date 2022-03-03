@@ -16,8 +16,10 @@ class _CategoryPageState extends State<CategoryPage> {
   void initState() {
     final productsService = getService<ProductsService>(context);
     final categoriesService = getService<CategoriesService>(context);
-    final openingStockItemsService = getService<OpeningStockItemsService>(context);
-    bloc = ProductPageBloc(productsService, categoriesService, openingStockItemsService);
+    final openingStockItemsService =
+        getService<OpeningStockItemsService>(context);
+    bloc = ProductPageBloc(
+        productsService, categoriesService, openingStockItemsService);
     bloc.init();
     super.initState();
   }
@@ -36,12 +38,8 @@ class _CategoryPageState extends State<CategoryPage> {
     );
   }
 
-  _navigateToCategoryEditPage() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => CategoryEditPage(category: widget.category)));
-  }
+  _navigateToCategoryEditPage() =>
+      push(CategoryEditPage(category: widget.category));
 
   _buildBody() {
     return BlocBuilder<ProductPageBloc, ProductPageState>(

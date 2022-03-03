@@ -40,7 +40,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
           final isSuccess =
               state.maybeWhen(success: (_) => true, orElse: () => false);
 
-          if (isSuccess) Navigator.pop(context);
+          if (isSuccess) pop();
         },
         builder: (_, state) {
           return state.when(
@@ -66,11 +66,8 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
                 value: supp.category.type,
                 error: supp.errors['type'],
                 isEditable: !isEditing,
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => ItemsSearchPage<CategoryType>(
-                            categoryType: widget.categoryType))),
+                onPressed: () => push(ItemsSearchPage<CategoryType>(
+                    categoryType: widget.categoryType)),
               ),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
         AppTextField(

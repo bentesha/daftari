@@ -15,9 +15,9 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
 
   @override
   void initState() {
-    final recordsService =getService<RecordsService>(context);
-    final groupsService =getService<GroupsService>(context);
-    final itemsService =getService<ProductsService>(context);
+    final recordsService = getService<RecordsService>(context);
+    final groupsService = getService<GroupsService>(context);
+    final itemsService = getService<ProductsService>(context);
     bloc = GroupPagesBloc(groupsService, recordsService, itemsService);
     bloc.init(group: widget.group);
     super.initState();
@@ -55,10 +55,7 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
     );
   }
 
-  void _navigateToGroupEditPage() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (_) => GroupEditPage(group: widget.group)));
-  }
+  void _navigateToGroupEditPage() => push(GroupEditPage(group: widget.group));
 
   Widget _buildRecords(GroupSupplements supp) {
     final recordList = supp.getSpecificGroupRecords;

@@ -64,6 +64,6 @@ class _SettingsPageState extends State<SettingsPage> {
       default:
     }
 
-    Navigator.push(context, MaterialPageRoute(builder: (_) => nextPage));
+    push(nextPage);
   }
 }

@@ -8,8 +8,7 @@ class AddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () => Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => nextPage)),
+      onPressed: () => push(nextPage),
       child: const Icon(Icons.add, color: AppColors.onPrimary),
     );
   }

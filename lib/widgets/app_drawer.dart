@@ -131,9 +131,9 @@ class AppDrawer extends StatelessWidget {
       default:
         nextPage = null;
     }
-    if (nextPage == null) return;
 
-    Navigator.push(context, MaterialPageRoute(builder: (_) => nextPage!));
+    if (nextPage == null) return;
+    push(nextPage);
   }
 }
 

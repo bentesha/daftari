@@ -11,6 +11,7 @@ class MyApp extends StatelessWidget {
         title: 'Inventory Managament App',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.themeData(),
+        navigatorKey: navigatorKey,
         home: const Dashboard(),
       ),
     );

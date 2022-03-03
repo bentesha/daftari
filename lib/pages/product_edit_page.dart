@@ -39,7 +39,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
             final isSaved =
                 state.maybeWhen(success: (_) => true, orElse: () => false);
 
-            if (isSaved) Navigator.pop(context);
+            if (isSaved) pop();
           },
           builder: (_, state) {
             return state.when(
@@ -90,12 +90,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
             value: bloc.getSelectedCategory?.name,
             error: supp.errors['category'],
             isEditable: true,
-            onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => ItemsSearchPage<Category>(
-                          categoryType: CategoryType.products(),
-                        ))),
+            onPressed: () => push(ItemsSearchPage<Category>(
+                categoryType: CategoryType.products())),
           ),
           AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
           AppTextField(

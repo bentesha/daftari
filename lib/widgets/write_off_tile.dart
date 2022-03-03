@@ -12,10 +12,8 @@ class WriteOffTile extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 19.dw),
         child: ListTile(
             title: AppText(writeOff.product.name),
-            trailing: AppText(writeOff.quantity.toString(), weight: FontWeight.bold)),
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => WriteOffEditPage(writeOff: writeOff))));
+            trailing:
+                AppText(writeOff.quantity.toString(), weight: FontWeight.bold)),
+        onPressed: () => push(WriteOffEditPage(writeOff: writeOff)));
   }
 }

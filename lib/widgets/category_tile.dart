@@ -10,10 +10,7 @@ class CategoryTile extends StatelessWidget {
     final title = AppText(category.name, weight: FontWeight.w500);
 
     return AppMaterialButton(
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => CategoryEditPage(category: category))),
+        onPressed: () => push(CategoryEditPage(category: category)),
         padding: EdgeInsets.symmetric(horizontal: 19.dw),
         isFilled: false,
         child: ListTile(title: title));

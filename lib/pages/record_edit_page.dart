@@ -38,7 +38,7 @@ class _RecordEditPageState extends State<RecordEditPage> {
           final isSuccessful =
               state.maybeWhen(success: (_) => true, orElse: () => false);
 
-          if (isSuccessful) Navigator.pop(context);
+          if (isSuccessful) pop();
         },
         builder: (_, state) {
           return state.when(
@@ -63,11 +63,8 @@ class _RecordEditPageState extends State<RecordEditPage> {
           value: bloc.getSelectedProduct?.name,
           error: supp.errors['product'],
           isEditable: !isEditing,
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => ItemsSearchPage<Product>(
-                      categoryType: CategoryType.products()))),
+          onPressed: () => push(
+              ItemsSearchPage<Product>(categoryType: CategoryType.products())),
         ),
         DateSelector(
           title: 'Date',

@@ -38,7 +38,7 @@ class _OpeningStockEditPageState extends State<OpeningStockEditPage> {
           final isSuccessful =
               state.maybeWhen(success: (_) => true, orElse: () => false);
 
-          if (isSuccessful) Navigator.pop(context);
+          if (isSuccessful) pop();
         },
         builder: (_, state) {
           return state.when(
@@ -59,16 +59,12 @@ class _OpeningStockEditPageState extends State<OpeningStockEditPage> {
     return Column(
       children: [
         ValueSelector(
-          title: 'Product',
-          value: supp.openingStockItem.product.name,
-          error: supp.errors['product'],
-          isEditable: !isEditing,
-          onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => ItemsSearchPage<Product>(
-                      categoryType: CategoryType.products()))),
-        ),
+            title: 'Product',
+            value: supp.openingStockItem.product.name,
+            error: supp.errors['product'],
+            isEditable: !isEditing,
+            onPressed: () => push(ItemsSearchPage<Product>(
+                categoryType: CategoryType.products()))),
         DateSelector(
           title: 'Date',
           onDateSelected: bloc.updateDate,

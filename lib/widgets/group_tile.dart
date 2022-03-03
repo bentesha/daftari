@@ -19,8 +19,7 @@ class GroupTile extends StatelessWidget {
 
     return AppTextButton(
         isFilled: false,
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (_) => GroupRecordsPage(group))),
+        onPressed: () => push(GroupRecordsPage(group)),
         padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 15.dh),
         child: Row(
           children: [

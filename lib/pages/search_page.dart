@@ -34,7 +34,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
           final isSuccessful =
               state.maybeWhen(success: (_) => true, orElse: () => false);
 
-          if (isSuccessful) Navigator.pop(context);
+          if (isSuccessful) pop();
         },
         builder: (_, state) {
           return state.when(
@@ -167,6 +167,6 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
       nextPage = CategoryEditPage(categoryType: widget.categoryType);
     }
     if (T == Product) nextPage = const ProductEditPage();
-    Navigator.push(context, MaterialPageRoute(builder: (_) => nextPage));
+    push(nextPage);
   }
 }

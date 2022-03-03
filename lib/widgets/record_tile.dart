@@ -12,7 +12,7 @@ class RecordTile extends StatelessWidget {
     return AppMaterialButton(
       padding: EdgeInsets.symmetric(horizontal: 19.dw, vertical: 8.dh),
       isFilled: false,
-      onPressed: () => _onPressed(context),
+      onPressed: () => push(RecordEditPage(record: record)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -30,7 +30,4 @@ class RecordTile extends StatelessWidget {
       ),
     );
   }
-
-  _onPressed(BuildContext context) => Navigator.push(context,
-      MaterialPageRoute(builder: (_) => RecordEditPage(record: record)));
 }

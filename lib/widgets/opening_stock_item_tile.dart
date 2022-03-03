@@ -21,10 +21,7 @@ class OpeningStockItemTile extends StatelessWidget {
             subtitle: AppText('$date @ $quantity x $unitValue',
                 opacity: .7, size: 14.dw),
             trailing: AppText(totalValue, weight: FontWeight.bold)),
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) =>
-                    OpeningStockEditPage(openingStockItem: openingStockItem))));
+        onPressed: () =>
+            push(OpeningStockEditPage(openingStockItem: openingStockItem)));
   }
 }

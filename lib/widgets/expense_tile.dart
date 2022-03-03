@@ -15,9 +15,6 @@ class ExpenseTile extends StatelessWidget {
         child: ListTile(
             title: AppText(category!.name),
             trailing: AppText(formattedAmount, weight: FontWeight.bold)),
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => ExpenseEditPage(expense: expense))));
+        onPressed: () => push(ExpenseEditPage(expense: expense)));
   }
 }

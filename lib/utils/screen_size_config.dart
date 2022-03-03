@@ -20,12 +20,12 @@ class ScreenSizeConfig {
   static double get getFullWidth => _screenSize.width;
   static double get getFullHeight => _screenSize.height;
 
-  static double getDoubleWidth(num width) => ((width * sWidth) / dWidth);
-  static double getDoubleHeight(num height) => ((height * sHeight) / dHeight);
+  static double getProportionalWidth(num width) => ((width * sWidth) / dWidth);
+  static double getProportionalHeight(num height) => ((height * sHeight) / dHeight);
 }
 
 extension SizeExtension on num {
   // ignore: unused_element
-  double get dw => ScreenSizeConfig.getDoubleWidth(this);
-  double get dh => ScreenSizeConfig.getDoubleHeight(this);
+  double get dw => ScreenSizeConfig.getProportionalWidth(this);
+  double get dh => ScreenSizeConfig.getProportionalHeight(this);
 }

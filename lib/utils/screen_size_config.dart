@@ -23,3 +23,9 @@ class ScreenSizeConfig {
   static double getDoubleWidth(num width) => ((width * sWidth) / dWidth);
   static double getDoubleHeight(num height) => ((height * sHeight) / dHeight);
 }
+
+extension SizeExtension on num {
+  // ignore: unused_element
+  double get dw => ScreenSizeConfig.getDoubleWidth(this);
+  double get dh => ScreenSizeConfig.getDoubleHeight(this);
+}

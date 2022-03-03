@@ -1,13 +1,5 @@
 import 'package:uuid/uuid.dart';
 
-import '../source.dart';
-
-extension SizeExtension on num {
-  // ignore: unused_element
-  double get dw => ScreenSizeConfig.getDoubleWidth(this);
-  double get dh => ScreenSizeConfig.getDoubleHeight(this);
-}
-
 class Utils {
   static const _uuid = Uuid();
 

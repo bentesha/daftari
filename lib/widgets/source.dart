@@ -1,5 +1,4 @@
 export 'app_text.dart';
-export 'screen_size_config.dart';
 export 'screen_size_init.dart';
 export 'app_top_bar.dart';
 export 'record_tile.dart';

@@ -34,6 +34,7 @@ void main() async {
       _createProvider<WriteOffsService>(WriteOffsService()),
       _createProvider<WriteOffsTypesService>(WriteOffsTypesService()),
       _createProvider<ExpensesService>(ExpensesService()),
+      _createProvider<OpeningStockItemsService>(OpeningStockItemsService()),
     ],
     child: const MyApp(),
   );

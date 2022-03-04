@@ -1,5 +1,4 @@
 import 'package:inventory_management/widgets/bottom_total_amount_tile.dart';
-
 import '../source.dart';
 
 class GroupExpensesPage extends StatefulWidget {

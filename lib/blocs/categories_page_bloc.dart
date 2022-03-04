@@ -14,10 +14,10 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   final ProductsService productsService;
   final CategoryTypesService typeService;
 
-  void init([CategoryType? type, Category? category]) {
+  void init([CategoryType? type, Category? category]) async {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
-    initServices(
+    await initServices(
         productsService: productsService, categoriesService: categoriesService);
     var categories = categoriesService.getList;
 
@@ -66,6 +66,13 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
 
     emit(CategoryPagesState.loading(supp));
     await categoriesService.edit(supp.category);
+    emit(CategoryPagesState.success(supp));
+  }
+
+  void delete() async {
+    var supp = state.supplements;
+    emit(CategoryPagesState.loading(supp));
+    await categoriesService.delete(supp.category.id);
     emit(CategoryPagesState.success(supp));
   }
 

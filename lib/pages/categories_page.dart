@@ -27,8 +27,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       appBar: PageAppBar(
           title: '${isProductsCategory ? 'Products' : 'Expenses'} Categories'),
       body: _buildBody(),
-      floatingActionButton: AddButton(
-          nextPage: CategoryEditPage(categoryType: widget.categoryType)),
+      floatingActionButton: _buildFloatingButton(),
     );
   }
 
@@ -73,6 +72,18 @@ class _CategoriesPageState extends State<CategoriesPage> {
         ),
       ],
     );
+  }
+
+  _buildFloatingButton() {
+    return BlocBuilder<CategoryPageBloc, CategoryPagesState>(
+        bloc: bloc,
+        builder: (_, state) {
+          final isLoading =
+              state.maybeWhen(loading: (_) => true, orElse: () => false);
+          if (isLoading) return Container();
+          return AddButton(
+              nextPage: CategoryEditPage(categoryType: widget.categoryType));
+        });
   }
 
   _emptyCategoriesMessage() =>

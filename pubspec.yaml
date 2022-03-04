@@ -9,7 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
   freezed: ^1.1.1
   bloc: ^8.0.2
   provider: ^6.0.2
@@ -19,8 +18,7 @@ dependencies:
   path_provider: ^2.0.8
   uuid: ^3.0.5
   date_time_picker: ^2.1.0
-  state_notifier: ^0.7.2+1
-
+  http: ^0.13.4
 
 dev_dependencies:
   flutter_test:
@@ -29,7 +27,6 @@ dev_dependencies:
   hive_generator: ^1.1.2
   build_runner: ^2.1.7
 
-
 flutter:
   uses-material-design: true
 
@@ -37,23 +34,12 @@ flutter:
     - assets/
 
   fonts:
-    - family: Circular
-      fonts:
-        - asset: assets/fonts/Circular/Bold.ttf
-          weight: 600
-        - asset: assets/fonts/Circular/Book.ttf
-          weight: 500
-        - asset: assets/fonts/Circular/Medium.ttf
-          weight: 400
     - family: Avenir
       fonts:
         - asset: assets/fonts/Avenir/Medium.ttf
           weight: 500
         - asset: assets/fonts/Avenir/Heavy.ttf
           weight: 600
-    - family: Antipasto
-      fonts:
-        - asset: assets/fonts/Antipasto/Medium.ttf
     - family: AndroidEuclid
       fonts:
         - asset: assets/fonts/AndroidEuclid/Medium.otf                    

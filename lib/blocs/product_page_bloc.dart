@@ -18,10 +18,10 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     return category;
   }
 
-  void init({Product? product, String? categoryId}) {
+  void init({Product? product, String? categoryId}) async {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
-    initServices(
+    await initServices(
         productsService: productsService,
         categoriesService: categoriesService,
         openingStockItemsService: openingStockItemsService);

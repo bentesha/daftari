@@ -7,7 +7,10 @@ class CategoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = AppText(category.name, weight: FontWeight.w500);
+    final firstLetter = category.name.substring(0, 1);
+    final remaining = category.name.substring(1);
+    final title =
+        AppText(firstLetter.toUpperCase() + remaining, weight: FontWeight.w500);
 
     return AppMaterialButton(
         onPressed: () => push(CategoryEditPage(category: category)),

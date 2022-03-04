@@ -17,10 +17,10 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
   double? getAmountByGroup(String id) => expensesService.getDayTotalAmounts[id];
   Category? getCategoryById(String id) => categoriesService.getById(id);
 
-  void init(Pages page, [Expense? expense, String? groupId]) {
+  void init(Pages page, [Expense? expense, String? groupId]) async {
     var supp = state.supplements;
     emit(ExpensePagesState.loading(supp));
-    initServices(
+    await initServices(
         expensesService: expensesService,
         categoriesService: categoriesService,
         groupsService: groupsService);

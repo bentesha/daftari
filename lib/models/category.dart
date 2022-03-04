@@ -28,4 +28,12 @@ class Category {
         name: name ?? this.name,
         type: type ?? this.type);
   }
+
+  Map<String, String?> toJson() => {'name': name, 'description': description};
+
+  factory Category.fromJson(var json) => Category(
+      id: json['id']!,
+      name: json['name']!,
+      description: json['description'],
+      type: CategoryType.products().name);
 }

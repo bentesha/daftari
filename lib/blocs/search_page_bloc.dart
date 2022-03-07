@@ -50,8 +50,8 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>>
   void updateId(String id) {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
-    if (T == Product) productsService.updateId(id);
-    if (T == Category) categoriesService.updateId(id);
+    if (T == Product) productsService.updateCurrent(id);
+    if (T == Category) categoriesService.updateCurrent(id);
     emit(SearchPageState.success(supp));
   }
 

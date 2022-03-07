@@ -3,54 +3,23 @@
 part of 'product.dart';
 
 // **************************************************************************
-// TypeAdapterGenerator
+// JsonSerializableGenerator
 // **************************************************************************
 
-class ProductAdapter extends TypeAdapter<Product> {
-  @override
-  final int typeId = 0;
-
-  @override
-  Product read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return Product(
-      id: fields[0] as String,
-      name: fields[1] as String,
-      unit: fields[2] as String,
-      unitPrice: fields[3] as double,
-      categoryId: fields[5] as String,
-      barcode: fields[6] as String,
+_$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      unit: json['unit'] as String,
+      unitPrice: (json['unitPrice'] as num).toDouble(),
+      categoryId: json['categoryId'] as String,
+      code: json['code'] as String,
     );
-  }
 
-  @override
-  void write(BinaryWriter writer, Product obj) {
-    writer
-      ..writeByte(6)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.name)
-      ..writeByte(2)
-      ..write(obj.unit)
-      ..writeByte(3)
-      ..write(obj.unitPrice)
-      ..writeByte(5)
-      ..write(obj.categoryId)
-      ..writeByte(6)
-      ..write(obj.barcode);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ProductAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
+Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'unit': instance.unit,
+      'unitPrice': instance.unitPrice,
+      'categoryId': instance.categoryId,
+      'code': Utils.getRandomId(),
+    };

@@ -26,7 +26,7 @@ class _$ProductPageSupplementsTearOff {
       required String unit,
       required String unitPrice,
       required String id,
-      required String barcode,
+      required String code,
       required String quantity,
       required String unitValue,
       required OpeningStockItem openingStockItem,
@@ -39,7 +39,7 @@ class _$ProductPageSupplementsTearOff {
       unit: unit,
       unitPrice: unitPrice,
       id: id,
-      barcode: barcode,
+      code: code,
       quantity: quantity,
       unitValue: unitValue,
       openingStockItem: openingStockItem,
@@ -60,7 +60,7 @@ mixin _$ProductPageSupplements {
   String get unit => throw _privateConstructorUsedError;
   String get unitPrice => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
-  String get barcode => throw _privateConstructorUsedError;
+  String get code => throw _privateConstructorUsedError;
   String get quantity => throw _privateConstructorUsedError;
   String get unitValue => throw _privateConstructorUsedError;
   OpeningStockItem get openingStockItem => throw _privateConstructorUsedError;
@@ -84,7 +84,7 @@ abstract class $ProductPageSupplementsCopyWith<$Res> {
       String unit,
       String unitPrice,
       String id,
-      String barcode,
+      String code,
       String quantity,
       String unitValue,
       OpeningStockItem openingStockItem,
@@ -109,7 +109,7 @@ class _$ProductPageSupplementsCopyWithImpl<$Res>
     Object? unit = freezed,
     Object? unitPrice = freezed,
     Object? id = freezed,
-    Object? barcode = freezed,
+    Object? code = freezed,
     Object? quantity = freezed,
     Object? unitValue = freezed,
     Object? openingStockItem = freezed,
@@ -144,9 +144,9 @@ class _$ProductPageSupplementsCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      barcode: barcode == freezed
-          ? _value.barcode
-          : barcode // ignore: cast_nullable_to_non_nullable
+      code: code == freezed
+          ? _value.code
+          : code // ignore: cast_nullable_to_non_nullable
               as String,
       quantity: quantity == freezed
           ? _value.quantity
@@ -183,7 +183,7 @@ abstract class _$ProductPageSupplementsCopyWith<$Res>
       String unit,
       String unitPrice,
       String id,
-      String barcode,
+      String code,
       String quantity,
       String unitValue,
       OpeningStockItem openingStockItem,
@@ -210,7 +210,7 @@ class __$ProductPageSupplementsCopyWithImpl<$Res>
     Object? unit = freezed,
     Object? unitPrice = freezed,
     Object? id = freezed,
-    Object? barcode = freezed,
+    Object? code = freezed,
     Object? quantity = freezed,
     Object? unitValue = freezed,
     Object? openingStockItem = freezed,
@@ -245,9 +245,9 @@ class __$ProductPageSupplementsCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
-      barcode: barcode == freezed
-          ? _value.barcode
-          : barcode // ignore: cast_nullable_to_non_nullable
+      code: code == freezed
+          ? _value.code
+          : code // ignore: cast_nullable_to_non_nullable
               as String,
       quantity: quantity == freezed
           ? _value.quantity
@@ -280,7 +280,7 @@ class _$_ProductPageSupplements extends _ProductPageSupplements {
       required this.unit,
       required this.unitPrice,
       required this.id,
-      required this.barcode,
+      required this.code,
       required this.quantity,
       required this.unitValue,
       required this.openingStockItem,
@@ -302,7 +302,7 @@ class _$_ProductPageSupplements extends _ProductPageSupplements {
   @override
   final String id;
   @override
-  final String barcode;
+  final String code;
   @override
   final String quantity;
   @override
@@ -314,7 +314,7 @@ class _$_ProductPageSupplements extends _ProductPageSupplements {
 
   @override
   String toString() {
-    return 'ProductPageSupplements(productList: $productList, categoryList: $categoryList, name: $name, categoryId: $categoryId, unit: $unit, unitPrice: $unitPrice, id: $id, barcode: $barcode, quantity: $quantity, unitValue: $unitValue, openingStockItem: $openingStockItem, errors: $errors)';
+    return 'ProductPageSupplements(productList: $productList, categoryList: $categoryList, name: $name, categoryId: $categoryId, unit: $unit, unitPrice: $unitPrice, id: $id, code: $code, quantity: $quantity, unitValue: $unitValue, openingStockItem: $openingStockItem, errors: $errors)';
   }
 
   @override
@@ -332,7 +332,7 @@ class _$_ProductPageSupplements extends _ProductPageSupplements {
             const DeepCollectionEquality().equals(other.unit, unit) &&
             const DeepCollectionEquality().equals(other.unitPrice, unitPrice) &&
             const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.barcode, barcode) &&
+            const DeepCollectionEquality().equals(other.code, code) &&
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
             const DeepCollectionEquality().equals(other.unitValue, unitValue) &&
             const DeepCollectionEquality()
@@ -350,7 +350,7 @@ class _$_ProductPageSupplements extends _ProductPageSupplements {
       const DeepCollectionEquality().hash(unit),
       const DeepCollectionEquality().hash(unitPrice),
       const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(barcode),
+      const DeepCollectionEquality().hash(code),
       const DeepCollectionEquality().hash(quantity),
       const DeepCollectionEquality().hash(unitValue),
       const DeepCollectionEquality().hash(openingStockItem),
@@ -372,7 +372,7 @@ abstract class _ProductPageSupplements extends ProductPageSupplements {
       required String unit,
       required String unitPrice,
       required String id,
-      required String barcode,
+      required String code,
       required String quantity,
       required String unitValue,
       required OpeningStockItem openingStockItem,
@@ -394,7 +394,7 @@ abstract class _ProductPageSupplements extends ProductPageSupplements {
   @override
   String get id;
   @override
-  String get barcode;
+  String get code;
   @override
   String get quantity;
   @override

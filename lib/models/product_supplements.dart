@@ -14,7 +14,7 @@ class ProductPageSupplements with _$ProductPageSupplements {
       required String unit,
       required String unitPrice,
       required String id,
-      required String barcode,
+      required String code,
       required String quantity,
       required String unitValue,
       required OpeningStockItem openingStockItem,
@@ -25,7 +25,7 @@ class ProductPageSupplements with _$ProductPageSupplements {
         errors: {},
         quantity: '',
         unit: '',
-        barcode: '',
+        code: '',
         id: '',
         categoryId: '',
         unitPrice: '',
@@ -43,4 +43,12 @@ class ProductPageSupplements with _$ProductPageSupplements {
 
   bool get hasAddedOpeningStockDetails =>
       unitValue.isNotEmpty || quantity.isNotEmpty;
+
+  Product get product => Product(
+      id: id,
+      categoryId: categoryId,
+      unit: unit,
+      name: name,
+      code: code,
+      unitPrice: double.parse(unitPrice));
 }

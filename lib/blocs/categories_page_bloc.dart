@@ -58,8 +58,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
     if (hasErrors) return;
 
     emit(CategoryPagesState.loading(supp));
-    final category = supp.category.copyWith(id: Utils.getRandomId());
-    await categoriesService.add(category);
+    await categoriesService.add(supp.category);
     emit(CategoryPagesState.success(supp));
   }
 

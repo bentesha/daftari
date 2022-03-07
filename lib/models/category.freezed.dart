@@ -14,6 +14,10 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+Category _$CategoryFromJson(Map<String, dynamic> json) {
+  return _Category.fromJson(json);
+}
+
 /// @nodoc
 class _$CategoryTearOff {
   const _$CategoryTearOff();
@@ -30,6 +34,10 @@ class _$CategoryTearOff {
       name: name,
     );
   }
+
+  Category fromJson(Map<String, Object?> json) {
+    return Category.fromJson(json);
+  }
 }
 
 /// @nodoc
@@ -42,6 +50,7 @@ mixin _$Category {
   String get type => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $CategoryCopyWith<Category> get copyWith =>
       throw _privateConstructorUsedError;
@@ -136,13 +145,17 @@ class __$CategoryCopyWithImpl<$Res> extends _$CategoryCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
-class _$_Category implements _Category {
+@JsonSerializable()
+class _$_Category extends _Category {
   const _$_Category(
       {required this.id,
       required this.description,
       required this.type,
-      required this.name});
+      required this.name})
+      : super._();
+
+  factory _$_Category.fromJson(Map<String, dynamic> json) =>
+      _$$_CategoryFromJson(json);
 
   @override
   final String id;
@@ -183,25 +196,21 @@ class _$_Category implements _Category {
   _$CategoryCopyWith<_Category> get copyWith =>
       __$CategoryCopyWithImpl<_Category>(this, _$identity);
 
-  Category fromJson(Map<String, dynamic> json) {
-    return Category(
-        type: json['type'],
-        id: json['id'],
-        name: json['name'],
-        description: json['description']);
-  }
-
+  @override
   Map<String, dynamic> toJson() {
-    return {'name': name, 'description': description};
+    return _$$_CategoryToJson(this);
   }
 }
 
-abstract class _Category implements Category {
+abstract class _Category extends Category {
   const factory _Category(
       {required String id,
       required String? description,
       required String type,
       required String name}) = _$_Category;
+  const _Category._() : super._();
+
+  factory _Category.fromJson(Map<String, dynamic> json) = _$_Category.fromJson;
 
   @override
   String get id;

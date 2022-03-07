@@ -125,13 +125,12 @@ class RecordsPageBloc extends Cubit<RecordsPageState> with ServicesInitializer {
   _handleProductUpdates() {
     var supp = state.supplements;
     emit(RecordsPageState.loading(supp));
-    final id = productsService.getSelectedProductId;
-    final product = productsService.getById(id);
+    final product = productsService.getCurrent;
     final products = productsService.getList;
     supp = supp.copyWith(
-        productId: id,
+        productId: product.id,
         quantity: '1',
-        sellingPrice: product!.unitPrice.toString(),
+        sellingPrice: product.unitPrice.toString(),
         productList: products);
     emit(RecordsPageState.content(supp));
   }

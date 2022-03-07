@@ -190,9 +190,8 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
   _handleProductUpdates() {
     var supp = state.supplements;
     emit(WriteOffPagesState.loading(supp));
-    final id = productsService.getSelectedProductId;
-    final product = productsService.getById(id);
-    supp = supp.copyWith(product: product!);
+    final product = productsService.getCurrent;
+    supp = supp.copyWith(product: product);
     emit(WriteOffPagesState.content(supp));
   }
 

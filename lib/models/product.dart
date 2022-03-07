@@ -1,54 +1,34 @@
 import '../source.dart';
 
+part 'product.freezed.dart';
 part 'product.g.dart';
 
-@HiveType(typeId: 0)
-class Product {
-  @HiveField(0)
-  final String id;
+@freezed
+class Product with _$Product {
+  const Product._();
 
-  @HiveField(1)
-  final String name;
+  const factory Product(
+      {required String id,
+      required String name,
+      required String unit,
+      required double unitPrice,
+      required String categoryId,
+      required String code}) = _Product;
 
-  @HiveField(2)
-  final String unit;
+  factory Product.empty() => const Product(
+      name: '', id: '', unit: 'ea.', unitPrice: 0, code: '', categoryId: '');
 
-  @HiveField(3)
-  final double unitPrice;
+  factory Product.fromJson(Map<String, dynamic> json) =>
+      _$ProductFromJson(json);
 
-  @HiveField(5)
-  final String categoryId;
-
-  @HiveField(6)
-  final String barcode;
-
-  Product(
-      {required this.id,
-      required this.name,
-      required this.unit,
-      required this.unitPrice,
-      required this.categoryId,
-      required this.barcode});
-
-  factory Product.empty() => Product(
-      name: '', id: '', unit: 'ea.', unitPrice: 0, barcode: '', categoryId: '');
+  @override
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'unit': unit,
+        'unitPrice': unitPrice,
+        'code': code,
+        'categoryId': categoryId
+      };
 
   String get getUnitPrice => Utils.convertToMoneyFormat(unitPrice);
-
-  Product copyWith(
-      {String? id,
-      String? name,
-      String? unit,
-      double? unitPrice,
-      String? categoryId,
-      String? barcode,
-      double? quantity}) {
-    return Product(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        unit: unit ?? this.unit,
-        unitPrice: unitPrice ?? this.unitPrice,
-        barcode: barcode ?? this.barcode,
-        categoryId: categoryId ?? this.categoryId);
-  }
 }

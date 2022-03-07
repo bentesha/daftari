@@ -69,6 +69,8 @@ abstract class $WriteOffSupplementsCopyWith<$Res> {
       Product product,
       Group group,
       String id});
+
+  $ProductCopyWith<$Res> get product;
 }
 
 /// @nodoc
@@ -121,6 +123,13 @@ class _$WriteOffSupplementsCopyWithImpl<$Res>
               as String,
     ));
   }
+
+  @override
+  $ProductCopyWith<$Res> get product {
+    return $ProductCopyWith<$Res>(_value.product, (value) {
+      return _then(_value.copyWith(product: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -138,6 +147,9 @@ abstract class _$WriteOffSupplementsCopyWith<$Res>
       Product product,
       Group group,
       String id});
+
+  @override
+  $ProductCopyWith<$Res> get product;
 }
 
 /// @nodoc

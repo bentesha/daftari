@@ -5,11 +5,6 @@ import 'package:http/http.dart' as http;
 
 class CategoriesService extends NetworkService<Category> {
   static bool _isExpenses = false;
-  static var _selectedId = '';
-  static var _category = Category.empty();
-
-  String get getSelectedCategoryId => _selectedId;
-  Category get getCurrent => _category;
 
   static initType(bool isExpenses) {
     _isExpenses = isExpenses;
@@ -18,12 +13,6 @@ class CategoriesService extends NetworkService<Category> {
 
   ///Gets all categories from the server
   Future<void> init() async => await getAll();
-
-  void updateId(String id) {
-    _selectedId = id;
-    _category = super.getList.where((e) => e.id == id).toList().first;
-    notifyListeners();
-  }
 
   @override
   Future<List<Category>> getAll([bool isRefreshing = false]) async {
@@ -40,7 +29,7 @@ class CategoriesService extends NetworkService<Category> {
     final categories2 = _addCategoriesFrom(result2, 'Products');
 
     categories1.addAll(categories2);
-    super.updateList(categories1);
+    super.updateAttributes(categories1);
     return categories1;
   }
 
@@ -50,12 +39,9 @@ class CategoriesService extends NetworkService<Category> {
     await http.post(Uri.parse(url),
         body: json.encode(item.toJson()), headers: headers);
 
-    _selectedId = item.id;
-    _category = item;
-
     final list = super.getList;
     list.add(item);
-    super.updateList(list);
+    super.updateAttributes(list, currentId: item.id);
     notifyListeners();
   }
 

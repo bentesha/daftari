@@ -131,9 +131,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
           ),
           _buildUnitTextFieldsErrors(errors),
           BarcodeField(
-              error: supp.errors['barcode'],
-              text: supp.barcode,
-              onChanged: (code) => bloc.updateAttributes(barcode: code)),
+              error: supp.errors['code'],
+              text: supp.code,
+              onChanged: (code) => bloc.updateAttributes(code: code)),
         ],
       ),
     );

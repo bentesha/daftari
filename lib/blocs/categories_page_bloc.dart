@@ -17,10 +17,10 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   void init([CategoryType? type, Category? category]) async {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
-    if (type?.name == CategoryType.expenses().name) {
-      CategoriesService.initType(true);
-      log('is of type expenses');
-    }
+
+    if (type?.name == 'Expenses') CategoriesService.initType(true);
+    if (type?.name == 'Products') CategoriesService.initType(false);
+
     await initServices(
         productsService: productsService, categoriesService: categoriesService);
     var categories = categoriesService.getList;
@@ -37,6 +37,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   }
 
   void updateName(String name) => _updateAttributes(name: name);
+
   void updateDescription(String desc) => _updateAttributes(name: desc);
 
   void _updateAttributes({String? name, String? description}) {

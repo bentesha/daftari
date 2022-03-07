@@ -27,7 +27,7 @@ class _ProductsPageState extends State<ProductsPage> {
     return Scaffold(
       body: _buildBody(),
       appBar: const PageAppBar(title: 'Products'),
-      floatingActionButton: const AddButton(nextPage: ProductEditPage()),
+      floatingActionButton: _buildFloatingButton(),
     );
   }
 
@@ -62,6 +62,17 @@ class _ProductsPageState extends State<ProductsPage> {
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
     );
+  }
+
+  _buildFloatingButton() {
+    return BlocBuilder<ProductPageBloc, ProductPageState>(
+        bloc: bloc,
+        builder: (_, state) {
+          final isLoading =
+              state.maybeWhen(loading: (_) => true, orElse: () => false);
+          if (isLoading) return Container();
+          return const AddButton(nextPage: ProductEditPage());
+        });
   }
 
   static const emptyItemsDesc =

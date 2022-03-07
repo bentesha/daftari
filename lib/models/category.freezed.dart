@@ -192,7 +192,7 @@ class _$_Category implements _Category {
   }
 
   Map<String, dynamic> toJson() {
-    return {'name': name, 'description': description.toString()};
+    return {'name': name, 'description': description};
   }
 }
 

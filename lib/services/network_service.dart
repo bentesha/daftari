@@ -4,31 +4,18 @@ import '../source.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkService<T> extends ChangeNotifier {
-  static const root = 'http://cloud.mobicap.co.tz:8080/';
+  var root = 'http://cloud.mobicap.co.tz:8080/';
   final headers = {"Content-Type": "application/json"};
 
-  String get _path => T == Category ? 'category' : '';
-
+  var _list = [];
+  String get _path => '';
   String get _url => root + _path + '/';
-
-  final _list = [];
   List<T> get getList => _list.whereType<T>().toList();
 
-  Future<List<T>> getAll(
-      [bool isRefreshing = false, bool isExpenses = false]) async {
-    final url = T == Category
-        ? isExpenses
-            ? root + 'expenseCategory/'
-            : root + 'category/'
-        : _url;
-
-    final response = await http.get(Uri.parse(url));
-
+  Future<List<T>> getAll([bool isRefreshing = false]) async {
+    final response = await http.get(Uri.parse(_url));
     log(response.body.toString());
-
     final results = json.decode(response.body);
-
-
     if (results.isEmpty) return [];
 
     for (var item in results) {
@@ -40,6 +27,8 @@ class NetworkService<T> extends ChangeNotifier {
 
   ///updates the items list so that getList methods works for listeners
   void refresh() => getAll(true);
+
+  void updateList(List<T> list) => _list = list;
 
   T? getById(String id) {
     final items = _list.where((e) => e.id == id).toList();
@@ -55,15 +44,18 @@ class NetworkService<T> extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> edit(var item) async {
-    // await _box.put(item.id, item);
+  Future<void> edit(var item, [String? url]) async {
+    final response = await http.put(Uri.parse((url ?? _url) + '/${item.id}'),
+        body: json.encode(item.toJson()), headers: headers);
+    log(response.body);
     final index = _list.indexWhere((e) => e.id == item.id);
     _list[index] = item;
     notifyListeners();
   }
 
-  Future<void> delete(String id) async {
-    await http.delete(Uri.parse(_url + '/$id'));
+  Future<void> delete(String id, [String? url]) async {
+    final response = await http.delete(Uri.parse((url ?? _url) + '/$id'));
+    log(response.body);
     final index = _list.indexWhere((e) => e.id == id);
     _list.removeAt(index);
     notifyListeners();

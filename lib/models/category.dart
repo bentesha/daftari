@@ -20,5 +20,5 @@ class Category with _$Category {
       name: json['name']);
 
   Map<String, dynamic> toJson() =>
-      {'name': name, 'description': description.toString()};
+      {'name': name, 'description': description};
 }

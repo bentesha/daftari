@@ -29,7 +29,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
         title: '${!isEditing ? 'New' : 'Edit'} Category',
         actionCallbacks: isEditing ? [bloc.edit, bloc.delete] : [bloc.save],
         actionIcons: isEditing
-            ? [Icons.edit_outlined, Icons.delete_outline]
+            ? [Icons.check, Icons.delete_outline]
             : [Icons.check],
       ),
       body: _buildBody(),

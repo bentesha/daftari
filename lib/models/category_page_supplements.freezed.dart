@@ -57,6 +57,8 @@ abstract class $CategoryPageSupplementsCopyWith<$Res> {
       List<Category> categoryList,
       List<Product> productList,
       Map<String, String?> errors});
+
+  $CategoryCopyWith<$Res> get category;
 }
 
 /// @nodoc
@@ -94,6 +96,13 @@ class _$CategoryPageSupplementsCopyWithImpl<$Res>
               as Map<String, String?>,
     ));
   }
+
+  @override
+  $CategoryCopyWith<$Res> get category {
+    return $CategoryCopyWith<$Res>(_value.category, (value) {
+      return _then(_value.copyWith(category: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -108,6 +117,9 @@ abstract class _$CategoryPageSupplementsCopyWith<$Res>
       List<Category> categoryList,
       List<Product> productList,
       Map<String, String?> errors});
+
+  @override
+  $CategoryCopyWith<$Res> get category;
 }
 
 /// @nodoc

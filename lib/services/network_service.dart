@@ -14,9 +14,20 @@ class NetworkService<T> extends ChangeNotifier {
   final _list = [];
   List<T> get getList => _list.whereType<T>().toList();
 
-  Future<List<T>> getAll([bool isRefreshing = false]) async {
-    final response = await http.get(Uri.parse(_url));
+  Future<List<T>> getAll(
+      [bool isRefreshing = false, bool isExpenses = false]) async {
+    final url = T == Category
+        ? isExpenses
+            ? root + 'expenseCategory/'
+            : root + 'category/'
+        : _url;
+
+    final response = await http.get(Uri.parse(url));
+
+    log(response.body.toString());
+
     final results = json.decode(response.body);
+
 
     if (results.isEmpty) return [];
 

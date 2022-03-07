@@ -17,6 +17,10 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   void init([CategoryType? type, Category? category]) async {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
+    if (type?.name == CategoryType.expenses().name) {
+      CategoriesService.initType(true);
+      log('is of type expenses');
+    }
     await initServices(
         productsService: productsService, categoriesService: categoriesService);
     var categories = categoriesService.getList;
@@ -38,8 +42,9 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   void _updateAttributes({String? name, String? description}) {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
-    final category =
-        supp.category.copyWith(name: name, description: description);
+    var category = supp.category;
+    category = category.copyWith(
+        name: name ?? category.name, description: description);
     supp = supp.copyWith(category: category);
     emit(CategoryPagesState.content(supp));
   }
@@ -53,7 +58,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
 
     emit(CategoryPagesState.loading(supp));
     final category = supp.category.copyWith(id: Utils.getRandomId());
-    await categoriesService.addCategory(category);
+    await categoriesService.add(category);
     emit(CategoryPagesState.success(supp));
   }
 
@@ -82,8 +87,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
 
     emit(CategoryPagesState.loading(supp));
     errors['name'] = InputValidation.validateText(supp.category.name, 'Name');
-    errors['type'] =
-        InputValidation.validateText(supp.category.type ?? '', 'Type');
+    errors['type'] = InputValidation.validateText(supp.category.type, 'Type');
 
     supp = supp.copyWith(errors: errors);
     emit(CategoryPagesState.content(supp));

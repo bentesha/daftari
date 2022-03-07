@@ -1,39 +1,24 @@
 import '../source.dart';
 
-part 'category.g.dart';
+part 'category.freezed.dart';
 
-@HiveType(typeId: 3)
-class Category {
-  @HiveField(0)
-  final String id;
+@freezed
+class Category with _$Category {
+  const factory Category(
+      {required String id,
+      required String? description,
+      required String type,
+      required String name}) = _Category;
 
-  @HiveField(1)
-  final String name;
+  factory Category.empty() =>
+      const Category(id: '', description: '', name: '', type: '');
 
-  @HiveField(2)
-  final String? description;
-
-  @HiveField(3)
-  final String? type;
-
-  Category({required this.id, this.description, this.type, required this.name});
-
-  factory Category.empty() => Category(id: '', description: '', name: '');
-
-  Category copyWith(
-      {String? name, String? description, String? id, String? type}) {
-    return Category(
-        id: id ?? this.id,
-        description: description,
-        name: name ?? this.name,
-        type: type ?? this.type);
-  }
-
-  Map<String, String?> toJson() => {'name': name, 'description': description};
-
-  factory Category.fromJson(var json) => Category(
-      id: json['id']!,
-      name: json['name']!,
+  factory Category.fromJson(Map<String, dynamic> json) => Category(
+      id: json['id'],
       description: json['description'],
-      type: CategoryType.products().name);
+      type: json['type'],
+      name: json['name']);
+
+  Map<String, dynamic> toJson() =>
+      {'name': name, 'description': description.toString()};
 }

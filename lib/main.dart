@@ -8,7 +8,6 @@ void main() async {
 
   Hive
     ..init(appDirectory.path)
-    ..registerAdapter(CategoryAdapter())
     ..registerAdapter(ProductAdapter())
     ..registerAdapter(RecordAdapter())
     ..registerAdapter(ExpenseAdapter())
@@ -19,7 +18,6 @@ void main() async {
   await Hive.openBox(Constants.kProductsBox);
   await Hive.openBox(Constants.kRecordsBox);
   await Hive.openBox(Constants.kGroupsBox);
-  await Hive.openBox(Constants.kCategoriesBox);
   await Hive.openBox(Constants.kExpenseBox);
   await Hive.openBox(Constants.kWriteOffsBox);
   await Hive.openBox(Constants.kOpeningStockItemsBox);

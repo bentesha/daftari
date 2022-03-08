@@ -16,12 +16,6 @@ class Category with _$Category {
   factory Category.empty() =>
       const Category(id: '', description: '', name: '', type: '');
 
-  /*  factory Category.fromJson(Map<String, dynamic> json) => Category(
-      id: json['id'],
-      description: json['description'],
-      type: json['type'],
-      name: json['name']); */
-
   factory Category.fromJson(Map<String, dynamic> json) =>
       _$CategoryFromJson(json);
 

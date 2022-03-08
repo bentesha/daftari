@@ -17,3 +17,22 @@ class TypesService<T> extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+class CategoryTypesService extends TypesService<CategoryType> {
+  CategoryTypesService() : super(kCategoryTypesList);
+
+  static final kCategoryTypesList = <CategoryType>[
+    CategoryType.expenses(),
+    CategoryType.products()
+  ];
+}
+
+class WriteOffsTypesService extends TypesService<WriteOffType> {
+  WriteOffsTypesService() : super(kWriteOffTypesList);
+
+  static final kWriteOffTypesList = <WriteOffType>[
+    WriteOffType.spoilage(),
+    WriteOffType.expiry(),
+    WriteOffType.theft()
+  ];
+}

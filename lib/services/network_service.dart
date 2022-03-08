@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import '../source.dart';
 import 'package:http/http.dart' as http;
 
@@ -29,8 +28,8 @@ class NetworkService<T> extends ChangeNotifier {
     return _list.whereType<T>().toList();
   }
 
-  ///updates the items list so that getList methods works for listeners
-  void refresh() => getAll(true);
+/*   ///updates the items list so that getList methods works for listeners
+  void refresh() => getAll(true); */
 
   void updateAttributes(List<T> list, {String? currentId}) {
     _list = list;

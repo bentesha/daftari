@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'group_pages_state.dart';
+part of 'sales_documents_pages_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,22 +15,22 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$GroupPagesStateTearOff {
-  const _$GroupPagesStateTearOff();
+class _$SalesDocumentsPagesStateTearOff {
+  const _$SalesDocumentsPagesStateTearOff();
 
-  _Loading loading(GroupSupplements supplements) {
+  _Loading loading(DocumentSupplements supplements) {
     return _Loading(
       supplements,
     );
   }
 
-  _Content content(GroupSupplements supplements) {
+  _Content content(DocumentSupplements supplements) {
     return _Content(
       supplements,
     );
   }
 
-  _Success success(GroupSupplements supplements) {
+  _Success success(DocumentSupplements supplements) {
     return _Success(
       supplements,
     );
@@ -38,31 +38,31 @@ class _$GroupPagesStateTearOff {
 }
 
 /// @nodoc
-const $GroupPagesState = _$GroupPagesStateTearOff();
+const $SalesDocumentsPagesState = _$SalesDocumentsPagesStateTearOff();
 
 /// @nodoc
-mixin _$GroupPagesState {
-  GroupSupplements get supplements => throw _privateConstructorUsedError;
+mixin _$SalesDocumentsPagesState {
+  DocumentSupplements get supplements => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(GroupSupplements supplements) loading,
-    required TResult Function(GroupSupplements supplements) content,
-    required TResult Function(GroupSupplements supplements) success,
+    required TResult Function(DocumentSupplements supplements) loading,
+    required TResult Function(DocumentSupplements supplements) content,
+    required TResult Function(DocumentSupplements supplements) success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(GroupSupplements supplements)? loading,
-    TResult Function(GroupSupplements supplements)? content,
-    TResult Function(GroupSupplements supplements)? success,
+    TResult Function(DocumentSupplements supplements)? loading,
+    TResult Function(DocumentSupplements supplements)? content,
+    TResult Function(DocumentSupplements supplements)? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(GroupSupplements supplements)? loading,
-    TResult Function(GroupSupplements supplements)? content,
-    TResult Function(GroupSupplements supplements)? success,
+    TResult Function(DocumentSupplements supplements)? loading,
+    TResult Function(DocumentSupplements supplements)? content,
+    TResult Function(DocumentSupplements supplements)? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -90,28 +90,28 @@ mixin _$GroupPagesState {
       throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $GroupPagesStateCopyWith<GroupPagesState> get copyWith =>
+  $SalesDocumentsPagesStateCopyWith<SalesDocumentsPagesState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $GroupPagesStateCopyWith<$Res> {
-  factory $GroupPagesStateCopyWith(
-          GroupPagesState value, $Res Function(GroupPagesState) then) =
-      _$GroupPagesStateCopyWithImpl<$Res>;
-  $Res call({GroupSupplements supplements});
+abstract class $SalesDocumentsPagesStateCopyWith<$Res> {
+  factory $SalesDocumentsPagesStateCopyWith(SalesDocumentsPagesState value,
+          $Res Function(SalesDocumentsPagesState) then) =
+      _$SalesDocumentsPagesStateCopyWithImpl<$Res>;
+  $Res call({DocumentSupplements supplements});
 
-  $GroupSupplementsCopyWith<$Res> get supplements;
+  $DocumentSupplementsCopyWith<$Res> get supplements;
 }
 
 /// @nodoc
-class _$GroupPagesStateCopyWithImpl<$Res>
-    implements $GroupPagesStateCopyWith<$Res> {
-  _$GroupPagesStateCopyWithImpl(this._value, this._then);
+class _$SalesDocumentsPagesStateCopyWithImpl<$Res>
+    implements $SalesDocumentsPagesStateCopyWith<$Res> {
+  _$SalesDocumentsPagesStateCopyWithImpl(this._value, this._then);
 
-  final GroupPagesState _value;
+  final SalesDocumentsPagesState _value;
   // ignore: unused_field
-  final $Res Function(GroupPagesState) _then;
+  final $Res Function(SalesDocumentsPagesState) _then;
 
   @override
   $Res call({
@@ -121,13 +121,13 @@ class _$GroupPagesStateCopyWithImpl<$Res>
       supplements: supplements == freezed
           ? _value.supplements
           : supplements // ignore: cast_nullable_to_non_nullable
-              as GroupSupplements,
+              as DocumentSupplements,
     ));
   }
 
   @override
-  $GroupSupplementsCopyWith<$Res> get supplements {
-    return $GroupSupplementsCopyWith<$Res>(_value.supplements, (value) {
+  $DocumentSupplementsCopyWith<$Res> get supplements {
+    return $DocumentSupplementsCopyWith<$Res>(_value.supplements, (value) {
       return _then(_value.copyWith(supplements: value));
     });
   }
@@ -135,18 +135,19 @@ class _$GroupPagesStateCopyWithImpl<$Res>
 
 /// @nodoc
 abstract class _$LoadingCopyWith<$Res>
-    implements $GroupPagesStateCopyWith<$Res> {
+    implements $SalesDocumentsPagesStateCopyWith<$Res> {
   factory _$LoadingCopyWith(_Loading value, $Res Function(_Loading) then) =
       __$LoadingCopyWithImpl<$Res>;
   @override
-  $Res call({GroupSupplements supplements});
+  $Res call({DocumentSupplements supplements});
 
   @override
-  $GroupSupplementsCopyWith<$Res> get supplements;
+  $DocumentSupplementsCopyWith<$Res> get supplements;
 }
 
 /// @nodoc
-class __$LoadingCopyWithImpl<$Res> extends _$GroupPagesStateCopyWithImpl<$Res>
+class __$LoadingCopyWithImpl<$Res>
+    extends _$SalesDocumentsPagesStateCopyWithImpl<$Res>
     implements _$LoadingCopyWith<$Res> {
   __$LoadingCopyWithImpl(_Loading _value, $Res Function(_Loading) _then)
       : super(_value, (v) => _then(v as _Loading));
@@ -162,7 +163,7 @@ class __$LoadingCopyWithImpl<$Res> extends _$GroupPagesStateCopyWithImpl<$Res>
       supplements == freezed
           ? _value.supplements
           : supplements // ignore: cast_nullable_to_non_nullable
-              as GroupSupplements,
+              as DocumentSupplements,
     ));
   }
 }
@@ -173,11 +174,11 @@ class _$_Loading implements _Loading {
   const _$_Loading(this.supplements);
 
   @override
-  final GroupSupplements supplements;
+  final DocumentSupplements supplements;
 
   @override
   String toString() {
-    return 'GroupPagesState.loading(supplements: $supplements)';
+    return 'SalesDocumentsPagesState.loading(supplements: $supplements)';
   }
 
   @override
@@ -201,9 +202,9 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(GroupSupplements supplements) loading,
-    required TResult Function(GroupSupplements supplements) content,
-    required TResult Function(GroupSupplements supplements) success,
+    required TResult Function(DocumentSupplements supplements) loading,
+    required TResult Function(DocumentSupplements supplements) content,
+    required TResult Function(DocumentSupplements supplements) success,
   }) {
     return loading(supplements);
   }
@@ -211,9 +212,9 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(GroupSupplements supplements)? loading,
-    TResult Function(GroupSupplements supplements)? content,
-    TResult Function(GroupSupplements supplements)? success,
+    TResult Function(DocumentSupplements supplements)? loading,
+    TResult Function(DocumentSupplements supplements)? content,
+    TResult Function(DocumentSupplements supplements)? success,
   }) {
     return loading?.call(supplements);
   }
@@ -221,9 +222,9 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(GroupSupplements supplements)? loading,
-    TResult Function(GroupSupplements supplements)? content,
-    TResult Function(GroupSupplements supplements)? success,
+    TResult Function(DocumentSupplements supplements)? loading,
+    TResult Function(DocumentSupplements supplements)? content,
+    TResult Function(DocumentSupplements supplements)? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -267,11 +268,11 @@ class _$_Loading implements _Loading {
   }
 }
 
-abstract class _Loading implements GroupPagesState {
-  const factory _Loading(GroupSupplements supplements) = _$_Loading;
+abstract class _Loading implements SalesDocumentsPagesState {
+  const factory _Loading(DocumentSupplements supplements) = _$_Loading;
 
   @override
-  GroupSupplements get supplements;
+  DocumentSupplements get supplements;
   @override
   @JsonKey(ignore: true)
   _$LoadingCopyWith<_Loading> get copyWith =>
@@ -280,18 +281,19 @@ abstract class _Loading implements GroupPagesState {
 
 /// @nodoc
 abstract class _$ContentCopyWith<$Res>
-    implements $GroupPagesStateCopyWith<$Res> {
+    implements $SalesDocumentsPagesStateCopyWith<$Res> {
   factory _$ContentCopyWith(_Content value, $Res Function(_Content) then) =
       __$ContentCopyWithImpl<$Res>;
   @override
-  $Res call({GroupSupplements supplements});
+  $Res call({DocumentSupplements supplements});
 
   @override
-  $GroupSupplementsCopyWith<$Res> get supplements;
+  $DocumentSupplementsCopyWith<$Res> get supplements;
 }
 
 /// @nodoc
-class __$ContentCopyWithImpl<$Res> extends _$GroupPagesStateCopyWithImpl<$Res>
+class __$ContentCopyWithImpl<$Res>
+    extends _$SalesDocumentsPagesStateCopyWithImpl<$Res>
     implements _$ContentCopyWith<$Res> {
   __$ContentCopyWithImpl(_Content _value, $Res Function(_Content) _then)
       : super(_value, (v) => _then(v as _Content));
@@ -307,7 +309,7 @@ class __$ContentCopyWithImpl<$Res> extends _$GroupPagesStateCopyWithImpl<$Res>
       supplements == freezed
           ? _value.supplements
           : supplements // ignore: cast_nullable_to_non_nullable
-              as GroupSupplements,
+              as DocumentSupplements,
     ));
   }
 }
@@ -318,11 +320,11 @@ class _$_Content implements _Content {
   const _$_Content(this.supplements);
 
   @override
-  final GroupSupplements supplements;
+  final DocumentSupplements supplements;
 
   @override
   String toString() {
-    return 'GroupPagesState.content(supplements: $supplements)';
+    return 'SalesDocumentsPagesState.content(supplements: $supplements)';
   }
 
   @override
@@ -346,9 +348,9 @@ class _$_Content implements _Content {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(GroupSupplements supplements) loading,
-    required TResult Function(GroupSupplements supplements) content,
-    required TResult Function(GroupSupplements supplements) success,
+    required TResult Function(DocumentSupplements supplements) loading,
+    required TResult Function(DocumentSupplements supplements) content,
+    required TResult Function(DocumentSupplements supplements) success,
   }) {
     return content(supplements);
   }
@@ -356,9 +358,9 @@ class _$_Content implements _Content {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(GroupSupplements supplements)? loading,
-    TResult Function(GroupSupplements supplements)? content,
-    TResult Function(GroupSupplements supplements)? success,
+    TResult Function(DocumentSupplements supplements)? loading,
+    TResult Function(DocumentSupplements supplements)? content,
+    TResult Function(DocumentSupplements supplements)? success,
   }) {
     return content?.call(supplements);
   }
@@ -366,9 +368,9 @@ class _$_Content implements _Content {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(GroupSupplements supplements)? loading,
-    TResult Function(GroupSupplements supplements)? content,
-    TResult Function(GroupSupplements supplements)? success,
+    TResult Function(DocumentSupplements supplements)? loading,
+    TResult Function(DocumentSupplements supplements)? content,
+    TResult Function(DocumentSupplements supplements)? success,
     required TResult orElse(),
   }) {
     if (content != null) {
@@ -412,11 +414,11 @@ class _$_Content implements _Content {
   }
 }
 
-abstract class _Content implements GroupPagesState {
-  const factory _Content(GroupSupplements supplements) = _$_Content;
+abstract class _Content implements SalesDocumentsPagesState {
+  const factory _Content(DocumentSupplements supplements) = _$_Content;
 
   @override
-  GroupSupplements get supplements;
+  DocumentSupplements get supplements;
   @override
   @JsonKey(ignore: true)
   _$ContentCopyWith<_Content> get copyWith =>
@@ -425,18 +427,19 @@ abstract class _Content implements GroupPagesState {
 
 /// @nodoc
 abstract class _$SuccessCopyWith<$Res>
-    implements $GroupPagesStateCopyWith<$Res> {
+    implements $SalesDocumentsPagesStateCopyWith<$Res> {
   factory _$SuccessCopyWith(_Success value, $Res Function(_Success) then) =
       __$SuccessCopyWithImpl<$Res>;
   @override
-  $Res call({GroupSupplements supplements});
+  $Res call({DocumentSupplements supplements});
 
   @override
-  $GroupSupplementsCopyWith<$Res> get supplements;
+  $DocumentSupplementsCopyWith<$Res> get supplements;
 }
 
 /// @nodoc
-class __$SuccessCopyWithImpl<$Res> extends _$GroupPagesStateCopyWithImpl<$Res>
+class __$SuccessCopyWithImpl<$Res>
+    extends _$SalesDocumentsPagesStateCopyWithImpl<$Res>
     implements _$SuccessCopyWith<$Res> {
   __$SuccessCopyWithImpl(_Success _value, $Res Function(_Success) _then)
       : super(_value, (v) => _then(v as _Success));
@@ -452,7 +455,7 @@ class __$SuccessCopyWithImpl<$Res> extends _$GroupPagesStateCopyWithImpl<$Res>
       supplements == freezed
           ? _value.supplements
           : supplements // ignore: cast_nullable_to_non_nullable
-              as GroupSupplements,
+              as DocumentSupplements,
     ));
   }
 }
@@ -463,11 +466,11 @@ class _$_Success implements _Success {
   const _$_Success(this.supplements);
 
   @override
-  final GroupSupplements supplements;
+  final DocumentSupplements supplements;
 
   @override
   String toString() {
-    return 'GroupPagesState.success(supplements: $supplements)';
+    return 'SalesDocumentsPagesState.success(supplements: $supplements)';
   }
 
   @override
@@ -491,9 +494,9 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(GroupSupplements supplements) loading,
-    required TResult Function(GroupSupplements supplements) content,
-    required TResult Function(GroupSupplements supplements) success,
+    required TResult Function(DocumentSupplements supplements) loading,
+    required TResult Function(DocumentSupplements supplements) content,
+    required TResult Function(DocumentSupplements supplements) success,
   }) {
     return success(supplements);
   }
@@ -501,9 +504,9 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(GroupSupplements supplements)? loading,
-    TResult Function(GroupSupplements supplements)? content,
-    TResult Function(GroupSupplements supplements)? success,
+    TResult Function(DocumentSupplements supplements)? loading,
+    TResult Function(DocumentSupplements supplements)? content,
+    TResult Function(DocumentSupplements supplements)? success,
   }) {
     return success?.call(supplements);
   }
@@ -511,9 +514,9 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(GroupSupplements supplements)? loading,
-    TResult Function(GroupSupplements supplements)? content,
-    TResult Function(GroupSupplements supplements)? success,
+    TResult Function(DocumentSupplements supplements)? loading,
+    TResult Function(DocumentSupplements supplements)? content,
+    TResult Function(DocumentSupplements supplements)? success,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -557,11 +560,11 @@ class _$_Success implements _Success {
   }
 }
 
-abstract class _Success implements GroupPagesState {
-  const factory _Success(GroupSupplements supplements) = _$_Success;
+abstract class _Success implements SalesDocumentsPagesState {
+  const factory _Success(DocumentSupplements supplements) = _$_Success;
 
   @override
-  GroupSupplements get supplements;
+  DocumentSupplements get supplements;
   @override
   @JsonKey(ignore: true)
   _$SuccessCopyWith<_Success> get copyWith =>

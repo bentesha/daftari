@@ -1,3 +1,5 @@
+import 'package:inventory_management/models/document_form.dart';
+
 import '../source.dart';
 
 part 'expense_supplements.freezed.dart';
@@ -7,24 +9,24 @@ class ExpenseSupplements with _$ExpenseSupplements {
   const factory ExpenseSupplements(
       {required List<Expense> expenses,
       required List<Category> categories,
-      required List<Group> groups,
+      required List<Document> groups,
       required Map<String, String?> errors,
       required String amount,
       required DateTime date,
       String? notes,
       required String id,
-      required Group group,
+      required Document group,
       required Category category}) = _ExpenseSupplements;
 
   factory ExpenseSupplements.empty() => ExpenseSupplements(
       expenses: <Expense>[],
       categories: <Category>[],
-      groups: <Group>[],
+      groups: <Document>[],
       errors: <String, String?>{},
       date: DateTime.now(),
       notes: null,
       category: Category.empty(),
-      group: Group.empty().copyWith(type: GroupType.expenses),
+      group: Document.expenses(DocumentForm.empty()),
       id: '',
       amount: '');
 }

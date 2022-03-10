@@ -4,7 +4,7 @@ import '../source.dart';
 class GroupExpensesPage extends StatefulWidget {
   const GroupExpensesPage({this.group, Key? key}) : super(key: key);
 
-  final Group? group;
+  final Document? group;
 
   @override
   State<GroupExpensesPage> createState() => _GroupExpensesPageState();
@@ -23,7 +23,7 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
     final groupsService = getService<GroupsService>(context);
     bloc = ExpensePagesBloc(expensesService, categoriesService, groupsService);
     _initAppBarAction();
-    bloc.init(Pages.group_expenses_page, null, widget.group?.id);
+    bloc.init(Pages.group_expenses_page, null, widget.group?.form.id);
     super.initState();
   }
 
@@ -49,11 +49,13 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
   }
 
   Widget _buildContent(ExpenseSupplements supp) {
+    final id = supp.group.form.id;
+
     return Scaffold(
-      appBar: _buildAppBar(supp.group.id),
+      appBar: _buildAppBar(id),
       body: _buildBody(supp),
-      floatingActionButton: _buildAddButton(supp.group.id),
-      bottomNavigationBar: _buildBottomNavBar(supp.group.id),
+      floatingActionButton: _buildAddButton(id),
+      bottomNavigationBar: _buildBottomNavBar(id),
     );
   }
 
@@ -85,11 +87,11 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
             title: 'Date',
             onDateSelected: bloc.updateGroupDate,
             isEditable: true,
-            date: supp.group.date),
+            date: supp.group.form.date),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
         AppTextField(
             error: supp.errors['title'],
-            text: supp.group.title,
+            text: supp.group.form.title,
             onChanged: bloc.updateGroupTitle,
             hintText: '',
             keyboardType: TextInputType.name,
@@ -102,7 +104,7 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
 
   _buildItems(ExpenseSupplements supp) {
     final expenses = supp.expenses;
-    if (supp.group.id.isEmpty) return _buildEmptyState(emptyGroupMessage);
+    if (supp.group.form.id.isEmpty) return _buildEmptyState(emptyGroupMessage);
     if (expenses.isEmpty) return _buildEmptyState(emptyExpensesMessage);
 
     return Column(

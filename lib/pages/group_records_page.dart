@@ -4,7 +4,7 @@ import '../source.dart';
 class GroupRecordsPage extends StatefulWidget {
   const GroupRecordsPage(this.group, {Key? key}) : super(key: key);
 
-  final Group group;
+  final Document group;
 
   @override
   State<GroupRecordsPage> createState() => _GroupGroupPagesState();
@@ -55,10 +55,10 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
     );
   }
 
-  void _navigateToGroupEditPage() => push(GroupEditPage(group: widget.group));
+  void _navigateToGroupEditPage() => push(DocumentEditPage(group: widget.group));
 
   Widget _buildRecords(GroupSupplements supp) {
-    final recordList = supp.getSpecificGroupRecords;
+    final recordList =/*  supp.getSpecificGroupRecords */ [];
 
     return supp.recordList.isEmpty
         ? const EmptyStateWidget(message: emptyRecordMessage)

@@ -1,11 +1,11 @@
 import '../source.dart';
 
-part 'records_supplements.freezed.dart';
+part 'sales_supplements.freezed.dart';
 
 @freezed
-class RecordsSupplements with _$RecordsSupplements {
-  const factory RecordsSupplements({
-    required List<Record> recordList,
+class SalesSupplements with _$SalesSupplements {
+  const factory SalesSupplements({
+    required List<Sales> recordList,
     required List<Product> productList,
     required Map<String, String?> errors,
     required String quantity,
@@ -14,9 +14,9 @@ class RecordsSupplements with _$RecordsSupplements {
     required String sellingPrice,
     required String productId,
     required String groupId,
-  }) = _RecordsSupplements;
+  }) = _SalesSupplements;
 
-  factory RecordsSupplements.empty() => RecordsSupplements(
+  factory SalesSupplements.empty() => SalesSupplements(
       recordList: [],
       productList: [],
       errors: <String, String?>{},

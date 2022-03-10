@@ -19,12 +19,12 @@ class _$WriteOffSupplementsTearOff {
   const _$WriteOffSupplementsTearOff();
 
   _WriteOffSupplements call(
-      {required List<Group> groups,
+      {required List<Document> groups,
       required List<WriteOff> writeOffs,
       required Map<String, String?> errors,
       required String quantity,
       required Product product,
-      required Group group,
+      required Document group,
       required String id}) {
     return _WriteOffSupplements(
       groups: groups,
@@ -43,12 +43,12 @@ const $WriteOffSupplements = _$WriteOffSupplementsTearOff();
 
 /// @nodoc
 mixin _$WriteOffSupplements {
-  List<Group> get groups => throw _privateConstructorUsedError;
+  List<Document> get groups => throw _privateConstructorUsedError;
   List<WriteOff> get writeOffs => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
   String get quantity => throw _privateConstructorUsedError;
   Product get product => throw _privateConstructorUsedError;
-  Group get group => throw _privateConstructorUsedError;
+  Document get group => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -62,15 +62,16 @@ abstract class $WriteOffSupplementsCopyWith<$Res> {
           WriteOffSupplements value, $Res Function(WriteOffSupplements) then) =
       _$WriteOffSupplementsCopyWithImpl<$Res>;
   $Res call(
-      {List<Group> groups,
+      {List<Document> groups,
       List<WriteOff> writeOffs,
       Map<String, String?> errors,
       String quantity,
       Product product,
-      Group group,
+      Document group,
       String id});
 
   $ProductCopyWith<$Res> get product;
+  $DocumentCopyWith<$Res> get group;
 }
 
 /// @nodoc
@@ -96,7 +97,7 @@ class _$WriteOffSupplementsCopyWithImpl<$Res>
       groups: groups == freezed
           ? _value.groups
           : groups // ignore: cast_nullable_to_non_nullable
-              as List<Group>,
+              as List<Document>,
       writeOffs: writeOffs == freezed
           ? _value.writeOffs
           : writeOffs // ignore: cast_nullable_to_non_nullable
@@ -116,7 +117,7 @@ class _$WriteOffSupplementsCopyWithImpl<$Res>
       group: group == freezed
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
-              as Group,
+              as Document,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -130,6 +131,13 @@ class _$WriteOffSupplementsCopyWithImpl<$Res>
       return _then(_value.copyWith(product: value));
     });
   }
+
+  @override
+  $DocumentCopyWith<$Res> get group {
+    return $DocumentCopyWith<$Res>(_value.group, (value) {
+      return _then(_value.copyWith(group: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -140,16 +148,18 @@ abstract class _$WriteOffSupplementsCopyWith<$Res>
       __$WriteOffSupplementsCopyWithImpl<$Res>;
   @override
   $Res call(
-      {List<Group> groups,
+      {List<Document> groups,
       List<WriteOff> writeOffs,
       Map<String, String?> errors,
       String quantity,
       Product product,
-      Group group,
+      Document group,
       String id});
 
   @override
   $ProductCopyWith<$Res> get product;
+  @override
+  $DocumentCopyWith<$Res> get group;
 }
 
 /// @nodoc
@@ -177,7 +187,7 @@ class __$WriteOffSupplementsCopyWithImpl<$Res>
       groups: groups == freezed
           ? _value.groups
           : groups // ignore: cast_nullable_to_non_nullable
-              as List<Group>,
+              as List<Document>,
       writeOffs: writeOffs == freezed
           ? _value.writeOffs
           : writeOffs // ignore: cast_nullable_to_non_nullable
@@ -197,7 +207,7 @@ class __$WriteOffSupplementsCopyWithImpl<$Res>
       group: group == freezed
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
-              as Group,
+              as Document,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -219,7 +229,7 @@ class _$_WriteOffSupplements implements _WriteOffSupplements {
       required this.id});
 
   @override
-  final List<Group> groups;
+  final List<Document> groups;
   @override
   final List<WriteOff> writeOffs;
   @override
@@ -229,7 +239,7 @@ class _$_WriteOffSupplements implements _WriteOffSupplements {
   @override
   final Product product;
   @override
-  final Group group;
+  final Document group;
   @override
   final String id;
 
@@ -272,16 +282,16 @@ class _$_WriteOffSupplements implements _WriteOffSupplements {
 
 abstract class _WriteOffSupplements implements WriteOffSupplements {
   const factory _WriteOffSupplements(
-      {required List<Group> groups,
+      {required List<Document> groups,
       required List<WriteOff> writeOffs,
       required Map<String, String?> errors,
       required String quantity,
       required Product product,
-      required Group group,
+      required Document group,
       required String id}) = _$_WriteOffSupplements;
 
   @override
-  List<Group> get groups;
+  List<Document> get groups;
   @override
   List<WriteOff> get writeOffs;
   @override
@@ -291,7 +301,7 @@ abstract class _WriteOffSupplements implements WriteOffSupplements {
   @override
   Product get product;
   @override
-  Group get group;
+  Document get group;
   @override
   String get id;
   @override

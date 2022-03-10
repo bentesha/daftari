@@ -59,8 +59,8 @@ class _ExpensesGroupsPageState extends State<ExpensesGroupsPage> {
       separatorBuilder: (_, __) => const AppDivider(margin: EdgeInsets.zero),
       itemBuilder: (_, i) {
         final group = supp.groups[i];
-        final groupAmount = bloc.getAmountByGroup(group.id);
-        return ExpensesGroupTile(group, groupAmount ?? 0);
+       // final groupAmount = bloc.getAmountByGroup(group.id);
+        return ExpensesGroupTile(group, /* groupAmount ?? */ 0);
       },
       itemCount: supp.groups.length,
     );

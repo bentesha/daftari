@@ -1,7 +1,9 @@
 import '../source.dart';
 
-class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
-  GroupPagesBloc(this.groupsService, this.recordsService, this.productsService)
+class SalesDocumentsPagesBloc extends Cubit<GroupPagesState>
+    with ServicesInitializer {
+  SalesDocumentsPagesBloc(
+      this.groupsService, this.recordsService, this.productsService)
       : super(GroupPagesState.initial()) {
     groupsService.addListener(() => _handleGroupListUpdates());
     productsService.addListener(() => _handleItemListUpdates());
@@ -12,7 +14,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
   final RecordsService recordsService;
   final ProductsService productsService;
 
-  bool get isItemListEmpty => productsService.getList.isEmpty;
+  bool get hasNoProducts => productsService.getList.isEmpty;
 
   double get getGroupTotalAmount {
     final supp = state.supplements;
@@ -20,7 +22,7 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
     return groupsTotals[supp.id] ?? 0;
   }
 
-  void init({Group? group}) {
+  void init({Document? document}) {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
     initServices(
@@ -30,7 +32,6 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
     final groupAmounts = recordsService.getGroupsTotalAmounts;
     final groupList =
         groupsService.getList.where((e) => e.type == GroupType.sales).toList();
-    final canUseDateAsTitle = _checkIfCanUseDateAsTitle(group);
 
     supp = supp.copyWith(
         groupList: groupList,
@@ -133,29 +134,6 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
     emit(GroupPagesState.content(supp));
   }
 
-  ///if it returns null then both options are true. Check the options below
-  bool? _checkIfCanUseDateAsTitle([Group? group]) {
-    final isEditing = group != null;
-
-    final _date = group?.date ?? DateTime.now();
-    final currentGroupList =
-        groupsService.getList.where((e) => e.type == GroupType.sales).toList();
-    final currentDayGroupList = isEditing
-        ? groupsService.getList.where((e) => e.date.day == _date.day).toList()
-        : currentGroupList;
-
-    final dayNumberOfGroups = currentDayGroupList.length;
-    if (dayNumberOfGroups == 1) {
-      final title = currentDayGroupList.first.title;
-      final didUseDateAsTitle = title == DateFormatter.convertToDOW(_date);
-      if (didUseDateAsTitle && isEditing) return false;
-      if (!didUseDateAsTitle && !isEditing) return false;
-      if (!didUseDateAsTitle && isEditing) return null;
-    }
-    if (dayNumberOfGroups > 1) return false;
-    return true;
-  }
-
   _handleGroupListUpdates() {
     var supp = state.supplements;
     emit(GroupPagesState.loading(supp));
@@ -185,9 +163,4 @@ class GroupPagesBloc extends Cubit<GroupPagesState> with ServicesInitializer {
 
   static const titleErrorMessage =
       'ONLY TWO RECORDING FORMATS ARE ALLOWED IN A DAY:\n\n1. Creating multiple custom-titled groups\n\n2. Using a respective day as a group for all sales records in that day';
-
-  ///SCENARIOS                                                  Adding                         Editing
-  ///used-date-as-title & alone-in-the-day                      ERROR                          ----can create a custom title
-  ///didnot-use-date-as-title & alone-in-the-day                can create custom title        ----can create a custom title or Can use date as a title
-  ///many-in-a-day                                              can create custom title        ----can create a custom title
 }

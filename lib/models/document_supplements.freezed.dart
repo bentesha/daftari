@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'group_supplements.dart';
+part of 'document_supplements.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,100 +15,88 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$GroupSupplementsTearOff {
-  const _$GroupSupplementsTearOff();
+class _$DocumentSupplementsTearOff {
+  const _$DocumentSupplementsTearOff();
 
   _GroupPageSupplement call(
-      {required List<Group> groupList,
-      required List<Record> recordList,
+      {required Document document,
       required DateTime date,
       required String id,
       required String title,
       required Map<String, String?> errors,
       required Map<String, double> groupAmounts,
-      required bool isDateAsTitle,
-      required bool canUseDateAsTitle}) {
+      required bool isDateAsTitle}) {
     return _GroupPageSupplement(
-      groupList: groupList,
-      recordList: recordList,
+      document: document,
       date: date,
       id: id,
       title: title,
       errors: errors,
       groupAmounts: groupAmounts,
       isDateAsTitle: isDateAsTitle,
-      canUseDateAsTitle: canUseDateAsTitle,
     );
   }
 }
 
 /// @nodoc
-const $GroupSupplements = _$GroupSupplementsTearOff();
+const $DocumentSupplements = _$DocumentSupplementsTearOff();
 
 /// @nodoc
-mixin _$GroupSupplements {
-  List<Group> get groupList => throw _privateConstructorUsedError;
-  List<Record> get recordList => throw _privateConstructorUsedError;
+mixin _$DocumentSupplements {
+  Document get document => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
   Map<String, double> get groupAmounts => throw _privateConstructorUsedError;
   bool get isDateAsTitle => throw _privateConstructorUsedError;
-  bool get canUseDateAsTitle => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $GroupSupplementsCopyWith<GroupSupplements> get copyWith =>
+  $DocumentSupplementsCopyWith<DocumentSupplements> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $GroupSupplementsCopyWith<$Res> {
-  factory $GroupSupplementsCopyWith(
-          GroupSupplements value, $Res Function(GroupSupplements) then) =
-      _$GroupSupplementsCopyWithImpl<$Res>;
+abstract class $DocumentSupplementsCopyWith<$Res> {
+  factory $DocumentSupplementsCopyWith(
+          DocumentSupplements value, $Res Function(DocumentSupplements) then) =
+      _$DocumentSupplementsCopyWithImpl<$Res>;
   $Res call(
-      {List<Group> groupList,
-      List<Record> recordList,
+      {Document document,
       DateTime date,
       String id,
       String title,
       Map<String, String?> errors,
       Map<String, double> groupAmounts,
-      bool isDateAsTitle,
-      bool canUseDateAsTitle});
+      bool isDateAsTitle});
+
+  $DocumentCopyWith<$Res> get document;
 }
 
 /// @nodoc
-class _$GroupSupplementsCopyWithImpl<$Res>
-    implements $GroupSupplementsCopyWith<$Res> {
-  _$GroupSupplementsCopyWithImpl(this._value, this._then);
+class _$DocumentSupplementsCopyWithImpl<$Res>
+    implements $DocumentSupplementsCopyWith<$Res> {
+  _$DocumentSupplementsCopyWithImpl(this._value, this._then);
 
-  final GroupSupplements _value;
+  final DocumentSupplements _value;
   // ignore: unused_field
-  final $Res Function(GroupSupplements) _then;
+  final $Res Function(DocumentSupplements) _then;
 
   @override
   $Res call({
-    Object? groupList = freezed,
-    Object? recordList = freezed,
+    Object? document = freezed,
     Object? date = freezed,
     Object? id = freezed,
     Object? title = freezed,
     Object? errors = freezed,
     Object? groupAmounts = freezed,
     Object? isDateAsTitle = freezed,
-    Object? canUseDateAsTitle = freezed,
   }) {
     return _then(_value.copyWith(
-      groupList: groupList == freezed
-          ? _value.groupList
-          : groupList // ignore: cast_nullable_to_non_nullable
-              as List<Group>,
-      recordList: recordList == freezed
-          ? _value.recordList
-          : recordList // ignore: cast_nullable_to_non_nullable
-              as List<Record>,
+      document: document == freezed
+          ? _value.document
+          : document // ignore: cast_nullable_to_non_nullable
+              as Document,
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -133,36 +121,40 @@ class _$GroupSupplementsCopyWithImpl<$Res>
           ? _value.isDateAsTitle
           : isDateAsTitle // ignore: cast_nullable_to_non_nullable
               as bool,
-      canUseDateAsTitle: canUseDateAsTitle == freezed
-          ? _value.canUseDateAsTitle
-          : canUseDateAsTitle // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
+  }
+
+  @override
+  $DocumentCopyWith<$Res> get document {
+    return $DocumentCopyWith<$Res>(_value.document, (value) {
+      return _then(_value.copyWith(document: value));
+    });
   }
 }
 
 /// @nodoc
 abstract class _$GroupPageSupplementCopyWith<$Res>
-    implements $GroupSupplementsCopyWith<$Res> {
+    implements $DocumentSupplementsCopyWith<$Res> {
   factory _$GroupPageSupplementCopyWith(_GroupPageSupplement value,
           $Res Function(_GroupPageSupplement) then) =
       __$GroupPageSupplementCopyWithImpl<$Res>;
   @override
   $Res call(
-      {List<Group> groupList,
-      List<Record> recordList,
+      {Document document,
       DateTime date,
       String id,
       String title,
       Map<String, String?> errors,
       Map<String, double> groupAmounts,
-      bool isDateAsTitle,
-      bool canUseDateAsTitle});
+      bool isDateAsTitle});
+
+  @override
+  $DocumentCopyWith<$Res> get document;
 }
 
 /// @nodoc
 class __$GroupPageSupplementCopyWithImpl<$Res>
-    extends _$GroupSupplementsCopyWithImpl<$Res>
+    extends _$DocumentSupplementsCopyWithImpl<$Res>
     implements _$GroupPageSupplementCopyWith<$Res> {
   __$GroupPageSupplementCopyWithImpl(
       _GroupPageSupplement _value, $Res Function(_GroupPageSupplement) _then)
@@ -173,25 +165,19 @@ class __$GroupPageSupplementCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? groupList = freezed,
-    Object? recordList = freezed,
+    Object? document = freezed,
     Object? date = freezed,
     Object? id = freezed,
     Object? title = freezed,
     Object? errors = freezed,
     Object? groupAmounts = freezed,
     Object? isDateAsTitle = freezed,
-    Object? canUseDateAsTitle = freezed,
   }) {
     return _then(_GroupPageSupplement(
-      groupList: groupList == freezed
-          ? _value.groupList
-          : groupList // ignore: cast_nullable_to_non_nullable
-              as List<Group>,
-      recordList: recordList == freezed
-          ? _value.recordList
-          : recordList // ignore: cast_nullable_to_non_nullable
-              as List<Record>,
+      document: document == freezed
+          ? _value.document
+          : document // ignore: cast_nullable_to_non_nullable
+              as Document,
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -216,33 +202,24 @@ class __$GroupPageSupplementCopyWithImpl<$Res>
           ? _value.isDateAsTitle
           : isDateAsTitle // ignore: cast_nullable_to_non_nullable
               as bool,
-      canUseDateAsTitle: canUseDateAsTitle == freezed
-          ? _value.canUseDateAsTitle
-          : canUseDateAsTitle // ignore: cast_nullable_to_non_nullable
-              as bool,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_GroupPageSupplement extends _GroupPageSupplement {
+class _$_GroupPageSupplement implements _GroupPageSupplement {
   const _$_GroupPageSupplement(
-      {required this.groupList,
-      required this.recordList,
+      {required this.document,
       required this.date,
       required this.id,
       required this.title,
       required this.errors,
       required this.groupAmounts,
-      required this.isDateAsTitle,
-      required this.canUseDateAsTitle})
-      : super._();
+      required this.isDateAsTitle});
 
   @override
-  final List<Group> groupList;
-  @override
-  final List<Record> recordList;
+  final Document document;
   @override
   final DateTime date;
   @override
@@ -255,12 +232,10 @@ class _$_GroupPageSupplement extends _GroupPageSupplement {
   final Map<String, double> groupAmounts;
   @override
   final bool isDateAsTitle;
-  @override
-  final bool canUseDateAsTitle;
 
   @override
   String toString() {
-    return 'GroupSupplements(groupList: $groupList, recordList: $recordList, date: $date, id: $id, title: $title, errors: $errors, groupAmounts: $groupAmounts, isDateAsTitle: $isDateAsTitle, canUseDateAsTitle: $canUseDateAsTitle)';
+    return 'DocumentSupplements(document: $document, date: $date, id: $id, title: $title, errors: $errors, groupAmounts: $groupAmounts, isDateAsTitle: $isDateAsTitle)';
   }
 
   @override
@@ -268,9 +243,7 @@ class _$_GroupPageSupplement extends _GroupPageSupplement {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _GroupPageSupplement &&
-            const DeepCollectionEquality().equals(other.groupList, groupList) &&
-            const DeepCollectionEquality()
-                .equals(other.recordList, recordList) &&
+            const DeepCollectionEquality().equals(other.document, document) &&
             const DeepCollectionEquality().equals(other.date, date) &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.title, title) &&
@@ -278,23 +251,19 @@ class _$_GroupPageSupplement extends _GroupPageSupplement {
             const DeepCollectionEquality()
                 .equals(other.groupAmounts, groupAmounts) &&
             const DeepCollectionEquality()
-                .equals(other.isDateAsTitle, isDateAsTitle) &&
-            const DeepCollectionEquality()
-                .equals(other.canUseDateAsTitle, canUseDateAsTitle));
+                .equals(other.isDateAsTitle, isDateAsTitle));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(groupList),
-      const DeepCollectionEquality().hash(recordList),
+      const DeepCollectionEquality().hash(document),
       const DeepCollectionEquality().hash(date),
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(errors),
       const DeepCollectionEquality().hash(groupAmounts),
-      const DeepCollectionEquality().hash(isDateAsTitle),
-      const DeepCollectionEquality().hash(canUseDateAsTitle));
+      const DeepCollectionEquality().hash(isDateAsTitle));
 
   @JsonKey(ignore: true)
   @override
@@ -303,23 +272,18 @@ class _$_GroupPageSupplement extends _GroupPageSupplement {
           this, _$identity);
 }
 
-abstract class _GroupPageSupplement extends GroupSupplements {
+abstract class _GroupPageSupplement implements DocumentSupplements {
   const factory _GroupPageSupplement(
-      {required List<Group> groupList,
-      required List<Record> recordList,
+      {required Document document,
       required DateTime date,
       required String id,
       required String title,
       required Map<String, String?> errors,
       required Map<String, double> groupAmounts,
-      required bool isDateAsTitle,
-      required bool canUseDateAsTitle}) = _$_GroupPageSupplement;
-  const _GroupPageSupplement._() : super._();
+      required bool isDateAsTitle}) = _$_GroupPageSupplement;
 
   @override
-  List<Group> get groupList;
-  @override
-  List<Record> get recordList;
+  Document get document;
   @override
   DateTime get date;
   @override
@@ -332,8 +296,6 @@ abstract class _GroupPageSupplement extends GroupSupplements {
   Map<String, double> get groupAmounts;
   @override
   bool get isDateAsTitle;
-  @override
-  bool get canUseDateAsTitle;
   @override
   @JsonKey(ignore: true)
   _$GroupPageSupplementCopyWith<_GroupPageSupplement> get copyWith =>

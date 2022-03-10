@@ -3,9 +3,6 @@ import '../source.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkService<T> extends ChangeNotifier {
-  var root = 'http://cloud.mobicap.co.tz:8080/';
-  final headers = {"Content-Type": "application/json"};
-
   var _list = [];
   T? _current;
   String get _path => T == Product ? 'product' : '';

@@ -59,7 +59,7 @@ class _WriteOffGroupsPageState extends State<WriteOffGroupsPage> {
       separatorBuilder: (_, __) => const AppDivider(margin: EdgeInsets.zero),
       itemBuilder: (_, i) {
         final group = supp.groups[i];
-        final groupAmount = bloc.getAmountByGroup(group.id);
+        final groupAmount = bloc.getAmountByGroup(group.form.id);
         return WriteOffsGroupTile(group, groupAmount ?? 0);
       },
       itemCount: supp.groups.length,

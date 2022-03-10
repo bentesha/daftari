@@ -1,9 +1,8 @@
 import '../source.dart';
 import 'service.dart';
 
-class GroupsService extends Service<Group> {
-  static final _box = Hive.box(Constants.kGroupsBox);
-  GroupsService() : super(_box);
+class DocumentsService extends ChnageNotifier {
+  DocumentsService() : super(_box);
 
   static var _selectedId = '';
   String get getEditedGroupId => _selectedId;
@@ -11,8 +10,8 @@ class GroupsService extends Service<Group> {
   ///Gets all groups from the Hive database
   void init() => super.getAll();
 
-  Future<void> editGroup(Group group) async {
-    _selectedId = group.id;
+  Future<void> editGroup(Document group) async {
+    _selectedId = group.form.id;
     await super.edit(group);
   }
 }

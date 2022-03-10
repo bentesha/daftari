@@ -5,15 +5,15 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
   ExpensePagesBloc(
       this.expensesService, this.categoriesService, this.groupsService)
       : super(ExpensePagesState.initial()) {
-    categoriesService.addListener(() => _handleCategoryUpdates());
+/*     categoriesService.addListener(() => _handleCategoryUpdates());
     expensesService.addListener(() => _handleExpenseUpdates());
-    groupsService.addListener(() => _handleGroupUpdates());
+    groupsService.addListener(() => _handleGroupUpdates()); */
   }
 
   final ExpensesService expensesService;
   final CategoriesService categoriesService;
   final GroupsService groupsService;
-
+/* 
   double? getAmountByGroup(String id) => expensesService.getDayTotalAmounts[id];
   Category? getCategoryById(String id) => categoriesService.getById(id);
 
@@ -216,5 +216,5 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
         .toList();
     supp = supp.copyWith(groups: groups);
     emit(ExpensePagesState.content(supp));
-  }
+  } */
 }

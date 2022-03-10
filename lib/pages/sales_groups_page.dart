@@ -25,7 +25,7 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
     return Scaffold(
       body: _buildBody(),
       appBar: const PageAppBar(title: 'Sales'),
-      floatingActionButton: const AddButton(nextPage: GroupEditPage()),
+      floatingActionButton: const AddButton(nextPage: DocumentEditPage()),
     );
   }
 
@@ -59,13 +59,13 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
       separatorBuilder: (_, __) => const AppDivider(margin: EdgeInsets.zero),
       itemBuilder: (context, index) {
         final group = groupList[index];
-        final groupRecords =
-            supp.recordList.where((e) => e.id == group.id).toList();
+        /* final groupRecords =
+            supp.recordList.where((e) => e. == group.id).toList(); */
 
         return GroupTile(
             group: group,
-            recordList: groupRecords,
-            groupAmount: supp.groupAmounts[group.id] ?? 0);
+            recordList: /* groupRecords */const [],
+            groupAmount: supp.groupAmounts[group.form.id] ?? 0);
       },
       shrinkWrap: true,
     );

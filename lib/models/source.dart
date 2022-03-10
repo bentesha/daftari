@@ -1,9 +1,9 @@
 export 'product.dart';
-export 'record.dart';
-export 'records_supplements.dart';
+export 'sales.dart';
+export 'sales_supplements.dart';
 export 'product_supplements.dart';
-export 'group.dart';
-export 'group_supplements.dart';
+export 'document.dart';
+export 'document_supplements.dart';
 export 'category.dart';
 export 'category_page_supplements.dart';
 export 'package:freezed_annotation/freezed_annotation.dart';

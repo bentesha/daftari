@@ -4,7 +4,7 @@ class RecordEditPage extends StatefulWidget {
   const RecordEditPage({this.groupId, this.record, Key? key}) : super(key: key);
 
   final String? groupId;
-  final Record? record;
+  final Sales? record;
 
   @override
   State<RecordEditPage> createState() => _RecordEditPageState();
@@ -49,13 +49,13 @@ class _RecordEditPageState extends State<RecordEditPage> {
         });
   }
 
-  Widget _buildLoading(RecordsSupplements supp) {
+  Widget _buildLoading(SalesSupplements supp) {
     return const Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  Widget _buildContent(RecordsSupplements supp) {
+  Widget _buildContent(SalesSupplements supp) {
     return Column(
       children: [
         ValueSelector(

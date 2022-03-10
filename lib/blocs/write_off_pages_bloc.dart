@@ -5,10 +5,10 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
   WriteOffPagesBloc(this.writeOffService, this.writeOffTypeService,
       this.productsService, this.groupsService)
       : super(WriteOffPagesState.initial()) {
-    writeOffTypeService.addListener(() => _handleWriteOffTypeUpdates());
+   /*  writeOffTypeService.addListener(() => _handleWriteOffTypeUpdates());
     writeOffService.addListener(() => _handleWriteOffUpdates());
     groupsService.addListener(() => _handleGroupUpdates());
-    productsService.addListener(() => _handleProductUpdates());
+    productsService.addListener(() => _handleProductUpdates()); */
   }
 
   final WriteOffsService writeOffService;
@@ -16,7 +16,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
   final ProductsService productsService;
   final GroupsService groupsService;
 
-  double? getAmountByGroup(String id) => writeOffService.getDayTotalAmounts[id];
+  /* double? getAmountByGroup(String id) => writeOffService.getDayTotalAmounts[id];
 
   void init(Pages page, [WriteOff? writeOff, String? groupId]) {
     var supp = state.supplements;
@@ -222,5 +222,5 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
     var groups = groupsService.getList.where((e) => e.isWriteOffGroup).toList();
     supp = supp.copyWith(groups: groups);
     emit(WriteOffPagesState.content(supp));
-  }
+  } */
 }

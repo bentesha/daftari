@@ -3,14 +3,14 @@ import '../source.dart';
 class RecordsPageBloc extends Cubit<RecordsPageState> with ServicesInitializer {
   RecordsPageBloc(this.recordsService, this.productsService)
       : super(RecordsPageState.initial()) {
-    recordsService.addListener(() => _handleRecordsUpdates());
-    productsService.addListener(() => _handleProductUpdates());
+    /* recordsService.addListener(() => _handleRecordsUpdates());
+    productsService.addListener(() => _handleProductUpdates()); */
   }
 
   final RecordsService recordsService;
   final ProductsService productsService;
 
-  bool get hasProducts => productsService.getList.isNotEmpty;
+  /* bool get hasProducts => productsService.getList.isNotEmpty;
 
   Product? get getSelectedProduct =>
       productsService.getById(state.supplements.productId);
@@ -133,5 +133,5 @@ class RecordsPageBloc extends Cubit<RecordsPageState> with ServicesInitializer {
         sellingPrice: product.unitPrice.toString(),
         productList: products);
     emit(RecordsPageState.content(supp));
-  }
+  } */
 }

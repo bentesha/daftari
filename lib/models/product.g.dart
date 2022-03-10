@@ -1,7 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names
-
 part of 'product.dart';
 
 // **************************************************************************
@@ -19,9 +17,10 @@ _$_Product _$$_ProductFromJson(Map<String, dynamic> json) => _$_Product(
 
 Map<String, dynamic> _$$_ProductToJson(_$_Product instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'unit': instance.unit,
       'unitPrice': instance.unitPrice,
       'categoryId': instance.categoryId,
-      'code': Utils.getRandomId(),
+      'code': instance.code,
     };

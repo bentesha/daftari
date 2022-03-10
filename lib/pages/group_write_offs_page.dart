@@ -3,7 +3,7 @@ import '../source.dart';
 class GroupWriteOffsPage extends StatefulWidget {
   const GroupWriteOffsPage({this.group, Key? key}) : super(key: key);
 
-  final Group? group;
+  final Document? group;
 
   @override
   State<GroupWriteOffsPage> createState() => _GroupWriteOffsPageState();
@@ -45,10 +45,12 @@ class _GroupWriteOffsPageState extends State<GroupWriteOffsPage> {
   }
 
   Widget _buildContent(WriteOffSupplements supp) {
+    final id = supp.group.form.id;
+
     return Scaffold(
-      appBar: _buildAppBar(supp.group.id),
+      appBar: _buildAppBar(id),
       body: _buildBody(supp),
-      floatingActionButton: _buildAddButton(supp.group.id),
+      floatingActionButton: _buildAddButton(id),
     );
   }
 
@@ -74,18 +76,18 @@ class _GroupWriteOffsPageState extends State<GroupWriteOffsPage> {
             title: 'Date',
             onDateSelected: bloc.updateGroupDate,
             isEditable: true,
-            date: supp.group.date),
-        ValueSelector(
+            date: supp.group.form.date),
+     /*    ValueSelector(
           title: 'Type',
           value: supp.group.type,
           error: supp.errors['type'],
           isEditable: !isEditing,
           onPressed: () => push(const ItemsSearchPage<WriteOffType>()),
-        ),
+        ), */
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
         AppTextField(
             error: supp.errors['title'],
-            text: supp.group.title,
+            text: supp.group.form.title,
             onChanged: bloc.updateGroupTitle,
             hintText: '',
             keyboardType: TextInputType.name,
@@ -98,7 +100,7 @@ class _GroupWriteOffsPageState extends State<GroupWriteOffsPage> {
 
   _buildItems(WriteOffSupplements supp) {
     final writeOffs = supp.writeOffs;
-    if (supp.group.id.isEmpty) return _buildEmptyState(emptyGroupMessage);
+    if (supp.group.form.id.isEmpty) return _buildEmptyState(emptyGroupMessage);
     if (writeOffs.isEmpty) return _buildEmptyState(emptyExpensesMessage);
 
     return Column(
@@ -140,7 +142,7 @@ class _GroupWriteOffsPageState extends State<GroupWriteOffsPage> {
     final productsService = getService<ProductsService>(context);
     bloc = WriteOffPagesBloc(writeOffsService, writeOffsTypesService,
         productsService, groupsService);
-    bloc.init(Pages.group_write_offs_page, null, widget.group?.id);
+    bloc.init(Pages.group_write_offs_page, null, widget.group?.form.id);
   }
 
   _initAppBarAction() {

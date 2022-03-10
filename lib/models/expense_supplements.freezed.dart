@@ -21,13 +21,13 @@ class _$ExpenseSupplementsTearOff {
   _ExpenseSupplements call(
       {required List<Expense> expenses,
       required List<Category> categories,
-      required List<Group> groups,
+      required List<Document> groups,
       required Map<String, String?> errors,
       required String amount,
       required DateTime date,
       String? notes,
       required String id,
-      required Group group,
+      required Document group,
       required Category category}) {
     return _ExpenseSupplements(
       expenses: expenses,
@@ -51,13 +51,13 @@ const $ExpenseSupplements = _$ExpenseSupplementsTearOff();
 mixin _$ExpenseSupplements {
   List<Expense> get expenses => throw _privateConstructorUsedError;
   List<Category> get categories => throw _privateConstructorUsedError;
-  List<Group> get groups => throw _privateConstructorUsedError;
+  List<Document> get groups => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
   String get amount => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
   String? get notes => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
-  Group get group => throw _privateConstructorUsedError;
+  Document get group => throw _privateConstructorUsedError;
   Category get category => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -73,15 +73,16 @@ abstract class $ExpenseSupplementsCopyWith<$Res> {
   $Res call(
       {List<Expense> expenses,
       List<Category> categories,
-      List<Group> groups,
+      List<Document> groups,
       Map<String, String?> errors,
       String amount,
       DateTime date,
       String? notes,
       String id,
-      Group group,
+      Document group,
       Category category});
 
+  $DocumentCopyWith<$Res> get group;
   $CategoryCopyWith<$Res> get category;
 }
 
@@ -119,7 +120,7 @@ class _$ExpenseSupplementsCopyWithImpl<$Res>
       groups: groups == freezed
           ? _value.groups
           : groups // ignore: cast_nullable_to_non_nullable
-              as List<Group>,
+              as List<Document>,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -143,12 +144,19 @@ class _$ExpenseSupplementsCopyWithImpl<$Res>
       group: group == freezed
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
-              as Group,
+              as Document,
       category: category == freezed
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
               as Category,
     ));
+  }
+
+  @override
+  $DocumentCopyWith<$Res> get group {
+    return $DocumentCopyWith<$Res>(_value.group, (value) {
+      return _then(_value.copyWith(group: value));
+    });
   }
 
   @override
@@ -169,15 +177,17 @@ abstract class _$ExpenseSupplementsCopyWith<$Res>
   $Res call(
       {List<Expense> expenses,
       List<Category> categories,
-      List<Group> groups,
+      List<Document> groups,
       Map<String, String?> errors,
       String amount,
       DateTime date,
       String? notes,
       String id,
-      Group group,
+      Document group,
       Category category});
 
+  @override
+  $DocumentCopyWith<$Res> get group;
   @override
   $CategoryCopyWith<$Res> get category;
 }
@@ -218,7 +228,7 @@ class __$ExpenseSupplementsCopyWithImpl<$Res>
       groups: groups == freezed
           ? _value.groups
           : groups // ignore: cast_nullable_to_non_nullable
-              as List<Group>,
+              as List<Document>,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -242,7 +252,7 @@ class __$ExpenseSupplementsCopyWithImpl<$Res>
       group: group == freezed
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
-              as Group,
+              as Document,
       category: category == freezed
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
@@ -271,7 +281,7 @@ class _$_ExpenseSupplements implements _ExpenseSupplements {
   @override
   final List<Category> categories;
   @override
-  final List<Group> groups;
+  final List<Document> groups;
   @override
   final Map<String, String?> errors;
   @override
@@ -283,7 +293,7 @@ class _$_ExpenseSupplements implements _ExpenseSupplements {
   @override
   final String id;
   @override
-  final Group group;
+  final Document group;
   @override
   final Category category;
 
@@ -334,13 +344,13 @@ abstract class _ExpenseSupplements implements ExpenseSupplements {
   const factory _ExpenseSupplements(
       {required List<Expense> expenses,
       required List<Category> categories,
-      required List<Group> groups,
+      required List<Document> groups,
       required Map<String, String?> errors,
       required String amount,
       required DateTime date,
       String? notes,
       required String id,
-      required Group group,
+      required Document group,
       required Category category}) = _$_ExpenseSupplements;
 
   @override
@@ -348,7 +358,7 @@ abstract class _ExpenseSupplements implements ExpenseSupplements {
   @override
   List<Category> get categories;
   @override
-  List<Group> get groups;
+  List<Document> get groups;
   @override
   Map<String, String?> get errors;
   @override
@@ -360,7 +370,7 @@ abstract class _ExpenseSupplements implements ExpenseSupplements {
   @override
   String get id;
   @override
-  Group get group;
+  Document get group;
   @override
   Category get category;
   @override

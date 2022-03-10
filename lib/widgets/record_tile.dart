@@ -3,7 +3,7 @@ import '../source.dart';
 class RecordTile extends StatelessWidget {
   const RecordTile(this.record, {Key? key}) : super(key: key);
 
-  final Record record;
+  final Sales record;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class RecordTile extends StatelessWidget {
             ],
           ),
           SizedBox(height: 5.dh),
-          AppText('${record.quantity} ${item.unit} @ ${record.getSellingPrice}',
+          AppText('${record.quantity} ${item.unit} @ ${record.total}',
               opacity: .7, size: 14.dw)
         ],
       ),

@@ -8,13 +8,13 @@ class GroupTile extends StatelessWidget {
       required this.recordList})
       : super(key: key);
 
-  final Group group;
-  final List<Record> recordList;
+  final Document group;
+  final List<Sales> recordList;
   final double groupAmount;
 
   @override
   Widget build(BuildContext context) {
-    final title = group.title;
+    final title = group.form.title;
     final formattedGroupAmount = Utils.convertToMoneyFormat(groupAmount);
 
     return AppTextButton(

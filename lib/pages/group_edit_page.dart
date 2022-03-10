@@ -1,18 +1,18 @@
 import '../source.dart';
 
-class GroupEditPage extends StatefulWidget {
-  const GroupEditPage({this.group, Key? key}) : super(key: key);
+class DocumentEditPage extends StatefulWidget {
+  const DocumentEditPage({this.group, Key? key}) : super(key: key);
 
-  final Group? group;
+  final Document? group;
 
   static void navigateTo(BuildContext context) => Navigator.push(
-      context, MaterialPageRoute(builder: (_) => const GroupEditPage()));
+      context, MaterialPageRoute(builder: (_) => const DocumentEditPage()));
 
   @override
-  State<GroupEditPage> createState() => _GroupEditPageState();
+  State<DocumentEditPage> createState() => _DocumentEditPageState();
 }
 
-class _GroupEditPageState extends State<GroupEditPage> {
+class _DocumentEditPageState extends State<DocumentEditPage> {
   late final GroupPagesBloc bloc;
   bool isEditing = false;
 

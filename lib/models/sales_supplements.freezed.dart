@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'records_supplements.dart';
+part of 'sales_supplements.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,11 +15,11 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$RecordsSupplementsTearOff {
-  const _$RecordsSupplementsTearOff();
+class _$SalesSupplementsTearOff {
+  const _$SalesSupplementsTearOff();
 
-  _RecordsSupplements call(
-      {required List<Record> recordList,
+  _SalesSupplements call(
+      {required List<Sales> recordList,
       required List<Product> productList,
       required Map<String, String?> errors,
       required String quantity,
@@ -28,7 +28,7 @@ class _$RecordsSupplementsTearOff {
       required String sellingPrice,
       required String productId,
       required String groupId}) {
-    return _RecordsSupplements(
+    return _SalesSupplements(
       recordList: recordList,
       productList: productList,
       errors: errors,
@@ -43,11 +43,11 @@ class _$RecordsSupplementsTearOff {
 }
 
 /// @nodoc
-const $RecordsSupplements = _$RecordsSupplementsTearOff();
+const $SalesSupplements = _$SalesSupplementsTearOff();
 
 /// @nodoc
-mixin _$RecordsSupplements {
-  List<Record> get recordList => throw _privateConstructorUsedError;
+mixin _$SalesSupplements {
+  List<Sales> get recordList => throw _privateConstructorUsedError;
   List<Product> get productList => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
   String get quantity => throw _privateConstructorUsedError;
@@ -58,17 +58,17 @@ mixin _$RecordsSupplements {
   String get groupId => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $RecordsSupplementsCopyWith<RecordsSupplements> get copyWith =>
+  $SalesSupplementsCopyWith<SalesSupplements> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $RecordsSupplementsCopyWith<$Res> {
-  factory $RecordsSupplementsCopyWith(
-          RecordsSupplements value, $Res Function(RecordsSupplements) then) =
-      _$RecordsSupplementsCopyWithImpl<$Res>;
+abstract class $SalesSupplementsCopyWith<$Res> {
+  factory $SalesSupplementsCopyWith(
+          SalesSupplements value, $Res Function(SalesSupplements) then) =
+      _$SalesSupplementsCopyWithImpl<$Res>;
   $Res call(
-      {List<Record> recordList,
+      {List<Sales> recordList,
       List<Product> productList,
       Map<String, String?> errors,
       String quantity,
@@ -80,13 +80,13 @@ abstract class $RecordsSupplementsCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$RecordsSupplementsCopyWithImpl<$Res>
-    implements $RecordsSupplementsCopyWith<$Res> {
-  _$RecordsSupplementsCopyWithImpl(this._value, this._then);
+class _$SalesSupplementsCopyWithImpl<$Res>
+    implements $SalesSupplementsCopyWith<$Res> {
+  _$SalesSupplementsCopyWithImpl(this._value, this._then);
 
-  final RecordsSupplements _value;
+  final SalesSupplements _value;
   // ignore: unused_field
-  final $Res Function(RecordsSupplements) _then;
+  final $Res Function(SalesSupplements) _then;
 
   @override
   $Res call({
@@ -104,7 +104,7 @@ class _$RecordsSupplementsCopyWithImpl<$Res>
       recordList: recordList == freezed
           ? _value.recordList
           : recordList // ignore: cast_nullable_to_non_nullable
-              as List<Record>,
+              as List<Sales>,
       productList: productList == freezed
           ? _value.productList
           : productList // ignore: cast_nullable_to_non_nullable
@@ -142,14 +142,14 @@ class _$RecordsSupplementsCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$RecordsSupplementsCopyWith<$Res>
-    implements $RecordsSupplementsCopyWith<$Res> {
-  factory _$RecordsSupplementsCopyWith(
-          _RecordsSupplements value, $Res Function(_RecordsSupplements) then) =
-      __$RecordsSupplementsCopyWithImpl<$Res>;
+abstract class _$SalesSupplementsCopyWith<$Res>
+    implements $SalesSupplementsCopyWith<$Res> {
+  factory _$SalesSupplementsCopyWith(
+          _SalesSupplements value, $Res Function(_SalesSupplements) then) =
+      __$SalesSupplementsCopyWithImpl<$Res>;
   @override
   $Res call(
-      {List<Record> recordList,
+      {List<Sales> recordList,
       List<Product> productList,
       Map<String, String?> errors,
       String quantity,
@@ -161,15 +161,15 @@ abstract class _$RecordsSupplementsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$RecordsSupplementsCopyWithImpl<$Res>
-    extends _$RecordsSupplementsCopyWithImpl<$Res>
-    implements _$RecordsSupplementsCopyWith<$Res> {
-  __$RecordsSupplementsCopyWithImpl(
-      _RecordsSupplements _value, $Res Function(_RecordsSupplements) _then)
-      : super(_value, (v) => _then(v as _RecordsSupplements));
+class __$SalesSupplementsCopyWithImpl<$Res>
+    extends _$SalesSupplementsCopyWithImpl<$Res>
+    implements _$SalesSupplementsCopyWith<$Res> {
+  __$SalesSupplementsCopyWithImpl(
+      _SalesSupplements _value, $Res Function(_SalesSupplements) _then)
+      : super(_value, (v) => _then(v as _SalesSupplements));
 
   @override
-  _RecordsSupplements get _value => super._value as _RecordsSupplements;
+  _SalesSupplements get _value => super._value as _SalesSupplements;
 
   @override
   $Res call({
@@ -183,11 +183,11 @@ class __$RecordsSupplementsCopyWithImpl<$Res>
     Object? productId = freezed,
     Object? groupId = freezed,
   }) {
-    return _then(_RecordsSupplements(
+    return _then(_SalesSupplements(
       recordList: recordList == freezed
           ? _value.recordList
           : recordList // ignore: cast_nullable_to_non_nullable
-              as List<Record>,
+              as List<Sales>,
       productList: productList == freezed
           ? _value.productList
           : productList // ignore: cast_nullable_to_non_nullable
@@ -226,8 +226,8 @@ class __$RecordsSupplementsCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_RecordsSupplements implements _RecordsSupplements {
-  const _$_RecordsSupplements(
+class _$_SalesSupplements implements _SalesSupplements {
+  const _$_SalesSupplements(
       {required this.recordList,
       required this.productList,
       required this.errors,
@@ -239,7 +239,7 @@ class _$_RecordsSupplements implements _RecordsSupplements {
       required this.groupId});
 
   @override
-  final List<Record> recordList;
+  final List<Sales> recordList;
   @override
   final List<Product> productList;
   @override
@@ -259,14 +259,14 @@ class _$_RecordsSupplements implements _RecordsSupplements {
 
   @override
   String toString() {
-    return 'RecordsSupplements(recordList: $recordList, productList: $productList, errors: $errors, quantity: $quantity, date: $date, notes: $notes, sellingPrice: $sellingPrice, productId: $productId, groupId: $groupId)';
+    return 'SalesSupplements(recordList: $recordList, productList: $productList, errors: $errors, quantity: $quantity, date: $date, notes: $notes, sellingPrice: $sellingPrice, productId: $productId, groupId: $groupId)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _RecordsSupplements &&
+            other is _SalesSupplements &&
             const DeepCollectionEquality()
                 .equals(other.recordList, recordList) &&
             const DeepCollectionEquality()
@@ -296,13 +296,13 @@ class _$_RecordsSupplements implements _RecordsSupplements {
 
   @JsonKey(ignore: true)
   @override
-  _$RecordsSupplementsCopyWith<_RecordsSupplements> get copyWith =>
-      __$RecordsSupplementsCopyWithImpl<_RecordsSupplements>(this, _$identity);
+  _$SalesSupplementsCopyWith<_SalesSupplements> get copyWith =>
+      __$SalesSupplementsCopyWithImpl<_SalesSupplements>(this, _$identity);
 }
 
-abstract class _RecordsSupplements implements RecordsSupplements {
-  const factory _RecordsSupplements(
-      {required List<Record> recordList,
+abstract class _SalesSupplements implements SalesSupplements {
+  const factory _SalesSupplements(
+      {required List<Sales> recordList,
       required List<Product> productList,
       required Map<String, String?> errors,
       required String quantity,
@@ -310,10 +310,10 @@ abstract class _RecordsSupplements implements RecordsSupplements {
       String? notes,
       required String sellingPrice,
       required String productId,
-      required String groupId}) = _$_RecordsSupplements;
+      required String groupId}) = _$_SalesSupplements;
 
   @override
-  List<Record> get recordList;
+  List<Sales> get recordList;
   @override
   List<Product> get productList;
   @override
@@ -332,6 +332,6 @@ abstract class _RecordsSupplements implements RecordsSupplements {
   String get groupId;
   @override
   @JsonKey(ignore: true)
-  _$RecordsSupplementsCopyWith<_RecordsSupplements> get copyWith =>
+  _$SalesSupplementsCopyWith<_SalesSupplements> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -1,25 +1,25 @@
 import '../source.dart';
 
-class GroupTile extends StatelessWidget {
-  const GroupTile(
+class DocumentTile extends StatelessWidget {
+  const DocumentTile(
       {Key? key,
-      required this.group,
-      required this.groupAmount,
+      required this.document,
+      required this.documentAmount,
       required this.recordList})
       : super(key: key);
 
-  final Document group;
+  final Document document;
   final List<Sales> recordList;
-  final double groupAmount;
+  final double documentAmount;
 
   @override
   Widget build(BuildContext context) {
-    final title = group.form.title;
-    final formattedGroupAmount = Utils.convertToMoneyFormat(groupAmount);
+    final title = document.form.title;
+    final formatteddocumentAmount = Utils.convertToMoneyFormat(documentAmount);
 
     return AppTextButton(
         isFilled: false,
-        onPressed: () => push(GroupRecordsPage(group)),
+        onPressed: () => push(GroupRecordsPage(document)),
         padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 15.dh),
         child: Row(
           children: [
@@ -28,7 +28,7 @@ class GroupTile extends StatelessWidget {
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                AppText(formattedGroupAmount, weight: FontWeight.bold)
+                AppText(formatteddocumentAmount, weight: FontWeight.bold)
               ],
             ))
           ],

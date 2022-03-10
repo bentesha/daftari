@@ -20,7 +20,7 @@ class RecordTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AppText(item.name, weight: FontWeight.w300),
-              AppText(record.getFormattedTotalAmount, weight: FontWeight.bold)
+              AppText(record.formattedTotal, weight: FontWeight.bold)
             ],
           ),
           SizedBox(height: 5.dh),

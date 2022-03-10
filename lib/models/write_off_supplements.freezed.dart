@@ -25,6 +25,7 @@ class _$WriteOffSupplementsTearOff {
       required String quantity,
       required Product product,
       required Document group,
+      required DateTime date,
       required String id}) {
     return _WriteOffSupplements(
       groups: groups,
@@ -33,6 +34,7 @@ class _$WriteOffSupplementsTearOff {
       quantity: quantity,
       product: product,
       group: group,
+      date: date,
       id: id,
     );
   }
@@ -49,6 +51,7 @@ mixin _$WriteOffSupplements {
   String get quantity => throw _privateConstructorUsedError;
   Product get product => throw _privateConstructorUsedError;
   Document get group => throw _privateConstructorUsedError;
+  DateTime get date => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -68,6 +71,7 @@ abstract class $WriteOffSupplementsCopyWith<$Res> {
       String quantity,
       Product product,
       Document group,
+      DateTime date,
       String id});
 
   $ProductCopyWith<$Res> get product;
@@ -91,6 +95,7 @@ class _$WriteOffSupplementsCopyWithImpl<$Res>
     Object? quantity = freezed,
     Object? product = freezed,
     Object? group = freezed,
+    Object? date = freezed,
     Object? id = freezed,
   }) {
     return _then(_value.copyWith(
@@ -118,6 +123,10 @@ class _$WriteOffSupplementsCopyWithImpl<$Res>
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as Document,
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -154,6 +163,7 @@ abstract class _$WriteOffSupplementsCopyWith<$Res>
       String quantity,
       Product product,
       Document group,
+      DateTime date,
       String id});
 
   @override
@@ -181,6 +191,7 @@ class __$WriteOffSupplementsCopyWithImpl<$Res>
     Object? quantity = freezed,
     Object? product = freezed,
     Object? group = freezed,
+    Object? date = freezed,
     Object? id = freezed,
   }) {
     return _then(_WriteOffSupplements(
@@ -208,6 +219,10 @@ class __$WriteOffSupplementsCopyWithImpl<$Res>
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as Document,
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -226,6 +241,7 @@ class _$_WriteOffSupplements implements _WriteOffSupplements {
       required this.quantity,
       required this.product,
       required this.group,
+      required this.date,
       required this.id});
 
   @override
@@ -241,11 +257,13 @@ class _$_WriteOffSupplements implements _WriteOffSupplements {
   @override
   final Document group;
   @override
+  final DateTime date;
+  @override
   final String id;
 
   @override
   String toString() {
-    return 'WriteOffSupplements(groups: $groups, writeOffs: $writeOffs, errors: $errors, quantity: $quantity, product: $product, group: $group, id: $id)';
+    return 'WriteOffSupplements(groups: $groups, writeOffs: $writeOffs, errors: $errors, quantity: $quantity, product: $product, group: $group, date: $date, id: $id)';
   }
 
   @override
@@ -259,6 +277,7 @@ class _$_WriteOffSupplements implements _WriteOffSupplements {
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
             const DeepCollectionEquality().equals(other.product, product) &&
             const DeepCollectionEquality().equals(other.group, group) &&
+            const DeepCollectionEquality().equals(other.date, date) &&
             const DeepCollectionEquality().equals(other.id, id));
   }
 
@@ -271,6 +290,7 @@ class _$_WriteOffSupplements implements _WriteOffSupplements {
       const DeepCollectionEquality().hash(quantity),
       const DeepCollectionEquality().hash(product),
       const DeepCollectionEquality().hash(group),
+      const DeepCollectionEquality().hash(date),
       const DeepCollectionEquality().hash(id));
 
   @JsonKey(ignore: true)
@@ -288,6 +308,7 @@ abstract class _WriteOffSupplements implements WriteOffSupplements {
       required String quantity,
       required Product product,
       required Document group,
+      required DateTime date,
       required String id}) = _$_WriteOffSupplements;
 
   @override
@@ -302,6 +323,8 @@ abstract class _WriteOffSupplements implements WriteOffSupplements {
   Product get product;
   @override
   Document get group;
+  @override
+  DateTime get date;
   @override
   String get id;
   @override

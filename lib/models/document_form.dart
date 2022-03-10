@@ -13,15 +13,7 @@ class DocumentForm with _$DocumentForm {
       @Default('') String title,
       String? description,
       @Default(0.0) double total,
-      @JsonKey(name: 'date') required int timestamp}) = _DocumentForm;
-
-  factory DocumentForm.empty() =>
-      DocumentForm(timestamp: DateTime.now().microsecondsSinceEpoch);
-
-  DateTime get date => DateTime.fromMillisecondsSinceEpoch(timestamp);
-
-  String get formattedDate => DateFormatter.convertToDMY(
-      DateTime.fromMillisecondsSinceEpoch(timestamp));
+      @Default('') String date}) = _DocumentForm;
 
   factory DocumentForm.fromJson(Map<String, dynamic> json) =>
       _$DocumentFormFromJson(json);

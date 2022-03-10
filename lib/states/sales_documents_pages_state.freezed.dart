@@ -18,19 +18,19 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$SalesDocumentsPagesStateTearOff {
   const _$SalesDocumentsPagesStateTearOff();
 
-  _Loading loading(DocumentSupplements supplements) {
+  _Loading loading(SalesDocumentSupplements supplements) {
     return _Loading(
       supplements,
     );
   }
 
-  _Content content(DocumentSupplements supplements) {
+  _Content content(SalesDocumentSupplements supplements) {
     return _Content(
       supplements,
     );
   }
 
-  _Success success(DocumentSupplements supplements) {
+  _Success success(SalesDocumentSupplements supplements) {
     return _Success(
       supplements,
     );
@@ -42,27 +42,28 @@ const $SalesDocumentsPagesState = _$SalesDocumentsPagesStateTearOff();
 
 /// @nodoc
 mixin _$SalesDocumentsPagesState {
-  DocumentSupplements get supplements => throw _privateConstructorUsedError;
+  SalesDocumentSupplements get supplements =>
+      throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DocumentSupplements supplements) loading,
-    required TResult Function(DocumentSupplements supplements) content,
-    required TResult Function(DocumentSupplements supplements) success,
+    required TResult Function(SalesDocumentSupplements supplements) loading,
+    required TResult Function(SalesDocumentSupplements supplements) content,
+    required TResult Function(SalesDocumentSupplements supplements) success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(DocumentSupplements supplements)? loading,
-    TResult Function(DocumentSupplements supplements)? content,
-    TResult Function(DocumentSupplements supplements)? success,
+    TResult Function(SalesDocumentSupplements supplements)? loading,
+    TResult Function(SalesDocumentSupplements supplements)? content,
+    TResult Function(SalesDocumentSupplements supplements)? success,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DocumentSupplements supplements)? loading,
-    TResult Function(DocumentSupplements supplements)? content,
-    TResult Function(DocumentSupplements supplements)? success,
+    TResult Function(SalesDocumentSupplements supplements)? loading,
+    TResult Function(SalesDocumentSupplements supplements)? content,
+    TResult Function(SalesDocumentSupplements supplements)? success,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -99,9 +100,9 @@ abstract class $SalesDocumentsPagesStateCopyWith<$Res> {
   factory $SalesDocumentsPagesStateCopyWith(SalesDocumentsPagesState value,
           $Res Function(SalesDocumentsPagesState) then) =
       _$SalesDocumentsPagesStateCopyWithImpl<$Res>;
-  $Res call({DocumentSupplements supplements});
+  $Res call({SalesDocumentSupplements supplements});
 
-  $DocumentSupplementsCopyWith<$Res> get supplements;
+  $SalesDocumentSupplementsCopyWith<$Res> get supplements;
 }
 
 /// @nodoc
@@ -121,13 +122,13 @@ class _$SalesDocumentsPagesStateCopyWithImpl<$Res>
       supplements: supplements == freezed
           ? _value.supplements
           : supplements // ignore: cast_nullable_to_non_nullable
-              as DocumentSupplements,
+              as SalesDocumentSupplements,
     ));
   }
 
   @override
-  $DocumentSupplementsCopyWith<$Res> get supplements {
-    return $DocumentSupplementsCopyWith<$Res>(_value.supplements, (value) {
+  $SalesDocumentSupplementsCopyWith<$Res> get supplements {
+    return $SalesDocumentSupplementsCopyWith<$Res>(_value.supplements, (value) {
       return _then(_value.copyWith(supplements: value));
     });
   }
@@ -139,10 +140,10 @@ abstract class _$LoadingCopyWith<$Res>
   factory _$LoadingCopyWith(_Loading value, $Res Function(_Loading) then) =
       __$LoadingCopyWithImpl<$Res>;
   @override
-  $Res call({DocumentSupplements supplements});
+  $Res call({SalesDocumentSupplements supplements});
 
   @override
-  $DocumentSupplementsCopyWith<$Res> get supplements;
+  $SalesDocumentSupplementsCopyWith<$Res> get supplements;
 }
 
 /// @nodoc
@@ -163,7 +164,7 @@ class __$LoadingCopyWithImpl<$Res>
       supplements == freezed
           ? _value.supplements
           : supplements // ignore: cast_nullable_to_non_nullable
-              as DocumentSupplements,
+              as SalesDocumentSupplements,
     ));
   }
 }
@@ -174,7 +175,7 @@ class _$_Loading implements _Loading {
   const _$_Loading(this.supplements);
 
   @override
-  final DocumentSupplements supplements;
+  final SalesDocumentSupplements supplements;
 
   @override
   String toString() {
@@ -202,9 +203,9 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DocumentSupplements supplements) loading,
-    required TResult Function(DocumentSupplements supplements) content,
-    required TResult Function(DocumentSupplements supplements) success,
+    required TResult Function(SalesDocumentSupplements supplements) loading,
+    required TResult Function(SalesDocumentSupplements supplements) content,
+    required TResult Function(SalesDocumentSupplements supplements) success,
   }) {
     return loading(supplements);
   }
@@ -212,9 +213,9 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(DocumentSupplements supplements)? loading,
-    TResult Function(DocumentSupplements supplements)? content,
-    TResult Function(DocumentSupplements supplements)? success,
+    TResult Function(SalesDocumentSupplements supplements)? loading,
+    TResult Function(SalesDocumentSupplements supplements)? content,
+    TResult Function(SalesDocumentSupplements supplements)? success,
   }) {
     return loading?.call(supplements);
   }
@@ -222,9 +223,9 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DocumentSupplements supplements)? loading,
-    TResult Function(DocumentSupplements supplements)? content,
-    TResult Function(DocumentSupplements supplements)? success,
+    TResult Function(SalesDocumentSupplements supplements)? loading,
+    TResult Function(SalesDocumentSupplements supplements)? content,
+    TResult Function(SalesDocumentSupplements supplements)? success,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -269,10 +270,10 @@ class _$_Loading implements _Loading {
 }
 
 abstract class _Loading implements SalesDocumentsPagesState {
-  const factory _Loading(DocumentSupplements supplements) = _$_Loading;
+  const factory _Loading(SalesDocumentSupplements supplements) = _$_Loading;
 
   @override
-  DocumentSupplements get supplements;
+  SalesDocumentSupplements get supplements;
   @override
   @JsonKey(ignore: true)
   _$LoadingCopyWith<_Loading> get copyWith =>
@@ -285,10 +286,10 @@ abstract class _$ContentCopyWith<$Res>
   factory _$ContentCopyWith(_Content value, $Res Function(_Content) then) =
       __$ContentCopyWithImpl<$Res>;
   @override
-  $Res call({DocumentSupplements supplements});
+  $Res call({SalesDocumentSupplements supplements});
 
   @override
-  $DocumentSupplementsCopyWith<$Res> get supplements;
+  $SalesDocumentSupplementsCopyWith<$Res> get supplements;
 }
 
 /// @nodoc
@@ -309,7 +310,7 @@ class __$ContentCopyWithImpl<$Res>
       supplements == freezed
           ? _value.supplements
           : supplements // ignore: cast_nullable_to_non_nullable
-              as DocumentSupplements,
+              as SalesDocumentSupplements,
     ));
   }
 }
@@ -320,7 +321,7 @@ class _$_Content implements _Content {
   const _$_Content(this.supplements);
 
   @override
-  final DocumentSupplements supplements;
+  final SalesDocumentSupplements supplements;
 
   @override
   String toString() {
@@ -348,9 +349,9 @@ class _$_Content implements _Content {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DocumentSupplements supplements) loading,
-    required TResult Function(DocumentSupplements supplements) content,
-    required TResult Function(DocumentSupplements supplements) success,
+    required TResult Function(SalesDocumentSupplements supplements) loading,
+    required TResult Function(SalesDocumentSupplements supplements) content,
+    required TResult Function(SalesDocumentSupplements supplements) success,
   }) {
     return content(supplements);
   }
@@ -358,9 +359,9 @@ class _$_Content implements _Content {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(DocumentSupplements supplements)? loading,
-    TResult Function(DocumentSupplements supplements)? content,
-    TResult Function(DocumentSupplements supplements)? success,
+    TResult Function(SalesDocumentSupplements supplements)? loading,
+    TResult Function(SalesDocumentSupplements supplements)? content,
+    TResult Function(SalesDocumentSupplements supplements)? success,
   }) {
     return content?.call(supplements);
   }
@@ -368,9 +369,9 @@ class _$_Content implements _Content {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DocumentSupplements supplements)? loading,
-    TResult Function(DocumentSupplements supplements)? content,
-    TResult Function(DocumentSupplements supplements)? success,
+    TResult Function(SalesDocumentSupplements supplements)? loading,
+    TResult Function(SalesDocumentSupplements supplements)? content,
+    TResult Function(SalesDocumentSupplements supplements)? success,
     required TResult orElse(),
   }) {
     if (content != null) {
@@ -415,10 +416,10 @@ class _$_Content implements _Content {
 }
 
 abstract class _Content implements SalesDocumentsPagesState {
-  const factory _Content(DocumentSupplements supplements) = _$_Content;
+  const factory _Content(SalesDocumentSupplements supplements) = _$_Content;
 
   @override
-  DocumentSupplements get supplements;
+  SalesDocumentSupplements get supplements;
   @override
   @JsonKey(ignore: true)
   _$ContentCopyWith<_Content> get copyWith =>
@@ -431,10 +432,10 @@ abstract class _$SuccessCopyWith<$Res>
   factory _$SuccessCopyWith(_Success value, $Res Function(_Success) then) =
       __$SuccessCopyWithImpl<$Res>;
   @override
-  $Res call({DocumentSupplements supplements});
+  $Res call({SalesDocumentSupplements supplements});
 
   @override
-  $DocumentSupplementsCopyWith<$Res> get supplements;
+  $SalesDocumentSupplementsCopyWith<$Res> get supplements;
 }
 
 /// @nodoc
@@ -455,7 +456,7 @@ class __$SuccessCopyWithImpl<$Res>
       supplements == freezed
           ? _value.supplements
           : supplements // ignore: cast_nullable_to_non_nullable
-              as DocumentSupplements,
+              as SalesDocumentSupplements,
     ));
   }
 }
@@ -466,7 +467,7 @@ class _$_Success implements _Success {
   const _$_Success(this.supplements);
 
   @override
-  final DocumentSupplements supplements;
+  final SalesDocumentSupplements supplements;
 
   @override
   String toString() {
@@ -494,9 +495,9 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(DocumentSupplements supplements) loading,
-    required TResult Function(DocumentSupplements supplements) content,
-    required TResult Function(DocumentSupplements supplements) success,
+    required TResult Function(SalesDocumentSupplements supplements) loading,
+    required TResult Function(SalesDocumentSupplements supplements) content,
+    required TResult Function(SalesDocumentSupplements supplements) success,
   }) {
     return success(supplements);
   }
@@ -504,9 +505,9 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(DocumentSupplements supplements)? loading,
-    TResult Function(DocumentSupplements supplements)? content,
-    TResult Function(DocumentSupplements supplements)? success,
+    TResult Function(SalesDocumentSupplements supplements)? loading,
+    TResult Function(SalesDocumentSupplements supplements)? content,
+    TResult Function(SalesDocumentSupplements supplements)? success,
   }) {
     return success?.call(supplements);
   }
@@ -514,9 +515,9 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(DocumentSupplements supplements)? loading,
-    TResult Function(DocumentSupplements supplements)? content,
-    TResult Function(DocumentSupplements supplements)? success,
+    TResult Function(SalesDocumentSupplements supplements)? loading,
+    TResult Function(SalesDocumentSupplements supplements)? content,
+    TResult Function(SalesDocumentSupplements supplements)? success,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -561,10 +562,10 @@ class _$_Success implements _Success {
 }
 
 abstract class _Success implements SalesDocumentsPagesState {
-  const factory _Success(DocumentSupplements supplements) = _$_Success;
+  const factory _Success(SalesDocumentSupplements supplements) = _$_Success;
 
   @override
-  DocumentSupplements get supplements;
+  SalesDocumentSupplements get supplements;
   @override
   @JsonKey(ignore: true)
   _$SuccessCopyWith<_Success> get copyWith =>

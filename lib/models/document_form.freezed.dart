@@ -27,13 +27,13 @@ class _$DocumentFormTearOff {
       String title = '',
       String? description,
       double total = 0.0,
-      @JsonKey(name: 'date') required int timestamp}) {
+      String date = ''}) {
     return _DocumentForm(
       id: id,
       title: title,
       description: description,
       total: total,
-      timestamp: timestamp,
+      date: date,
     );
   }
 
@@ -51,8 +51,7 @@ mixin _$DocumentForm {
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
-  @JsonKey(name: 'date')
-  int get timestamp => throw _privateConstructorUsedError;
+  String get date => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -70,7 +69,7 @@ abstract class $DocumentFormCopyWith<$Res> {
       String title,
       String? description,
       double total,
-      @JsonKey(name: 'date') int timestamp});
+      String date});
 }
 
 /// @nodoc
@@ -87,7 +86,7 @@ class _$DocumentFormCopyWithImpl<$Res> implements $DocumentFormCopyWith<$Res> {
     Object? title = freezed,
     Object? description = freezed,
     Object? total = freezed,
-    Object? timestamp = freezed,
+    Object? date = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -106,10 +105,10 @@ class _$DocumentFormCopyWithImpl<$Res> implements $DocumentFormCopyWith<$Res> {
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
-      timestamp: timestamp == freezed
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as int,
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -126,7 +125,7 @@ abstract class _$DocumentFormCopyWith<$Res>
       String title,
       String? description,
       double total,
-      @JsonKey(name: 'date') int timestamp});
+      String date});
 }
 
 /// @nodoc
@@ -145,7 +144,7 @@ class __$DocumentFormCopyWithImpl<$Res> extends _$DocumentFormCopyWithImpl<$Res>
     Object? title = freezed,
     Object? description = freezed,
     Object? total = freezed,
-    Object? timestamp = freezed,
+    Object? date = freezed,
   }) {
     return _then(_DocumentForm(
       id: id == freezed
@@ -164,10 +163,10 @@ class __$DocumentFormCopyWithImpl<$Res> extends _$DocumentFormCopyWithImpl<$Res>
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
-      timestamp: timestamp == freezed
-          ? _value.timestamp
-          : timestamp // ignore: cast_nullable_to_non_nullable
-              as int,
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -180,7 +179,7 @@ class _$_DocumentForm extends _DocumentForm {
       this.title = '',
       this.description,
       this.total = 0.0,
-      @JsonKey(name: 'date') required this.timestamp})
+      this.date = ''})
       : super._();
 
   factory _$_DocumentForm.fromJson(Map<String, dynamic> json) =>
@@ -197,13 +196,13 @@ class _$_DocumentForm extends _DocumentForm {
   @JsonKey()
   @override
   final double total;
+  @JsonKey()
   @override
-  @JsonKey(name: 'date')
-  final int timestamp;
+  final String date;
 
   @override
   String toString() {
-    return 'DocumentForm(id: $id, title: $title, description: $description, total: $total, timestamp: $timestamp)';
+    return 'DocumentForm(id: $id, title: $title, description: $description, total: $total, date: $date)';
   }
 
   @override
@@ -216,7 +215,7 @@ class _$_DocumentForm extends _DocumentForm {
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.total, total) &&
-            const DeepCollectionEquality().equals(other.timestamp, timestamp));
+            const DeepCollectionEquality().equals(other.date, date));
   }
 
   @override
@@ -226,7 +225,7 @@ class _$_DocumentForm extends _DocumentForm {
       const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(total),
-      const DeepCollectionEquality().hash(timestamp));
+      const DeepCollectionEquality().hash(date));
 
   @JsonKey(ignore: true)
   @override
@@ -245,7 +244,7 @@ abstract class _DocumentForm extends DocumentForm {
       String title,
       String? description,
       double total,
-      @JsonKey(name: 'date') required int timestamp}) = _$_DocumentForm;
+      String date}) = _$_DocumentForm;
   const _DocumentForm._() : super._();
 
   factory _DocumentForm.fromJson(Map<String, dynamic> json) =
@@ -260,8 +259,7 @@ abstract class _DocumentForm extends DocumentForm {
   @override
   double get total;
   @override
-  @JsonKey(name: 'date')
-  int get timestamp;
+  String get date;
   @override
   @JsonKey(ignore: true)
   _$DocumentFormCopyWith<_DocumentForm> get copyWith =>

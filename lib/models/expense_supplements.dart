@@ -1,5 +1,3 @@
-import 'package:inventory_management/models/document_form.dart';
-
 import '../source.dart';
 
 part 'expense_supplements.freezed.dart';
@@ -26,7 +24,7 @@ class ExpenseSupplements with _$ExpenseSupplements {
       date: DateTime.now(),
       notes: null,
       category: Category.empty(),
-      group: Document.expenses(DocumentForm.empty()),
+      group: const Document.expenses(DocumentForm()),
       id: '',
       amount: '');
 }

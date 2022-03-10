@@ -11,7 +11,7 @@ class RecordEditPage extends StatefulWidget {
 }
 
 class _RecordEditPageState extends State<RecordEditPage> {
-  late final RecordsPageBloc bloc;
+  late final SalesDocumentsPagesBloc bloc;
   late final bool isEditing;
 
   @override
@@ -26,13 +26,13 @@ class _RecordEditPageState extends State<RecordEditPage> {
     return Scaffold(
       appBar: PageAppBar(
           title: !isEditing ? 'New Record' : 'Edit Record',
-          actionCallbacks: isEditing ? [bloc.editRecord] : [bloc.saveRecord]),
+          actionCallbacks: isEditing ? [bloc.editSales] : [bloc.addSales]),
       body: _buildBody(),
     );
   }
 
   _buildBody() {
-    return BlocConsumer<RecordsPageBloc, RecordsPageState>(
+    return BlocConsumer<SalesDocumentsPagesBloc, SalesDocumentsPagesState>(
         bloc: bloc,
         listener: (_, state) {
           final isSuccessful =
@@ -49,28 +49,22 @@ class _RecordEditPageState extends State<RecordEditPage> {
         });
   }
 
-  Widget _buildLoading(SalesSupplements supp) {
+  Widget _buildLoading(SalesDocumentSupplements supp) {
     return const Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  Widget _buildContent(SalesSupplements supp) {
+  Widget _buildContent(SalesDocumentSupplements supp) {
     return Column(
       children: [
         ValueSelector(
           title: 'Product',
-          value: bloc.getSelectedProduct?.name,
+          value: supp.product.name,
           error: supp.errors['product'],
           isEditable: !isEditing,
           onPressed: () => push(
               ItemsSearchPage<Product>(categoryType: CategoryType.products())),
-        ),
-        DateSelector(
-          title: 'Date',
-          onDateSelected: bloc.updateDate,
-          date: supp.date,
-          isEditable: !isEditing,
         ),
         AppDivider(margin: EdgeInsets.only(bottom: 5.dh)),
         SizedBox(height: 6.dh),
@@ -84,7 +78,7 @@ class _RecordEditPageState extends State<RecordEditPage> {
           isUpdatingOnRebuild: true,
         ),
         AppTextField(
-          text: supp.sellingPrice,
+          text: supp.unitPrice,
           onChanged: bloc.updateAmount,
           hintText: 'Item selling price',
           keyboardType: TextInputType.number,
@@ -92,23 +86,16 @@ class _RecordEditPageState extends State<RecordEditPage> {
           error: supp.errors['price'],
           isUpdatingOnRebuild: true,
         ),
-        AppTextField(
-          error: supp.errors['notes'],
-          text: supp.notes,
-          onChanged: bloc.updateNotes,
-          hintText: 'Record notes',
-          keyboardType: TextInputType.multiline,
-          label: 'Notes',
-          maxLines: 3,
-        ),
       ],
     );
   }
 
   _initBloc() {
-    final recordsService = getService<RecordsService>(context);
     final itemsService = getService<ProductsService>(context);
-    bloc = RecordsPageBloc(recordsService, itemsService);
-    bloc.init(widget.groupId, widget.record);
+   // bloc = SalesDocumentPagesBloc(itemsService);
+    //bloc.init(widget.groupId, widget.record);
   }
+}
+
+class SalesDocumentPagesBloc {
 }

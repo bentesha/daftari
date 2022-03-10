@@ -10,7 +10,6 @@ class ExpensesGroupTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formattedDay = DateFormatter.convertToDOW(group.form.date);
     final formattedAmount = Utils.convertToMoneyFormat(groupAmount);
     return AppMaterialButton(
       onPressed: () =>push(GroupExpensesPage(group: group)),
@@ -18,7 +17,7 @@ class ExpensesGroupTile extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 19.dw),
       child: ListTile(
         title: AppText(group.form.title),
-        subtitle: AppText(formattedDay, opacity: .7, size: 14.dw),
+        subtitle: AppText(group.form.date, opacity: .7, size: 14.dw),
         trailing: AppText(formattedAmount, weight: FontWeight.bold),
       ),
     );

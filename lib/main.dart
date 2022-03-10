@@ -19,8 +19,7 @@ void main() async {
   final myApp = MultiProvider(
     providers: [
       _createProvider<ProductsService>(ProductsService()),
-      _createProvider<GroupsService>(GroupsService()),
-      _createProvider<RecordsService>(RecordsService()),
+      _createProvider<SalesService>(SalesService()),
       _createProvider<CategoriesService>(CategoriesService()),
       _createProvider<CategoryTypesService>(CategoryTypesService()),
       _createProvider<WriteOffsService>(WriteOffsService()),
@@ -31,10 +30,6 @@ void main() async {
     child: const MyApp(),
   );
 /* 
-  await Hive.box(Constants.kGroupsBox).clear();
-  await Hive.box(Constants.kRecordsBox).clear();
-  await Hive.box(Constants.kProductsBox).clear();
-  await Hive.box(Constants.kCategoriesBox).clear();
   await Hive.box(Constants.kOpeningStockItemsBox).clear();
   await Hive.box(Constants.kWriteOffsBox).clear();
   await Hive.box(Constants.kExpenseBox).clear(); */

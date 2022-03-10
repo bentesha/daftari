@@ -93,10 +93,10 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
       push(ItemsSearchPage<Category>(categoryType: CategoryType.expenses()));
 
   _initBloc() {
-    final groupsService = getService<GroupsService>(context);
+    final salesService = getService<SalesService>(context);
     final expensesService = getService<ExpensesService>(context);
     final categoriesService = getService<CategoriesService>(context);
-    bloc = ExpensePagesBloc(expensesService, categoriesService, groupsService);
+    bloc = ExpensePagesBloc(expensesService, categoriesService, salesService);
     bloc.init(Pages.expense_edit_page, widget.expense, widget.groupId);
   }
 }

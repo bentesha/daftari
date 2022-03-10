@@ -13,7 +13,7 @@ class DocumentEditPage extends StatefulWidget {
 }
 
 class _DocumentEditPageState extends State<DocumentEditPage> {
-  late final GroupPagesBloc bloc;
+  late final SalesDocumentsPagesBloc bloc;
   bool isEditing = false;
 
   @override
@@ -25,7 +25,7 @@ class _DocumentEditPageState extends State<DocumentEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<GroupPagesBloc, GroupPagesState>(
+    return BlocConsumer<SalesDocumentsPagesBloc, SalesDocumentsPagesState>(
         bloc: bloc,
         builder: (_, state) {
           return state.when(
@@ -41,7 +41,7 @@ class _DocumentEditPageState extends State<DocumentEditPage> {
         });
   }
 
-  Widget _buildContent(GroupSupplements supp) {
+  Widget _buildContent(SalesDocumentSupplements supp) {
     final hasTitleError = supp.errors['title_exists'] != null;
 
     return Scaffold(
@@ -51,13 +51,13 @@ class _DocumentEditPageState extends State<DocumentEditPage> {
           actionCallbacks: hasTitleError
               ? []
               : isEditing
-                  ? [bloc.editGroup]
+                  ? [bloc.editDocument]
                   : [bloc.saveGroup]),
       body: _buildGroupDetails(supp),
     );
   }
 
-  Widget _buildLoading(GroupSupplements supp) {
+  Widget _buildLoading(SalesDocumentSupplements supp) {
     return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
@@ -65,7 +65,7 @@ class _DocumentEditPageState extends State<DocumentEditPage> {
     );
   }
 
-  Widget _buildGroupDetails(GroupSupplements supp) {
+  Widget _buildGroupDetails(SalesDocumentSupplements supp) {
     final titleExistsError = supp.errors['title_exists'];
     if (titleExistsError != null) return _buildTitleError(titleExistsError);
 
@@ -99,15 +99,15 @@ class _DocumentEditPageState extends State<DocumentEditPage> {
     ));
   }
 
-  _buildGroupTitle(GroupSupplements supp) {
+  _buildGroupTitle(SalesDocumentSupplements supp) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        supp.canUseDateAsTitle ? _buildCheckBox(supp) : SizedBox(height: 15.dh),
-        supp.canUseDateAsTitle && supp.isDateAsTitle
+        supp.isDateAsTitle ? _buildCheckBox(supp) : SizedBox(height: 15.dh),
+        supp.isDateAsTitle
             ? Container()
             : AppTextField(
-                text: supp.title,
+                text: supp.document.form.title,
                 onChanged: bloc.updateTitle,
                 hintText: '',
                 keyboardType: TextInputType.name,
@@ -118,7 +118,7 @@ class _DocumentEditPageState extends State<DocumentEditPage> {
     );
   }
 
-  _buildCheckBox(GroupSupplements supp) {
+  _buildCheckBox(SalesDocumentSupplements supp) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5.dw),
       child: Row(
@@ -133,10 +133,9 @@ class _DocumentEditPageState extends State<DocumentEditPage> {
   }
 
   _initBloc() {
-    final recordsService = getService<RecordsService>(context);
-    final groupsService = getService<GroupsService>(context);
+    final salesService = getService<SalesService>(context);
     final itemsService = getService<ProductsService>(context);
-    bloc = GroupPagesBloc(groupsService, recordsService, itemsService);
-    bloc.init(group: widget.group);
+    bloc = SalesDocumentsPagesBloc(salesService, itemsService);
+    bloc.init(widget.group);
   }
 }

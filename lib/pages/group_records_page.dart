@@ -11,21 +11,20 @@ class GroupRecordsPage extends StatefulWidget {
 }
 
 class _GroupGroupPagesState extends State<GroupRecordsPage> {
-  late final GroupPagesBloc bloc;
+  late final SalesDocumentsPagesBloc bloc;
 
   @override
   void initState() {
-    final recordsService = getService<RecordsService>(context);
-    final groupsService = getService<GroupsService>(context);
+    final salesService = getService<SalesService>(context);
     final itemsService = getService<ProductsService>(context);
-    bloc = GroupPagesBloc(groupsService, recordsService, itemsService);
-    bloc.init(group: widget.group);
+    bloc = SalesDocumentsPagesBloc(salesService, itemsService);
+    bloc.init(widget.group);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GroupPagesBloc, GroupPagesState>(
+    return BlocBuilder<SalesDocumentsPagesBloc, SalesDocumentsPagesState>(
         bloc: bloc,
         builder: (_, state) {
           return state.when(
@@ -35,16 +34,16 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
         });
   }
 
-  Widget _buildLoading(GroupSupplements supp) {
+  Widget _buildLoading(SalesDocumentSupplements supp) {
     return const Center(child: CircularProgressIndicator());
   }
 
-  Widget _buildContent(GroupSupplements supp) {
+  Widget _buildContent(SalesDocumentSupplements supp) {
     return Scaffold(
-        appBar: _buildAppBar(supp.title),
+        appBar: _buildAppBar(supp.document.form.title),
         body: _buildRecords(supp),
         floatingActionButton: _buildAddItemButton(),
-        bottomNavigationBar: BottomTotalAmountTile(bloc.getGroupTotalAmount));
+        bottomNavigationBar: BottomTotalAmountTile(supp.document.form.total));
   }
 
   _buildAppBar(String title) {
@@ -55,12 +54,14 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
     );
   }
 
-  void _navigateToGroupEditPage() => push(DocumentEditPage(group: widget.group));
+  void _navigateToGroupEditPage() =>
+      push(DocumentEditPage(group: widget.group));
 
-  Widget _buildRecords(GroupSupplements supp) {
-    final recordList =/*  supp.getSpecificGroupRecords */ [];
+  Widget _buildRecords(SalesDocumentSupplements supp) {
+    final recordList =
+        supp.document.maybeWhen(sales: (_, s) => s, orElse: () => []);
 
-    return supp.recordList.isEmpty
+    return recordList.isEmpty
         ? const EmptyStateWidget(message: emptyRecordMessage)
         : ListView.separated(
             separatorBuilder: (_, index) =>
@@ -72,11 +73,12 @@ class _GroupGroupPagesState extends State<GroupRecordsPage> {
   }
 
   _buildAddItemButton() {
-    return BlocBuilder<GroupPagesBloc, GroupPagesState>(
+    return BlocBuilder<SalesDocumentsPagesBloc, SalesDocumentsPagesState>(
         bloc: bloc,
         builder: (_, state) {
           final supp = state.supplements;
-          return AddButton(nextPage: RecordEditPage(groupId: supp.id));
+          return AddButton(
+              nextPage: RecordEditPage(groupId: supp.document.form.id));
         });
   }
 

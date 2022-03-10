@@ -1,5 +1,5 @@
-import 'dart:convert';
 import '../source.dart';
+import 'constants.dart';
 import 'network_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,8 +18,8 @@ class CategoriesService extends NetworkService<Category> {
   Future<List<Category>> getAll([bool isRefreshing = false]) async {
     if (super.getList.isNotEmpty) return super.getList;
 
-    final expenseCategoriesUrl = root + 'expenseCategory';
-    final productCategoriesUrl = root + 'category';
+    const expenseCategoriesUrl = root + 'expenseCategory';
+    const productCategoriesUrl = root + 'category';
     final response1 = await http.get(Uri.parse(expenseCategoriesUrl));
     final response2 = await http.get(Uri.parse(productCategoriesUrl));
 

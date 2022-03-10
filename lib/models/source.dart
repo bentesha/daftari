@@ -1,9 +1,8 @@
 export 'product.dart';
 export 'sales.dart';
-export 'sales_supplements.dart';
 export 'product_supplements.dart';
 export 'document.dart';
-export 'document_supplements.dart';
+export 'sales_document_supplements.dart';
 export 'category.dart';
 export 'category_page_supplements.dart';
 export 'package:freezed_annotation/freezed_annotation.dart';
@@ -17,3 +16,5 @@ export 'write_off.dart';
 export 'write_off_type.dart';
 export 'opening_stock_item.dart';
 export 'opening_stock_supplements.dart';
+export 'document.dart';
+export 'document_form.dart';

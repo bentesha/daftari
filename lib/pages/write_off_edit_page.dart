@@ -83,12 +83,12 @@ class _WriteOffEditPageState extends State<WriteOffEditPage> {
   _navigateToProductsPicker() => push(const ItemsSearchPage<Product>());
 
   _initBloc() {
-    final groupsService = getService<GroupsService>(context);
+    final salesService = getService<SalesService>(context);
     final writeOffsService = getService<WriteOffsService>(context);
     final writeOffsTypesService = getService<WriteOffsTypesService>(context);
     final productsService = getService<ProductsService>(context);
     bloc = WriteOffPagesBloc(writeOffsService, writeOffsTypesService,
-        productsService, groupsService);
+        productsService, salesService);
     bloc.init(Pages.write_offs_edit_page, widget.writeOff, widget.groupId);
   }
 }

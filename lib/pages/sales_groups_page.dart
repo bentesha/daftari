@@ -8,14 +8,13 @@ class SalesRecordsPage extends StatefulWidget {
 }
 
 class _SalesRecordsPageState extends State<SalesRecordsPage> {
-  late final GroupPagesBloc bloc;
+  late final SalesDocumentsPagesBloc bloc;
 
   @override
   void initState() {
-    final recordsService = getService<RecordsService>(context);
-    final groupsService = getService<GroupsService>(context);
+    final groupsService = getService<SalesService>(context);
     final itemsService = getService<ProductsService>(context);
-    bloc = GroupPagesBloc(groupsService, recordsService, itemsService);
+    bloc = SalesDocumentsPagesBloc(groupsService, itemsService);
     bloc.init();
     super.initState();
   }
@@ -30,7 +29,7 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
   }
 
   Widget _buildBody() {
-    return BlocBuilder<GroupPagesBloc, GroupPagesState>(
+    return BlocBuilder<SalesDocumentsPagesBloc, SalesDocumentsPagesState>(
       bloc: bloc,
       builder: (_, state) {
         return state.when(
@@ -42,30 +41,29 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
     );
   }
 
-  Widget _buildLoading(GroupSupplements supp) {
+  Widget _buildLoading(SalesDocumentSupplements supp) {
     return const Center(
       child: CircularProgressIndicator(),
     );
   }
 
-  Widget _buildContent(GroupSupplements supp) {
-    final groupList = supp.groupList;
-    if (groupList.isEmpty) {
+  Widget _buildContent(SalesDocumentSupplements supp) {
+    final documents = supp.documents;
+    if (documents.isEmpty) {
       return const EmptyStateWidget(message: emptyGroupMessage);
     }
 
     return ListView.separated(
-      itemCount: groupList.length,
+      itemCount: documents.length,
       separatorBuilder: (_, __) => const AppDivider(margin: EdgeInsets.zero),
       itemBuilder: (context, index) {
-        final group = groupList[index];
-        /* final groupRecords =
-            supp.recordList.where((e) => e. == group.id).toList(); */
-
-        return GroupTile(
-            group: group,
-            recordList: /* groupRecords */const [],
-            groupAmount: supp.groupAmounts[group.form.id] ?? 0);
+        final document = documents[index];
+        return document.maybeWhen(
+            sales: (form, sales) => DocumentTile(
+                document: document,
+                recordList: sales,
+                documentAmount: document.form.total),
+            orElse: () => Container());
       },
       shrinkWrap: true,
     );

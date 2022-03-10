@@ -3,20 +3,20 @@ import '../source.dart';
 class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
     with ServicesInitializer {
   WriteOffPagesBloc(this.writeOffService, this.writeOffTypeService,
-      this.productsService, this.groupsService)
+      this.productsService, this.salesService)
       : super(WriteOffPagesState.initial()) {
-   /*  writeOffTypeService.addListener(() => _handleWriteOffTypeUpdates());
+    writeOffTypeService.addListener(() => _handleWriteOffTypeUpdates());
     writeOffService.addListener(() => _handleWriteOffUpdates());
-    groupsService.addListener(() => _handleGroupUpdates());
-    productsService.addListener(() => _handleProductUpdates()); */
+    salesService.addListener(() => _handleGroupUpdates());
+    productsService.addListener(() => _handleProductUpdates());
   }
 
   final WriteOffsService writeOffService;
   final WriteOffsTypesService writeOffTypeService;
   final ProductsService productsService;
-  final GroupsService groupsService;
+  final SalesService salesService;
 
-  /* double? getAmountByGroup(String id) => writeOffService.getDayTotalAmounts[id];
+  double? getAmountByGroup(String id) => writeOffService.getDayTotalAmounts[id];
 
   void init(Pages page, [WriteOff? writeOff, String? groupId]) {
     var supp = state.supplements;
@@ -24,7 +24,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
     initServices(
         productsService: productsService,
         writeOffService: writeOffService,
-        groupsService: groupsService);
+        salesService: salesService);
 
     _initWriteOffsGroupsPage(page);
     _initGroupWriteOffsPage(page, groupId);
@@ -41,7 +41,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
     emit(WriteOffPagesState.loading(supp));
 
     final writeOff = WriteOff(
-        groupId: supp.group.id,
+        groupId: supp.group.form.id,
         quantity: double.parse(supp.quantity),
         product: supp.product,
         id: Utils.getRandomId());
@@ -58,7 +58,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
 
     emit(WriteOffPagesState.loading(supp));
     final writeOff = WriteOff(
-        groupId: supp.group.id,
+        groupId: supp.group.form.id,
         quantity: double.parse(supp.quantity),
         product: supp.product,
         id: supp.id);
@@ -78,7 +78,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
-
+/* 
     emit(WriteOffPagesState.loading(supp));
     final group = Group(
         id: Utils.getRandomId(),
@@ -87,7 +87,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
         type: supp.group.type);
     //copying the group-id
     supp = supp.copyWith(group: group);
-    await groupsService.add(group);
+    await salesService.add(group); */
     emit(WriteOffPagesState.content(supp));
   }
 
@@ -98,7 +98,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
     emit(WriteOffPagesState.loading(supp));
-    await groupsService.edit(supp.group);
+    await salesService.edit(supp.group);
     emit(WriteOffPagesState.content(supp));
   }
 
@@ -109,9 +109,9 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
   }) {
     var supp = state.supplements;
     emit(WriteOffPagesState.loading(supp));
-    supp = supp.copyWith(
+ /*    supp = supp.copyWith(
         group: supp.group.copyWith(title: title, date: groupDate),
-        quantity: quantity ?? supp.quantity);
+        quantity: quantity ?? supp.quantity); */
     emit(WriteOffPagesState.content(supp));
   }
 
@@ -121,7 +121,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
 
     final errors = <String, String?>{};
 
-    if (isValidatingGroupDetails) {
+  /*   if (isValidatingGroupDetails) {
       errors['title'] = InputValidation.validateText(supp.group.title, 'Title');
       errors['type'] = InputValidation.validateText(supp.group.type, 'Type');
     } else {
@@ -129,7 +129,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
           InputValidation.validateText(supp.product.id, 'Product');
       errors['quantity'] =
           InputValidation.validateNumber(supp.quantity, 'Quantity');
-    }
+    } */
 
     supp = supp.copyWith(errors: errors);
     emit(WriteOffPagesState.content(supp));
@@ -141,10 +141,10 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
     if (page != Pages.write_off_groups_page) return;
 
     var supp = state.supplements;
-    final groups =
-        groupsService.getList.where((e) => e.isWriteOffGroup).toList();
+/*     final groups =
+        salesService.getList.where((e) => e.isWriteOffGroup).toList();
     final writeOffs = writeOffService.getList;
-    supp = supp.copyWith(groups: groups, writeOffs: writeOffs);
+    supp = supp.copyWith(groups: groups, writeOffs: writeOffs); */
     emit(WriteOffPagesState.content(supp));
   }
 
@@ -157,10 +157,10 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
       supp = WriteOffSupplements.empty();
     } else {
       //is viewing existing group
-      final writeOffs =
+    /*   final writeOffs =
           writeOffService.getList.where((e) => e.groupId == groupId).toList();
-      final group = groupsService.getById(groupId);
-      supp = supp.copyWith(writeOffs: writeOffs, group: group!);
+      final group = salesService.getById(groupId);
+      supp = supp.copyWith(writeOffs: writeOffs, group: group!); */
     }
     emit(WriteOffPagesState.content(supp));
   }
@@ -172,13 +172,13 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
     var supp = state.supplements;
     if (groupId != null) {
       //is adding a new expense:
-      supp = WriteOffSupplements.empty();
-      supp = supp.copyWith(group: supp.group.copyWith(id: groupId));
+/*       supp = WriteOffSupplements.empty();
+      supp = supp.copyWith(group: supp.group.copyWith(id: groupId)); */
     }
     if (writeOff != null) {
       //is editing existing expense
       supp = supp.copyWith(
-        group: supp.group.copyWith(id: writeOff.groupId),
+     /*    group: supp.group.copyWith(id: writeOff.groupId), */
         quantity: writeOff.quantity.toString(),
         id: writeOff.id,
         product: writeOff.product,
@@ -200,7 +200,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
     var supp = state.supplements;
     emit(WriteOffPagesState.loading(supp));
     final writeOffType = writeOffTypeService.getSelectedType;
-    supp = supp.copyWith(group: supp.group.copyWith(type: writeOffType.name));
+ /*    supp = supp.copyWith(group: supp.group.copyWith(type: writeOffType.name)); */
     emit(WriteOffPagesState.content(supp));
   }
 
@@ -209,7 +209,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
     var supp = state.supplements;
     emit(WriteOffPagesState.loading(supp));
     var writeOffs = writeOffService.getList
-        .where((e) => e.groupId == supp.group.id)
+        .where((e) => e.groupId == supp.group.form.id)
         .toList();
     supp = supp.copyWith(writeOffs: writeOffs);
     emit(WriteOffPagesState.content(supp));
@@ -219,8 +219,8 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
   _handleGroupUpdates() {
     var supp = state.supplements;
     emit(WriteOffPagesState.loading(supp));
-    var groups = groupsService.getList.where((e) => e.isWriteOffGroup).toList();
-    supp = supp.copyWith(groups: groups);
+ /*    var groups = salesService.getList.where((e) => e.isWriteOffGroup).toList();
+    supp = supp.copyWith(groups: groups); */
     emit(WriteOffPagesState.content(supp));
-  } */
+  }
 }

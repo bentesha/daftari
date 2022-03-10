@@ -23,11 +23,17 @@ class _$SalesTearOff {
   const _$SalesTearOff();
 
   _Sales call(
-      {double quantity = 0.0,
+      {String id = '',
+      String documentId = '',
+      double sort = 0.0,
+      double quantity = 0.0,
       double unitPrice = 0.0,
       double total = 0.0,
       required Product product}) {
     return _Sales(
+      id: id,
+      documentId: documentId,
+      sort: sort,
       quantity: quantity,
       unitPrice: unitPrice,
       total: total,
@@ -45,6 +51,9 @@ const $Sales = _$SalesTearOff();
 
 /// @nodoc
 mixin _$Sales {
+  String get id => throw _privateConstructorUsedError;
+  String get documentId => throw _privateConstructorUsedError;
+  double get sort => throw _privateConstructorUsedError;
   double get quantity => throw _privateConstructorUsedError;
   double get unitPrice => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
@@ -59,7 +68,14 @@ mixin _$Sales {
 abstract class $SalesCopyWith<$Res> {
   factory $SalesCopyWith(Sales value, $Res Function(Sales) then) =
       _$SalesCopyWithImpl<$Res>;
-  $Res call({double quantity, double unitPrice, double total, Product product});
+  $Res call(
+      {String id,
+      String documentId,
+      double sort,
+      double quantity,
+      double unitPrice,
+      double total,
+      Product product});
 
   $ProductCopyWith<$Res> get product;
 }
@@ -74,12 +90,27 @@ class _$SalesCopyWithImpl<$Res> implements $SalesCopyWith<$Res> {
 
   @override
   $Res call({
+    Object? id = freezed,
+    Object? documentId = freezed,
+    Object? sort = freezed,
     Object? quantity = freezed,
     Object? unitPrice = freezed,
     Object? total = freezed,
     Object? product = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      documentId: documentId == freezed
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String,
+      sort: sort == freezed
+          ? _value.sort
+          : sort // ignore: cast_nullable_to_non_nullable
+              as double,
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -112,7 +143,14 @@ abstract class _$SalesCopyWith<$Res> implements $SalesCopyWith<$Res> {
   factory _$SalesCopyWith(_Sales value, $Res Function(_Sales) then) =
       __$SalesCopyWithImpl<$Res>;
   @override
-  $Res call({double quantity, double unitPrice, double total, Product product});
+  $Res call(
+      {String id,
+      String documentId,
+      double sort,
+      double quantity,
+      double unitPrice,
+      double total,
+      Product product});
 
   @override
   $ProductCopyWith<$Res> get product;
@@ -129,12 +167,27 @@ class __$SalesCopyWithImpl<$Res> extends _$SalesCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? id = freezed,
+    Object? documentId = freezed,
+    Object? sort = freezed,
     Object? quantity = freezed,
     Object? unitPrice = freezed,
     Object? total = freezed,
     Object? product = freezed,
   }) {
     return _then(_Sales(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      documentId: documentId == freezed
+          ? _value.documentId
+          : documentId // ignore: cast_nullable_to_non_nullable
+              as String,
+      sort: sort == freezed
+          ? _value.sort
+          : sort // ignore: cast_nullable_to_non_nullable
+              as double,
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -159,7 +212,10 @@ class __$SalesCopyWithImpl<$Res> extends _$SalesCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Sales extends _Sales {
   const _$_Sales(
-      {this.quantity = 0.0,
+      {this.id = '',
+      this.documentId = '',
+      this.sort = 0.0,
+      this.quantity = 0.0,
       this.unitPrice = 0.0,
       this.total = 0.0,
       required this.product})
@@ -168,6 +224,15 @@ class _$_Sales extends _Sales {
   factory _$_Sales.fromJson(Map<String, dynamic> json) =>
       _$$_SalesFromJson(json);
 
+  @JsonKey()
+  @override
+  final String id;
+  @JsonKey()
+  @override
+  final String documentId;
+  @JsonKey()
+  @override
+  final double sort;
   @JsonKey()
   @override
   final double quantity;
@@ -182,7 +247,7 @@ class _$_Sales extends _Sales {
 
   @override
   String toString() {
-    return 'Sales(quantity: $quantity, unitPrice: $unitPrice, total: $total, product: $product)';
+    return 'Sales(id: $id, documentId: $documentId, sort: $sort, quantity: $quantity, unitPrice: $unitPrice, total: $total, product: $product)';
   }
 
   @override
@@ -190,6 +255,10 @@ class _$_Sales extends _Sales {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _Sales &&
+            const DeepCollectionEquality().equals(other.id, id) &&
+            const DeepCollectionEquality()
+                .equals(other.documentId, documentId) &&
+            const DeepCollectionEquality().equals(other.sort, sort) &&
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
             const DeepCollectionEquality().equals(other.unitPrice, unitPrice) &&
             const DeepCollectionEquality().equals(other.total, total) &&
@@ -199,6 +268,9 @@ class _$_Sales extends _Sales {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(id),
+      const DeepCollectionEquality().hash(documentId),
+      const DeepCollectionEquality().hash(sort),
       const DeepCollectionEquality().hash(quantity),
       const DeepCollectionEquality().hash(unitPrice),
       const DeepCollectionEquality().hash(total),
@@ -217,7 +289,10 @@ class _$_Sales extends _Sales {
 
 abstract class _Sales extends Sales {
   const factory _Sales(
-      {double quantity,
+      {String id,
+      String documentId,
+      double sort,
+      double quantity,
       double unitPrice,
       double total,
       required Product product}) = _$_Sales;
@@ -225,6 +300,12 @@ abstract class _Sales extends Sales {
 
   factory _Sales.fromJson(Map<String, dynamic> json) = _$_Sales.fromJson;
 
+  @override
+  String get id;
+  @override
+  String get documentId;
+  @override
+  double get sort;
   @override
   double get quantity;
   @override

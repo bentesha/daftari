@@ -16,8 +16,8 @@ class _ExpensesGroupsPageState extends State<ExpensesGroupsPage> {
   void initState() {
     final expensesService = getService<ExpensesService>(context);
     final categoriesService = getService<CategoriesService>(context);
-    final groupsService = getService<GroupsService>(context);
-    bloc = ExpensePagesBloc(expensesService, categoriesService, groupsService);
+    final salesService = getService<SalesService>(context);
+    bloc = ExpensePagesBloc(expensesService, categoriesService, salesService);
     bloc.init(Pages.expenses_groups_page);
     super.initState();
   }

@@ -12,7 +12,7 @@ _$_DocumentForm _$$_DocumentFormFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String? ?? '',
       description: json['description'] as String?,
       total: (json['total'] as num?)?.toDouble() ?? 0.0,
-      timestamp: json['date'] as int,
+      date: json['date'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$_DocumentFormToJson(_$_DocumentForm instance) =>
@@ -21,5 +21,5 @@ Map<String, dynamic> _$$_DocumentFormToJson(_$_DocumentForm instance) =>
       'title': instance.title,
       'description': instance.description,
       'total': instance.total,
-      'date': instance.timestamp,
+      'date': instance.date,
     };

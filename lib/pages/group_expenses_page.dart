@@ -20,8 +20,8 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
     isEditing = widget.group != null;
     final expensesService = getService<ExpensesService>(context);
     final categoriesService = getService<CategoriesService>(context);
-    final groupsService = getService<GroupsService>(context);
-    bloc = ExpensePagesBloc(expensesService, categoriesService, groupsService);
+    final salesService = getService<SalesService>(context);
+    bloc = ExpensePagesBloc(expensesService, categoriesService, salesService);
     _initAppBarAction();
     bloc.init(Pages.group_expenses_page, null, widget.group?.form.id);
     super.initState();
@@ -87,7 +87,7 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
             title: 'Date',
             onDateSelected: bloc.updateGroupDate,
             isEditable: true,
-            date: supp.group.form.date),
+            date: supp.date),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
         AppTextField(
             error: supp.errors['title'],

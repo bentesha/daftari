@@ -184,8 +184,8 @@ class __$SalesCopyWithImpl<$Res> extends _$DocumentCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Sales implements _Sales {
-  const _$_Sales(this.form, this.sales);
+class _$_Sales extends _Sales {
+  const _$_Sales(this.form, this.sales) : super._();
 
   @override
   final DocumentForm form;
@@ -292,8 +292,9 @@ class _$_Sales implements _Sales {
   }
 }
 
-abstract class _Sales implements Document {
+abstract class _Sales extends Document {
   const factory _Sales(DocumentForm form, List<Sales> sales) = _$_Sales;
+  const _Sales._() : super._();
 
   @override
   DocumentForm get form;
@@ -339,8 +340,8 @@ class __$PurchasesCopyWithImpl<$Res> extends _$DocumentCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Purchases implements _Purchases {
-  const _$_Purchases(this.form);
+class _$_Purchases extends _Purchases {
+  const _$_Purchases(this.form) : super._();
 
   @override
   final DocumentForm form;
@@ -442,8 +443,9 @@ class _$_Purchases implements _Purchases {
   }
 }
 
-abstract class _Purchases implements Document {
+abstract class _Purchases extends Document {
   const factory _Purchases(DocumentForm form) = _$_Purchases;
+  const _Purchases._() : super._();
 
   @override
   DocumentForm get form;
@@ -488,8 +490,8 @@ class __$ExpensesCopyWithImpl<$Res> extends _$DocumentCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_Expenses implements _Expenses {
-  const _$_Expenses(this.form);
+class _$_Expenses extends _Expenses {
+  const _$_Expenses(this.form) : super._();
 
   @override
   final DocumentForm form;
@@ -591,8 +593,9 @@ class _$_Expenses implements _Expenses {
   }
 }
 
-abstract class _Expenses implements Document {
+abstract class _Expenses extends Document {
   const factory _Expenses(DocumentForm form) = _$_Expenses;
+  const _Expenses._() : super._();
 
   @override
   DocumentForm get form;
@@ -638,8 +641,8 @@ class __$WriteOffsCopyWithImpl<$Res> extends _$DocumentCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_WriteOffs implements _WriteOffs {
-  const _$_WriteOffs(this.form);
+class _$_WriteOffs extends _WriteOffs {
+  const _$_WriteOffs(this.form) : super._();
 
   @override
   final DocumentForm form;
@@ -741,8 +744,9 @@ class _$_WriteOffs implements _WriteOffs {
   }
 }
 
-abstract class _WriteOffs implements Document {
+abstract class _WriteOffs extends Document {
   const factory _WriteOffs(DocumentForm form) = _$_WriteOffs;
+  const _WriteOffs._() : super._();
 
   @override
   DocumentForm get form;

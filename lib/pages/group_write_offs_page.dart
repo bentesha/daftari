@@ -76,8 +76,8 @@ class _GroupWriteOffsPageState extends State<GroupWriteOffsPage> {
             title: 'Date',
             onDateSelected: bloc.updateGroupDate,
             isEditable: true,
-            date: supp.group.form.date),
-     /*    ValueSelector(
+            date: supp.date),
+        /*    ValueSelector(
           title: 'Type',
           value: supp.group.type,
           error: supp.errors['type'],
@@ -136,12 +136,12 @@ class _GroupWriteOffsPageState extends State<GroupWriteOffsPage> {
   }
 
   _initBloc() {
-    final groupsService = getService<GroupsService>(context);
+    final salesService = getService<SalesService>(context);
     final writeOffsService = getService<WriteOffsService>(context);
     final writeOffsTypesService = getService<WriteOffsTypesService>(context);
     final productsService = getService<ProductsService>(context);
-    bloc = WriteOffPagesBloc(writeOffsService, writeOffsTypesService,
-        productsService, groupsService);
+    bloc = WriteOffPagesBloc(
+        writeOffsService, writeOffsTypesService, productsService, salesService);
     bloc.init(Pages.group_write_offs_page, null, widget.group?.form.id);
   }
 

@@ -1,5 +1,4 @@
 // ignore_for_file: invalid_annotation_target
-
 import '../source.dart';
 
 part 'sales.freezed.dart';
@@ -10,18 +9,29 @@ class Sales with _$Sales {
   const Sales._();
   // @JsonSerializable(explicitToJson: true)
   const factory Sales(
-      {@Default(0.0) double quantity,
+      {@Default('') String id,
+      @Default('') String documentId,
+      @Default(0.0) double sort,
+      @Default(0.0) double quantity,
       @Default(0.0) double unitPrice,
       @Default(0.0) double total,
       required Product product}) = _Sales;
 
   factory Sales.empty() => Sales(product: Product.empty());
 
-//    double get totalAmount => unitPrice * quantity;
-
-  // String get getSellingPrice => Utils.convertToMoneyFormat(totalAmount);
-
-  String get getFormattedTotalAmount => Utils.convertToMoneyFormat(total);
+  String get formattedTotal => Utils.convertToMoneyFormat(total);
 
   factory Sales.fromJson(Map<String, dynamic> json) => _$SalesFromJson(json);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'documentId': documentId,
+      'quantity': quantity,
+      'unitPrice': unitPrice,
+      'total': total,
+      'productId': product.id,
+    };
+  }
 }

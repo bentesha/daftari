@@ -12,6 +12,7 @@ class WriteOffSupplements with _$WriteOffSupplements {
     required String quantity,
     required Product product,
     required Document group,
+    required DateTime date,
     required String id,
   }) = _WriteOffSupplements;
 
@@ -20,9 +21,10 @@ class WriteOffSupplements with _$WriteOffSupplements {
         groups: <Document>[],
         writeOffs: <WriteOff>[],
         errors: <String, String?>{},
+        date: DateTime.now(),
         quantity: '',
         product: Product.empty(),
-        group: Document.writeOffs(DocumentForm.empty()),
+        group: const Document.writeOffs(DocumentForm()),
         id: '');
   }
 }

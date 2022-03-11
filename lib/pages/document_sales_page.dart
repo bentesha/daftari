@@ -12,9 +12,11 @@ class DocumentSalesPage extends StatefulWidget {
 
 class _DocumentSalesPageState extends State<DocumentSalesPage> {
   late final SalesDocumentsPagesBloc bloc;
+  late bool isEditing = false;
 
   @override
   void initState() {
+    isEditing = widget.document != null;
     final salesService = getService<SalesService>(context);
     final productsService = getService<ProductsService>(context);
     bloc = SalesDocumentsPagesBloc(salesService, productsService);
@@ -42,15 +44,13 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
 
   Widget _buildContent(SalesDocumentSupplements supp) {
     final form = supp.document.form;
-    final hasDocument = form.id.isNotEmpty;
 
     return Scaffold(
       appBar: PageAppBar(
-          title: hasDocument ? form.title : 'New Sales Document',
-          actionIcons: [hasDocument ? Icons.edit_outlined : Icons.done],
-          actionCallbacks: hasDocument
-              ? [/*bloc.editDocument*/ () {}]
-              : [bloc.saveDocument]),
+          title: isEditing ? form.title : 'New Sales Document',
+          actionIcons: [isEditing ? Icons.edit_outlined : Icons.done],
+          actionCallbacks:
+              isEditing ? [/*bloc.editDocument*/ () {}] : [bloc.saveDocument]),
       body: _buildGroupDetails(supp),
       floatingActionButton: const AddButton(nextPage: SalesEditPage()),
       bottomNavigationBar: BottomTotalAmountTile(form.total),
@@ -66,16 +66,16 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
   }
 
   Widget _buildGroupDetails(SalesDocumentSupplements supp) {
-    final hasDocument = supp.document.form.id.isNotEmpty;
-
     return ListView(
       children: [
-        DateSelector(
-          title: 'Date',
-          onDateSelected: bloc.updateDate,
-          date: supp.date,
-          isEditable: /*!hasDocument*/ false,
-        ),
+        !isEditing
+            ? DateSelector(
+                title: 'Date',
+                onDateSelected: bloc.updateDate,
+                date: supp.date,
+                isEditable: /*!hasDocument*/ false,
+              )
+            : Container(),
         const AppDivider(margin: EdgeInsets.zero),
         _buildGroupTitle(supp),
         _buildItems(supp)
@@ -87,7 +87,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildCheckBox(supp),
+        isEditing ? SizedBox(height: 10.dh) : _buildCheckBox(supp),
         supp.isDateAsTitle
             ? Container()
             : AppTextField(
@@ -118,22 +118,28 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
 
   _buildItems(SalesDocumentSupplements supp) {
     final document = supp.document;
-    final sales =
+    final salesList =
         document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
-    if (sales.isEmpty) return _buildEmptyState(emptyExpensesMessage);
+    if (salesList.isEmpty) return _buildEmptyState(emptyExpensesMessage);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.only(left: 19.dw),
-          child: const AppText('Sales', weight: FontWeight.bold),
-        ),
+        isEditing
+            ? Container()
+            : Padding(
+                padding: EdgeInsets.only(left: 19.dw),
+                child: const AppText('Sales', weight: FontWeight.bold),
+              ),
         ListView.separated(
-          itemCount: sales.length,
+          itemCount: salesList.length,
           separatorBuilder: (_, __) =>
               const AppDivider(margin: EdgeInsets.zero),
-          itemBuilder: (_, i) => SalesTile(sales[i]),
+          itemBuilder: (_, i) {
+            final sales = salesList[i];
+            final product = bloc.getProductById(sales.productId);
+            return SalesTile(sales, product: product);
+          },
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
         ),

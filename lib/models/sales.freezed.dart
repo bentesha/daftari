@@ -29,7 +29,7 @@ class _$SalesTearOff {
       double quantity = 0.0,
       double unitPrice = 0.0,
       double total = 0.0,
-      required Product product}) {
+      String productId = ''}) {
     return _Sales(
       id: id,
       documentId: documentId,
@@ -37,7 +37,7 @@ class _$SalesTearOff {
       quantity: quantity,
       unitPrice: unitPrice,
       total: total,
-      product: product,
+      productId: productId,
     );
   }
 
@@ -57,7 +57,7 @@ mixin _$Sales {
   double get quantity => throw _privateConstructorUsedError;
   double get unitPrice => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
-  Product get product => throw _privateConstructorUsedError;
+  String get productId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -75,9 +75,7 @@ abstract class $SalesCopyWith<$Res> {
       double quantity,
       double unitPrice,
       double total,
-      Product product});
-
-  $ProductCopyWith<$Res> get product;
+      String productId});
 }
 
 /// @nodoc
@@ -96,7 +94,7 @@ class _$SalesCopyWithImpl<$Res> implements $SalesCopyWith<$Res> {
     Object? quantity = freezed,
     Object? unitPrice = freezed,
     Object? total = freezed,
-    Object? product = freezed,
+    Object? productId = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -123,18 +121,11 @@ class _$SalesCopyWithImpl<$Res> implements $SalesCopyWith<$Res> {
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
-      product: product == freezed
-          ? _value.product
-          : product // ignore: cast_nullable_to_non_nullable
-              as Product,
+      productId: productId == freezed
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
-  }
-
-  @override
-  $ProductCopyWith<$Res> get product {
-    return $ProductCopyWith<$Res>(_value.product, (value) {
-      return _then(_value.copyWith(product: value));
-    });
   }
 }
 
@@ -150,10 +141,7 @@ abstract class _$SalesCopyWith<$Res> implements $SalesCopyWith<$Res> {
       double quantity,
       double unitPrice,
       double total,
-      Product product});
-
-  @override
-  $ProductCopyWith<$Res> get product;
+      String productId});
 }
 
 /// @nodoc
@@ -173,7 +161,7 @@ class __$SalesCopyWithImpl<$Res> extends _$SalesCopyWithImpl<$Res>
     Object? quantity = freezed,
     Object? unitPrice = freezed,
     Object? total = freezed,
-    Object? product = freezed,
+    Object? productId = freezed,
   }) {
     return _then(_Sales(
       id: id == freezed
@@ -200,10 +188,10 @@ class __$SalesCopyWithImpl<$Res> extends _$SalesCopyWithImpl<$Res>
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
-      product: product == freezed
-          ? _value.product
-          : product // ignore: cast_nullable_to_non_nullable
-              as Product,
+      productId: productId == freezed
+          ? _value.productId
+          : productId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -218,7 +206,7 @@ class _$_Sales extends _Sales {
       this.quantity = 0.0,
       this.unitPrice = 0.0,
       this.total = 0.0,
-      required this.product})
+      this.productId = ''})
       : super._();
 
   factory _$_Sales.fromJson(Map<String, dynamic> json) =>
@@ -242,12 +230,13 @@ class _$_Sales extends _Sales {
   @JsonKey()
   @override
   final double total;
+  @JsonKey()
   @override
-  final Product product;
+  final String productId;
 
   @override
   String toString() {
-    return 'Sales(id: $id, documentId: $documentId, sort: $sort, quantity: $quantity, unitPrice: $unitPrice, total: $total, product: $product)';
+    return 'Sales(id: $id, documentId: $documentId, sort: $sort, quantity: $quantity, unitPrice: $unitPrice, total: $total, productId: $productId)';
   }
 
   @override
@@ -262,7 +251,7 @@ class _$_Sales extends _Sales {
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
             const DeepCollectionEquality().equals(other.unitPrice, unitPrice) &&
             const DeepCollectionEquality().equals(other.total, total) &&
-            const DeepCollectionEquality().equals(other.product, product));
+            const DeepCollectionEquality().equals(other.productId, productId));
   }
 
   @override
@@ -274,7 +263,7 @@ class _$_Sales extends _Sales {
       const DeepCollectionEquality().hash(quantity),
       const DeepCollectionEquality().hash(unitPrice),
       const DeepCollectionEquality().hash(total),
-      const DeepCollectionEquality().hash(product));
+      const DeepCollectionEquality().hash(productId));
 
   @JsonKey(ignore: true)
   @override
@@ -295,7 +284,7 @@ abstract class _Sales extends Sales {
       double quantity,
       double unitPrice,
       double total,
-      required Product product}) = _$_Sales;
+      String productId}) = _$_Sales;
   const _Sales._() : super._();
 
   factory _Sales.fromJson(Map<String, dynamic> json) = _$_Sales.fromJson;
@@ -313,7 +302,7 @@ abstract class _Sales extends Sales {
   @override
   double get total;
   @override
-  Product get product;
+  String get productId;
   @override
   @JsonKey(ignore: true)
   _$SalesCopyWith<_Sales> get copyWith => throw _privateConstructorUsedError;

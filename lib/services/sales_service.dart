@@ -3,17 +3,19 @@ import 'package:http/http.dart' as http;
 import 'constants.dart';
 
 class SalesService extends ChangeNotifier {
+  static const url = root + 'sales';
   final _salesList = <Sales>[];
   final _documents = <Document>[];
 
   List<Document> get getList => _documents;
   List<Sales> get getSalesList => _salesList;
 
+
+
   ///Gets all sales documents from the server
   Future<void> init() async {
     if (_documents.isNotEmpty) return;
 
-    const url = root + 'sales?eager=[details.product]';
     final response = await http.get(Uri.parse(url), headers: headers);
     final documents = json.decode(response.body);
 
@@ -24,10 +26,8 @@ class SalesService extends ChangeNotifier {
   }
 
   Future<void> add(Document document) async {
-    const url = root + 'sales';
     final response = await http.post(Uri.parse(url),
         body: json.encode(document.toJson()), headers: headers);
-    log(response.body);
     final jsonDocument = json.decode(response.body);
     final _document = _getDocumentFromJson(jsonDocument);
     _documents.add(_document);
@@ -36,7 +36,6 @@ class SalesService extends ChangeNotifier {
   }
 
   Future<void> edit(Document document) async {
-    const url = root + 'sales';
     final response = await http.put(Uri.parse(url),
         body: json.encode(document.toJson()), headers: headers);
     log(response.body);

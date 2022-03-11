@@ -11,6 +11,8 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
   final SalesService salesService;
   final ProductsService productsService;
 
+  Product  getProductById(String id) => productsService.getById(id)!;
+
   void init(Pages page, {Document? document, Sales? sales}) async {
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
@@ -53,7 +55,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     form = document.form.copyWith(
         date: now.millisecondsSinceEpoch.toString(),
         title:
-            supp.isDateAsTitle ? DateFormatter.convertToDOW(now) : form.title);
+            supp.isDateAsTitle ? DateFormatter.convertToDMY(now) : form.title);
     final salesList = salesService.getSalesList;
     document = Document.sales(form, salesList);
     await salesService.add(document);
@@ -87,7 +89,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
 
     final sales = Sales.toServer(
         id: Utils.getRandomId(),
-        product: supp.product,
+        productId: supp.product.id,
         quantity: supp.parsedQuantity,
         unitPrice: supp.parsedUnitPrice);
 
@@ -104,7 +106,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
 
     final sales = Sales.toServer(
         id: supp.salesId,
-        product: supp.product,
+        productId: supp.product.id,
         quantity: supp.parsedQuantity,
         unitPrice: supp.parsedUnitPrice);
 
@@ -166,7 +168,6 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     final documents = salesService.getList;
     final temporarySales = salesService.getSalesList;
     final document = Document.sales(supp.document.form, temporarySales);
-    log('redrawn');
     supp = supp.copyWith(documents: documents, document: document);
     emit(SalesDocumentsPagesState.content(supp));
   }
@@ -210,11 +211,12 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     var supp = state.supplements;
     if (sales != null) {
       //is editing existing expense
+      final product = productsService.getById(sales.productId)!;
       supp = supp.copyWith(
           salesId: sales.id,
           quantity: sales.quantity.toString(),
           unitPrice: sales.unitPrice.toString(),
-          product: sales.product);
+          product: product);
     }
     emit(SalesDocumentsPagesState.content(supp));
   }

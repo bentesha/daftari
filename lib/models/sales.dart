@@ -17,19 +17,21 @@ class Sales with _$Sales {
       @Default(0.0) double quantity,
       @Default(0.0) double unitPrice,
       @Default(0.0) double total,
-      required Product product}) = _Sales;
-
-  factory Sales.empty() => Sales(product: Product.empty());
+      @Default('') String productId}) = _Sales;
 
   ///id is used for editing when temporarily stored in the service
   ///Id is not used when creating a sales json to be uploaded to
   ///the server.
   factory Sales.toServer(
           {required String id,
-          required Product product,
+          required String productId,
           required double unitPrice,
           required double quantity}) =>
-      Sales(product: product, unitPrice: unitPrice, quantity: quantity, id: id);
+      Sales(
+          productId: productId,
+          unitPrice: unitPrice,
+          quantity: quantity,
+          id: id);
 
   String get formattedTotal => Utils.convertToMoneyFormat(quantity * unitPrice);
 
@@ -39,7 +41,7 @@ class Sales with _$Sales {
     return {
       'quantity': quantity,
       'unitPrice': unitPrice,
-      'productId': product.id,
+      'productId': productId
     };
   }
 }

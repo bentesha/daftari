@@ -1,34 +1,26 @@
 import '../source.dart';
 
 class DocumentTile extends StatelessWidget {
-  const DocumentTile(
-      {Key? key,
-      required this.document,
-      required this.documentAmount,
-      required this.recordList})
-      : super(key: key);
+  const DocumentTile(this.document, {Key? key}) : super(key: key);
 
   final Document document;
-  final List<Sales> recordList;
-  final double documentAmount;
 
   @override
   Widget build(BuildContext context) {
-    final title = document.form.title;
-    final formatteddocumentAmount = Utils.convertToMoneyFormat(documentAmount);
+    final form = document.form;
 
     return AppTextButton(
         isFilled: false,
-        onPressed: () => push(GroupRecordsPage(document)),
+        onPressed: () => push(DocumentSalesPage(document: document)),
         padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 15.dh),
         child: Row(
           children: [
-            AppText(title, color: AppColors.secondary),
+            AppText(form.title, color: AppColors.secondary),
             Expanded(
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                AppText(formatteddocumentAmount, weight: FontWeight.bold)
+                AppText(form.formattedTotal, weight: FontWeight.bold)
               ],
             ))
           ],

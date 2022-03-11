@@ -5,25 +5,21 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
   SalesDocumentsPagesBloc(this.salesService, this.productsService)
       : super(SalesDocumentsPagesState.initial()) {
     salesService.addListener(() => _handleDocumentUpdates());
-    productsService.addListener(() => _handleItemListUpdates());
+    productsService.addListener(() => _handleProductListUpdates());
   }
 
   final SalesService salesService;
   final ProductsService productsService;
 
-  void init([Document? document]) {
+  void init(Pages page, {Document? document, Sales? sales}) async {
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
-    initServices(productsService: productsService, salesService: salesService);
+    await initServices(
+        productsService: productsService, salesService: salesService);
 
-    final documents = salesService.getList;
-    supp = supp.copyWith(documents: documents);
-
-    if (document != null) {
-      //isEditing or viewing sales document
-      supp = supp.copyWith(document: document);
-    }
-    emit(SalesDocumentsPagesState.content(supp));
+    _initSalesDocumentsPage(page);
+    _initDocumentSalesPage(page, document);
+    _initSalesEditPage(page, sales);
   }
 
   void updateAmount(String unitPrice) =>
@@ -40,6 +36,84 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
 
   void updateDateAsTitle(bool? isDateAsTitle) =>
       _updateAttributes(isDateAsTitle: isDateAsTitle);
+
+  void saveDocument() async {
+    _validate();
+
+    var supp = state.supplements;
+    final hasErrors = InputValidation.checkErrors(supp.errors);
+    if (hasErrors) return;
+
+    var document = supp.document;
+    if (supp.isDateAsTitle) {
+      final form =
+          document.form.copyWith(title: DateFormatter.convertToDOW(supp.date));
+      document = document.copyWith(form: form);
+    }
+    await salesService.add(document);
+    emit(SalesDocumentsPagesState.success(supp));
+  }
+
+  void editDocument() async {
+    _validate();
+
+    var supp = state.supplements;
+    final hasErrors = InputValidation.checkErrors(supp.errors);
+    if (hasErrors) return;
+
+    var document = supp.document;
+    if (supp.isDateAsTitle) {
+      final form =
+          document.form.copyWith(title: DateFormatter.convertToDOW(supp.date));
+      document = document.copyWith(form: form);
+    }
+
+    await salesService.edit(document);
+    emit(SalesDocumentsPagesState.success(supp));
+  }
+
+  void addSales() async {
+    _validateSalesDetails();
+
+    var supp = state.supplements;
+    final hasErrors = InputValidation.checkErrors(supp.errors);
+    if (hasErrors) return;
+
+    final sales = Sales.toServer(
+        product: supp.product,
+        quantity: supp.parsedQuantity,
+        unitPrice: supp.parsedUnitPrice);
+
+    final _documentSales =
+        supp.document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
+    final documentSales = List.from(_documentSales).whereType<Sales>().toList();
+    documentSales.add(sales);
+    final document = Document.sales(supp.document.form, documentSales);
+    supp = supp.copyWith(document: document);
+    log('in the bloc');
+    log(supp.document.toString());
+    emit(SalesDocumentsPagesState.success(supp));
+  }
+
+  void editSales() async {
+    _validateSalesDetails();
+
+    var supp = state.supplements;
+    final hasErrors = InputValidation.checkErrors(supp.errors);
+    if (hasErrors) return;
+
+    final documentSales =
+        supp.document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
+    final index = documentSales.indexWhere((sales) => sales.id == supp.salesId);
+    final oldSalesRecord = documentSales[index];
+    documentSales[index] = oldSalesRecord.copyWith(
+        product: supp.product,
+        quantity: supp.parsedQuantity,
+        unitPrice: supp.parsedUnitPrice);
+    final document = Document.sales(supp.document.form, documentSales);
+    supp = supp.copyWith(document: document);
+    emit(SalesDocumentsPagesState.success(supp));
+  }
 
   void _updateAttributes(
       {String? title,
@@ -64,81 +138,85 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     emit(SalesDocumentsPagesState.content(supp));
   }
 
-  void saveGroup() async {
-    _validate();
+  _validateSalesDetails() => _validate(false);
 
-    var supp = state.supplements;
-    final hasErrors = InputValidation.checkErrors(supp.errors);
-    if (hasErrors) return;
-
-    var form = supp.document.form;
-
-    final title =
-        supp.isDateAsTitle ? DateFormatter.convertToDOW(supp.date) : form.title;
-
-    form = supp.document.form.copyWith(title: title);
-    final sales =
-        supp.document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
-    final document = Document.sales(form, sales);
-    await salesService.add(document);
-    emit(SalesDocumentsPagesState.success(supp));
-  }
-
-  void editDocument() async {
-    var supp = state.supplements;
-    supp = supp.copyWith(errors: {});
-
-    final hasErrors = InputValidation.checkErrors(supp.errors);
-    if (hasErrors) return;
-
-    var form = supp.document.form;
-
-    final isEditing = form.id.trim().isNotEmpty;
-    final title = isEditing
-        ? supp.isDateAsTitle
-            ? DateFormatter.convertToDOW(supp.date)
-            : supp.document.form.title
-        : supp.document.form.title;
-
-    form = supp.document.form.copyWith(title: title);
-    final sales =
-        supp.document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
-    final document = Document.sales(form, sales);
-    await salesService.edit(document);
-    emit(SalesDocumentsPagesState.success(supp));
-  }
-
-  void addSales() async {}
-
-  void editSales() async {}
-
-  _validate() {
+  _validate([bool isValidatingDocumentDetails = true]) {
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
 
     final form = supp.document.form;
-
     final errors = <String, String?>{};
     final isEditing = form.id.trim().isNotEmpty;
-    if (!supp.isDateAsTitle || isEditing) {
+    if (isValidatingDocumentDetails && (!supp.isDateAsTitle || isEditing)) {
       errors['title'] = InputValidation.validateText(form.title, 'Title');
+    }
+    //validating sales details
+    if (!isValidatingDocumentDetails) {
+      errors['product'] =
+          InputValidation.validateText(supp.product.id, 'Product');
+      errors['price'] = InputValidation.validateNumber(supp.unitPrice, 'Price');
+      errors['quantity'] =
+          InputValidation.validateNumber(supp.quantity, 'Quantity');
     }
     supp = supp.copyWith(errors: errors);
     emit(SalesDocumentsPagesState.content(supp));
   }
 
+  ///updates the documents on the sales documents page
   _handleDocumentUpdates() {
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
-    final currentDocument = salesService.getCurrent;
-    supp = supp.copyWith(document: currentDocument);
+    final documents = salesService.getList;
+    supp = supp.copyWith(documents: documents);
     emit(SalesDocumentsPagesState.content(supp));
   }
 
-  _handleItemListUpdates() {
+  ///updates the chosen product on the sales edit page
+  _handleProductListUpdates() {
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
-    productsService.getList;
+    final product = productsService.getCurrent;
+    supp = supp.copyWith(product: product);
+    emit(SalesDocumentsPagesState.content(supp));
+  }
+
+  void _initSalesDocumentsPage(Pages page) {
+    if (page != Pages.sales_documents_page) return;
+
+    var supp = state.supplements;
+    final documents = salesService.getList;
+    supp = supp.copyWith(documents: documents);
+    emit(SalesDocumentsPagesState.content(supp));
+  }
+
+  void _initDocumentSalesPage(Pages page, [Document? document]) {
+    if (page != Pages.document_sales_page) return;
+
+    var supp = state.supplements;
+    if (document == null) {
+      //is adding new document
+      supp = SalesDocumentSupplements.empty();
+    } else {
+      //is viewing existing document
+      supp = supp.copyWith(document: document, date: document.form.dateTime);
+    }
+    emit(SalesDocumentsPagesState.content(supp));
+  }
+
+  void _initSalesEditPage(Pages page, [Sales? sales]) {
+    if (page != Pages.sales_edit_page) return;
+
+    log('in here');
+
+    var supp = state.supplements;
+    if (sales != null) {
+      //is editing existing expense
+      supp = supp.copyWith(
+          salesId: sales.id,
+          quantity: sales.quantity.toString(),
+          unitPrice: sales.unitPrice.toString(),
+          product: sales.product);
+    }
     emit(SalesDocumentsPagesState.content(supp));
   }
 

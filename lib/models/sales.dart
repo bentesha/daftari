@@ -2,11 +2,13 @@
 import '../source.dart';
 
 part 'sales.freezed.dart';
+
 part 'sales.g.dart';
 
 @freezed
 class Sales with _$Sales {
   const Sales._();
+
   // @JsonSerializable(explicitToJson: true)
   const factory Sales(
       {@Default('') String id,
@@ -19,6 +21,12 @@ class Sales with _$Sales {
 
   factory Sales.empty() => Sales(product: Product.empty());
 
+  factory Sales.toServer(
+          {required Product product,
+          required double unitPrice,
+          required double quantity}) =>
+      Sales(product: product, unitPrice: unitPrice, quantity: quantity);
+
   String get formattedTotal => Utils.convertToMoneyFormat(total);
 
   factory Sales.fromJson(Map<String, dynamic> json) => _$SalesFromJson(json);
@@ -26,11 +34,8 @@ class Sales with _$Sales {
   @override
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'documentId': documentId,
       'quantity': quantity,
       'unitPrice': unitPrice,
-      'total': total,
       'productId': product.id,
     };
   }

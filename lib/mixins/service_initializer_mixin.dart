@@ -10,7 +10,7 @@ mixin ServicesInitializer {
       CategoriesService? categoriesService}) async {
     if (productsService != null) productsService.init();
     if (openingStockItemsService != null) openingStockItemsService.init();
-    if (salesService != null) salesService.init();
+    if (salesService != null) await salesService.init();
     if (categoriesService != null) await categoriesService.init();
     if (expensesService != null) expensesService.init();
     if (writeOffService != null) writeOffService.init();

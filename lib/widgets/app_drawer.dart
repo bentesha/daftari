@@ -62,7 +62,7 @@ class AppDrawer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buildListTile('Dashboard', Pages.dashboard),
-          _buildListTile('Sales', Pages.sales_page),
+          _buildListTile('Sales', Pages.sales_documents_page),
           _buildListTile('Expenses', Pages.group_expenses_page),
           _buildListTile('Purchases', Pages.purchases_page),
           _buildListTile('Stock Writeoffs', Pages.stock_write_offs_page),
@@ -113,8 +113,8 @@ class AppDrawer extends StatelessWidget {
         Navigator.pop(context);
         Navigator.popUntil(context, ((route) => route.isFirst));
         return;
-      case Pages.sales_page:
-        nextPage = const SalesRecordsPage();
+      case Pages.sales_documents_page:
+        nextPage = const SalesDocumentsPage();
         break;
       case Pages.reports_page:
         nextPage = const ReportsPage();
@@ -138,18 +138,20 @@ class AppDrawer extends StatelessWidget {
 }
 
 enum Pages {
-  sales_page,
   dashboard,
-  reports_page,
-  products_categories_page,
-  expenses_categories_page,
-  purchases_page,
+  sales_documents_page,
+  sales_edit_page,
+  document_sales_page,
   expenses_groups_page,
   group_expenses_page,
   expense_edit_page,
   write_off_groups_page,
   group_write_offs_page,
   write_offs_edit_page,
+  reports_page,
+  products_categories_page,
+  expenses_categories_page,
+  purchases_page,
   stock_write_offs_page,
   products_page,
   settings_page,

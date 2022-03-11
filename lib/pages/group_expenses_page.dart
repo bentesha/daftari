@@ -13,7 +13,7 @@ class GroupExpensesPage extends StatefulWidget {
 class _GroupExpensesPageState extends State<GroupExpensesPage> {
   late final ExpensePagesBloc bloc;
   late final bool isEditing;
-  final _isActionActiveNotifier = ValueNotifier<bool>(false);
+  //final _isActionActiveNotifier = ValueNotifier<bool>(false);
 
   @override
   void initState() {
@@ -22,17 +22,16 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
     final categoriesService = getService<CategoriesService>(context);
     final salesService = getService<SalesService>(context);
     bloc = ExpensePagesBloc(expensesService, categoriesService, salesService);
-    _initAppBarAction();
+  //  _initAppBarAction();
     bloc.init(Pages.group_expenses_page, null, widget.group?.form.id);
     super.initState();
   }
 
-  _initAppBarAction() {
+/*  _initAppBarAction() {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      if (widget.group != null) _isActionActiveNotifier.value = false;
-      if (widget.group == null) _isActionActiveNotifier.value = true;
+      _isActionActiveNotifier.value = widget.group == null;
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {

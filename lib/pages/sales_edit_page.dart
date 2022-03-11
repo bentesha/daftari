@@ -1,22 +1,21 @@
 import '../source.dart';
 
-class RecordEditPage extends StatefulWidget {
-  const RecordEditPage({this.groupId, this.record, Key? key}) : super(key: key);
+class SalesEditPage extends StatefulWidget {
+  const SalesEditPage({this.sales, Key? key}) : super(key: key);
 
-  final String? groupId;
-  final Sales? record;
+  final Sales? sales;
 
   @override
-  State<RecordEditPage> createState() => _RecordEditPageState();
+  State<SalesEditPage> createState() => _SalesEditPageState();
 }
 
-class _RecordEditPageState extends State<RecordEditPage> {
+class _SalesEditPageState extends State<SalesEditPage> {
   late final SalesDocumentsPagesBloc bloc;
   late final bool isEditing;
 
   @override
   void initState() {
-    isEditing = widget.record != null;
+    isEditing = widget.sales != null;
     _initBloc();
     super.initState();
   }
@@ -25,7 +24,7 @@ class _RecordEditPageState extends State<RecordEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PageAppBar(
-          title: !isEditing ? 'New Record' : 'Edit Record',
+          title: !isEditing ? 'New Sales Record' : 'Edit Sales Record',
           actionCallbacks: isEditing ? [bloc.editSales] : [bloc.addSales]),
       body: _buildBody(),
     );
@@ -41,6 +40,9 @@ class _RecordEditPageState extends State<RecordEditPage> {
           if (isSuccessful) pop();
         },
         builder: (_, state) {
+          log('SALES EDIT PAGE');
+          log(state.toString());
+
           return state.when(
             loading: _buildLoading,
             content: _buildContent,
@@ -66,12 +68,11 @@ class _RecordEditPageState extends State<RecordEditPage> {
           onPressed: () => push(
               ItemsSearchPage<Product>(categoryType: CategoryType.products())),
         ),
-        AppDivider(margin: EdgeInsets.only(bottom: 5.dh)),
-        SizedBox(height: 6.dh),
+        AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
         AppTextField(
           text: supp.quantity,
           onChanged: bloc.updateQuantity,
-          hintText: 'Quantity sold',
+          hintText: '',
           keyboardType: TextInputType.number,
           label: 'Quantity',
           error: supp.errors['quantity'],
@@ -80,9 +81,9 @@ class _RecordEditPageState extends State<RecordEditPage> {
         AppTextField(
           text: supp.unitPrice,
           onChanged: bloc.updateAmount,
-          hintText: 'Item selling price',
+          hintText: '',
           keyboardType: TextInputType.number,
-          label: 'Price per item',
+          label: 'Unit Price',
           error: supp.errors['price'],
           isUpdatingOnRebuild: true,
         ),
@@ -91,11 +92,9 @@ class _RecordEditPageState extends State<RecordEditPage> {
   }
 
   _initBloc() {
-    final itemsService = getService<ProductsService>(context);
-   // bloc = SalesDocumentPagesBloc(itemsService);
-    //bloc.init(widget.groupId, widget.record);
+    final productsService = getService<ProductsService>(context);
+    final salesService = getService<SalesService>(context);
+    bloc = SalesDocumentsPagesBloc(salesService, productsService);
+    bloc.init(Pages.sales_edit_page, sales: widget.sales);
   }
-}
-
-class SalesDocumentPagesBloc {
 }

@@ -23,6 +23,7 @@ class _$SalesDocumentSupplementsTearOff {
       required Document document,
       required DateTime date,
       bool isDateAsTitle = true,
+      String salesId = '',
       String quantity = '',
       String unitPrice = '',
       required Product product,
@@ -32,6 +33,7 @@ class _$SalesDocumentSupplementsTearOff {
       document: document,
       date: date,
       isDateAsTitle: isDateAsTitle,
+      salesId: salesId,
       quantity: quantity,
       unitPrice: unitPrice,
       product: product,
@@ -51,6 +53,7 @@ mixin _$SalesDocumentSupplements {
   DateTime get date => throw _privateConstructorUsedError;
   bool get isDateAsTitle =>
       throw _privateConstructorUsedError; //for editing sales
+  String get salesId => throw _privateConstructorUsedError;
   String get quantity => throw _privateConstructorUsedError;
   String get unitPrice => throw _privateConstructorUsedError;
   Product get product => throw _privateConstructorUsedError;
@@ -71,6 +74,7 @@ abstract class $SalesDocumentSupplementsCopyWith<$Res> {
       Document document,
       DateTime date,
       bool isDateAsTitle,
+      String salesId,
       String quantity,
       String unitPrice,
       Product product,
@@ -95,6 +99,7 @@ class _$SalesDocumentSupplementsCopyWithImpl<$Res>
     Object? document = freezed,
     Object? date = freezed,
     Object? isDateAsTitle = freezed,
+    Object? salesId = freezed,
     Object? quantity = freezed,
     Object? unitPrice = freezed,
     Object? product = freezed,
@@ -117,6 +122,10 @@ class _$SalesDocumentSupplementsCopyWithImpl<$Res>
           ? _value.isDateAsTitle
           : isDateAsTitle // ignore: cast_nullable_to_non_nullable
               as bool,
+      salesId: salesId == freezed
+          ? _value.salesId
+          : salesId // ignore: cast_nullable_to_non_nullable
+              as String,
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -163,6 +172,7 @@ abstract class _$SalesDocumentSupplementsCopyWith<$Res>
       Document document,
       DateTime date,
       bool isDateAsTitle,
+      String salesId,
       String quantity,
       String unitPrice,
       Product product,
@@ -192,6 +202,7 @@ class __$SalesDocumentSupplementsCopyWithImpl<$Res>
     Object? document = freezed,
     Object? date = freezed,
     Object? isDateAsTitle = freezed,
+    Object? salesId = freezed,
     Object? quantity = freezed,
     Object? unitPrice = freezed,
     Object? product = freezed,
@@ -214,6 +225,10 @@ class __$SalesDocumentSupplementsCopyWithImpl<$Res>
           ? _value.isDateAsTitle
           : isDateAsTitle // ignore: cast_nullable_to_non_nullable
               as bool,
+      salesId: salesId == freezed
+          ? _value.salesId
+          : salesId // ignore: cast_nullable_to_non_nullable
+              as String,
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -236,16 +251,18 @@ class __$SalesDocumentSupplementsCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_SalesDocumentSupplements implements _SalesDocumentSupplements {
+class _$_SalesDocumentSupplements extends _SalesDocumentSupplements {
   const _$_SalesDocumentSupplements(
       {this.documents = const [],
       required this.document,
       required this.date,
       this.isDateAsTitle = true,
+      this.salesId = '',
       this.quantity = '',
       this.unitPrice = '',
       required this.product,
-      this.errors = const {}});
+      this.errors = const {}})
+      : super._();
 
   @JsonKey()
   @override
@@ -259,6 +276,9 @@ class _$_SalesDocumentSupplements implements _SalesDocumentSupplements {
   final bool isDateAsTitle;
   @JsonKey()
   @override //for editing sales
+  final String salesId;
+  @JsonKey()
+  @override
   final String quantity;
   @JsonKey()
   @override
@@ -271,7 +291,7 @@ class _$_SalesDocumentSupplements implements _SalesDocumentSupplements {
 
   @override
   String toString() {
-    return 'SalesDocumentSupplements(documents: $documents, document: $document, date: $date, isDateAsTitle: $isDateAsTitle, quantity: $quantity, unitPrice: $unitPrice, product: $product, errors: $errors)';
+    return 'SalesDocumentSupplements(documents: $documents, document: $document, date: $date, isDateAsTitle: $isDateAsTitle, salesId: $salesId, quantity: $quantity, unitPrice: $unitPrice, product: $product, errors: $errors)';
   }
 
   @override
@@ -284,6 +304,7 @@ class _$_SalesDocumentSupplements implements _SalesDocumentSupplements {
             const DeepCollectionEquality().equals(other.date, date) &&
             const DeepCollectionEquality()
                 .equals(other.isDateAsTitle, isDateAsTitle) &&
+            const DeepCollectionEquality().equals(other.salesId, salesId) &&
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
             const DeepCollectionEquality().equals(other.unitPrice, unitPrice) &&
             const DeepCollectionEquality().equals(other.product, product) &&
@@ -297,6 +318,7 @@ class _$_SalesDocumentSupplements implements _SalesDocumentSupplements {
       const DeepCollectionEquality().hash(document),
       const DeepCollectionEquality().hash(date),
       const DeepCollectionEquality().hash(isDateAsTitle),
+      const DeepCollectionEquality().hash(salesId),
       const DeepCollectionEquality().hash(quantity),
       const DeepCollectionEquality().hash(unitPrice),
       const DeepCollectionEquality().hash(product),
@@ -309,16 +331,18 @@ class _$_SalesDocumentSupplements implements _SalesDocumentSupplements {
           this, _$identity);
 }
 
-abstract class _SalesDocumentSupplements implements SalesDocumentSupplements {
+abstract class _SalesDocumentSupplements extends SalesDocumentSupplements {
   const factory _SalesDocumentSupplements(
       {List<Document> documents,
       required Document document,
       required DateTime date,
       bool isDateAsTitle,
+      String salesId,
       String quantity,
       String unitPrice,
       required Product product,
       Map<String, String?> errors}) = _$_SalesDocumentSupplements;
+  const _SalesDocumentSupplements._() : super._();
 
   @override
   List<Document> get documents;
@@ -329,6 +353,8 @@ abstract class _SalesDocumentSupplements implements SalesDocumentSupplements {
   @override
   bool get isDateAsTitle;
   @override //for editing sales
+  String get salesId;
+  @override
   String get quantity;
   @override
   String get unitPrice;

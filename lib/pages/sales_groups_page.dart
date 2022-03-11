@@ -1,21 +1,21 @@
 import '../source.dart';
 
-class SalesRecordsPage extends StatefulWidget {
-  const SalesRecordsPage({Key? key}) : super(key: key);
+class SalesDocumentsPage extends StatefulWidget {
+  const SalesDocumentsPage({Key? key}) : super(key: key);
 
   @override
-  State<SalesRecordsPage> createState() => _SalesRecordsPageState();
+  State<SalesDocumentsPage> createState() => _SalesDocumentsPageState();
 }
 
-class _SalesRecordsPageState extends State<SalesRecordsPage> {
+class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
   late final SalesDocumentsPagesBloc bloc;
 
   @override
   void initState() {
     final groupsService = getService<SalesService>(context);
-    final itemsService = getService<ProductsService>(context);
-    bloc = SalesDocumentsPagesBloc(groupsService, itemsService);
-    bloc.init();
+    final productsService = getService<ProductsService>(context);
+    bloc = SalesDocumentsPagesBloc(groupsService, productsService);
+    bloc.init(Pages.sales_documents_page);
     super.initState();
   }
 
@@ -24,7 +24,7 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
     return Scaffold(
       body: _buildBody(),
       appBar: const PageAppBar(title: 'Sales'),
-      floatingActionButton: const AddButton(nextPage: DocumentEditPage()),
+      floatingActionButton: _buildFloatingButton(),
     );
   }
 
@@ -50,7 +50,7 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
   Widget _buildContent(SalesDocumentSupplements supp) {
     final documents = supp.documents;
     if (documents.isEmpty) {
-      return const EmptyStateWidget(message: emptyGroupMessage);
+      return const EmptyStateWidget(message: emptySalesDocumentsMessage);
     }
 
     return ListView.separated(
@@ -59,16 +59,24 @@ class _SalesRecordsPageState extends State<SalesRecordsPage> {
       itemBuilder: (context, index) {
         final document = documents[index];
         return document.maybeWhen(
-            sales: (form, sales) => DocumentTile(
-                document: document,
-                recordList: sales,
-                documentAmount: document.form.total),
+            sales: (_, __) => DocumentTile(document),
             orElse: () => Container());
       },
       shrinkWrap: true,
     );
   }
 
-  static const emptyGroupMessage =
+  _buildFloatingButton() {
+    return BlocBuilder<SalesDocumentsPagesBloc, SalesDocumentsPagesState>(
+        bloc: bloc,
+        builder: (_, state) {
+          final isLoading =
+              state.maybeWhen(loading: (_) => true, orElse: () => false);
+          if (isLoading) return Container();
+          return const AddButton(nextPage: DocumentSalesPage());
+        });
+  }
+
+  static const emptySalesDocumentsMessage =
       'No sales record has been added. Add one by clicking the button on a bottom-right corner.';
 }

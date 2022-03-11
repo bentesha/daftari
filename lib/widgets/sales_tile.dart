@@ -24,7 +24,7 @@ class SalesTile extends StatelessWidget {
             ],
           ),
           SizedBox(height: 5.dh),
-          AppText('${sales.quantity} ${item.unit} @ ${sales.total}',
+          AppText('${sales.quantity} ${item.unit} @ ${sales.unitPrice}',
               opacity: .7, size: 14.dw)
         ],
       ),

@@ -27,8 +27,6 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
     return BlocConsumer<SalesDocumentsPagesBloc, SalesDocumentsPagesState>(
         bloc: bloc,
         builder: (_, state) {
-          log('DOCUMENT SALES PAGE');
-          log(state.toString());
           return state.when(
               loading: _buildLoading,
               content: _buildContent,
@@ -120,8 +118,6 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
 
   _buildItems(SalesDocumentSupplements supp) {
     final document = supp.document;
-    log('in the document sales page');
-    log(supp.document.toString());
     final sales =
         document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
     if (sales.isEmpty) return _buildEmptyState(emptyExpensesMessage);

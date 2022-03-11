@@ -14,9 +14,10 @@ class Document with _$Document {
   factory Document.empty() => const Document.sales(DocumentForm(), <Sales>[]);
 
   Map<String, dynamic> toJson() {
-    final json = form.toJson();
+    final jsonDocument = form.convertToJson();
     final details = maybeWhen(sales: (_, sales) => sales, orElse: () => []);
-    json['details'] = details.map((e) => e.toJson()).toList();
-    return json;
+    jsonDocument['details'] = details.map((e) => e.convertToJson()).toList();
+    log(jsonDocument.toString());
+    return jsonDocument;
   }
 }

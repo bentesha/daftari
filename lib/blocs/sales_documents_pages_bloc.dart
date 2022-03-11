@@ -44,12 +44,18 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
+    emit(SalesDocumentsPagesState.loading(supp));
+
     var document = supp.document;
-    if (supp.isDateAsTitle) {
-      final form =
-          document.form.copyWith(title: DateFormatter.convertToDOW(supp.date));
-      document = document.copyWith(form: form);
-    }
+    var form = document.form;
+    final now = DateTime.now();
+
+    form = document.form.copyWith(
+        date: now.millisecondsSinceEpoch.toString(),
+        title:
+            supp.isDateAsTitle ? DateFormatter.convertToDOW(now) : form.title);
+    final salesList = salesService.getSalesList;
+    document = Document.sales(form, salesList);
     await salesService.add(document);
     emit(SalesDocumentsPagesState.success(supp));
   }
@@ -80,18 +86,12 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     if (hasErrors) return;
 
     final sales = Sales.toServer(
+        id: Utils.getRandomId(),
         product: supp.product,
         quantity: supp.parsedQuantity,
         unitPrice: supp.parsedUnitPrice);
 
-    final _documentSales =
-        supp.document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
-    final documentSales = List.from(_documentSales).whereType<Sales>().toList();
-    documentSales.add(sales);
-    final document = Document.sales(supp.document.form, documentSales);
-    supp = supp.copyWith(document: document);
-    log('in the bloc');
-    log(supp.document.toString());
+    salesService.addSalesTemporarily(sales);
     emit(SalesDocumentsPagesState.success(supp));
   }
 
@@ -102,16 +102,13 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
-    final documentSales =
-        supp.document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
-    final index = documentSales.indexWhere((sales) => sales.id == supp.salesId);
-    final oldSalesRecord = documentSales[index];
-    documentSales[index] = oldSalesRecord.copyWith(
+    final sales = Sales.toServer(
+        id: supp.salesId,
         product: supp.product,
         quantity: supp.parsedQuantity,
         unitPrice: supp.parsedUnitPrice);
-    final document = Document.sales(supp.document.form, documentSales);
-    supp = supp.copyWith(document: document);
+
+    salesService.editTemporarySales(sales);
     emit(SalesDocumentsPagesState.success(supp));
   }
 
@@ -167,7 +164,10 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
     final documents = salesService.getList;
-    supp = supp.copyWith(documents: documents);
+    final temporarySales = salesService.getSalesList;
+    final document = Document.sales(supp.document.form, temporarySales);
+    log('redrawn');
+    supp = supp.copyWith(documents: documents, document: document);
     emit(SalesDocumentsPagesState.content(supp));
   }
 
@@ -198,6 +198,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
       supp = SalesDocumentSupplements.empty();
     } else {
       //is viewing existing document
+      salesService.initDocument(document);
       supp = supp.copyWith(document: document, date: document.form.dateTime);
     }
     emit(SalesDocumentsPagesState.content(supp));
@@ -205,8 +206,6 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
 
   void _initSalesEditPage(Pages page, [Sales? sales]) {
     if (page != Pages.sales_edit_page) return;
-
-    log('in here');
 
     var supp = state.supplements;
     if (sales != null) {

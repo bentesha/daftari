@@ -3,11 +3,11 @@ import 'package:http/http.dart' as http;
 import 'constants.dart';
 
 class SalesService extends ChangeNotifier {
-  var _document = Document.empty();
+  final _salesList = <Sales>[];
   final _documents = <Document>[];
 
   List<Document> get getList => _documents;
-  Document get getCurrent => _document;
+  List<Sales> get getSalesList => _salesList;
 
   ///Gets all sales documents from the server
   Future<void> init() async {
@@ -31,6 +31,7 @@ class SalesService extends ChangeNotifier {
     final jsonDocument = json.decode(response.body);
     final _document = _getDocumentFromJson(jsonDocument);
     _documents.add(_document);
+    _salesList.clear();
     notifyListeners();
   }
 
@@ -47,7 +48,20 @@ class SalesService extends ChangeNotifier {
     notifyListeners();
   }
 
-  initDocument(Document document)=> _document = document;
+  initDocument(Document document) =>
+      _salesList ==
+      document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
+
+  addSalesTemporarily(Sales sales) {
+    _salesList.add(sales);
+    notifyListeners();
+  }
+
+  editTemporarySales(Sales sales) {
+    final index = _salesList.indexWhere((s) => s.id == sales.id);
+    _salesList[index] = sales;
+    notifyListeners();
+  }
 
   Document _getDocumentFromJson(var jsonDocument) {
     final form = DocumentForm.fromJson(jsonDocument);
@@ -57,7 +71,6 @@ class SalesService extends ChangeNotifier {
       final sales = Sales.fromJson(item);
       salesList.add(sales);
     }
-
     return Document.sales(form, salesList);
   }
 }

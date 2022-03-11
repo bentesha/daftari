@@ -21,4 +21,12 @@ class DocumentForm with _$DocumentForm {
   DateTime get dateTime => DateTime.parse(date);
 
   String get formattedTotal => Utils.convertToMoneyFormat(total);
+
+  Map<String, dynamic> convertToJson() {
+    return {
+      'title': title,
+      'description': description,
+      'date': date,
+    };
+  }
 }

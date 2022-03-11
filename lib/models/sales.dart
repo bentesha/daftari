@@ -21,18 +21,21 @@ class Sales with _$Sales {
 
   factory Sales.empty() => Sales(product: Product.empty());
 
+  ///id is used for editing when temporarily stored in the service
+  ///Id is not used when creating a sales json to be uploaded to
+  ///the server.
   factory Sales.toServer(
-          {required Product product,
+          {required String id,
+          required Product product,
           required double unitPrice,
           required double quantity}) =>
-      Sales(product: product, unitPrice: unitPrice, quantity: quantity);
+      Sales(product: product, unitPrice: unitPrice, quantity: quantity, id: id);
 
-  String get formattedTotal => Utils.convertToMoneyFormat(total);
+  String get formattedTotal => Utils.convertToMoneyFormat(quantity * unitPrice);
 
   factory Sales.fromJson(Map<String, dynamic> json) => _$SalesFromJson(json);
 
-  @override
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> convertToJson() {
     return {
       'quantity': quantity,
       'unitPrice': unitPrice,

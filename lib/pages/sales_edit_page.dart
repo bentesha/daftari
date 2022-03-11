@@ -40,9 +40,6 @@ class _SalesEditPageState extends State<SalesEditPage> {
           if (isSuccessful) pop();
         },
         builder: (_, state) {
-          log('SALES EDIT PAGE');
-          log(state.toString());
-
           return state.when(
             loading: _buildLoading,
             content: _buildContent,

@@ -20,8 +20,10 @@ class Sales with _$Sales {
       @Default('') String productId}) = _Sales;
 
   ///id is used for editing when temporarily stored in the service
-  ///Id is not used when creating a sales json to be uploaded to
-  ///the server.
+  ///this id is not used when creating a sales json to be uploaded to
+  ///the server. Sales id are from the server after a successful get, post or put
+  ///request. These sales are deleted after a successful operation and a
+  ///documents list is replaced with one from the server.
   factory Sales.toServer(
           {required String id,
           required String productId,

@@ -36,7 +36,7 @@ class SalesService extends ChangeNotifier {
   }
 
   Future<void> edit(Document document) async {
-    final response = await http.put(Uri.parse(url),
+    final response = await http.put(Uri.parse(url + '/${document.form.id}'),
         body: json.encode(document.toJson()), headers: headers);
     log(response.body);
     final jsonDocument = json.decode(response.body);
@@ -44,6 +44,7 @@ class SalesService extends ChangeNotifier {
 
     final index = _documents.indexWhere((d) => d.form.id == document.form.id);
     _documents[index] = _document;
+    _salesList.clear();
     notifyListeners();
   }
 

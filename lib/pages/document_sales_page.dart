@@ -1,6 +1,8 @@
 import '../source.dart';
 import '../widgets/bottom_total_amount_tile.dart';
 
+enum Action { viewing, editing, adding }
+
 class DocumentSalesPage extends StatefulWidget {
   const DocumentSalesPage({this.document, Key? key}) : super(key: key);
 
@@ -12,7 +14,7 @@ class DocumentSalesPage extends StatefulWidget {
 
 class _DocumentSalesPageState extends State<DocumentSalesPage> {
   late final SalesDocumentsPagesBloc bloc;
-  late bool isEditing = false;
+  late bool isEditing;
 
   @override
   void initState() {
@@ -67,6 +69,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
 
   Widget _buildGroupDetails(SalesDocumentSupplements supp) {
     return ListView(
+  //    padding: EdgeInsets.only(top: 10.dh),
       children: [
         !isEditing
             ? DateSelector(
@@ -87,7 +90,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        isEditing ? SizedBox(height: 10.dh) : _buildCheckBox(supp),
+        isEditing ? Container() : _buildCheckBox(supp),
         supp.isDateAsTitle
             ? Container()
             : AppTextField(
@@ -142,6 +145,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
           },
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
         ),
       ],
     );

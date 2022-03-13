@@ -194,11 +194,8 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     if (page != Pages.document_sales_page) return;
 
     var supp = state.supplements;
-    if (document == null) {
-      //is adding new document
-      supp = SalesDocumentSupplements.empty();
-    } else {
-      //is viewing existing document
+    if (document != null) {
+      //is viewing / editing existing document
       salesService.initDocument(document);
       supp = supp.copyWith(document: document, date: document.form.dateTime);
     }
@@ -210,7 +207,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
 
     var supp = state.supplements;
     if (sales != null) {
-      //is editing existing expense
+      //is viewing / editing existing sales record
       final product = productsService.getById(sales.productId)!;
       supp = supp.copyWith(
           salesId: sales.id,

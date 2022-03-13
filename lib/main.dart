@@ -3,6 +3,7 @@ import 'source.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 //TODO test as many times as you can.
+//TODO when back button is pressed should check if the sales list is empty
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -104,6 +104,8 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
+    log(supp.salesId);
+
     final sales = Sales.toServer(
         id: supp.salesId,
         productId: supp.product.id,

@@ -4,13 +4,12 @@ import 'constants.dart';
 
 class SalesService extends ChangeNotifier {
   static const url = root + 'sales';
-  final _salesList = <Sales>[];
+  var _salesList = <Sales>[];
   final _documents = <Document>[];
 
   List<Document> get getList => _documents;
+
   List<Sales> get getSalesList => _salesList;
-
-
 
   ///Gets all sales documents from the server
   Future<void> init() async {
@@ -48,8 +47,7 @@ class SalesService extends ChangeNotifier {
     notifyListeners();
   }
 
-  initDocument(Document document) =>
-      _salesList ==
+  initDocument(Document document) => _salesList =
       document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
 
   addSalesTemporarily(Sales sales) {

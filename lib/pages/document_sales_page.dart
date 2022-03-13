@@ -1,7 +1,7 @@
 import '../source.dart';
 import '../widgets/bottom_total_amount_tile.dart';
 
-enum Action { viewing, editing, adding }
+enum PageActions { viewing, editing, adding }
 
 class DocumentSalesPage extends StatefulWidget {
   const DocumentSalesPage({this.document, Key? key}) : super(key: key);

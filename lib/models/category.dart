@@ -3,13 +3,15 @@ import '../source.dart';
 part 'category.freezed.dart';
 part 'category.g.dart';
 
+//TODO can't add a new category with an error related to json.
+
 @freezed
 class Category with _$Category {
   const Category._();
 
   const factory Category(
       {required String id,
-      required String? description,
+     @JsonKey(includeIfNull: true) required String? description,
       required String type,
       required String name}) = _Category;
 
@@ -19,6 +21,5 @@ class Category with _$Category {
   factory Category.fromJson(Map<String, dynamic> json) =>
       _$CategoryFromJson(json);
 
-  @override
-  Map<String, dynamic> toJson() => {'name': name, 'description': description};
+  Map<String, String?> createJson() => {'name': name, 'description': description};
 }

@@ -20,13 +20,10 @@ class NetworkService<T> extends ChangeNotifier {
 
     for (var item in results) {
       final index = _list.indexWhere((e) => e.id == item['id']);
-      if (index == -1) _list.add(Product.fromJson(item));
+      if (index == -1) _list.add(_getValueFromJson(item));
     }
     return _list.whereType<T>().toList();
   }
-
-/*   ///updates the items list so that getList methods works for listeners
-  void refresh() => getAll(true); */
 
   void updateAttributes(List<T> list, {String? currentId}) {
     _list = list;
@@ -41,21 +38,28 @@ class NetworkService<T> extends ChangeNotifier {
 
   Future<void> add(var item) async {
     final response = await http.post(Uri.parse(_url),
-        body: json.encode(item.toJson()), headers: headers);
-    log(response.body);
-    _current = item;
-    _list.add(item);
+        body: json.encode(item.createJson()), headers: headers);
+    //  log(response.body);
+    final body = json.decode(response.body);
+    _current = _getValueFromJson(body);
+    _list.add(_current);
     notifyListeners();
   }
 
   Future<void> edit(var item, [String? url]) async {
     log((url ?? _url) + '/${item.id}');
     final response = await http.put(Uri.parse((url ?? _url) + '/${item.id}'),
-        body: json.encode(item.toJson()), headers: headers);
-    log(response.body);
+        body: json.encode(item.createJson()), headers: headers);
+    // log(response.body);
     final index = _list.indexWhere((e) => e.id == item.id);
-    _list[index] = item;
+    final body = json.decode(response.body);
+    _list[index] = _getValueFromJson(body);
     notifyListeners();
+  }
+
+  dynamic _getValueFromJson(var json) {
+    if (T == Product) return Product.fromJson(json);
+    if (T == Category) return Category.fromJson(json);
   }
 
   Future<void> delete(String id, [String? url]) async {

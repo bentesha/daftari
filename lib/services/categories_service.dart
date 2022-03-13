@@ -36,11 +36,16 @@ class CategoriesService extends NetworkService<Category> {
   @override
   Future<void> add(var item) async {
     final url = root + (_isExpenses ? 'expenseCategory' : 'category');
-    await http.post(Uri.parse(url),
-        body: json.encode(item.toJson()), headers: headers);
+    final response = await http.post(Uri.parse(url),
+        body: json.encode(item.createJson()), headers: headers);
+
+    log('response body')
+;
+    log(response.body.toString());
+    final jsonCategory = json.decode(response.body);
 
     final list = super.getList;
-    list.add(item);
+    list.add(Category.fromJson(jsonCategory));
     super.updateAttributes(list, currentId: item.id);
     notifyListeners();
   }

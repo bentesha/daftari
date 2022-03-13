@@ -4,7 +4,7 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
   ProductPageBloc(this.productsService, this.categoriesService,
       this.openingStockItemsService)
       : super(ProductPageState.initial()) {
-    productsService.addListener(() => _handleproductUpdates());
+    productsService.addListener(() => _handleProductUpdates());
     categoriesService.addListener(() => _handleCategoryUpdates());
   }
 
@@ -133,7 +133,7 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     emit(ProductPageState.content(supp));
   }
 
-  _handleproductUpdates() {
+  _handleProductUpdates() {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
     final products = productsService.getList;

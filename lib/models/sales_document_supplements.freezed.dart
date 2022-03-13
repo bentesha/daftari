@@ -27,6 +27,7 @@ class _$SalesDocumentSupplementsTearOff {
       String quantity = '',
       String unitPrice = '',
       required Product product,
+      PageActions action = PageActions.viewing,
       Map<String, String?> errors = const {}}) {
     return _SalesDocumentSupplements(
       documents: documents,
@@ -37,6 +38,7 @@ class _$SalesDocumentSupplementsTearOff {
       quantity: quantity,
       unitPrice: unitPrice,
       product: product,
+      action: action,
       errors: errors,
     );
   }
@@ -56,7 +58,8 @@ mixin _$SalesDocumentSupplements {
   String get salesId => throw _privateConstructorUsedError;
   String get quantity => throw _privateConstructorUsedError;
   String get unitPrice => throw _privateConstructorUsedError;
-  Product get product => throw _privateConstructorUsedError;
+  Product get product => throw _privateConstructorUsedError; //for both
+  PageActions get action => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -78,6 +81,7 @@ abstract class $SalesDocumentSupplementsCopyWith<$Res> {
       String quantity,
       String unitPrice,
       Product product,
+      PageActions action,
       Map<String, String?> errors});
 
   $DocumentCopyWith<$Res> get document;
@@ -103,6 +107,7 @@ class _$SalesDocumentSupplementsCopyWithImpl<$Res>
     Object? quantity = freezed,
     Object? unitPrice = freezed,
     Object? product = freezed,
+    Object? action = freezed,
     Object? errors = freezed,
   }) {
     return _then(_value.copyWith(
@@ -138,6 +143,10 @@ class _$SalesDocumentSupplementsCopyWithImpl<$Res>
           ? _value.product
           : product // ignore: cast_nullable_to_non_nullable
               as Product,
+      action: action == freezed
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as PageActions,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -176,6 +185,7 @@ abstract class _$SalesDocumentSupplementsCopyWith<$Res>
       String quantity,
       String unitPrice,
       Product product,
+      PageActions action,
       Map<String, String?> errors});
 
   @override
@@ -206,6 +216,7 @@ class __$SalesDocumentSupplementsCopyWithImpl<$Res>
     Object? quantity = freezed,
     Object? unitPrice = freezed,
     Object? product = freezed,
+    Object? action = freezed,
     Object? errors = freezed,
   }) {
     return _then(_SalesDocumentSupplements(
@@ -241,6 +252,10 @@ class __$SalesDocumentSupplementsCopyWithImpl<$Res>
           ? _value.product
           : product // ignore: cast_nullable_to_non_nullable
               as Product,
+      action: action == freezed
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as PageActions,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -261,6 +276,7 @@ class _$_SalesDocumentSupplements extends _SalesDocumentSupplements {
       this.quantity = '',
       this.unitPrice = '',
       required this.product,
+      this.action = PageActions.viewing,
       this.errors = const {}})
       : super._();
 
@@ -286,12 +302,15 @@ class _$_SalesDocumentSupplements extends _SalesDocumentSupplements {
   @override
   final Product product;
   @JsonKey()
+  @override //for both
+  final PageActions action;
+  @JsonKey()
   @override
   final Map<String, String?> errors;
 
   @override
   String toString() {
-    return 'SalesDocumentSupplements(documents: $documents, document: $document, date: $date, isDateAsTitle: $isDateAsTitle, salesId: $salesId, quantity: $quantity, unitPrice: $unitPrice, product: $product, errors: $errors)';
+    return 'SalesDocumentSupplements(documents: $documents, document: $document, date: $date, isDateAsTitle: $isDateAsTitle, salesId: $salesId, quantity: $quantity, unitPrice: $unitPrice, product: $product, action: $action, errors: $errors)';
   }
 
   @override
@@ -308,6 +327,7 @@ class _$_SalesDocumentSupplements extends _SalesDocumentSupplements {
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
             const DeepCollectionEquality().equals(other.unitPrice, unitPrice) &&
             const DeepCollectionEquality().equals(other.product, product) &&
+            const DeepCollectionEquality().equals(other.action, action) &&
             const DeepCollectionEquality().equals(other.errors, errors));
   }
 
@@ -322,6 +342,7 @@ class _$_SalesDocumentSupplements extends _SalesDocumentSupplements {
       const DeepCollectionEquality().hash(quantity),
       const DeepCollectionEquality().hash(unitPrice),
       const DeepCollectionEquality().hash(product),
+      const DeepCollectionEquality().hash(action),
       const DeepCollectionEquality().hash(errors));
 
   @JsonKey(ignore: true)
@@ -341,6 +362,7 @@ abstract class _SalesDocumentSupplements extends SalesDocumentSupplements {
       String quantity,
       String unitPrice,
       required Product product,
+      PageActions action,
       Map<String, String?> errors}) = _$_SalesDocumentSupplements;
   const _SalesDocumentSupplements._() : super._();
 
@@ -360,6 +382,8 @@ abstract class _SalesDocumentSupplements extends SalesDocumentSupplements {
   String get unitPrice;
   @override
   Product get product;
+  @override //for both
+  PageActions get action;
   @override
   Map<String, String?> get errors;
   @override

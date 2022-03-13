@@ -24,7 +24,7 @@ class _$CategoryTearOff {
 
   _Category call(
       {required String id,
-      required String? description,
+      @JsonKey(includeIfNull: true) required String? description,
       required String type,
       required String name}) {
     return _Category(
@@ -46,6 +46,7 @@ const $Category = _$CategoryTearOff();
 /// @nodoc
 mixin _$Category {
   String get id => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: true)
   String? get description => throw _privateConstructorUsedError;
   String get type => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
@@ -60,7 +61,11 @@ mixin _$Category {
 abstract class $CategoryCopyWith<$Res> {
   factory $CategoryCopyWith(Category value, $Res Function(Category) then) =
       _$CategoryCopyWithImpl<$Res>;
-  $Res call({String id, String? description, String type, String name});
+  $Res call(
+      {String id,
+      @JsonKey(includeIfNull: true) String? description,
+      String type,
+      String name});
 }
 
 /// @nodoc
@@ -104,7 +109,11 @@ abstract class _$CategoryCopyWith<$Res> implements $CategoryCopyWith<$Res> {
   factory _$CategoryCopyWith(_Category value, $Res Function(_Category) then) =
       __$CategoryCopyWithImpl<$Res>;
   @override
-  $Res call({String id, String? description, String type, String name});
+  $Res call(
+      {String id,
+      @JsonKey(includeIfNull: true) String? description,
+      String type,
+      String name});
 }
 
 /// @nodoc
@@ -149,7 +158,7 @@ class __$CategoryCopyWithImpl<$Res> extends _$CategoryCopyWithImpl<$Res>
 class _$_Category extends _Category {
   const _$_Category(
       {required this.id,
-      required this.description,
+      @JsonKey(includeIfNull: true) required this.description,
       required this.type,
       required this.name})
       : super._();
@@ -160,6 +169,7 @@ class _$_Category extends _Category {
   @override
   final String id;
   @override
+  @JsonKey(includeIfNull: true)
   final String? description;
   @override
   final String type;
@@ -205,7 +215,7 @@ class _$_Category extends _Category {
 abstract class _Category extends Category {
   const factory _Category(
       {required String id,
-      required String? description,
+      @JsonKey(includeIfNull: true) required String? description,
       required String type,
       required String name}) = _$_Category;
   const _Category._() : super._();
@@ -215,6 +225,7 @@ abstract class _Category extends Category {
   @override
   String get id;
   @override
+  @JsonKey(includeIfNull: true)
   String? get description;
   @override
   String get type;

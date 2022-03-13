@@ -21,12 +21,11 @@ class Product with _$Product {
   factory Product.fromJson(Map<String, dynamic> json) =>
       _$ProductFromJson(json);
 
-  @override
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> createJson() => {
         'name': name,
         'unit': unit,
         'unitPrice': unitPrice,
-        'code': code,
+        'code': Utils.getRandomId(),
         'categoryId': categoryId
       };
 

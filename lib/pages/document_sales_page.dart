@@ -1,8 +1,6 @@
 import '../source.dart';
 import '../widgets/bottom_total_amount_tile.dart';
 
-enum PageActions { viewing, editing, adding }
-
 class DocumentSalesPage extends StatefulWidget {
   const DocumentSalesPage({this.document, Key? key}) : super(key: key);
 
@@ -14,11 +12,9 @@ class DocumentSalesPage extends StatefulWidget {
 
 class _DocumentSalesPageState extends State<DocumentSalesPage> {
   late final SalesDocumentsPagesBloc bloc;
-  late bool isEditing;
 
   @override
   void initState() {
-    isEditing = widget.document != null;
     final salesService = getService<SalesService>(context);
     final productsService = getService<ProductsService>(context);
     bloc = SalesDocumentsPagesBloc(salesService, productsService);
@@ -48,14 +44,10 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
     final form = supp.document.form;
 
     return Scaffold(
-      appBar: PageAppBar(
-          title: isEditing ? form.title : 'New Sales Document',
-          actionIcons: [isEditing ? Icons.edit_outlined : Icons.done],
-          actionCallbacks:
-              isEditing ? [/*bloc.editDocument*/ () {}] : [bloc.saveDocument]),
+      appBar: _buildAppBar(supp),
       body: _buildGroupDetails(supp),
-      floatingActionButton: const AddButton(nextPage: SalesEditPage()),
-      bottomNavigationBar: BottomTotalAmountTile(form.total),
+      floatingActionButton: _buildActionButton(supp),
+      bottomNavigationBar: _buildBottomNavBar(supp),
     );
   }
 
@@ -67,11 +59,28 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
     );
   }
 
+  _buildAppBar(SalesDocumentSupplements supp) {
+    final title = supp.isViewing
+        ? supp.document.form.title
+        : supp.isEditing
+            ? 'Edit Sales Document'
+            : 'New Sales Document';
+
+    return PageAppBar(title: title, actionIcons: [
+      supp.isViewing ? Icons.edit_outlined : Icons.done
+    ], actionCallbacks: [
+      supp.isViewing
+          ? () => bloc.updateAction(PageActions.editing)
+          : supp.isEditing
+              ? bloc.editDocument
+              : bloc.saveDocument
+    ]);
+  }
+
   Widget _buildGroupDetails(SalesDocumentSupplements supp) {
     return ListView(
-  //    padding: EdgeInsets.only(top: 10.dh),
       children: [
-        !isEditing
+        supp.isEditing || supp.isAdding
             ? DateSelector(
                 title: 'Date',
                 onDateSelected: bloc.updateDate,
@@ -87,25 +96,29 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
   }
 
   _buildGroupTitle(SalesDocumentSupplements supp) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        isEditing ? Container() : _buildCheckBox(supp),
-        supp.isDateAsTitle
-            ? Container()
-            : AppTextField(
-                text: supp.document.form.title,
-                onChanged: bloc.updateTitle,
-                hintText: '',
-                keyboardType: TextInputType.name,
-                textCapitalization: TextCapitalization.words,
-                label: 'Title',
-                error: supp.errors['title']),
-      ],
-    );
+    return supp.isViewing
+        ? Container()
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildCheckBox(supp),
+              supp.isDateAsTitle
+                  ? Container()
+                  : AppTextField(
+                      text: supp.document.form.title,
+                      onChanged: bloc.updateTitle,
+                      hintText: '',
+                      keyboardType: TextInputType.name,
+                      textCapitalization: TextCapitalization.words,
+                      label: 'Title',
+                      error: supp.errors['title']),
+            ],
+          );
   }
 
   _buildCheckBox(SalesDocumentSupplements supp) {
+    final text =
+        supp.isDateAsTitle ? 'Date used as title' : 'Use date as title';
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5.dw),
       child: Row(
@@ -113,7 +126,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
           Checkbox(
               value: supp.isDateAsTitle, onChanged: bloc.updateDateAsTitle),
           SizedBox(width: 5.dw),
-          const AppText('Use date as the title'),
+          AppText(text),
         ],
       ),
     );
@@ -128,7 +141,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        isEditing
+        supp.isViewing
             ? Container()
             : Padding(
                 padding: EdgeInsets.only(left: 19.dw),
@@ -141,7 +154,8 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
           itemBuilder: (_, i) {
             final sales = salesList[i];
             final product = bloc.getProductById(sales.productId);
-            return SalesTile(sales, product: product);
+            final action = supp.isViewing ? supp.action : PageActions.editing;
+            return SalesTile(sales, product: product, action: action);
           },
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -156,6 +170,18 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
         height: 600.dh,
         alignment: Alignment.center,
         child: EmptyStateWidget(message: message));
+  }
+
+  _buildActionButton(SalesDocumentSupplements supp) {
+    return supp.isViewing
+        ? Container()
+        : const AddButton(nextPage: SalesEditPage(PageActions.adding));
+  }
+
+  _buildBottomNavBar(SalesDocumentSupplements supp) {
+    return supp.isViewing
+        ? BottomTotalAmountTile(supp.document.form.total)
+        : const SizedBox(height: .00001);
   }
 
   static const emptyExpensesMessage = 'No sales have been added yet.';

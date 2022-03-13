@@ -11,9 +11,10 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
   final SalesService salesService;
   final ProductsService productsService;
 
-  Product  getProductById(String id) => productsService.getById(id)!;
+  Product getProductById(String id) => productsService.getById(id)!;
 
-  void init(Pages page, {Document? document, Sales? sales}) async {
+  void init(Pages page,
+      {Document? document, Sales? sales, PageActions? action}) async {
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
     await initServices(
@@ -21,7 +22,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
 
     _initSalesDocumentsPage(page);
     _initDocumentSalesPage(page, document);
-    _initSalesEditPage(page, sales);
+    _initSalesEditPage(page, sales, action);
   }
 
   void updateAmount(String unitPrice) =>
@@ -35,6 +36,8 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
   void updateDate(DateTime date) => _updateAttributes(date: date);
 
   void updateTitle(String title) => _updateAttributes(title: title);
+
+  void updateAction(PageActions action) => _updateAttributes(action: action);
 
   void updateDateAsTitle(bool? isDateAsTitle) =>
       _updateAttributes(isDateAsTitle: isDateAsTitle);
@@ -104,8 +107,6 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
-    log(supp.salesId);
-
     final sales = Sales.toServer(
         id: supp.salesId,
         productId: supp.product.id,
@@ -116,12 +117,19 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     emit(SalesDocumentsPagesState.success(supp));
   }
 
+  void deleteSales() async {
+    var supp = state.supplements;
+    salesService.deleteTemporarySales(supp.salesId);
+    emit(SalesDocumentsPagesState.success(supp));
+  }
+
   void _updateAttributes(
       {String? title,
       DateTime? date,
       bool? isDateAsTitle,
       String? quantity,
       String? unitPrice,
+      PageActions? action,
       String? description}) {
     var supp = state.supplements;
 
@@ -135,6 +143,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
         quantity: quantity ?? supp.quantity,
         unitPrice: unitPrice ?? supp.unitPrice,
         date: date ?? supp.date,
+        action: action ?? supp.action,
         isDateAsTitle: isDateAsTitle ?? supp.isDateAsTitle);
     emit(SalesDocumentsPagesState.content(supp));
   }
@@ -147,8 +156,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
 
     final form = supp.document.form;
     final errors = <String, String?>{};
-    final isEditing = form.id.trim().isNotEmpty;
-    if (isValidatingDocumentDetails && (!supp.isDateAsTitle || isEditing)) {
+    if (isValidatingDocumentDetails && (!supp.isDateAsTitle)) {
       errors['title'] = InputValidation.validateText(form.title, 'Title');
     }
     //validating sales details
@@ -196,18 +204,37 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     if (page != Pages.document_sales_page) return;
 
     var supp = state.supplements;
-    if (document != null) {
+    if (document == null) {
+      //is adding new document
+      supp = supp.copyWith(action: PageActions.adding);
+    } else {
       //is viewing / editing existing document
       salesService.initDocument(document);
-      supp = supp.copyWith(document: document, date: document.form.dateTime);
+      final form = document.form;
+      final isDateAsTitle =
+          _checkIfDateIsUsedAsTitle(form.title, form.dateTime);
+      supp = supp.copyWith(
+          document: document,
+          date: form.dateTime,
+          isDateAsTitle: isDateAsTitle,
+          action: PageActions.viewing);
     }
     emit(SalesDocumentsPagesState.content(supp));
   }
 
-  void _initSalesEditPage(Pages page, [Sales? sales]) {
+  bool _checkIfDateIsUsedAsTitle(String title, DateTime date) {
+    final dateFromTitle = DateFormatter.convertToDOW(date);
+    return title == dateFromTitle;
+  }
+
+  ///action can't be null on the sales edit page.
+  void _initSalesEditPage(Pages page, [Sales? sales, PageActions? action]) {
     if (page != Pages.sales_edit_page) return;
 
     var supp = state.supplements;
+
+    supp = supp.copyWith(action: action!);
+
     if (sales != null) {
       //is viewing / editing existing sales record
       final product = productsService.getById(sales.productId)!;

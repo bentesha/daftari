@@ -61,6 +61,12 @@ class SalesService extends ChangeNotifier {
     notifyListeners();
   }
 
+  deleteTemporarySales(String salesId) {
+    final index = _salesList.indexWhere((s) => s.id == salesId);
+    _salesList.removeAt(index);
+    notifyListeners();
+  }
+
   Document _getDocumentFromJson(var jsonDocument) {
     final form = DocumentForm.fromJson(jsonDocument);
     final salesList = <Sales>[];

@@ -1,9 +1,10 @@
 import '../source.dart';
 
 class SalesEditPage extends StatefulWidget {
-  const SalesEditPage({this.sales, Key? key}) : super(key: key);
+  const SalesEditPage(this.action, {this.sales, Key? key}) : super(key: key);
 
   final Sales? sales;
+  final PageActions action;
 
   @override
   State<SalesEditPage> createState() => _SalesEditPageState();
@@ -11,26 +12,16 @@ class SalesEditPage extends StatefulWidget {
 
 class _SalesEditPageState extends State<SalesEditPage> {
   late final SalesDocumentsPagesBloc bloc;
-  late final bool isEditing;
 
   @override
   void initState() {
-    isEditing = widget.sales != null;
     _initBloc();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PageAppBar(
-          title: !isEditing ? 'New Sales Record' : 'Edit Sales Record',
-          actionCallbacks: isEditing ? [bloc.editSales] : [bloc.addSales]),
-      body: _buildBody(),
-    );
-  }
-
-  _buildBody() {
+    log(widget.action.toString());
     return BlocConsumer<SalesDocumentsPagesBloc, SalesDocumentsPagesState>(
         bloc: bloc,
         listener: (_, state) {
@@ -55,43 +46,73 @@ class _SalesEditPageState extends State<SalesEditPage> {
   }
 
   Widget _buildContent(SalesDocumentSupplements supp) {
+    return Scaffold(
+      appBar: _buildAppBar(supp),
+      body: _buildBody(supp),
+    );
+  }
+
+  Widget _buildBody(SalesDocumentSupplements supp) {
     return Column(
       children: [
         ValueSelector(
           title: 'Product',
           value: supp.product.name,
           error: supp.errors['product'],
-          isEditable: !isEditing,
+          isEditable: !supp.isViewing,
           onPressed: () => push(
               ItemsSearchPage<Product>(categoryType: CategoryType.products())),
         ),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
         AppTextField(
-          text: supp.quantity,
-          onChanged: bloc.updateQuantity,
-          hintText: '',
-          keyboardType: TextInputType.number,
-          label: 'Quantity',
-          error: supp.errors['quantity'],
-          isUpdatingOnRebuild: true,
-        ),
+            text: supp.quantity,
+            onChanged: bloc.updateQuantity,
+            hintText: '',
+            keyboardType: TextInputType.number,
+            label: 'Quantity',
+            error: supp.errors['quantity'],
+            isUpdatingOnRebuild: true,
+            isEnabled: !supp.isViewing),
         AppTextField(
-          text: supp.unitPrice,
-          onChanged: bloc.updateAmount,
-          hintText: '',
-          keyboardType: TextInputType.number,
-          label: 'Unit Price',
-          error: supp.errors['price'],
-          isUpdatingOnRebuild: true,
-        ),
+            text: supp.unitPrice,
+            onChanged: bloc.updateAmount,
+            hintText: '',
+            keyboardType: TextInputType.number,
+            label: 'Unit Price',
+            error: supp.errors['price'],
+            isUpdatingOnRebuild: true,
+            isEnabled: !supp.isViewing),
       ],
     );
+  }
+
+  _buildAppBar(SalesDocumentSupplements supp) {
+    return PageAppBar(
+        title: supp.isAdding
+            ? 'New Sales Record'
+            : supp.isViewing
+                ? 'Sales Record'
+                : 'Edit Sales Record',
+        actionIcons: supp.isViewing
+            ? []
+            : supp.isEditing
+                ? [Icons.check, Icons.delete_outlined]
+                : [Icons.check],
+        actionCallbacks: supp.isViewing
+            ? []
+            : supp.isEditing
+                ? [
+                    bloc.editSales,
+                    bloc.deleteSales,
+                  ]
+                : [bloc.addSales]);
   }
 
   _initBloc() {
     final productsService = getService<ProductsService>(context);
     final salesService = getService<SalesService>(context);
     bloc = SalesDocumentsPagesBloc(salesService, productsService);
-    bloc.init(Pages.sales_edit_page, sales: widget.sales);
+    bloc.init(Pages.sales_edit_page,
+        sales: widget.sales, action: widget.action);
   }
 }

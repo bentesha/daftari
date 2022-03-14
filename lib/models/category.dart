@@ -10,13 +10,13 @@ class Category {
   final String? description;
 
   const Category(
-      {required this.id,
-      required this.description,
-      required this.type,
-      required this.name});
+      {this.id = '', this.description = '', this.name = '', this.type = ''});
 
-  factory Category.empty() =>
-      const Category(id: '', description: '', name: '', type: '');
+  Category.expenses({required this.id, this.description, required this.name})
+      : type = 'Expenses';
+
+  Category.products({required this.id, this.description, required this.name})
+      : type = 'Products';
 
   Category copyWith(
       {String? id, String? type, String? name, String? description}) {
@@ -27,11 +27,16 @@ class Category {
         type: type ?? this.type);
   }
 
-  factory Category.fromJson(Map<String, dynamic> json, String type) => Category(
-      id: json['id'],
-      description: json['description'],
-      type: type,
-      name: json['name']);
+  factory Category.fromJson(Map<String, dynamic> json,
+      [bool isExpenses = true]) {
+    if (isExpenses) {
+      return Category.expenses(
+          id: json['id'], description: json['description'], name: json['name']);
+    } else {
+      return Category.products(
+          id: json['id'], description: json['description'], name: json['name']);
+    }
+  }
 
   Map<String, String?> toJson() => {'name': name, 'description': description};
 }

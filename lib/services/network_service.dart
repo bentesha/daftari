@@ -14,13 +14,13 @@ class NetworkService<T> extends ChangeNotifier {
     if (_list.isNotEmpty) return getList;
 
     final response = await http.get(Uri.parse(_url));
-    log(response.body.toString());
+    //log(response.body.toString());
     final results = json.decode(response.body);
     if (results.isEmpty) return [];
 
     for (var item in results) {
       final index = _list.indexWhere((e) => e.id == item['id']);
-      if (index == -1) _list.add(_getValueFromJson(item, _url));
+      if (index == -1) _list.add(_getValueFromJson(item));
     }
     return _list.whereType<T>().toList();
   }
@@ -41,13 +41,12 @@ class NetworkService<T> extends ChangeNotifier {
         body: json.encode(item.createJson()), headers: headers);
     //  log(response.body);
     final body = json.decode(response.body);
-    _current = _getValueFromJson(body, _url);
+    _current = _getValueFromJson(body);
     _list.add(_current);
     notifyListeners();
   }
 
   Future<void> edit(var item, [String? url]) async {
-    log((url ?? _url) + '/${item.id}');
     final response = await http.put(Uri.parse((url ?? _url) + '/${item.id}'),
         body: json.encode(item.createJson()), headers: headers);
     // log(response.body);
@@ -57,23 +56,25 @@ class NetworkService<T> extends ChangeNotifier {
     notifyListeners();
   }
 
-  dynamic _getValueFromJson(var json, String? url) {
-    log(url.toString());
+  dynamic _getValueFromJson(var json, [String? url]) {
     if (T == Product) return Product.fromJson(json);
     if (T == Category) {
-      final type = url!.contains('product') ? 'Products' : "Expenses";
-      return Category.fromJson(json, type);
+      final isExpense = url!.contains('expense');
+      return Category.fromJson(json, isExpense);
     }
   }
 
   Future<void> delete(String id, [String? url]) async {
     final response = await http.delete(Uri.parse((url ?? _url) + '/$id'));
-    log(response.body);
+    //log(response.body);
     final index = _list.indexWhere((e) => e.id == id);
     _list.removeAt(index);
     notifyListeners();
   }
 
+  ///used mainly by the search bloc to update the current selected category or
+  ///product. So that listeners can get it just by calling [productsService.getCurrent]
+  ///or [categoriesService.getCurrent]
   void updateCurrent(String id) {
     final index = _list.indexWhere((e) => e.id == id);
     final item = _list[index];

@@ -23,7 +23,7 @@ class ExpenseSupplements with _$ExpenseSupplements {
       errors: <String, String?>{},
       date: DateTime.now(),
       notes: null,
-      category: Category.empty(),
+      category: const Category(),
       group: const Document.expenses(DocumentForm()),
       id: '',
       amount: '');

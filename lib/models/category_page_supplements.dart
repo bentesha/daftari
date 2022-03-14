@@ -13,6 +13,6 @@ class CategoryPageSupplements with _$CategoryPageSupplements {
     required Map<String, String?> errors,
   }) = _CategoryPageSupplements;
 
-  factory CategoryPageSupplements.empty() => CategoryPageSupplements(
-      category: Category.empty(), categoryList: [], productList: [], errors: {});
+  factory CategoryPageSupplements.empty() => const CategoryPageSupplements(
+      category: Category(), categoryList: [], productList: [], errors: {});
 }

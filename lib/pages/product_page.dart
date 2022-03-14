@@ -235,7 +235,6 @@ class _ProductPageState extends State<ProductPage> {
         productsService, categoriesService, openingStockItemsService);
     final action =
         widget.product == null ? PageActions.adding : PageActions.viewing;
-    log(action.toString());
     bloc.init(Pages.product_page, product: widget.product, action: action);
   }
 }

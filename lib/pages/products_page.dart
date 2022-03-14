@@ -12,13 +12,7 @@ class _ProductsPageState extends State<ProductsPage> {
 
   @override
   void initState() {
-    final productsService = getService<ProductsService>(context);
-    final categoriesService = getService<CategoriesService>(context);
-    final openingStockItemsService =
-        getService<OpeningStockItemsService>(context);
-    bloc = ProductPageBloc(
-        productsService, categoriesService, openingStockItemsService);
-    bloc.init(Pages.products_page);
+    _initBloc();
     super.initState();
   }
 
@@ -74,6 +68,16 @@ class _ProductsPageState extends State<ProductsPage> {
           if (isLoading) return Container();
           return const AddButton(nextPage: ProductPage());
         });
+  }
+
+  _initBloc() {
+    final productsService = getService<ProductsService>(context);
+    final categoriesService = getService<CategoriesService>(context);
+    final openingStockItemsService =
+        getService<OpeningStockItemsService>(context);
+    bloc = ProductPageBloc(
+        productsService, categoriesService, openingStockItemsService);
+    bloc.init(Pages.products_page);
   }
 
   static const emptyItemsDesc =

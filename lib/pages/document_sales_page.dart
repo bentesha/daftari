@@ -15,10 +15,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
 
   @override
   void initState() {
-    final salesService = getService<SalesService>(context);
-    final productsService = getService<ProductsService>(context);
-    bloc = SalesDocumentsPagesBloc(salesService, productsService);
-    bloc.init(Pages.document_sales_page, document: widget.document);
+    _initBloc();
     super.initState();
   }
 
@@ -26,19 +23,22 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<SalesDocumentsPagesBloc, SalesDocumentsPagesState>(
         bloc: bloc,
-        builder: (_, state) {
-          return state.when(
-              loading: _buildLoading,
-              content: _buildContent,
-              success: _buildContent);
-        },
         listener: (_, state) {
           final isSuccessful =
               state.maybeWhen(success: (_) => true, orElse: () => false);
 
           if (isSuccessful) pop();
+        },
+        builder: (_, state) {
+          return state.when(
+              loading: _buildLoading,
+              content: _buildContent,
+              success: _buildContent);
         });
   }
+
+  Widget _buildLoading(SalesDocumentSupplements supp) =>
+      const AppLoadingIndicator.withScaffold();
 
   Widget _buildContent(SalesDocumentSupplements supp) {
     return Scaffold(
@@ -48,9 +48,6 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
       bottomNavigationBar: _buildBottomNavBar(supp),
     );
   }
-
-  Widget _buildLoading(SalesDocumentSupplements supp) =>
-      const AppLoadingIndicator.withScaffold();
 
   _buildAppBar(SalesDocumentSupplements supp) {
     final title = supp.isViewing
@@ -148,7 +145,6 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
               const AppDivider(margin: EdgeInsets.zero),
           itemBuilder: (_, i) {
             final sales = salesList[i];
-            log(sales.toString());
             final product = bloc.getProductById(sales.productId);
             final action = supp.isViewing ? supp.action : PageActions.editing;
             return SalesTile(sales, product: product, action: action);
@@ -178,6 +174,13 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
     return supp.isViewing
         ? BottomTotalAmountTile(supp.document.form.total)
         : const SizedBox(height: .00001);
+  }
+
+  _initBloc() {
+    final salesService = getService<SalesService>(context);
+    final productsService = getService<ProductsService>(context);
+    bloc = SalesDocumentsPagesBloc(salesService, productsService);
+    bloc.init(Pages.document_sales_page, document: widget.document);
   }
 
   static const emptyExpensesMessage =

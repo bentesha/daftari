@@ -1,6 +1,6 @@
 export 'sales_documents_page.dart';
 export 'categories_page.dart';
-export 'category_edit_page.dart';
+export 'category_page.dart';
 export 'product_page.dart';
 export 'sales_page.dart';
 export 'document_sales_page.dart';

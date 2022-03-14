@@ -12,18 +12,15 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
 
   @override
   void initState() {
-    final groupsService = getService<SalesService>(context);
-    final productsService = getService<ProductsService>(context);
-    bloc = SalesDocumentsPagesBloc(groupsService, productsService);
-    bloc.init(Pages.sales_documents_page);
+    _initBloc();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildBody(),
       appBar: const PageAppBar(title: 'Sales'),
+      body: _buildBody(),
       floatingActionButton: _buildFloatingButton(),
     );
   }
@@ -72,6 +69,13 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
           if (isLoading) return Container();
           return const AddButton(nextPage: DocumentSalesPage());
         });
+  }
+
+  _initBloc() {
+    final groupsService = getService<SalesService>(context);
+    final productsService = getService<ProductsService>(context);
+    bloc = SalesDocumentsPagesBloc(groupsService, productsService);
+    bloc.init(Pages.sales_documents_page);
   }
 
   static const emptySalesDocumentsMessage =

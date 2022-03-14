@@ -13,12 +13,10 @@ class CategoryEditPage extends StatefulWidget {
 
 class _CategoryEditPageState extends State<CategoryEditPage> {
   late final CategoryPageBloc bloc;
-  late final bool isEditing;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
-    isEditing = widget.category != null;
     _initBloc();
     super.initState();
   }

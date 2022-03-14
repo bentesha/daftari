@@ -13,6 +13,8 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
 
   Product getProductById(String id) => productsService.getById(id)!;
 
+  bool get documentHasUnsavedChanges => salesService.hasChanges;
+
   void init(Pages page,
       {Document? document, Sales? sales, PageActions? action}) async {
     var supp = state.supplements;
@@ -61,7 +63,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
             supp.isDateAsTitle ? DateFormatter.convertToDMY(now) : form.title);
     final salesList = salesService.getSalesList;
     document = Document.sales(form, salesList);
-    await salesService.add(document);
+    await salesService.addDocument(document);
     emit(SalesDocumentsPagesState.success(supp));
   }
 
@@ -79,14 +81,14 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
       document = document.copyWith(form: form);
     }
 
-    await salesService.edit(document);
+    await salesService.editDocument(document);
     emit(SalesDocumentsPagesState.success(supp));
   }
 
   void deleteDocument() async {
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
-    await salesService.delete(supp.document.form.id);
+    await salesService.deleteDocument(supp.document.form.id);
     emit(SalesDocumentsPagesState.success(supp));
   }
 
@@ -155,6 +157,13 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     emit(SalesDocumentsPagesState.content(supp));
   }
 
+  void clearChanges() {
+    var supp = state.supplements;
+    emit(SalesDocumentsPagesState.loading(supp));
+    salesService.clearTemporarySales();
+    emit(SalesDocumentsPagesState.success(supp));
+  }
+
   _validateSalesDetails() => _validate(false);
 
   _validate([bool isValidatingDocumentDetails = true]) {
@@ -178,7 +187,8 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     emit(SalesDocumentsPagesState.content(supp));
   }
 
-  ///updates the documents on the sales documents page
+  ///updates the documents on the sales documents page and a sales list on
+  ///document sales page
   _handleDocumentUpdates() {
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
@@ -240,9 +250,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
   ///action can't be null on the sales edit page.
   void _initSalesEditPage(Pages page, [Sales? sales, PageActions? action]) {
     if (page != Pages.sales_page) return;
-
     var supp = state.supplements;
-
     supp = supp.copyWith(action: action!);
 
     if (sales != null) {

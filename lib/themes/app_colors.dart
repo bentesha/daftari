@@ -18,6 +18,6 @@ class AppColors {
   static const accent = Color(0xfff57e5e);
   static const error = Color(0xffBC3A38);
   static const onError = Colors.white;
-  static const disabled = Colors.white54;
+  static var disabled = Colors.grey.shade200;
   static const highlight = Color(0xFFF2F1F0);
 }

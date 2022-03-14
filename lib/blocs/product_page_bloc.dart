@@ -13,7 +13,7 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
   final OpeningStockItemsService openingStockItemsService;
 
   Category? get getSelectedCategory {
-    final id = state.supplements.categoryId;
+    final id = state.supplements.product.categoryId;
     final category = categoriesService.getById(id);
     return category;
   }
@@ -43,16 +43,16 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
 
+    final product = supp.product
+        .copyWith(name: name, unit: unit, categoryId: categoryId, code: code);
+
     supp = supp.copyWith(
-        name: name?.trim() ?? supp.name,
-        unit: unit?.trim() ?? supp.unit,
-        categoryId: categoryId ?? supp.categoryId,
+        product: product,
         unitValue: unitValue?.trim() ?? supp.unitValue,
         openingStockItem: supp.openingStockItem.copyWith(date: date),
         unitPrice: unitPrice?.trim() ?? supp.unitPrice,
         quantity: quantity?.trim() ?? supp.quantity,
-        action: action ?? supp.action,
-        code: code?.trim() ?? supp.code);
+        action: action ?? supp.action);
     emit(ProductPageState.content(supp));
   }
 
@@ -113,10 +113,10 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     final errors = <String, String?>{};
 
     emit(ProductPageState.loading(supp));
-    errors['name'] = InputValidation.validateText(supp.name, 'name');
-    errors['unit'] = InputValidation.validateText(supp.unit, 'Unit');
+    errors['name'] = InputValidation.validateText(supp.product.name, 'name');
+    errors['unit'] = InputValidation.validateText(supp.product.unit, 'Unit');
     errors['category'] =
-        InputValidation.validateText(supp.categoryId, 'Category');
+        InputValidation.validateText(supp.product.categoryId, 'Category');
     errors['unitPrice'] =
         InputValidation.validateNumber(supp.unitPrice, 'Unit Price');
 
@@ -143,7 +143,7 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
     final id = categoriesService.getCurrent.id;
-    supp = supp.copyWith(categoryId: id);
+    supp = supp.copyWith(product: supp.product.copyWith(categoryId: id));
     emit(ProductPageState.content(supp));
   }
 
@@ -167,12 +167,8 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
       final openingStockItem =
           openingStockItemsService.getByProductId(product.id);
       supp = supp.copyWith(
-          unit: product.unit,
+          product: product,
           unitPrice: product.unitPrice.toString(),
-          name: product.name,
-          categoryId: product.categoryId,
-          id: product.id,
-          code: product.code,
           openingStockItem: openingStockItem ?? supp.openingStockItem,
           unitValue: openingStockItem?.unitValue.toString() ?? supp.unitValue,
           quantity: openingStockItem?.quantity.toString() ?? supp.quantity);

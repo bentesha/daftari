@@ -21,20 +21,23 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SalesDocumentsPagesBloc, SalesDocumentsPagesState>(
-        bloc: bloc,
-        listener: (_, state) {
-          final isSuccessful =
-              state.maybeWhen(success: (_) => true, orElse: () => false);
+    return WillPopScope(
+      onWillPop: _handlePop,
+      child: BlocConsumer<SalesDocumentsPagesBloc, SalesDocumentsPagesState>(
+          bloc: bloc,
+          listener: (_, state) {
+            final isSuccessful =
+                state.maybeWhen(success: (_) => true, orElse: () => false);
 
-          if (isSuccessful) pop();
-        },
-        builder: (_, state) {
-          return state.when(
-              loading: _buildLoading,
-              content: _buildContent,
-              success: _buildContent);
-        });
+            if (isSuccessful) pop();
+          },
+          builder: (_, state) {
+            return state.when(
+                loading: _buildLoading,
+                content: _buildContent,
+                success: _buildContent);
+          }),
+    );
   }
 
   Widget _buildLoading(SalesDocumentSupplements supp) =>
@@ -185,4 +188,47 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
 
   static const emptyExpensesMessage =
       'No sales have been added in this document yet.';
+
+  Future<bool> _handlePop() async {
+    final hasUnSavedSales = bloc.documentHasUnsavedChanges;
+    if (hasUnSavedSales) {
+      showDialog(
+          context: context,
+          builder: (_) {
+            return _alertDialog();
+          });
+    }
+    return true;
+  }
+
+  _alertDialog() {
+    return AlertDialog(
+      content: AppText(
+          'You have unsaved changes!\nGoing back will delete all changes you have made.',
+          size: 16.dw),
+      actions: [
+        AppTextButton(
+            text: 'Save',
+            height: 40.dh,
+            onPressed: () {
+              pop();
+              widget.document != null
+                  ? bloc.editDocument()
+                  : bloc.saveDocument();
+            },
+            margin: EdgeInsets.only(bottom: 10.dh),
+            backgroundColor: AppColors.primary,
+            textColor: AppColors.onPrimary),
+        AppTextButton(
+            text: 'Close the page',
+            onPressed: () {
+              pop();
+              bloc.clearChanges();
+            },
+            height: 40.dh,
+            backgroundColor: AppColors.disabled,
+            textColor: AppColors.onBackground)
+      ],
+    );
+  }
 }

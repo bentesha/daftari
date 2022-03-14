@@ -21,31 +21,23 @@ class _$ProductPageSupplementsTearOff {
   _ProductPageSupplements call(
       {List<Product> productList = const [],
       List<Category> categoryList = const [],
-      String name = '',
-      String categoryId = '',
-      String unit = '',
+      PageActions action = PageActions.viewing,
+      required Product product,
       String unitPrice = '',
-      String id = '',
-      String? code,
+      Map<String, String?> errors = const {},
       String quantity = '',
       String unitValue = '',
-      required OpeningStockItem openingStockItem,
-      PageActions action = PageActions.viewing,
-      Map<String, String?> errors = const {}}) {
+      required OpeningStockItem openingStockItem}) {
     return _ProductPageSupplements(
       productList: productList,
       categoryList: categoryList,
-      name: name,
-      categoryId: categoryId,
-      unit: unit,
+      action: action,
+      product: product,
       unitPrice: unitPrice,
-      id: id,
-      code: code,
+      errors: errors,
       quantity: quantity,
       unitValue: unitValue,
       openingStockItem: openingStockItem,
-      action: action,
-      errors: errors,
     );
   }
 }
@@ -55,19 +47,19 @@ const $ProductPageSupplements = _$ProductPageSupplementsTearOff();
 
 /// @nodoc
 mixin _$ProductPageSupplements {
+//for products page
   List<Product> get productList => throw _privateConstructorUsedError;
-  List<Category> get categoryList => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  String get categoryId => throw _privateConstructorUsedError;
-  String get unit => throw _privateConstructorUsedError;
+  List<Category> get categoryList =>
+      throw _privateConstructorUsedError; //for product page,
+  PageActions get action =>
+      throw _privateConstructorUsedError; //for editing product-items
+  Product get product => throw _privateConstructorUsedError;
   String get unitPrice => throw _privateConstructorUsedError;
-  String get id => throw _privateConstructorUsedError;
-  String? get code => throw _privateConstructorUsedError;
+  Map<String, String?> get errors =>
+      throw _privateConstructorUsedError; //for opening stock item
   String get quantity => throw _privateConstructorUsedError;
   String get unitValue => throw _privateConstructorUsedError;
   OpeningStockItem get openingStockItem => throw _privateConstructorUsedError;
-  PageActions get action => throw _privateConstructorUsedError;
-  Map<String, String?> get errors => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ProductPageSupplementsCopyWith<ProductPageSupplements> get copyWith =>
@@ -82,17 +74,13 @@ abstract class $ProductPageSupplementsCopyWith<$Res> {
   $Res call(
       {List<Product> productList,
       List<Category> categoryList,
-      String name,
-      String categoryId,
-      String unit,
+      PageActions action,
+      Product product,
       String unitPrice,
-      String id,
-      String? code,
+      Map<String, String?> errors,
       String quantity,
       String unitValue,
-      OpeningStockItem openingStockItem,
-      PageActions action,
-      Map<String, String?> errors});
+      OpeningStockItem openingStockItem});
 }
 
 /// @nodoc
@@ -108,17 +96,13 @@ class _$ProductPageSupplementsCopyWithImpl<$Res>
   $Res call({
     Object? productList = freezed,
     Object? categoryList = freezed,
-    Object? name = freezed,
-    Object? categoryId = freezed,
-    Object? unit = freezed,
+    Object? action = freezed,
+    Object? product = freezed,
     Object? unitPrice = freezed,
-    Object? id = freezed,
-    Object? code = freezed,
+    Object? errors = freezed,
     Object? quantity = freezed,
     Object? unitValue = freezed,
     Object? openingStockItem = freezed,
-    Object? action = freezed,
-    Object? errors = freezed,
   }) {
     return _then(_value.copyWith(
       productList: productList == freezed
@@ -129,30 +113,22 @@ class _$ProductPageSupplementsCopyWithImpl<$Res>
           ? _value.categoryList
           : categoryList // ignore: cast_nullable_to_non_nullable
               as List<Category>,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      categoryId: categoryId == freezed
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as String,
-      unit: unit == freezed
-          ? _value.unit
-          : unit // ignore: cast_nullable_to_non_nullable
-              as String,
+      action: action == freezed
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as PageActions,
+      product: product == freezed
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
+              as Product,
       unitPrice: unitPrice == freezed
           ? _value.unitPrice
           : unitPrice // ignore: cast_nullable_to_non_nullable
               as String,
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      code: code == freezed
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as String?,
+      errors: errors == freezed
+          ? _value.errors
+          : errors // ignore: cast_nullable_to_non_nullable
+              as Map<String, String?>,
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -165,14 +141,6 @@ class _$ProductPageSupplementsCopyWithImpl<$Res>
           ? _value.openingStockItem
           : openingStockItem // ignore: cast_nullable_to_non_nullable
               as OpeningStockItem,
-      action: action == freezed
-          ? _value.action
-          : action // ignore: cast_nullable_to_non_nullable
-              as PageActions,
-      errors: errors == freezed
-          ? _value.errors
-          : errors // ignore: cast_nullable_to_non_nullable
-              as Map<String, String?>,
     ));
   }
 }
@@ -187,17 +155,13 @@ abstract class _$ProductPageSupplementsCopyWith<$Res>
   $Res call(
       {List<Product> productList,
       List<Category> categoryList,
-      String name,
-      String categoryId,
-      String unit,
+      PageActions action,
+      Product product,
       String unitPrice,
-      String id,
-      String? code,
+      Map<String, String?> errors,
       String quantity,
       String unitValue,
-      OpeningStockItem openingStockItem,
-      PageActions action,
-      Map<String, String?> errors});
+      OpeningStockItem openingStockItem});
 }
 
 /// @nodoc
@@ -215,17 +179,13 @@ class __$ProductPageSupplementsCopyWithImpl<$Res>
   $Res call({
     Object? productList = freezed,
     Object? categoryList = freezed,
-    Object? name = freezed,
-    Object? categoryId = freezed,
-    Object? unit = freezed,
+    Object? action = freezed,
+    Object? product = freezed,
     Object? unitPrice = freezed,
-    Object? id = freezed,
-    Object? code = freezed,
+    Object? errors = freezed,
     Object? quantity = freezed,
     Object? unitValue = freezed,
     Object? openingStockItem = freezed,
-    Object? action = freezed,
-    Object? errors = freezed,
   }) {
     return _then(_ProductPageSupplements(
       productList: productList == freezed
@@ -236,30 +196,22 @@ class __$ProductPageSupplementsCopyWithImpl<$Res>
           ? _value.categoryList
           : categoryList // ignore: cast_nullable_to_non_nullable
               as List<Category>,
-      name: name == freezed
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
-              as String,
-      categoryId: categoryId == freezed
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as String,
-      unit: unit == freezed
-          ? _value.unit
-          : unit // ignore: cast_nullable_to_non_nullable
-              as String,
+      action: action == freezed
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as PageActions,
+      product: product == freezed
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
+              as Product,
       unitPrice: unitPrice == freezed
           ? _value.unitPrice
           : unitPrice // ignore: cast_nullable_to_non_nullable
               as String,
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      code: code == freezed
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as String?,
+      errors: errors == freezed
+          ? _value.errors
+          : errors // ignore: cast_nullable_to_non_nullable
+              as Map<String, String?>,
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -272,14 +224,6 @@ class __$ProductPageSupplementsCopyWithImpl<$Res>
           ? _value.openingStockItem
           : openingStockItem // ignore: cast_nullable_to_non_nullable
               as OpeningStockItem,
-      action: action == freezed
-          ? _value.action
-          : action // ignore: cast_nullable_to_non_nullable
-              as PageActions,
-      errors: errors == freezed
-          ? _value.errors
-          : errors // ignore: cast_nullable_to_non_nullable
-              as Map<String, String?>,
     ));
   }
 }
@@ -290,60 +234,44 @@ class _$_ProductPageSupplements extends _ProductPageSupplements {
   const _$_ProductPageSupplements(
       {this.productList = const [],
       this.categoryList = const [],
-      this.name = '',
-      this.categoryId = '',
-      this.unit = '',
+      this.action = PageActions.viewing,
+      required this.product,
       this.unitPrice = '',
-      this.id = '',
-      this.code,
+      this.errors = const {},
       this.quantity = '',
       this.unitValue = '',
-      required this.openingStockItem,
-      this.action = PageActions.viewing,
-      this.errors = const {}})
+      required this.openingStockItem})
       : super._();
 
   @JsonKey()
-  @override
+  @override //for products page
   final List<Product> productList;
   @JsonKey()
   @override
   final List<Category> categoryList;
   @JsonKey()
-  @override
-  final String name;
-  @JsonKey()
-  @override
-  final String categoryId;
-  @JsonKey()
-  @override
-  final String unit;
+  @override //for product page,
+  final PageActions action;
+  @override //for editing product-items
+  final Product product;
   @JsonKey()
   @override
   final String unitPrice;
   @JsonKey()
   @override
-  final String id;
-  @override
-  final String? code;
+  final Map<String, String?> errors;
   @JsonKey()
-  @override
+  @override //for opening stock item
   final String quantity;
   @JsonKey()
   @override
   final String unitValue;
   @override
   final OpeningStockItem openingStockItem;
-  @JsonKey()
-  @override
-  final PageActions action;
-  @JsonKey()
-  @override
-  final Map<String, String?> errors;
 
   @override
   String toString() {
-    return 'ProductPageSupplements(productList: $productList, categoryList: $categoryList, name: $name, categoryId: $categoryId, unit: $unit, unitPrice: $unitPrice, id: $id, code: $code, quantity: $quantity, unitValue: $unitValue, openingStockItem: $openingStockItem, action: $action, errors: $errors)';
+    return 'ProductPageSupplements(productList: $productList, categoryList: $categoryList, action: $action, product: $product, unitPrice: $unitPrice, errors: $errors, quantity: $quantity, unitValue: $unitValue, openingStockItem: $openingStockItem)';
   }
 
   @override
@@ -355,19 +283,14 @@ class _$_ProductPageSupplements extends _ProductPageSupplements {
                 .equals(other.productList, productList) &&
             const DeepCollectionEquality()
                 .equals(other.categoryList, categoryList) &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality()
-                .equals(other.categoryId, categoryId) &&
-            const DeepCollectionEquality().equals(other.unit, unit) &&
+            const DeepCollectionEquality().equals(other.action, action) &&
+            const DeepCollectionEquality().equals(other.product, product) &&
             const DeepCollectionEquality().equals(other.unitPrice, unitPrice) &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.code, code) &&
+            const DeepCollectionEquality().equals(other.errors, errors) &&
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
             const DeepCollectionEquality().equals(other.unitValue, unitValue) &&
             const DeepCollectionEquality()
-                .equals(other.openingStockItem, openingStockItem) &&
-            const DeepCollectionEquality().equals(other.action, action) &&
-            const DeepCollectionEquality().equals(other.errors, errors));
+                .equals(other.openingStockItem, openingStockItem));
   }
 
   @override
@@ -375,17 +298,13 @@ class _$_ProductPageSupplements extends _ProductPageSupplements {
       runtimeType,
       const DeepCollectionEquality().hash(productList),
       const DeepCollectionEquality().hash(categoryList),
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(categoryId),
-      const DeepCollectionEquality().hash(unit),
+      const DeepCollectionEquality().hash(action),
+      const DeepCollectionEquality().hash(product),
       const DeepCollectionEquality().hash(unitPrice),
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(code),
+      const DeepCollectionEquality().hash(errors),
       const DeepCollectionEquality().hash(quantity),
       const DeepCollectionEquality().hash(unitValue),
-      const DeepCollectionEquality().hash(openingStockItem),
-      const DeepCollectionEquality().hash(action),
-      const DeepCollectionEquality().hash(errors));
+      const DeepCollectionEquality().hash(openingStockItem));
 
   @JsonKey(ignore: true)
   @override
@@ -398,45 +317,33 @@ abstract class _ProductPageSupplements extends ProductPageSupplements {
   const factory _ProductPageSupplements(
       {List<Product> productList,
       List<Category> categoryList,
-      String name,
-      String categoryId,
-      String unit,
+      PageActions action,
+      required Product product,
       String unitPrice,
-      String id,
-      String? code,
+      Map<String, String?> errors,
       String quantity,
       String unitValue,
-      required OpeningStockItem openingStockItem,
-      PageActions action,
-      Map<String, String?> errors}) = _$_ProductPageSupplements;
+      required OpeningStockItem openingStockItem}) = _$_ProductPageSupplements;
   const _ProductPageSupplements._() : super._();
 
-  @override
+  @override //for products page
   List<Product> get productList;
   @override
   List<Category> get categoryList;
-  @override
-  String get name;
-  @override
-  String get categoryId;
-  @override
-  String get unit;
+  @override //for product page,
+  PageActions get action;
+  @override //for editing product-items
+  Product get product;
   @override
   String get unitPrice;
   @override
-  String get id;
-  @override
-  String? get code;
-  @override
+  Map<String, String?> get errors;
+  @override //for opening stock item
   String get quantity;
   @override
   String get unitValue;
   @override
   OpeningStockItem get openingStockItem;
-  @override
-  PageActions get action;
-  @override
-  Map<String, String?> get errors;
   @override
   @JsonKey(ignore: true)
   _$ProductPageSupplementsCopyWith<_ProductPageSupplements> get copyWith =>

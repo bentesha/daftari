@@ -98,7 +98,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState>
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
     emit(WriteOffPagesState.loading(supp));
-    await salesService.edit(supp.group);
+    await salesService.editDocument(supp.group);
     emit(WriteOffPagesState.content(supp));
   }
 

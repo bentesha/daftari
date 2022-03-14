@@ -83,7 +83,7 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
     final group = Document.empty();
     //copying the group-id
     supp = supp.copyWith(group: group);
-    await salesService.add(group);
+    await salesService.addDocument(group);
     emit(ExpensePagesState.content(supp));
   }
 
@@ -94,7 +94,7 @@ class ExpensePagesBloc extends Cubit<ExpensePagesState>
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
     emit(ExpensePagesState.loading(supp));
-    await salesService.edit(supp.group);
+    await salesService.editDocument(supp.group);
     emit(ExpensePagesState.content(supp));
   }
 

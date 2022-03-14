@@ -59,7 +59,7 @@ class _ProductPageState extends State<ProductPage> {
   _buildAppBar(ProductPageSupplements supp) {
     return PageAppBar(
         title: supp.isViewing
-            ? supp.name
+            ? supp.product.name
             : supp.isAdding
                 ? 'New Product'
                 : 'Edit Product',
@@ -73,6 +73,7 @@ class _ProductPageState extends State<ProductPage> {
 
   _buildProductDetails(ProductPageSupplements supp) {
     final errors = supp.errors;
+    final product = supp.product;
 
     return Padding(
       padding: EdgeInsets.only(top: 10.dh),
@@ -96,7 +97,7 @@ class _ProductPageState extends State<ProductPage> {
           AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
           !supp.isViewing
               ? AppTextField(
-                  text: supp.name,
+                  text: product.name,
                   onChanged: (name) => bloc.updateAttributes(name: name),
                   hintText: 'e.g. Clothes',
                   keyboardType: TextInputType.name,
@@ -110,7 +111,7 @@ class _ProductPageState extends State<ProductPage> {
             children: [
               Expanded(
                 child: AppTextField(
-                  text: supp.unit,
+                  text: product.unit,
                   onChanged: (unit) => bloc.updateAttributes(unit: unit),
                   hintText: 'ea.',
                   keyboardType: TextInputType.name,
@@ -137,7 +138,7 @@ class _ProductPageState extends State<ProductPage> {
           _buildUnitTextFieldsErrors(errors),
           BarcodeField(
               error: supp.errors['code'],
-              text: supp.code,
+              text: product.code,
               isEnabled: !supp.isViewing,
               onChanged: (code) => bloc.updateAttributes(code: code)),
         ],

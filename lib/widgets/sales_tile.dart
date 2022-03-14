@@ -1,7 +1,9 @@
 import '../source.dart';
 
 class SalesTile extends StatelessWidget {
-  const SalesTile(this.sales,  {required this.product,required this.action, Key? key}) : super(key: key);
+  const SalesTile(this.sales,
+      {required this.product, required this.action, Key? key})
+      : super(key: key);
 
   final Sales sales;
   final Product product;
@@ -9,7 +11,6 @@ class SalesTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return AppMaterialButton(
       padding: EdgeInsets.symmetric(horizontal: 19.dw, vertical: 8.dh),
       isFilled: false,

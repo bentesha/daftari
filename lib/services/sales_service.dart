@@ -7,9 +7,13 @@ class SalesService extends ChangeNotifier {
   var _salesList = <Sales>[];
   final _documents = <Document>[];
 
+  var _hasChanges = false;
+
   List<Document> get getList => _documents;
 
   List<Sales> get getSalesList => _salesList;
+
+  bool get hasChanges => _hasChanges;
 
   ///Gets all sales documents from the server
   Future<void> init() async {
@@ -20,11 +24,12 @@ class SalesService extends ChangeNotifier {
 
     for (var jsonDocument in documents) {
       final document = _getDocumentFromJson(jsonDocument);
+      log(document.toString());
       _documents.add(document);
     }
   }
 
-  Future<void> add(Document document) async {
+  Future<void> addDocument(Document document) async {
     final response = await http.post(Uri.parse(url),
         body: json.encode(document.toJson()), headers: headers);
     final jsonDocument = json.decode(response.body);
@@ -34,7 +39,7 @@ class SalesService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> edit(Document document) async {
+  Future<void> editDocument(Document document) async {
     final response = await http.put(Uri.parse(url + '/${document.form.id}'),
         body: json.encode(document.toJson()), headers: headers);
     // log(response.body);
@@ -47,31 +52,40 @@ class SalesService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> delete(String id) async {
+  Future<void> deleteDocument(String id) async {
     final response = await http.delete(Uri.parse(url + '/$id'));
     //log(response.body);
-    final index = _salesList.indexWhere((e) => e.id == id);
-    _salesList.removeAt(index);
+    final index = _documents.indexWhere((e) => e.form.id == id);
+    _documents.removeAt(index);
     notifyListeners();
   }
 
-  initDocument(Document document) => _salesList =
+  void initDocument(Document document) => _salesList =
       document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
 
   addSalesTemporarily(Sales sales) {
     _salesList.add(sales);
+    _hasChanges = true;
     notifyListeners();
   }
 
   editTemporarySales(Sales sales) {
     final index = _salesList.indexWhere((s) => s.id == sales.id);
     _salesList[index] = sales;
+    _hasChanges = true;
     notifyListeners();
   }
 
   deleteTemporarySales(String salesId) {
     final index = _salesList.indexWhere((s) => s.id == salesId);
     _salesList.removeAt(index);
+    _hasChanges = true;
+    notifyListeners();
+  }
+
+  clearTemporarySales() {
+    _salesList.clear();
+    _hasChanges = false;
     notifyListeners();
   }
 

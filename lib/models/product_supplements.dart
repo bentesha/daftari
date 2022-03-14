@@ -7,22 +7,23 @@ class ProductPageSupplements with _$ProductPageSupplements {
   const ProductPageSupplements._();
 
   const factory ProductPageSupplements(
-      {@Default([]) List<Product> productList,
+      {
+      //for products page
+      @Default([]) List<Product> productList,
       @Default([]) List<Category> categoryList,
-      @Default('') String name,
-      @Default('') String categoryId,
-      @Default('') String unit,
+      //for product page,
+      @Default(PageActions.viewing) PageActions action,
+      //for editing product-items
+      required Product product,
       @Default('') String unitPrice,
-      @Default('') String id,
-      String? code,
+      @Default({}) Map<String, String?> errors,
+      //for opening stock item
       @Default('') String quantity,
       @Default('') String unitValue,
-      required OpeningStockItem openingStockItem,
-      @Default(PageActions.viewing) PageActions action,
-      @Default({}) Map<String, String?> errors}) = _ProductPageSupplements;
+      required OpeningStockItem openingStockItem}) = _ProductPageSupplements;
 
-  factory ProductPageSupplements.empty() =>
-      ProductPageSupplements(openingStockItem: OpeningStockItem.empty());
+  factory ProductPageSupplements.empty() => ProductPageSupplements(
+      openingStockItem: OpeningStockItem.empty(), product: const Product());
 
   bool get canCalculateTotalPrice =>
       double.tryParse(unitValue) != null && double.tryParse(quantity) != null;
@@ -39,11 +40,11 @@ class ProductPageSupplements with _$ProductPageSupplements {
 
   bool get isAdding => action == PageActions.adding;
 
-  Product get product => Product(
-      id: id,
-      categoryId: categoryId,
-      unit: unit,
-      name: name,
-      code: code,
+  Product get getProduct => Product(
+      id: product.id,
+      categoryId: product.categoryId,
+      unit: product.unit,
+      name: product.name,
+      code: product.code,
       unitPrice: double.parse(unitPrice));
 }

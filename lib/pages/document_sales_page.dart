@@ -171,7 +171,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
   _buildActionButton(SalesDocumentSupplements supp) {
     return supp.isViewing
         ? Container()
-        : const AddButton(nextPage: SalesEditPage(PageActions.adding));
+        : const AddButton(nextPage: SalesPage(PageActions.adding));
   }
 
   _buildBottomNavBar(SalesDocumentSupplements supp) {

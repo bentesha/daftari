@@ -18,7 +18,7 @@ class _ProductsPageState extends State<ProductsPage> {
         getService<OpeningStockItemsService>(context);
     bloc = ProductPageBloc(
         productsService, categoriesService, openingStockItemsService);
-    bloc.init();
+    bloc.init(Pages.products_page);
     super.initState();
   }
 
@@ -72,7 +72,7 @@ class _ProductsPageState extends State<ProductsPage> {
           final isLoading =
               state.maybeWhen(loading: (_) => true, orElse: () => false);
           if (isLoading) return Container();
-          return const AddButton(nextPage: ProductEditPage());
+          return const AddButton(nextPage: ProductPage());
         });
   }
 

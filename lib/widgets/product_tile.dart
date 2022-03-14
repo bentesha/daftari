@@ -8,7 +8,7 @@ class ProductTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppMaterialButton(
-      onPressed: () => push(ProductEditPage(product: product)),
+      onPressed: () => push(ProductPage(product: product)),
       padding: EdgeInsets.symmetric(horizontal: 19.dw),
       isFilled: false,
       child: ListTile(

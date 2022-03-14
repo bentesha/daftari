@@ -13,7 +13,7 @@ class SalesTile extends StatelessWidget {
     return AppMaterialButton(
       padding: EdgeInsets.symmetric(horizontal: 19.dw, vertical: 8.dh),
       isFilled: false,
-      onPressed: () => push(SalesEditPage(action, sales: sales)),
+      onPressed: () => push(SalesPage(action, sales: sales)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

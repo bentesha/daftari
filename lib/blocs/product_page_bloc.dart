@@ -18,34 +18,16 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     return category;
   }
 
-  void init({Product? product}) async {
+  void init(Pages page, {Product? product, PageActions? action}) async {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
     await initServices(
         productsService: productsService,
         categoriesService: categoriesService,
         openingStockItemsService: openingStockItemsService);
-    var productList = productsService.getList;
-    final categories = categoriesService.getList;
 
-    supp = supp.copyWith(productList: productList, categoryList: categories);
-
-    if (product != null) {
-      final openingStockItem =
-          openingStockItemsService.getByProductId(product.id);
-      supp = supp.copyWith(
-          unit: product.unit,
-          unitPrice: product.unitPrice.toString(),
-          name: product.name,
-          categoryId: product.categoryId,
-          id: product.id,
-          code: product.code,
-          openingStockItem: openingStockItem ?? supp.openingStockItem,
-          unitValue: openingStockItem?.unitValue.toString() ?? supp.unitValue,
-          quantity: openingStockItem?.quantity.toString() ?? supp.quantity);
-    }
-
-    emit(ProductPageState.content(supp));
+    _initProductsPage(page);
+    _initProductPage(page, action!, product);
   }
 
   void updateAttributes(
@@ -56,6 +38,7 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
       String? unitValue,
       DateTime? date,
       String? unitPrice,
+      PageActions? action,
       String? quantity}) {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
@@ -68,6 +51,7 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
         openingStockItem: supp.openingStockItem.copyWith(date: date),
         unitPrice: unitPrice?.trim() ?? supp.unitPrice,
         quantity: quantity?.trim() ?? supp.quantity,
+        action: action ?? supp.action,
         code: code?.trim() ?? supp.code);
     emit(ProductPageState.content(supp));
   }
@@ -122,6 +106,8 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     }
   }
 
+  void updateAction(PageActions action) => updateAttributes(action: action);
+
   _validate() {
     var supp = state.supplements;
     final errors = <String, String?>{};
@@ -158,6 +144,40 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     emit(ProductPageState.loading(supp));
     final id = categoriesService.getCurrent.id;
     supp = supp.copyWith(categoryId: id);
+    emit(ProductPageState.content(supp));
+  }
+
+  _initProductsPage(Pages page) {
+    if (page != Pages.products_page) return;
+    var supp = state.supplements;
+    var productList = productsService.getList;
+    final categories = categoriesService.getList;
+
+    supp = supp.copyWith(productList: productList, categoryList: categories);
+    emit(ProductPageState.content(supp));
+  }
+
+  _initProductPage(Pages page, PageActions action, [Product? product]) {
+    if (page != Pages.product_page) return;
+    var supp = state.supplements;
+
+    supp = supp.copyWith(action: action);
+
+    if (product != null) {
+      final openingStockItem =
+          openingStockItemsService.getByProductId(product.id);
+      supp = supp.copyWith(
+          unit: product.unit,
+          unitPrice: product.unitPrice.toString(),
+          name: product.name,
+          categoryId: product.categoryId,
+          id: product.id,
+          code: product.code,
+          openingStockItem: openingStockItem ?? supp.openingStockItem,
+          unitValue: openingStockItem?.unitValue.toString() ?? supp.unitValue,
+          quantity: openingStockItem?.quantity.toString() ?? supp.quantity);
+    }
+
     emit(ProductPageState.content(supp));
   }
 }

@@ -51,48 +51,62 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
   Widget _buildContent(CategoryPageSupplements supp) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: PageAppBar(
-        title: '${!isEditing ? 'New' : 'Edit'} Category',
-        actionCallbacks: isEditing ? [bloc.edit, bloc.delete] : [bloc.save],
-        actionIcons:
-            isEditing ? [Icons.check, Icons.delete_outline] : [Icons.check],
-      ),
+      appBar: _buildAppBar(supp),
       body: _buildBody(supp),
+    );
+  }
+
+  _buildAppBar(CategoryPageSupplements supp) {
+    return PageAppBar(
+      title: supp.isViewing
+          ? supp.category.name
+          : supp.isAdding
+              ? 'New Category'
+              : 'Edit Category',
+      actionCallbacks: supp.isViewing
+          ? [() => bloc.updateAction(PageActions.editing), bloc.delete]
+          : [supp.isEditing ? bloc.edit : bloc.save],
+      actionIcons: supp.isViewing
+          ? [Icons.edit_outlined, Icons.delete_outlined]
+          : [Icons.check],
     );
   }
 
   Widget _buildBody(CategoryPageSupplements supp) {
     return Column(
       children: [
-        widget.categoryType != null
+        widget.categoryType != null || !supp.isAdding
             ? Container()
             : ValueSelector(
                 title: 'Type',
                 value: supp.category.type,
                 error: supp.errors['type'],
-                isEditable: !isEditing,
+                isEditable: !supp.isViewing,
                 onPressed: () => push(ItemsSearchPage<CategoryType>(
                     categoryType: widget.categoryType)),
               ),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
+        !supp.isViewing
+            ? AppTextField(
+                text: supp.category.name,
+                onChanged: bloc.updateName,
+                hintText: '',
+                keyboardType: TextInputType.name,
+                textCapitalization: TextCapitalization.words,
+                label: 'Name',
+                error: supp.errors['name'],
+                isEnabled: !supp.isViewing)
+            : Container(),
         AppTextField(
-            text: supp.category.name,
-            onChanged: bloc.updateName,
+            error: supp.errors['description'],
+            text: supp.category.description,
+            onChanged: bloc.updateDescription,
             hintText: '',
-            keyboardType: TextInputType.name,
-            textCapitalization: TextCapitalization.words,
-            label: 'Name',
-            error: supp.errors['name']),
-        AppTextField(
-          error: supp.errors['description'],
-          text: supp.category.description,
-          onChanged: bloc.updateDescription,
-          hintText: '',
-          keyboardType: TextInputType.multiline,
-          textCapitalization: TextCapitalization.sentences,
-          label: 'Description',
-          maxLines: 3,
-        ),
+            keyboardType: TextInputType.multiline,
+            textCapitalization: TextCapitalization.sentences,
+            label: 'Description',
+            maxLines: 3,
+            isEnabled: !supp.isViewing),
       ],
     );
   }
@@ -102,6 +116,9 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
     final itemsService = getService<ProductsService>(context);
     final typeService = getService<CategoryTypesService>(context);
     bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
-    bloc.init(widget.categoryType, widget.category);
+    final action =
+        widget.category == null ? PageActions.adding : PageActions.viewing;
+    bloc.init(Pages.category_page,
+        type: widget.categoryType, category: widget.category, action: action);
   }
 }

@@ -6,7 +6,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
       this.categoriesService, this.productsService, this.typeService)
       : super(CategoryPagesState.initial()) {
     categoriesService.addListener(() => _handleCategoryUpdates());
-    productsService.addListener(() => _handleItemUpdates());
+    productsService.addListener(() => _handleProductUpdates());
     typeService.addListener(() => _handleTypeUpdates());
   }
 
@@ -14,41 +14,23 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   final ProductsService productsService;
   final CategoryTypesService typeService;
 
-  void init([CategoryType? type, Category? category]) async {
+  void init(Pages page,
+      {CategoryType? type, Category? category, PageActions? action}) async {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
 
-    if (type?.name == 'Expenses') CategoriesService.initType(true);
-    if (type?.name == 'Products') CategoriesService.initType(false);
-
     await initServices(
         productsService: productsService, categoriesService: categoriesService);
-    var categories = categoriesService.getList;
 
-    if (type != null) {
-      categories = categories.where((e) => e.type == type.name).toList();
-      supp = supp.copyWith(category: supp.category.copyWith(type: type.name));
-    }
-
-    final products = productsService.getList;
-    supp = supp.copyWith(productList: products, categoryList: categories);
-    if (category != null) supp = supp.copyWith(category: category);
-    emit(CategoryPagesState.content(supp));
+    _initCategoriesPage(page, type);
+    _initCategoryPage(page, action!, type, category);
   }
 
   void updateName(String name) => _updateAttributes(name: name);
 
   void updateDescription(String desc) => _updateAttributes(name: desc);
 
-  void _updateAttributes({String? name, String? description}) {
-    var supp = state.supplements;
-    emit(CategoryPagesState.loading(supp));
-    var category = supp.category;
-    category = category.copyWith(
-        name: name ?? category.name, description: description);
-    supp = supp.copyWith(category: category);
-    emit(CategoryPagesState.content(supp));
-  }
+  void updateAction(PageActions action) => _updateAttributes(action: action);
 
   void save() async {
     _validate();
@@ -77,10 +59,10 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   void delete() async {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
-    try{
+    try {
       await categoriesService.delete(supp.category.id);
       emit(CategoryPagesState.success(supp));
-    } on ApiErrors catch(e) {
+    } on ApiErrors catch (e) {
       emit(CategoryPagesState.failed(supp, message: e.message));
     }
   }
@@ -107,7 +89,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
     emit(CategoryPagesState.content(supp));
   }
 
-  _handleItemUpdates() {
+  _handleProductUpdates() {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
     final products = productsService.getList;
@@ -121,6 +103,46 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
     final type = typeService.getSelectedType;
     final category = supp.category.copyWith(type: type.name);
     supp = supp.copyWith(category: category);
+    emit(CategoryPagesState.content(supp));
+  }
+
+  _initCategoriesPage(Pages page, [CategoryType? type]) {
+    if (page != Pages.categories_page) return;
+    var supp = state.supplements;
+    var categories = categoriesService.getList;
+
+    if (type != null) {
+      categories = categories.where((e) => e.type == type.name).toList();
+      supp = supp.copyWith(category: supp.category.copyWith(type: type.name));
+    }
+
+    final products = productsService.getList;
+    supp = supp.copyWith(productList: products, categoryList: categories);
+    emit(CategoryPagesState.content(supp));
+  }
+
+  _initCategoryPage(Pages page, PageActions action,
+      [CategoryType? type, Category? category]) {
+    if (page != Pages.category_page) return;
+    var supp = state.supplements;
+    supp = supp.copyWith(action: action);
+
+    if (type != null) CategoriesService.initType(type.name == 'Expenses');
+    if (category != null) supp = supp.copyWith(category: category);
+
+    emit(CategoryPagesState.content(supp));
+  }
+
+  void _updateAttributes(
+      {String? name, String? description, PageActions? action}) {
+    var supp = state.supplements;
+    emit(CategoryPagesState.loading(supp));
+    var category = supp.category;
+    category = category.copyWith(
+      name: name ?? category.name,
+      description: description,
+    );
+    supp = supp.copyWith(category: category, action: action ?? supp.action);
     emit(CategoryPagesState.content(supp));
   }
 }

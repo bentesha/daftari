@@ -22,11 +22,13 @@ class _$CategoryPageSupplementsTearOff {
       {required Category category,
       required List<Category> categoryList,
       required List<Product> productList,
+      PageActions action = PageActions.viewing,
       required Map<String, String?> errors}) {
     return _CategoryPageSupplements(
       category: category,
       categoryList: categoryList,
       productList: productList,
+      action: action,
       errors: errors,
     );
   }
@@ -40,6 +42,7 @@ mixin _$CategoryPageSupplements {
   Category get category => throw _privateConstructorUsedError;
   List<Category> get categoryList => throw _privateConstructorUsedError;
   List<Product> get productList => throw _privateConstructorUsedError;
+  PageActions get action => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -56,6 +59,7 @@ abstract class $CategoryPageSupplementsCopyWith<$Res> {
       {Category category,
       List<Category> categoryList,
       List<Product> productList,
+      PageActions action,
       Map<String, String?> errors});
 }
 
@@ -73,6 +77,7 @@ class _$CategoryPageSupplementsCopyWithImpl<$Res>
     Object? category = freezed,
     Object? categoryList = freezed,
     Object? productList = freezed,
+    Object? action = freezed,
     Object? errors = freezed,
   }) {
     return _then(_value.copyWith(
@@ -88,6 +93,10 @@ class _$CategoryPageSupplementsCopyWithImpl<$Res>
           ? _value.productList
           : productList // ignore: cast_nullable_to_non_nullable
               as List<Product>,
+      action: action == freezed
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as PageActions,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -107,6 +116,7 @@ abstract class _$CategoryPageSupplementsCopyWith<$Res>
       {Category category,
       List<Category> categoryList,
       List<Product> productList,
+      PageActions action,
       Map<String, String?> errors});
 }
 
@@ -127,6 +137,7 @@ class __$CategoryPageSupplementsCopyWithImpl<$Res>
     Object? category = freezed,
     Object? categoryList = freezed,
     Object? productList = freezed,
+    Object? action = freezed,
     Object? errors = freezed,
   }) {
     return _then(_CategoryPageSupplements(
@@ -142,6 +153,10 @@ class __$CategoryPageSupplementsCopyWithImpl<$Res>
           ? _value.productList
           : productList // ignore: cast_nullable_to_non_nullable
               as List<Product>,
+      action: action == freezed
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as PageActions,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
@@ -157,6 +172,7 @@ class _$_CategoryPageSupplements extends _CategoryPageSupplements {
       {required this.category,
       required this.categoryList,
       required this.productList,
+      this.action = PageActions.viewing,
       required this.errors})
       : super._();
 
@@ -166,12 +182,15 @@ class _$_CategoryPageSupplements extends _CategoryPageSupplements {
   final List<Category> categoryList;
   @override
   final List<Product> productList;
+  @JsonKey()
+  @override
+  final PageActions action;
   @override
   final Map<String, String?> errors;
 
   @override
   String toString() {
-    return 'CategoryPageSupplements(category: $category, categoryList: $categoryList, productList: $productList, errors: $errors)';
+    return 'CategoryPageSupplements(category: $category, categoryList: $categoryList, productList: $productList, action: $action, errors: $errors)';
   }
 
   @override
@@ -184,6 +203,7 @@ class _$_CategoryPageSupplements extends _CategoryPageSupplements {
                 .equals(other.categoryList, categoryList) &&
             const DeepCollectionEquality()
                 .equals(other.productList, productList) &&
+            const DeepCollectionEquality().equals(other.action, action) &&
             const DeepCollectionEquality().equals(other.errors, errors));
   }
 
@@ -193,6 +213,7 @@ class _$_CategoryPageSupplements extends _CategoryPageSupplements {
       const DeepCollectionEquality().hash(category),
       const DeepCollectionEquality().hash(categoryList),
       const DeepCollectionEquality().hash(productList),
+      const DeepCollectionEquality().hash(action),
       const DeepCollectionEquality().hash(errors));
 
   @JsonKey(ignore: true)
@@ -207,6 +228,7 @@ abstract class _CategoryPageSupplements extends CategoryPageSupplements {
       {required Category category,
       required List<Category> categoryList,
       required List<Product> productList,
+      PageActions action,
       required Map<String, String?> errors}) = _$_CategoryPageSupplements;
   const _CategoryPageSupplements._() : super._();
 
@@ -216,6 +238,8 @@ abstract class _CategoryPageSupplements extends CategoryPageSupplements {
   List<Category> get categoryList;
   @override
   List<Product> get productList;
+  @override
+  PageActions get action;
   @override
   Map<String, String?> get errors;
   @override

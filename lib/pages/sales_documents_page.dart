@@ -12,7 +12,6 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
 
   @override
   void initState() {
-    log('in here');
     final groupsService = getService<SalesService>(context);
     final productsService = getService<ProductsService>(context);
     bloc = SalesDocumentsPagesBloc(groupsService, productsService);

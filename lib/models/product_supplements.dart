@@ -18,6 +18,7 @@ class ProductPageSupplements with _$ProductPageSupplements {
       @Default('') String quantity,
       @Default('') String unitValue,
       required OpeningStockItem openingStockItem,
+      @Default(PageActions.viewing) PageActions action,
       @Default({}) Map<String, String?> errors}) = _ProductPageSupplements;
 
   factory ProductPageSupplements.empty() =>
@@ -31,6 +32,12 @@ class ProductPageSupplements with _$ProductPageSupplements {
 
   bool get hasAddedOpeningStockDetails =>
       unitValue.isNotEmpty || quantity.isNotEmpty;
+
+  bool get isEditing => action == PageActions.editing;
+
+  bool get isViewing => action == PageActions.viewing;
+
+  bool get isAdding => action == PageActions.adding;
 
   Product get product => Product(
       id: id,

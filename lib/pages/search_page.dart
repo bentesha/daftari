@@ -161,7 +161,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
     if (T == Category) {
       nextPage = CategoryEditPage(categoryType: widget.categoryType);
     }
-    if (T == Product) nextPage = const ProductEditPage();
+    if (T == Product) nextPage = const ProductPage();
     push(nextPage);
   }
 }

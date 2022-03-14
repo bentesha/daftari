@@ -239,7 +239,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
 
   ///action can't be null on the sales edit page.
   void _initSalesEditPage(Pages page, [Sales? sales, PageActions? action]) {
-    if (page != Pages.sales_edit_page) return;
+    if (page != Pages.sales_page) return;
 
     var supp = state.supplements;
 

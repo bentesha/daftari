@@ -98,6 +98,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
     final itemsService = getService<ProductsService>(context);
     final typeService = getService<CategoryTypesService>(context);
     bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
-    bloc.init(widget.categoryType);
+    bloc.init(Pages.categories_page, type: widget.categoryType);
   }
 }

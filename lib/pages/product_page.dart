@@ -1,22 +1,20 @@
 import '../source.dart';
 
-class ProductEditPage extends StatefulWidget {
-  const ProductEditPage({Key? key, this.product}) : super(key: key);
+class ProductPage extends StatefulWidget {
+  const ProductPage({Key? key, this.product}) : super(key: key);
 
   final Product? product;
 
   @override
-  State<ProductEditPage> createState() => _ProductEditPageState();
+  State<ProductPage> createState() => _ProductPageState();
 }
 
-class _ProductEditPageState extends State<ProductEditPage> {
+class _ProductPageState extends State<ProductPage> {
   late final ProductPageBloc bloc;
-  late final bool isEditing;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
-    isEditing = widget.product != null;
     _initBloc();
     super.initState();
   }
@@ -50,24 +48,27 @@ class _ProductEditPageState extends State<ProductEditPage> {
   Widget _buildContent(ProductPageSupplements supp) {
     return Scaffold(
       key: _scaffoldKey,
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(supp),
       body: ListView(padding: EdgeInsets.zero, children: [
         _buildProductDetails(supp),
-        isEditing && !supp.hasAddedOpeningStockDetails
-            ? Container()
-            : _buildOpeningStockDetails(supp),
+        _buildOpeningStockDetails(supp),
       ]),
     );
   }
 
-  _buildAppBar() {
+  _buildAppBar(ProductPageSupplements supp) {
     return PageAppBar(
-        title: isEditing ? 'New Product' : 'Edit Product',
-        actionIcons:
-            isEditing ? [Icons.check, Icons.delete_outlined] : [Icons.check],
-        actionCallbacks: isEditing
-            ? [bloc.editProduct, bloc.deleteProduct]
-            : [bloc.saveProduct]);
+        title: supp.isViewing
+            ? supp.name
+            : supp.isAdding
+                ? 'New Product'
+                : 'Edit Product',
+        actionIcons: supp.isViewing
+            ? [Icons.edit_outlined, Icons.delete_outlined]
+            : [Icons.check],
+        actionCallbacks: supp.isViewing
+            ? [() => bloc.updateAction(PageActions.editing), bloc.deleteProduct]
+            : [supp.isEditing ? bloc.editProduct : bloc.saveProduct]);
   }
 
   _buildProductDetails(ProductPageSupplements supp) {
@@ -88,20 +89,23 @@ class _ProductEditPageState extends State<ProductEditPage> {
             title: 'Category',
             value: bloc.getSelectedCategory?.name,
             error: supp.errors['category'],
-            isEditable: true,
+            isEditable: !supp.isViewing,
             onPressed: () => push(ItemsSearchPage<Category>(
                 categoryType: CategoryType.products())),
           ),
           AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
-          AppTextField(
-            text: supp.name,
-            onChanged: (name) => bloc.updateAttributes(name: name),
-            hintText: 'e.g. Clothes',
-            keyboardType: TextInputType.name,
-            textCapitalization: TextCapitalization.words,
-            label: 'Name',
-            error: errors['name'],
-          ),
+          !supp.isViewing
+              ? AppTextField(
+                  text: supp.name,
+                  onChanged: (name) => bloc.updateAttributes(name: name),
+                  hintText: 'e.g. Clothes',
+                  keyboardType: TextInputType.name,
+                  textCapitalization: TextCapitalization.words,
+                  label: 'Name',
+                  error: errors['name'],
+                  isEnabled: !supp.isViewing,
+                )
+              : Container(),
           Row(
             children: [
               Expanded(
@@ -113,6 +117,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                   shouldShowErrorText: false,
                   label: 'Unit',
                   error: errors['unit'],
+                  isEnabled: !supp.isViewing,
                 ),
               ),
               Expanded(
@@ -124,6 +129,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                   shouldShowErrorText: false,
                   label: 'Unit Price',
                   error: errors['unitPrice'],
+                  isEnabled: !supp.isViewing,
                 ),
               ),
             ],
@@ -132,6 +138,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
           BarcodeField(
               error: supp.errors['code'],
               text: supp.code,
+              isEnabled: !supp.isViewing,
               onChanged: (code) => bloc.updateAttributes(code: code)),
         ],
       ),
@@ -139,6 +146,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
   }
 
   _buildOpeningStockDetails(ProductPageSupplements supp) {
+    if (!supp.isAdding) return Container();
     return ExpansionTile(
         title: const AppText('OPENING STOCK DETAILS',
             weight: FontWeight.bold, opacity: .7),
@@ -153,7 +161,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       DateSelector(
           title: 'DATE',
           onDateSelected: (date) => bloc.updateAttributes(date: date),
-          isEditable: !isEditing,
+          isEditable: !supp.isViewing,
           date: supp.openingStockItem.date),
       SizedBox(height: 8.dh),
       AppTextField(
@@ -162,7 +170,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         hintText: '0',
         keyboardType: TextInputType.number,
         label: 'Quantity',
-        isEnabled: !isEditing,
+        isEnabled: !supp.isViewing,
         error: errors['quantity'],
       ),
       AppTextField(
@@ -171,7 +179,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         hintText: '0',
         keyboardType: TextInputType.number,
         label: 'Unit Value',
-        isEnabled: !isEditing,
+        isEnabled: !supp.isViewing,
         error: errors['unitValue'],
       ),
       _buildTotalOpeningValue(supp)
@@ -225,6 +233,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
         getService<OpeningStockItemsService>(context);
     bloc = ProductPageBloc(
         productsService, categoriesService, openingStockItemsService);
-    bloc.init(product: widget.product);
+    final action =
+        widget.product == null ? PageActions.adding : PageActions.viewing;
+    log(action.toString());
+    bloc.init(Pages.product_page, product: widget.product, action: action);
   }
 }

@@ -5,12 +5,13 @@ class BarcodeField extends StatefulWidget {
       {required this.error,
       required this.text,
       required this.onChanged,
+      this.isEnabled = true,
       Key? key})
       : super(key: key);
 
-  final String? error;
-  final String? text;
+  final String? error, text;
   final ValueChanged<String> onChanged;
+  final bool isEnabled;
 
   @override
   _BarcodeFieldState createState() => _BarcodeFieldState();
@@ -53,6 +54,7 @@ class _BarcodeFieldState extends State<BarcodeField> {
                   maxLines: 1,
                   minLines: 1,
                   keyboardType: TextInputType.number,
+                  enabled: widget.isEnabled,
                   style: TextStyle(
                     color: AppColors.onBackground,
                     fontSize: 16.dw,

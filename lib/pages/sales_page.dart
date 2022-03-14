@@ -1,16 +1,16 @@
 import '../source.dart';
 
-class SalesEditPage extends StatefulWidget {
-  const SalesEditPage(this.action, {this.sales, Key? key}) : super(key: key);
+class SalesPage extends StatefulWidget {
+  const SalesPage(this.action, {this.sales, Key? key}) : super(key: key);
 
   final Sales? sales;
   final PageActions action;
 
   @override
-  State<SalesEditPage> createState() => _SalesEditPageState();
+  State<SalesPage> createState() => _SalesPageState();
 }
 
-class _SalesEditPageState extends State<SalesEditPage> {
+class _SalesPageState extends State<SalesPage> {
   late final SalesDocumentsPagesBloc bloc;
 
   @override
@@ -109,7 +109,6 @@ class _SalesEditPageState extends State<SalesEditPage> {
     final productsService = getService<ProductsService>(context);
     final salesService = getService<SalesService>(context);
     bloc = SalesDocumentsPagesBloc(salesService, productsService);
-    bloc.init(Pages.sales_edit_page,
-        sales: widget.sales, action: widget.action);
+    bloc.init(Pages.sales_page, sales: widget.sales, action: widget.action);
   }
 }

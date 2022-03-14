@@ -140,7 +140,7 @@ class AppDrawer extends StatelessWidget {
 enum Pages {
   dashboard,
   sales_documents_page,
-  sales_edit_page,
+  sales_page,
   document_sales_page,
   expenses_groups_page,
   group_expenses_page,
@@ -149,11 +149,14 @@ enum Pages {
   group_write_offs_page,
   write_offs_edit_page,
   reports_page,
+  categories_page,
+  category_page,
+  purchases_page,
   products_categories_page,
   expenses_categories_page,
-  purchases_page,
   stock_write_offs_page,
   products_page,
+  product_page,
   settings_page,
   opening_stock
 }

@@ -38,7 +38,7 @@ class NetworkService<T> extends ChangeNotifier {
 
   Future<void> add(var item) async {
     final response = await http.post(Uri.parse(_url),
-        body: json.encode(item.createJson()), headers: headers);
+        body: json.encode(item.toJson()), headers: headers);
     //  log(response.body);
     final body = json.decode(response.body);
     _current = _getValueFromJson(body);
@@ -48,7 +48,7 @@ class NetworkService<T> extends ChangeNotifier {
 
   Future<void> edit(var item, [String? url]) async {
     final response = await http.put(Uri.parse((url ?? _url) + '/${item.id}'),
-        body: json.encode(item.createJson()), headers: headers);
+        body: json.encode(item.toJson()), headers: headers);
     // log(response.body);
     final index = _list.indexWhere((e) => e.id == item.id);
     final body = json.decode(response.body);
@@ -56,6 +56,10 @@ class NetworkService<T> extends ChangeNotifier {
     notifyListeners();
   }
 
+  ///url needs to be specified to understand whether the endpoint was directed
+  ///to expenses or products categories, so that the type of category can be
+  ///determined.
+  ///Used only for categories
   dynamic _getValueFromJson(var json, [String? url]) {
     if (T == Product) return Product.fromJson(json);
     if (T == Category) {

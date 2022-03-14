@@ -43,9 +43,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 
   Widget _buildLoading(CategoryPageSupplements supp) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
+    return const AppLoadingIndicator();
   }
 
   Widget _buildContent(CategoryPageSupplements supp) {

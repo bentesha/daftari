@@ -46,6 +46,9 @@ class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState>
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
+    emit(OpeningStockPagesState.loading(supp));
+
+
     final item = OpeningStockItem(
         id: Utils.getRandomId(),
         date: supp.openingStockItem.date,
@@ -63,6 +66,9 @@ class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState>
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
+
+    emit(OpeningStockPagesState.loading(supp));
+
 
     final item = OpeningStockItem(
         id: supp.openingStockItem.id,

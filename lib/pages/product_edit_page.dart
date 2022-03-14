@@ -1,16 +1,9 @@
 import '../source.dart';
 
 class ProductEditPage extends StatefulWidget {
-  const ProductEditPage({Key? key, this.product, this.categoryId})
-      : super(key: key);
+  const ProductEditPage({Key? key, this.product}) : super(key: key);
 
   final Product? product;
-  final String? categoryId;
-
-  static void navigateTo(BuildContext context, {Product? product}) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (_) => ProductEditPage(product: product)));
-  }
 
   @override
   State<ProductEditPage> createState() => _ProductEditPageState();
@@ -18,57 +11,56 @@ class ProductEditPage extends StatefulWidget {
 
 class _ProductEditPageState extends State<ProductEditPage> {
   late final ProductPageBloc bloc;
-  late final bool hasNoCategoryId;
   late final bool isEditing;
 
   @override
   void initState() {
     isEditing = widget.product != null;
-    hasNoCategoryId = widget.product == null && widget.categoryId == null;
     _initBloc();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<ProductPageBloc, ProductPageState>(
+        bloc: bloc,
+        listener: (_, state) {
+          final isSaved =
+              state.maybeWhen(success: (_) => true, orElse: () => false);
+
+          if (isSaved) pop();
+        },
+        builder: (_, state) {
+          return state.when(
+              loading: _buildLoading,
+              content: _buildContent,
+              success: _buildContent);
+        });
+  }
+
+  Widget _buildLoading(ProductPageSupplements supp) =>
+      const AppLoadingIndicator.withScaffold();
+
+  Widget _buildContent(ProductPageSupplements supp) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: BlocConsumer<ProductPageBloc, ProductPageState>(
-          bloc: bloc,
-          listener: (_, state) {
-            final isSaved =
-                state.maybeWhen(success: (_) => true, orElse: () => false);
-
-            if (isSaved) pop();
-          },
-          builder: (_, state) {
-            return state.when(
-                loading: _buildLoading,
-                content: _buildContent,
-                success: _buildContent);
-          }),
+      body: ListView(padding: EdgeInsets.zero, children: [
+        _buildProductDetails(supp),
+        isEditing && !supp.hasAddedOpeningStockDetails
+            ? Container()
+            : _buildOpeningStockDetails(supp),
+      ]),
     );
   }
 
   _buildAppBar() {
     return PageAppBar(
-        title: hasNoCategoryId ? 'New Product' : 'Edit Product',
-        actionCallbacks: [isEditing ? bloc.editProduct : bloc.saveProduct]);
-  }
-
-  Widget _buildLoading(ProductPageSupplements supp) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
-
-  Widget _buildContent(ProductPageSupplements supp) {
-    return ListView(padding: EdgeInsets.zero, children: [
-      _buildProductDetails(supp),
-      isEditing && !supp.hasAddedOpeningStockDetails
-          ? Container()
-          : _buildOpeningStockDetails(supp),
-    ]);
+        title: isEditing ? 'New Product' : 'Edit Product',
+        actionIcons:
+            isEditing ? [Icons.check, Icons.delete_outlined] : [Icons.check],
+        actionCallbacks: isEditing
+            ? [bloc.editProduct, bloc.deleteProduct]
+            : [bloc.saveProduct]);
   }
 
   _buildProductDetails(ProductPageSupplements supp) {

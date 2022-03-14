@@ -18,7 +18,7 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     return category;
   }
 
-  void init({Product? product, String? categoryId}) async {
+  void init({Product? product}) async {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
     await initServices(
@@ -27,12 +27,6 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
         openingStockItemsService: openingStockItemsService);
     var productList = productsService.getList;
     final categories = categoriesService.getList;
-
-    if (categoryId != null) {
-      productList =
-          productList.where((e) => e.categoryId == categoryId).toList();
-      supp = supp.copyWith(categoryId: categoryId);
-    }
 
     supp = supp.copyWith(productList: productList, categoryList: categories);
 
@@ -85,6 +79,7 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
+    emit(ProductPageState.loading(supp));
     await productsService.add(supp.product);
 
     if (supp.hasAddedOpeningStockDetails) {
@@ -106,7 +101,15 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
+    emit(ProductPageState.loading(supp));
     await productsService.edit(supp.product);
+    emit(ProductPageState.success(supp));
+  }
+
+  void deleteProduct() async {
+    var supp = state.supplements;
+    emit(ProductPageState.loading(supp));
+    await productsService.delete(supp.product.id);
     emit(ProductPageState.success(supp));
   }
 

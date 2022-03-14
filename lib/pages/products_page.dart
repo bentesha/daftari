@@ -42,9 +42,8 @@ class _ProductsPageState extends State<ProductsPage> {
         });
   }
 
-  Widget _buildLoading(ProductPageSupplements supp) {
-    return const Center(child: CircularProgressIndicator());
-  }
+  Widget _buildLoading(ProductPageSupplements supp) =>
+      const AppLoadingIndicator();
 
   Widget _buildContent(ProductPageSupplements supp) {
     final items = supp.productList;

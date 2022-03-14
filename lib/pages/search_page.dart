@@ -45,13 +45,8 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
         });
   }
 
-  Widget _buildLoading(SearchPageSupplements supp) {
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
+  Widget _buildLoading(SearchPageSupplements supp) =>
+      const AppLoadingIndicator.withScaffold();
 
   Widget _buildContent(SearchPageSupplements supp) {
     return Scaffold(

@@ -43,11 +43,7 @@ class _WriteOffGroupsPageState extends State<WriteOffGroupsPage> {
     );
   }
 
-  Widget _buildLoading(WriteOffSupplements supp) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
+  Widget _buildLoading(WriteOffSupplements supp) => const AppLoadingIndicator();
 
   Widget _buildContent(WriteOffSupplements supp) {
     if (supp.groups.isEmpty) {

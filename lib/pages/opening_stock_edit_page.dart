@@ -49,11 +49,8 @@ class _OpeningStockEditPageState extends State<OpeningStockEditPage> {
         });
   }
 
-  Widget _buildLoading(OpeningStockSupplements supp) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
+  Widget _buildLoading(OpeningStockSupplements supp) =>
+      const AppLoadingIndicator();
 
   Widget _buildContent(OpeningStockSupplements supp) {
     return Column(

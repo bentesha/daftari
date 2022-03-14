@@ -24,19 +24,6 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PageAppBar(
-        title: '${!isEditing ? 'New' : 'Edit'} Category',
-        actionCallbacks: isEditing ? [bloc.edit, bloc.delete] : [bloc.save],
-        actionIcons: isEditing
-            ? [Icons.check, Icons.delete_outline]
-            : [Icons.check],
-      ),
-      body: _buildBody(),
-    );
-  }
-
-  _buildBody() {
     return BlocConsumer<CategoryPageBloc, CategoryPagesState>(
         bloc: bloc,
         listener: (_, state) {
@@ -54,12 +41,22 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
   }
 
   Widget _buildLoading(CategoryPageSupplements supp) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
+    return const AppLoadingIndicator.withScaffold();
   }
 
   Widget _buildContent(CategoryPageSupplements supp) {
+    return Scaffold(
+      appBar: PageAppBar(
+        title: '${!isEditing ? 'New' : 'Edit'} Category',
+        actionCallbacks: isEditing ? [bloc.edit, bloc.delete] : [bloc.save],
+        actionIcons:
+            isEditing ? [Icons.check, Icons.delete_outline] : [Icons.check],
+      ),
+      body: _buildBody(supp),
+    );
+  }
+
+  Widget _buildBody(CategoryPageSupplements supp) {
     return Column(
       children: [
         widget.categoryType != null

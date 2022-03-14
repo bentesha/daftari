@@ -39,11 +39,8 @@ class _SalesEditPageState extends State<SalesEditPage> {
         });
   }
 
-  Widget _buildLoading(SalesDocumentSupplements supp) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
+  Widget _buildLoading(SalesDocumentSupplements supp) =>
+      const AppLoadingIndicator.withScaffold();
 
   Widget _buildContent(SalesDocumentSupplements supp) {
     return Scaffold(

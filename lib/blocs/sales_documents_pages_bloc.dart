@@ -75,11 +75,18 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     var document = supp.document;
     if (supp.isDateAsTitle) {
       final form =
-          document.form.copyWith(title: DateFormatter.convertToDOW(supp.date));
+          document.form.copyWith(title: DateFormatter.convertToDMY(supp.date));
       document = document.copyWith(form: form);
     }
 
     await salesService.edit(document);
+    emit(SalesDocumentsPagesState.success(supp));
+  }
+
+  void deleteDocument() async {
+    var supp = state.supplements;
+    emit(SalesDocumentsPagesState.loading(supp));
+    await salesService.delete(supp.document.form.id);
     emit(SalesDocumentsPagesState.success(supp));
   }
 
@@ -187,7 +194,10 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
     final product = productsService.getCurrent;
-    supp = supp.copyWith(product: product);
+    supp = supp.copyWith(
+        product: product,
+        quantity: '1',
+        unitPrice: product.unitPrice.toString());
     emit(SalesDocumentsPagesState.content(supp));
   }
 
@@ -223,7 +233,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
   }
 
   bool _checkIfDateIsUsedAsTitle(String title, DateTime date) {
-    final dateFromTitle = DateFormatter.convertToDOW(date);
+    final dateFromTitle = DateFormatter.convertToDMY(date);
     return title == dateFromTitle;
   }
 

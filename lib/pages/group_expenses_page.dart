@@ -73,11 +73,7 @@ class _GroupExpensesPageState extends State<GroupExpensesPage> {
         ]);
   }
 
-  Widget _buildLoading(ExpenseSupplements supp) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
+  Widget _buildLoading(ExpenseSupplements supp) => const AppLoadingIndicator();
 
   Widget _buildBody(ExpenseSupplements supp) {
     return ListView(

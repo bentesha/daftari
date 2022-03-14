@@ -5,12 +5,14 @@
 //and creates the classes itself and it becomes controversial.
 //Second option is to writing the boilerplate yourself.
 
+import '../source.dart';
+
 class Category {
   final String id, type, name;
   final String? description;
 
   const Category(
-      {this.id = '', this.description = '', this.name = '', this.type = ''});
+      {this.id = '', this.description, this.name = '', this.type = ''});
 
   Category.expenses({required this.id, this.description, required this.name})
       : type = 'Expenses';
@@ -27,8 +29,7 @@ class Category {
         type: type ?? this.type);
   }
 
-  factory Category.fromJson(Map<String, dynamic> json,
-      [bool isExpenses = true]) {
+  factory Category.fromJson(var json, [bool isExpenses = true]) {
     if (isExpenses) {
       return Category.expenses(
           id: json['id'], description: json['description'], name: json['name']);
@@ -38,5 +39,13 @@ class Category {
     }
   }
 
-  Map<String, String?> toJson() => {'name': name, 'description': description};
+  Map<String, String?> toJson() {
+    String? _description;
+    if (description != null) {
+      //description can be '', that is empty and empty faces validation errors
+      //from the server
+      if (description!.isNotEmpty) _description = description!;
+    }
+    return {'name': name, 'description': _description};
+  }
 }

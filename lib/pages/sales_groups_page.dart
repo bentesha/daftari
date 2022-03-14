@@ -12,6 +12,7 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
 
   @override
   void initState() {
+    log('in here');
     final groupsService = getService<SalesService>(context);
     final productsService = getService<ProductsService>(context);
     bloc = SalesDocumentsPagesBloc(groupsService, productsService);
@@ -41,11 +42,8 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
     );
   }
 
-  Widget _buildLoading(SalesDocumentSupplements supp) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
+  Widget _buildLoading(SalesDocumentSupplements supp) =>
+      const AppLoadingIndicator();
 
   Widget _buildContent(SalesDocumentSupplements supp) {
     final documents = supp.documents;

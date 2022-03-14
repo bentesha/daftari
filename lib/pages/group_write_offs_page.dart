@@ -36,13 +36,8 @@ class _GroupWriteOffsPageState extends State<GroupWriteOffsPage> {
     );
   }
 
-  Widget _buildLoading(WriteOffSupplements supp) {
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
+  Widget _buildLoading(WriteOffSupplements supp) =>
+      const AppLoadingIndicator.withScaffold();
 
   Widget _buildContent(WriteOffSupplements supp) {
     final id = supp.group.form.id;

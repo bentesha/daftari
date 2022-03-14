@@ -33,8 +33,7 @@ class _CategoryPageState extends State<CategoryPage> {
         actionCallbacks: [_navigateToCategoryEditPage],
       ),
       body: _buildBody(),
-      floatingActionButton:
-          AddButton(nextPage: ProductEditPage(categoryId: widget.category.id)),
+      floatingActionButton: const AddButton(nextPage: ProductEditPage()),
     );
   }
 
@@ -52,11 +51,8 @@ class _CategoryPageState extends State<CategoryPage> {
         });
   }
 
-  Widget _buildLoading(ProductPageSupplements supp) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
+  Widget _buildLoading(ProductPageSupplements supp) =>
+      const AppLoadingIndicator.withScaffold();
 
   Widget _buildContent(ProductPageSupplements supp) {
     final items = supp.productList

@@ -43,11 +43,7 @@ class _ExpensesGroupsPageState extends State<ExpensesGroupsPage> {
     );
   }
 
-  Widget _buildLoading(ExpenseSupplements supp) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
+  Widget _buildLoading(ExpenseSupplements supp) => const AppLoadingIndicator();
 
   Widget _buildContent(ExpenseSupplements supp) {
     if (supp.groups.isEmpty) {
@@ -59,7 +55,7 @@ class _ExpensesGroupsPageState extends State<ExpensesGroupsPage> {
       separatorBuilder: (_, __) => const AppDivider(margin: EdgeInsets.zero),
       itemBuilder: (_, i) {
         final group = supp.groups[i];
-       // final groupAmount = bloc.getAmountByGroup(group.id);
+        // final groupAmount = bloc.getAmountByGroup(group.id);
         return ExpensesGroupTile(group, /* groupAmount ?? */ 0);
       },
       itemCount: supp.groups.length,

@@ -41,8 +41,6 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
   }
 
   Widget _buildContent(SalesDocumentSupplements supp) {
-    final form = supp.document.form;
-
     return Scaffold(
       appBar: _buildAppBar(supp),
       body: _buildGroupDetails(supp),
@@ -51,13 +49,8 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
     );
   }
 
-  Widget _buildLoading(SalesDocumentSupplements supp) {
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
-  }
+  Widget _buildLoading(SalesDocumentSupplements supp) =>
+      const AppLoadingIndicator.withScaffold();
 
   _buildAppBar(SalesDocumentSupplements supp) {
     final title = supp.isViewing
@@ -66,15 +59,17 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
             ? 'Edit Sales Document'
             : 'New Sales Document';
 
-    return PageAppBar(title: title, actionIcons: [
-      supp.isViewing ? Icons.edit_outlined : Icons.done
-    ], actionCallbacks: [
-      supp.isViewing
-          ? () => bloc.updateAction(PageActions.editing)
-          : supp.isEditing
-              ? bloc.editDocument
-              : bloc.saveDocument
-    ]);
+    return PageAppBar(
+        title: title,
+        actionIcons: supp.isViewing
+            ? [Icons.edit_outlined, Icons.delete_outlined]
+            : [Icons.done],
+        actionCallbacks: supp.isViewing
+            ? [
+                () => bloc.updateAction(PageActions.editing),
+                bloc.deleteDocument
+              ]
+            : [supp.isEditing ? bloc.editDocument : bloc.saveDocument]);
   }
 
   Widget _buildGroupDetails(SalesDocumentSupplements supp) {
@@ -153,6 +148,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
               const AppDivider(margin: EdgeInsets.zero),
           itemBuilder: (_, i) {
             final sales = salesList[i];
+            log(sales.toString());
             final product = bloc.getProductById(sales.productId);
             final action = supp.isViewing ? supp.action : PageActions.editing;
             return SalesTile(sales, product: product, action: action);
@@ -184,5 +180,6 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
         : const SizedBox(height: .00001);
   }
 
-  static const emptyExpensesMessage = 'No sales have been added yet.';
+  static const emptyExpensesMessage =
+      'No sales have been added in this document yet.';
 }

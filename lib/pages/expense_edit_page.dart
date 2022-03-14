@@ -50,11 +50,8 @@ class _ExpenseEditPageState extends State<ExpenseEditPage> {
         });
   }
 
-  Widget _buildLoading(ExpenseSupplements supp) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
+  Widget _buildLoading(ExpenseSupplements supp) =>
+      const AppLoadingIndicator.withScaffold();
 
   Widget _buildContent(ExpenseSupplements supp) {
     return Column(

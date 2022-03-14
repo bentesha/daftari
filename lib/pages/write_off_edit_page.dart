@@ -51,11 +51,7 @@ class _WriteOffEditPageState extends State<WriteOffEditPage> {
         });
   }
 
-  Widget _buildLoading(WriteOffSupplements supp) {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
+  Widget _buildLoading(WriteOffSupplements supp) => const AppLoadingIndicator();
 
   Widget _buildContent(WriteOffSupplements supp) {
     return Column(

@@ -40,13 +40,14 @@ class CategoriesService extends NetworkService<Category> {
     final url = root +
         (_isExpenses ? expenseCategoryEndpoint : productCategoryEndpoint);
     final response = await http.post(Uri.parse(url),
-        body: json.encode(item.createJson()), headers: headers);
+        body: json.encode(item.toJson()), headers: headers);
     // log(response.body.toString());
     final jsonCategory = json.decode(response.body);
 
     final list = super.getList;
-    list.add(Category.fromJson(jsonCategory, _isExpenses));
-    super.updateAttributes(list, currentId: item.id);
+    final category = Category.fromJson(jsonCategory, _isExpenses);
+    list.add(category);
+    super.updateAttributes(list, currentId: category.id);
     notifyListeners();
   }
 

@@ -3,8 +3,13 @@ import '../source.dart';
 import 'package:http/http.dart' as http;
 
 class NetworkService<T> extends ChangeNotifier {
+  NetworkService() {
+    _current = _getInitialValue();
+  }
+
   var _list = [];
-  T? _current;
+  late T _current;
+
   String get _path => T == Product ? 'product' : '';
   String get _url => root + _path;
   List<T> get getList => _list.whereType<T>().toList();
@@ -87,9 +92,14 @@ class NetworkService<T> extends ChangeNotifier {
     }
   }
 
-  void _handleStatusCodes(int statusCode){
-    if(statusCode == 200) return;
-    if(statusCode == 400) throw ApiErrors.invalidDelete();
+  void _handleStatusCodes(int statusCode) {
+    if (statusCode == 200) return;
+    if (statusCode == 400) throw ApiErrors.invalidDelete();
     throw ApiErrors.unknown();
+  }
+
+  dynamic _getInitialValue() {
+    if (T == Product) return const Product();
+    if (T == Category) return const Category();
   }
 }

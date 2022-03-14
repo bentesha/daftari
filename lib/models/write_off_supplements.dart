@@ -23,7 +23,7 @@ class WriteOffSupplements with _$WriteOffSupplements {
         errors: <String, String?>{},
         date: DateTime.now(),
         quantity: '',
-        product: Product.empty(),
+        product: const Product(),
         group: const Document.writeOffs(DocumentForm()),
         id: '');
   }

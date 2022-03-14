@@ -49,6 +49,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   Widget _buildContent(ProductPageSupplements supp) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: _buildAppBar(),
       body: ListView(padding: EdgeInsets.zero, children: [
         _buildProductDetails(supp),

@@ -25,7 +25,7 @@ class SalesDocumentSupplements with _$SalesDocumentSupplements {
   factory SalesDocumentSupplements.empty() =>
       SalesDocumentSupplements(
           document: Document.empty(),
-          product: Product.empty(),
+          product: const Product(),
           date: DateTime.now());
 
   double get parsedQuantity => double.parse(quantity);

@@ -19,18 +19,18 @@ class _$ProductPageSupplementsTearOff {
   const _$ProductPageSupplementsTearOff();
 
   _ProductPageSupplements call(
-      {required List<Product> productList,
-      required List<Category> categoryList,
-      required String name,
-      required String categoryId,
-      required String unit,
-      required String unitPrice,
-      required String id,
-      required String code,
-      required String quantity,
-      required String unitValue,
+      {List<Product> productList = const [],
+      List<Category> categoryList = const [],
+      String name = '',
+      String categoryId = '',
+      String unit = '',
+      String unitPrice = '',
+      String id = '',
+      String? code,
+      String quantity = '',
+      String unitValue = '',
       required OpeningStockItem openingStockItem,
-      required Map<String, String?> errors}) {
+      Map<String, String?> errors = const {}}) {
     return _ProductPageSupplements(
       productList: productList,
       categoryList: categoryList,
@@ -60,7 +60,7 @@ mixin _$ProductPageSupplements {
   String get unit => throw _privateConstructorUsedError;
   String get unitPrice => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
-  String get code => throw _privateConstructorUsedError;
+  String? get code => throw _privateConstructorUsedError;
   String get quantity => throw _privateConstructorUsedError;
   String get unitValue => throw _privateConstructorUsedError;
   OpeningStockItem get openingStockItem => throw _privateConstructorUsedError;
@@ -84,7 +84,7 @@ abstract class $ProductPageSupplementsCopyWith<$Res> {
       String unit,
       String unitPrice,
       String id,
-      String code,
+      String? code,
       String quantity,
       String unitValue,
       OpeningStockItem openingStockItem,
@@ -147,7 +147,7 @@ class _$ProductPageSupplementsCopyWithImpl<$Res>
       code: code == freezed
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -183,7 +183,7 @@ abstract class _$ProductPageSupplementsCopyWith<$Res>
       String unit,
       String unitPrice,
       String id,
-      String code,
+      String? code,
       String quantity,
       String unitValue,
       OpeningStockItem openingStockItem,
@@ -248,7 +248,7 @@ class __$ProductPageSupplementsCopyWithImpl<$Res>
       code: code == freezed
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -273,42 +273,52 @@ class __$ProductPageSupplementsCopyWithImpl<$Res>
 
 class _$_ProductPageSupplements extends _ProductPageSupplements {
   const _$_ProductPageSupplements(
-      {required this.productList,
-      required this.categoryList,
-      required this.name,
-      required this.categoryId,
-      required this.unit,
-      required this.unitPrice,
-      required this.id,
-      required this.code,
-      required this.quantity,
-      required this.unitValue,
+      {this.productList = const [],
+      this.categoryList = const [],
+      this.name = '',
+      this.categoryId = '',
+      this.unit = '',
+      this.unitPrice = '',
+      this.id = '',
+      this.code,
+      this.quantity = '',
+      this.unitValue = '',
       required this.openingStockItem,
-      required this.errors})
+      this.errors = const {}})
       : super._();
 
+  @JsonKey()
   @override
   final List<Product> productList;
+  @JsonKey()
   @override
   final List<Category> categoryList;
+  @JsonKey()
   @override
   final String name;
+  @JsonKey()
   @override
   final String categoryId;
+  @JsonKey()
   @override
   final String unit;
+  @JsonKey()
   @override
   final String unitPrice;
+  @JsonKey()
   @override
   final String id;
   @override
-  final String code;
+  final String? code;
+  @JsonKey()
   @override
   final String quantity;
+  @JsonKey()
   @override
   final String unitValue;
   @override
   final OpeningStockItem openingStockItem;
+  @JsonKey()
   @override
   final Map<String, String?> errors;
 
@@ -365,18 +375,18 @@ class _$_ProductPageSupplements extends _ProductPageSupplements {
 
 abstract class _ProductPageSupplements extends ProductPageSupplements {
   const factory _ProductPageSupplements(
-      {required List<Product> productList,
-      required List<Category> categoryList,
-      required String name,
-      required String categoryId,
-      required String unit,
-      required String unitPrice,
-      required String id,
-      required String code,
-      required String quantity,
-      required String unitValue,
+      {List<Product> productList,
+      List<Category> categoryList,
+      String name,
+      String categoryId,
+      String unit,
+      String unitPrice,
+      String id,
+      String? code,
+      String quantity,
+      String unitValue,
       required OpeningStockItem openingStockItem,
-      required Map<String, String?> errors}) = _$_ProductPageSupplements;
+      Map<String, String?> errors}) = _$_ProductPageSupplements;
   const _ProductPageSupplements._() : super._();
 
   @override
@@ -394,7 +404,7 @@ abstract class _ProductPageSupplements extends ProductPageSupplements {
   @override
   String get id;
   @override
-  String get code;
+  String? get code;
   @override
   String get quantity;
   @override

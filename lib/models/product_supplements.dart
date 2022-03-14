@@ -7,33 +7,21 @@ class ProductPageSupplements with _$ProductPageSupplements {
   const ProductPageSupplements._();
 
   const factory ProductPageSupplements(
-      {required List<Product> productList,
-      required List<Category> categoryList,
-      required String name,
-      required String categoryId,
-      required String unit,
-      required String unitPrice,
-      required String id,
-      required String code,
-      required String quantity,
-      required String unitValue,
+      {@Default([]) List<Product> productList,
+      @Default([]) List<Category> categoryList,
+      @Default('') String name,
+      @Default('') String categoryId,
+      @Default('') String unit,
+      @Default('') String unitPrice,
+      @Default('') String id,
+      String? code,
+      @Default('') String quantity,
+      @Default('') String unitValue,
       required OpeningStockItem openingStockItem,
-      required Map<String, String?> errors}) = _ProductPageSupplements;
+      @Default({}) Map<String, String?> errors}) = _ProductPageSupplements;
 
-  factory ProductPageSupplements.empty() => ProductPageSupplements(
-        name: '',
-        errors: {},
-        quantity: '',
-        unit: '',
-        code: '',
-        id: '',
-        categoryId: '',
-        unitPrice: '',
-        unitValue: '',
-        productList: [],
-        categoryList: [],
-        openingStockItem: OpeningStockItem.empty(),
-      );
+  factory ProductPageSupplements.empty() =>
+      ProductPageSupplements(openingStockItem: OpeningStockItem.empty());
 
   bool get canCalculateTotalPrice =>
       double.tryParse(unitValue) != null && double.tryParse(quantity) != null;

@@ -23,7 +23,7 @@ class WriteOff {
       required this.quantity});
 
   factory WriteOff.empty() =>
-      WriteOff(id: '', groupId: '', product: Product.empty(), quantity: 0.0);
+      WriteOff(id: '', groupId: '', product: const Product(), quantity: 0.0);
 
   double get amount => product.unitPrice * quantity;
 }

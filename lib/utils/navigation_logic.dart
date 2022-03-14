@@ -20,7 +20,7 @@ void showSnackBar(String message,
   if (context != null) _showSnackBarCallback(context, message);
   if (scaffoldKey != null) {
     if (scaffoldKey.currentState == null) {
-      WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
         _showSnackBarCallback(scaffoldKey.currentContext!, message);
       });
     } else {

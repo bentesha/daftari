@@ -29,7 +29,7 @@ class OpeningStockItem {
   factory OpeningStockItem.empty() => OpeningStockItem(
       id: '',
       date: DateTime.now(),
-      product: Product.empty(),
+      product: const Product(),
       quantity: 0,
       unitValue: 0);
 

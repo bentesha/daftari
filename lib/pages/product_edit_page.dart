@@ -12,6 +12,7 @@ class ProductEditPage extends StatefulWidget {
 class _ProductEditPageState extends State<ProductEditPage> {
   late final ProductPageBloc bloc;
   late final bool isEditing;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -27,14 +28,19 @@ class _ProductEditPageState extends State<ProductEditPage> {
         listener: (_, state) {
           final isSaved =
               state.maybeWhen(success: (_) => true, orElse: () => false);
-
           if (isSaved) pop();
+
+          final error =
+              state.maybeWhen(failed: (_, e) => e, orElse: () => null);
+          if (error != null) showSnackBar(error, scaffoldKey: _scaffoldKey);
         },
         builder: (_, state) {
           return state.when(
-              loading: _buildLoading,
-              content: _buildContent,
-              success: _buildContent);
+            loading: _buildLoading,
+            content: _buildContent,
+            success: _buildContent,
+            failed: (s, _) => _buildContent(s),
+          );
         });
   }
 

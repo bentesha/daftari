@@ -102,15 +102,24 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     if (hasErrors) return;
 
     emit(ProductPageState.loading(supp));
-    await productsService.edit(supp.product);
-    emit(ProductPageState.success(supp));
+    try {
+      await productsService.edit(supp.product);
+      emit(ProductPageState.success(supp));
+    } on ApiErrors catch (e) {
+      emit(ProductPageState.failed(supp, message: e.message));
+    }
   }
 
   void deleteProduct() async {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
-    await productsService.delete(supp.product.id);
-    emit(ProductPageState.success(supp));
+
+    try {
+      await productsService.delete(supp.product.id);
+      emit(ProductPageState.success(supp));
+    } on ApiErrors catch (e) {
+      emit(ProductPageState.failed(supp, message: e.message));
+    }
   }
 
   _validate() {

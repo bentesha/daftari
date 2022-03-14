@@ -14,6 +14,7 @@ class CategoryEditPage extends StatefulWidget {
 class _CategoryEditPageState extends State<CategoryEditPage> {
   late final CategoryPageBloc bloc;
   late final bool isEditing;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -29,23 +30,27 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
         listener: (_, state) {
           final isSuccess =
               state.maybeWhen(success: (_) => true, orElse: () => false);
-
           if (isSuccess) pop();
+
+          final error =
+              state.maybeWhen(failed: (_, e) => e, orElse: () => null);
+          if (error != null) showSnackBar(error, scaffoldKey: _scaffoldKey);
         },
         builder: (_, state) {
           return state.when(
               loading: _buildLoading,
               content: _buildContent,
-              success: _buildContent);
+              success: _buildContent,
+              failed: (s, _) => _buildContent(s));
         });
   }
 
-  Widget _buildLoading(CategoryPageSupplements supp) {
-    return const AppLoadingIndicator.withScaffold();
-  }
+  Widget _buildLoading(CategoryPageSupplements supp) =>
+      const AppLoadingIndicator.withScaffold();
 
   Widget _buildContent(CategoryPageSupplements supp) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: PageAppBar(
         title: '${!isEditing ? 'New' : 'Edit'} Category',
         actionCallbacks: isEditing ? [bloc.edit, bloc.delete] : [bloc.save],

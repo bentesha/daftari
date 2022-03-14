@@ -56,21 +56,10 @@ class NetworkService<T> extends ChangeNotifier {
     notifyListeners();
   }
 
-  ///url needs to be specified to understand whether the endpoint was directed
-  ///to expenses or products categories, so that the type of category can be
-  ///determined.
-  ///Used only for categories
-  dynamic _getValueFromJson(var json, [String? url]) {
-    if (T == Product) return Product.fromJson(json);
-    if (T == Category) {
-      final isExpense = url!.contains('expense');
-      return Category.fromJson(json, isExpense);
-    }
-  }
-
   Future<void> delete(String id, [String? url]) async {
     final response = await http.delete(Uri.parse((url ?? _url) + '/$id'));
     //log(response.body);
+    _handleStatusCodes(response.statusCode);
     final index = _list.indexWhere((e) => e.id == id);
     _list.removeAt(index);
     notifyListeners();
@@ -84,5 +73,23 @@ class NetworkService<T> extends ChangeNotifier {
     final item = _list[index];
     _current = item;
     notifyListeners();
+  }
+
+  ///url needs to be specified to understand whether the endpoint was directed
+  ///to expenses or products categories, so that the type of category can be
+  ///determined.
+  ///Used only for categories
+  dynamic _getValueFromJson(var json, [String? url]) {
+    if (T == Product) return Product.fromJson(json);
+    if (T == Category) {
+      final isExpense = url!.contains('expense');
+      return Category.fromJson(json, isExpense);
+    }
+  }
+
+  void _handleStatusCodes(int statusCode){
+    if(statusCode == 200) return;
+    if(statusCode == 400) throw ApiErrors.invalidDelete();
+    throw ApiErrors.unknown();
   }
 }

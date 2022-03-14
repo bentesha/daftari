@@ -32,13 +32,19 @@ class _CategoriesPageState extends State<CategoriesPage> {
   }
 
   _buildBody() {
-    return BlocBuilder<CategoryPageBloc, CategoryPagesState>(
+    return BlocConsumer<CategoryPageBloc, CategoryPagesState>(
         bloc: bloc,
+        listener: (_, state) {
+          final error =
+              state.maybeWhen(failed: (_, e) => e, orElse: () => null);
+          if (error != null) showSnackBar(error, context: context);
+        },
         builder: (_, state) {
           return state.when(
               loading: _buildLoading,
               content: _buildContent,
-              success: _buildContent);
+              success: _buildContent,
+              failed: (s, _) => _buildContent(s));
         });
   }
 

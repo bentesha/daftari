@@ -35,6 +35,13 @@ class _$ProductPageStateTearOff {
       supplements,
     );
   }
+
+  _Failed failed(ProductPageSupplements supplements, {String? message}) {
+    return _Failed(
+      supplements,
+      message: message,
+    );
+  }
 }
 
 /// @nodoc
@@ -49,6 +56,9 @@ mixin _$ProductPageState {
     required TResult Function(ProductPageSupplements supplements) loading,
     required TResult Function(ProductPageSupplements supplements) content,
     required TResult Function(ProductPageSupplements supplements) success,
+    required TResult Function(
+            ProductPageSupplements supplements, String? message)
+        failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -56,6 +66,8 @@ mixin _$ProductPageState {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
+    TResult Function(ProductPageSupplements supplements, String? message)?
+        failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -63,6 +75,8 @@ mixin _$ProductPageState {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
+    TResult Function(ProductPageSupplements supplements, String? message)?
+        failed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -71,6 +85,7 @@ mixin _$ProductPageState {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Content value) content,
     required TResult Function(_Success value) success,
+    required TResult Function(_Failed value) failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -78,6 +93,7 @@ mixin _$ProductPageState {
     TResult Function(_Loading value)? loading,
     TResult Function(_Content value)? content,
     TResult Function(_Success value)? success,
+    TResult Function(_Failed value)? failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -85,6 +101,7 @@ mixin _$ProductPageState {
     TResult Function(_Loading value)? loading,
     TResult Function(_Content value)? content,
     TResult Function(_Success value)? success,
+    TResult Function(_Failed value)? failed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -204,6 +221,9 @@ class _$_Loading implements _Loading {
     required TResult Function(ProductPageSupplements supplements) loading,
     required TResult Function(ProductPageSupplements supplements) content,
     required TResult Function(ProductPageSupplements supplements) success,
+    required TResult Function(
+            ProductPageSupplements supplements, String? message)
+        failed,
   }) {
     return loading(supplements);
   }
@@ -214,6 +234,8 @@ class _$_Loading implements _Loading {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
+    TResult Function(ProductPageSupplements supplements, String? message)?
+        failed,
   }) {
     return loading?.call(supplements);
   }
@@ -224,6 +246,8 @@ class _$_Loading implements _Loading {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
+    TResult Function(ProductPageSupplements supplements, String? message)?
+        failed,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -238,6 +262,7 @@ class _$_Loading implements _Loading {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Content value) content,
     required TResult Function(_Success value) success,
+    required TResult Function(_Failed value) failed,
   }) {
     return loading(this);
   }
@@ -248,6 +273,7 @@ class _$_Loading implements _Loading {
     TResult Function(_Loading value)? loading,
     TResult Function(_Content value)? content,
     TResult Function(_Success value)? success,
+    TResult Function(_Failed value)? failed,
   }) {
     return loading?.call(this);
   }
@@ -258,6 +284,7 @@ class _$_Loading implements _Loading {
     TResult Function(_Loading value)? loading,
     TResult Function(_Content value)? content,
     TResult Function(_Success value)? success,
+    TResult Function(_Failed value)? failed,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -349,6 +376,9 @@ class _$_Content implements _Content {
     required TResult Function(ProductPageSupplements supplements) loading,
     required TResult Function(ProductPageSupplements supplements) content,
     required TResult Function(ProductPageSupplements supplements) success,
+    required TResult Function(
+            ProductPageSupplements supplements, String? message)
+        failed,
   }) {
     return content(supplements);
   }
@@ -359,6 +389,8 @@ class _$_Content implements _Content {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
+    TResult Function(ProductPageSupplements supplements, String? message)?
+        failed,
   }) {
     return content?.call(supplements);
   }
@@ -369,6 +401,8 @@ class _$_Content implements _Content {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
+    TResult Function(ProductPageSupplements supplements, String? message)?
+        failed,
     required TResult orElse(),
   }) {
     if (content != null) {
@@ -383,6 +417,7 @@ class _$_Content implements _Content {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Content value) content,
     required TResult Function(_Success value) success,
+    required TResult Function(_Failed value) failed,
   }) {
     return content(this);
   }
@@ -393,6 +428,7 @@ class _$_Content implements _Content {
     TResult Function(_Loading value)? loading,
     TResult Function(_Content value)? content,
     TResult Function(_Success value)? success,
+    TResult Function(_Failed value)? failed,
   }) {
     return content?.call(this);
   }
@@ -403,6 +439,7 @@ class _$_Content implements _Content {
     TResult Function(_Loading value)? loading,
     TResult Function(_Content value)? content,
     TResult Function(_Success value)? success,
+    TResult Function(_Failed value)? failed,
     required TResult orElse(),
   }) {
     if (content != null) {
@@ -494,6 +531,9 @@ class _$_Success implements _Success {
     required TResult Function(ProductPageSupplements supplements) loading,
     required TResult Function(ProductPageSupplements supplements) content,
     required TResult Function(ProductPageSupplements supplements) success,
+    required TResult Function(
+            ProductPageSupplements supplements, String? message)
+        failed,
   }) {
     return success(supplements);
   }
@@ -504,6 +544,8 @@ class _$_Success implements _Success {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
+    TResult Function(ProductPageSupplements supplements, String? message)?
+        failed,
   }) {
     return success?.call(supplements);
   }
@@ -514,6 +556,8 @@ class _$_Success implements _Success {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
+    TResult Function(ProductPageSupplements supplements, String? message)?
+        failed,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -528,6 +572,7 @@ class _$_Success implements _Success {
     required TResult Function(_Loading value) loading,
     required TResult Function(_Content value) content,
     required TResult Function(_Success value) success,
+    required TResult Function(_Failed value) failed,
   }) {
     return success(this);
   }
@@ -538,6 +583,7 @@ class _$_Success implements _Success {
     TResult Function(_Loading value)? loading,
     TResult Function(_Content value)? content,
     TResult Function(_Success value)? success,
+    TResult Function(_Failed value)? failed,
   }) {
     return success?.call(this);
   }
@@ -548,6 +594,7 @@ class _$_Success implements _Success {
     TResult Function(_Loading value)? loading,
     TResult Function(_Content value)? content,
     TResult Function(_Success value)? success,
+    TResult Function(_Failed value)? failed,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -566,4 +613,170 @@ abstract class _Success implements ProductPageState {
   @JsonKey(ignore: true)
   _$SuccessCopyWith<_Success> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$FailedCopyWith<$Res>
+    implements $ProductPageStateCopyWith<$Res> {
+  factory _$FailedCopyWith(_Failed value, $Res Function(_Failed) then) =
+      __$FailedCopyWithImpl<$Res>;
+  @override
+  $Res call({ProductPageSupplements supplements, String? message});
+
+  @override
+  $ProductPageSupplementsCopyWith<$Res> get supplements;
+}
+
+/// @nodoc
+class __$FailedCopyWithImpl<$Res> extends _$ProductPageStateCopyWithImpl<$Res>
+    implements _$FailedCopyWith<$Res> {
+  __$FailedCopyWithImpl(_Failed _value, $Res Function(_Failed) _then)
+      : super(_value, (v) => _then(v as _Failed));
+
+  @override
+  _Failed get _value => super._value as _Failed;
+
+  @override
+  $Res call({
+    Object? supplements = freezed,
+    Object? message = freezed,
+  }) {
+    return _then(_Failed(
+      supplements == freezed
+          ? _value.supplements
+          : supplements // ignore: cast_nullable_to_non_nullable
+              as ProductPageSupplements,
+      message: message == freezed
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_Failed implements _Failed {
+  const _$_Failed(this.supplements, {this.message});
+
+  @override
+  final ProductPageSupplements supplements;
+  @override
+  final String? message;
+
+  @override
+  String toString() {
+    return 'ProductPageState.failed(supplements: $supplements, message: $message)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _Failed &&
+            const DeepCollectionEquality()
+                .equals(other.supplements, supplements) &&
+            const DeepCollectionEquality().equals(other.message, message));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(supplements),
+      const DeepCollectionEquality().hash(message));
+
+  @JsonKey(ignore: true)
+  @override
+  _$FailedCopyWith<_Failed> get copyWith =>
+      __$FailedCopyWithImpl<_Failed>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(ProductPageSupplements supplements) loading,
+    required TResult Function(ProductPageSupplements supplements) content,
+    required TResult Function(ProductPageSupplements supplements) success,
+    required TResult Function(
+            ProductPageSupplements supplements, String? message)
+        failed,
+  }) {
+    return failed(supplements, message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(ProductPageSupplements supplements)? loading,
+    TResult Function(ProductPageSupplements supplements)? content,
+    TResult Function(ProductPageSupplements supplements)? success,
+    TResult Function(ProductPageSupplements supplements, String? message)?
+        failed,
+  }) {
+    return failed?.call(supplements, message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(ProductPageSupplements supplements)? loading,
+    TResult Function(ProductPageSupplements supplements)? content,
+    TResult Function(ProductPageSupplements supplements)? success,
+    TResult Function(ProductPageSupplements supplements, String? message)?
+        failed,
+    required TResult orElse(),
+  }) {
+    if (failed != null) {
+      return failed(supplements, message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Content value) content,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Failed value) failed,
+  }) {
+    return failed(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Content value)? content,
+    TResult Function(_Success value)? success,
+    TResult Function(_Failed value)? failed,
+  }) {
+    return failed?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Content value)? content,
+    TResult Function(_Success value)? success,
+    TResult Function(_Failed value)? failed,
+    required TResult orElse(),
+  }) {
+    if (failed != null) {
+      return failed(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Failed implements ProductPageState {
+  const factory _Failed(ProductPageSupplements supplements, {String? message}) =
+      _$_Failed;
+
+  @override
+  ProductPageSupplements get supplements;
+  String? get message;
+  @override
+  @JsonKey(ignore: true)
+  _$FailedCopyWith<_Failed> get copyWith => throw _privateConstructorUsedError;
 }

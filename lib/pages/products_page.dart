@@ -32,13 +32,15 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   _buildBody() {
-    return BlocBuilder<ProductPageBloc, ProductPageState>(
+    return BlocConsumer<ProductPageBloc, ProductPageState>(
         bloc: bloc,
+        listener: (_, state) {},
         builder: (_, state) {
           return state.when(
               loading: _buildLoading,
               content: _buildContent,
-              success: _buildContent);
+              success: _buildContent,
+              failed: (s, _) => _buildContent(s));
         });
   }
 

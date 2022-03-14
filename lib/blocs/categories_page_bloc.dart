@@ -77,8 +77,12 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   void delete() async {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
-    await categoriesService.delete(supp.category.id);
-    emit(CategoryPagesState.success(supp));
+    try{
+      await categoriesService.delete(supp.category.id);
+      emit(CategoryPagesState.success(supp));
+    } on ApiErrors catch(e) {
+      emit(CategoryPagesState.failed(supp, message: e.message));
+    }
   }
 
   _validate() {

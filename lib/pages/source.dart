@@ -6,7 +6,6 @@ export 'sales_edit_page.dart';
 export 'document_sales_page.dart';
 export 'document_sales_page.dart';
 export 'products_page.dart';
-export 'category_page.dart';
 export 'search_page.dart';
 export 'dashboard.dart';
 export 'reports_page.dart';

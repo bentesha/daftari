@@ -83,7 +83,6 @@ abstract class $ExpenseSupplementsCopyWith<$Res> {
       Category category});
 
   $DocumentCopyWith<$Res> get group;
-  $CategoryCopyWith<$Res> get category;
 }
 
 /// @nodoc
@@ -158,13 +157,6 @@ class _$ExpenseSupplementsCopyWithImpl<$Res>
       return _then(_value.copyWith(group: value));
     });
   }
-
-  @override
-  $CategoryCopyWith<$Res> get category {
-    return $CategoryCopyWith<$Res>(_value.category, (value) {
-      return _then(_value.copyWith(category: value));
-    });
-  }
 }
 
 /// @nodoc
@@ -188,8 +180,6 @@ abstract class _$ExpenseSupplementsCopyWith<$Res>
 
   @override
   $DocumentCopyWith<$Res> get group;
-  @override
-  $CategoryCopyWith<$Res> get category;
 }
 
 /// @nodoc

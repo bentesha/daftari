@@ -74,7 +74,6 @@ abstract class $WriteOffSupplementsCopyWith<$Res> {
       DateTime date,
       String id});
 
-  $ProductCopyWith<$Res> get product;
   $DocumentCopyWith<$Res> get group;
 }
 
@@ -135,13 +134,6 @@ class _$WriteOffSupplementsCopyWithImpl<$Res>
   }
 
   @override
-  $ProductCopyWith<$Res> get product {
-    return $ProductCopyWith<$Res>(_value.product, (value) {
-      return _then(_value.copyWith(product: value));
-    });
-  }
-
-  @override
   $DocumentCopyWith<$Res> get group {
     return $DocumentCopyWith<$Res>(_value.group, (value) {
       return _then(_value.copyWith(group: value));
@@ -166,8 +158,6 @@ abstract class _$WriteOffSupplementsCopyWith<$Res>
       DateTime date,
       String id});
 
-  @override
-  $ProductCopyWith<$Res> get product;
   @override
   $DocumentCopyWith<$Res> get group;
 }

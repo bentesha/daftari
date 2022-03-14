@@ -85,7 +85,6 @@ abstract class $SalesDocumentSupplementsCopyWith<$Res> {
       Map<String, String?> errors});
 
   $DocumentCopyWith<$Res> get document;
-  $ProductCopyWith<$Res> get product;
 }
 
 /// @nodoc
@@ -160,13 +159,6 @@ class _$SalesDocumentSupplementsCopyWithImpl<$Res>
       return _then(_value.copyWith(document: value));
     });
   }
-
-  @override
-  $ProductCopyWith<$Res> get product {
-    return $ProductCopyWith<$Res>(_value.product, (value) {
-      return _then(_value.copyWith(product: value));
-    });
-  }
 }
 
 /// @nodoc
@@ -190,8 +182,6 @@ abstract class _$SalesDocumentSupplementsCopyWith<$Res>
 
   @override
   $DocumentCopyWith<$Res> get document;
-  @override
-  $ProductCopyWith<$Res> get product;
 }
 
 /// @nodoc

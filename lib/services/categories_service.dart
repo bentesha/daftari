@@ -43,9 +43,10 @@ class CategoriesService extends NetworkService<Category> {
 ;
     log(response.body.toString());
     final jsonCategory = json.decode(response.body);
+    final type = _isExpenses ? 'Expenses' : 'Products';
 
     final list = super.getList;
-    list.add(Category.fromJson(jsonCategory));
+    list.add(Category.fromJson(jsonCategory, type));
     super.updateAttributes(list, currentId: item.id);
     notifyListeners();
   }
@@ -67,8 +68,7 @@ class CategoriesService extends NetworkService<Category> {
     for (var item in result) {
       final index = list.indexWhere((e) => e.id == item['id']);
       if (index == -1) {
-        item['type'] = type;
-        list.add(Category.fromJson(item));
+        list.add(Category.fromJson(item, type));
       }
     }
     return list;

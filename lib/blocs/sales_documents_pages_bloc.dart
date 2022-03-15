@@ -203,15 +203,11 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
   ///document sales page
   _handleDocumentUpdates() {
     var supp = state.supplements;
-    log('before');
-    log(supp.documents.toString());
     emit(SalesDocumentsPagesState.loading(supp));
     final documents = salesService.getList;
     final temporarySales = salesService.getSalesList;
     final document = Document.sales(supp.document.form, temporarySales);
     supp = supp.copyWith(documents: documents, document: document);
-    log('after');
-    log(supp.documents.toString());
     emit(SalesDocumentsPagesState.content(supp));
   }
 
@@ -242,7 +238,9 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     var supp = state.supplements;
     if (document == null) {
       //is adding new document
-      supp = supp.copyWith(action: PageActions.adding);
+      supp = supp.copyWith(
+          /* document: Document.empty(),  */ action: PageActions.adding);
+      log(supp.document.toString());
     } else {
       //is viewing / editing existing document
       salesService.initDocument(document);
@@ -263,10 +261,11 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     return title == dateFromTitle;
   }
 
-  ///action can't be null on the sales edit page.
   void _initSalesPage(Pages page, [Sales? sales, PageActions? action]) {
     if (page != Pages.sales_page) return;
     var supp = state.supplements;
+
+    //action can't be null on the sales edit page.
     supp = supp.copyWith(action: action!);
 
     if (sales != null) {

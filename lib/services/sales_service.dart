@@ -60,17 +60,21 @@ class SalesService extends ChangeNotifier {
     notifyListeners();
   }
 
-  void initDocument(Document document) => _salesList =
-      document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
+  void initDocument(Document document) {
+    _salesList =
+        document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
+  }
 
   addSalesTemporarily(Sales sales) {
+
     _salesList.add(sales);
     _hasChanges = true;
+    log('after');
+    log(_documents.toString());
     notifyListeners();
   }
 
   editTemporarySales(Sales sales) {
-   
     final index = _salesList.indexWhere((s) => s.id == sales.id);
     _salesList[index] = sales;
     _hasChanges = true;

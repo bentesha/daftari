@@ -5,8 +5,6 @@
 //and creates the classes itself and it becomes controversial.
 //Second option is to writing the boilerplate yourself.
 
-import '../source.dart';
-
 class Category {
   final String id, type, name;
   final String? description;

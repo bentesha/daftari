@@ -4,8 +4,8 @@ import 'constants.dart';
 
 class SalesService extends ChangeNotifier {
   static const url = root + 'sales';
-  var _salesList = <Sales>[];
   var _hasChanges = false;
+  var _salesList = <Sales>[];
   var _documents = <Document>[];
 
   List<Document> get getList => _documents;
@@ -35,7 +35,7 @@ class SalesService extends ChangeNotifier {
     final jsonDocument = json.decode(response.body);
     final _document = _getDocumentFromJson(jsonDocument);
     _documents.add(_document);
-    _salesList.clear();
+    clearSalesList();
     notifyListeners();
   }
 
@@ -48,29 +48,26 @@ class SalesService extends ChangeNotifier {
 
     final index = _documents.indexWhere((d) => d.form.id == document.form.id);
     _documents[index] = _document;
-    _salesList.clear();
+    clearSalesList();
     notifyListeners();
   }
 
   Future<void> deleteDocument(String id) async {
-    final response = await http.delete(Uri.parse(url + '/$id'));
-    //log(response.body);
+    await http.delete(Uri.parse(url + '/$id'));
     final index = _documents.indexWhere((e) => e.form.id == id);
     _documents.removeAt(index);
     notifyListeners();
   }
 
   void initDocument(Document document) {
-    _salesList =
+    final salesList =
         document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
+    _salesList = List.from(salesList);
   }
 
   addSalesTemporarily(Sales sales) {
-
     _salesList.add(sales);
     _hasChanges = true;
-    log('after');
-    log(_documents.toString());
     notifyListeners();
   }
 
@@ -88,7 +85,10 @@ class SalesService extends ChangeNotifier {
     notifyListeners();
   }
 
-  markAsHasNoChanges() => _hasChanges = false;
+  clearSalesList() {
+    _salesList.clear();
+    _hasChanges = false;
+  }
 
   Document _getDocumentFromJson(var jsonDocument) {
     final form = DocumentForm.fromJson(jsonDocument);

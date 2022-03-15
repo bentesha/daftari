@@ -5,11 +5,12 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
   SalesDocumentsPagesBloc(this.salesService, this.productsService)
       : super(SalesDocumentsPagesState.initial()) {
     salesService.addListener(_handleDocumentUpdates);
-    productsService.addListener(_handleProductListUpdates);
+    productsService.addListener(_handleProductUpdates);
   }
 
   final SalesService salesService;
   final ProductsService productsService;
+  late final Pages _page;
 
   Product getProductById(String id) => productsService.getById(id)!;
 
@@ -19,6 +20,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
       {Document? document, Sales? sales, PageActions? action}) async {
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
+    _page = page;
 
     await _initServices();
     _initSalesDocumentsPage(page);
@@ -172,7 +174,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
   void clearChanges() {
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
-    salesService.markAsHasNoChanges();
+    salesService.clearSalesList();
     emit(SalesDocumentsPagesState.success(supp));
   }
 
@@ -202,21 +204,31 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
   ///updates the documents on the sales documents page and a sales list on
   ///document sales page
   _handleDocumentUpdates() {
-    var supp = state.supplements;
-    emit(SalesDocumentsPagesState.loading(supp));
-    final documents = salesService.getList;
-    final temporarySales = salesService.getSalesList;
-    final document = Document.sales(supp.document.form, temporarySales);
-    supp = supp.copyWith(documents: documents, document: document);
+    emit(SalesDocumentsPagesState.loading(state.supplements));
+    _updateSalesDocumentsPage();
+    _updateDocumentSalesPage();
+  }
+
+  _updateSalesDocumentsPage() {
+    if (_page != Pages.sales_documents_page) return;
+    final supp = state.supplements.copyWith(documents: salesService.getList);
     emit(SalesDocumentsPagesState.content(supp));
   }
 
-  ///updates the chosen product on the sales edit page
-  _handleProductListUpdates() {
+  _updateDocumentSalesPage() {
+    if (_page != Pages.document_sales_page) return;
     var supp = state.supplements;
-    emit(SalesDocumentsPagesState.loading(supp));
+    final temporarySales = salesService.getSalesList;
+    final document = Document.sales(supp.document.form, temporarySales);
+    supp = supp.copyWith(document: document);
+    emit(SalesDocumentsPagesState.content(supp));
+  }
+
+  ///updates the chosen product on the sales page
+  _handleProductUpdates() {
+    if (_page != Pages.sales_page) return;
     final product = productsService.getCurrent;
-    supp = supp.copyWith(
+    final supp = state.supplements.copyWith(
         product: product,
         quantity: '1',
         unitPrice: product.unitPrice.toString());
@@ -238,12 +250,9 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     var supp = state.supplements;
     if (document == null) {
       //is adding new document
-      supp = supp.copyWith(
-          /* document: Document.empty(),  */ action: PageActions.adding);
-      log(supp.document.toString());
+      supp = supp.copyWith(action: PageActions.adding);
     } else {
       //is viewing / editing existing document
-      salesService.initDocument(document);
       final form = document.form;
       final isDateAsTitle =
           _checkIfDateIsUsedAsTitle(form.title, form.dateTime);
@@ -253,6 +262,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
           isDateAsTitle: isDateAsTitle,
           action: PageActions.viewing);
     }
+    salesService.initDocument(supp.document);
     emit(SalesDocumentsPagesState.content(supp));
   }
 

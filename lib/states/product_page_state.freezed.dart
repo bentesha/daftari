@@ -36,10 +36,12 @@ class _$ProductPageStateTearOff {
     );
   }
 
-  _Failed failed(ProductPageSupplements supplements, {String? message}) {
+  _Failed failed(ProductPageSupplements supplements,
+      {String? message, bool showOnPage = false}) {
     return _Failed(
       supplements,
       message: message,
+      showOnPage: showOnPage,
     );
   }
 }
@@ -56,8 +58,8 @@ mixin _$ProductPageState {
     required TResult Function(ProductPageSupplements supplements) loading,
     required TResult Function(ProductPageSupplements supplements) content,
     required TResult Function(ProductPageSupplements supplements) success,
-    required TResult Function(
-            ProductPageSupplements supplements, String? message)
+    required TResult Function(ProductPageSupplements supplements,
+            String? message, bool showOnPage)
         failed,
   }) =>
       throw _privateConstructorUsedError;
@@ -66,7 +68,8 @@ mixin _$ProductPageState {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
-    TResult Function(ProductPageSupplements supplements, String? message)?
+    TResult Function(ProductPageSupplements supplements, String? message,
+            bool showOnPage)?
         failed,
   }) =>
       throw _privateConstructorUsedError;
@@ -75,7 +78,8 @@ mixin _$ProductPageState {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
-    TResult Function(ProductPageSupplements supplements, String? message)?
+    TResult Function(ProductPageSupplements supplements, String? message,
+            bool showOnPage)?
         failed,
     required TResult orElse(),
   }) =>
@@ -221,8 +225,8 @@ class _$_Loading implements _Loading {
     required TResult Function(ProductPageSupplements supplements) loading,
     required TResult Function(ProductPageSupplements supplements) content,
     required TResult Function(ProductPageSupplements supplements) success,
-    required TResult Function(
-            ProductPageSupplements supplements, String? message)
+    required TResult Function(ProductPageSupplements supplements,
+            String? message, bool showOnPage)
         failed,
   }) {
     return loading(supplements);
@@ -234,7 +238,8 @@ class _$_Loading implements _Loading {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
-    TResult Function(ProductPageSupplements supplements, String? message)?
+    TResult Function(ProductPageSupplements supplements, String? message,
+            bool showOnPage)?
         failed,
   }) {
     return loading?.call(supplements);
@@ -246,7 +251,8 @@ class _$_Loading implements _Loading {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
-    TResult Function(ProductPageSupplements supplements, String? message)?
+    TResult Function(ProductPageSupplements supplements, String? message,
+            bool showOnPage)?
         failed,
     required TResult orElse(),
   }) {
@@ -376,8 +382,8 @@ class _$_Content implements _Content {
     required TResult Function(ProductPageSupplements supplements) loading,
     required TResult Function(ProductPageSupplements supplements) content,
     required TResult Function(ProductPageSupplements supplements) success,
-    required TResult Function(
-            ProductPageSupplements supplements, String? message)
+    required TResult Function(ProductPageSupplements supplements,
+            String? message, bool showOnPage)
         failed,
   }) {
     return content(supplements);
@@ -389,7 +395,8 @@ class _$_Content implements _Content {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
-    TResult Function(ProductPageSupplements supplements, String? message)?
+    TResult Function(ProductPageSupplements supplements, String? message,
+            bool showOnPage)?
         failed,
   }) {
     return content?.call(supplements);
@@ -401,7 +408,8 @@ class _$_Content implements _Content {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
-    TResult Function(ProductPageSupplements supplements, String? message)?
+    TResult Function(ProductPageSupplements supplements, String? message,
+            bool showOnPage)?
         failed,
     required TResult orElse(),
   }) {
@@ -531,8 +539,8 @@ class _$_Success implements _Success {
     required TResult Function(ProductPageSupplements supplements) loading,
     required TResult Function(ProductPageSupplements supplements) content,
     required TResult Function(ProductPageSupplements supplements) success,
-    required TResult Function(
-            ProductPageSupplements supplements, String? message)
+    required TResult Function(ProductPageSupplements supplements,
+            String? message, bool showOnPage)
         failed,
   }) {
     return success(supplements);
@@ -544,7 +552,8 @@ class _$_Success implements _Success {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
-    TResult Function(ProductPageSupplements supplements, String? message)?
+    TResult Function(ProductPageSupplements supplements, String? message,
+            bool showOnPage)?
         failed,
   }) {
     return success?.call(supplements);
@@ -556,7 +565,8 @@ class _$_Success implements _Success {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
-    TResult Function(ProductPageSupplements supplements, String? message)?
+    TResult Function(ProductPageSupplements supplements, String? message,
+            bool showOnPage)?
         failed,
     required TResult orElse(),
   }) {
@@ -621,7 +631,8 @@ abstract class _$FailedCopyWith<$Res>
   factory _$FailedCopyWith(_Failed value, $Res Function(_Failed) then) =
       __$FailedCopyWithImpl<$Res>;
   @override
-  $Res call({ProductPageSupplements supplements, String? message});
+  $Res call(
+      {ProductPageSupplements supplements, String? message, bool showOnPage});
 
   @override
   $ProductPageSupplementsCopyWith<$Res> get supplements;
@@ -640,6 +651,7 @@ class __$FailedCopyWithImpl<$Res> extends _$ProductPageStateCopyWithImpl<$Res>
   $Res call({
     Object? supplements = freezed,
     Object? message = freezed,
+    Object? showOnPage = freezed,
   }) {
     return _then(_Failed(
       supplements == freezed
@@ -650,6 +662,10 @@ class __$FailedCopyWithImpl<$Res> extends _$ProductPageStateCopyWithImpl<$Res>
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
+      showOnPage: showOnPage == freezed
+          ? _value.showOnPage
+          : showOnPage // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -657,16 +673,19 @@ class __$FailedCopyWithImpl<$Res> extends _$ProductPageStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_Failed implements _Failed {
-  const _$_Failed(this.supplements, {this.message});
+  const _$_Failed(this.supplements, {this.message, this.showOnPage = false});
 
   @override
   final ProductPageSupplements supplements;
   @override
   final String? message;
+  @JsonKey()
+  @override
+  final bool showOnPage;
 
   @override
   String toString() {
-    return 'ProductPageState.failed(supplements: $supplements, message: $message)';
+    return 'ProductPageState.failed(supplements: $supplements, message: $message, showOnPage: $showOnPage)';
   }
 
   @override
@@ -676,14 +695,17 @@ class _$_Failed implements _Failed {
             other is _Failed &&
             const DeepCollectionEquality()
                 .equals(other.supplements, supplements) &&
-            const DeepCollectionEquality().equals(other.message, message));
+            const DeepCollectionEquality().equals(other.message, message) &&
+            const DeepCollectionEquality()
+                .equals(other.showOnPage, showOnPage));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(supplements),
-      const DeepCollectionEquality().hash(message));
+      const DeepCollectionEquality().hash(message),
+      const DeepCollectionEquality().hash(showOnPage));
 
   @JsonKey(ignore: true)
   @override
@@ -696,11 +718,11 @@ class _$_Failed implements _Failed {
     required TResult Function(ProductPageSupplements supplements) loading,
     required TResult Function(ProductPageSupplements supplements) content,
     required TResult Function(ProductPageSupplements supplements) success,
-    required TResult Function(
-            ProductPageSupplements supplements, String? message)
+    required TResult Function(ProductPageSupplements supplements,
+            String? message, bool showOnPage)
         failed,
   }) {
-    return failed(supplements, message);
+    return failed(supplements, message, showOnPage);
   }
 
   @override
@@ -709,10 +731,11 @@ class _$_Failed implements _Failed {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
-    TResult Function(ProductPageSupplements supplements, String? message)?
+    TResult Function(ProductPageSupplements supplements, String? message,
+            bool showOnPage)?
         failed,
   }) {
-    return failed?.call(supplements, message);
+    return failed?.call(supplements, message, showOnPage);
   }
 
   @override
@@ -721,12 +744,13 @@ class _$_Failed implements _Failed {
     TResult Function(ProductPageSupplements supplements)? loading,
     TResult Function(ProductPageSupplements supplements)? content,
     TResult Function(ProductPageSupplements supplements)? success,
-    TResult Function(ProductPageSupplements supplements, String? message)?
+    TResult Function(ProductPageSupplements supplements, String? message,
+            bool showOnPage)?
         failed,
     required TResult orElse(),
   }) {
     if (failed != null) {
-      return failed(supplements, message);
+      return failed(supplements, message, showOnPage);
     }
     return orElse();
   }
@@ -770,12 +794,13 @@ class _$_Failed implements _Failed {
 }
 
 abstract class _Failed implements ProductPageState {
-  const factory _Failed(ProductPageSupplements supplements, {String? message}) =
-      _$_Failed;
+  const factory _Failed(ProductPageSupplements supplements,
+      {String? message, bool showOnPage}) = _$_Failed;
 
   @override
   ProductPageSupplements get supplements;
   String? get message;
+  bool get showOnPage;
   @override
   @JsonKey(ignore: true)
   _$FailedCopyWith<_Failed> get copyWith => throw _privateConstructorUsedError;

@@ -7,14 +7,6 @@ void push(Widget page) async => await navigatorKey.currentState
 
 void pop() => navigatorKey.currentState?.pop();
 
-void _showSnackBarCallback(BuildContext context, String message) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      elevation: 0,
-      dismissDirection: DismissDirection.none,
-      backgroundColor: AppColors.error,
-      content: AppText(message, color: AppColors.onError)));
-}
-
 void showSnackBar(String message,
     {BuildContext? context, GlobalKey<ScaffoldState>? scaffoldKey}) {
   if (context != null) _showSnackBarCallback(context, message);
@@ -27,4 +19,17 @@ void showSnackBar(String message,
       _showSnackBarCallback(scaffoldKey.currentContext!, message);
     }
   }
+}
+
+String getErrorMessage(var error) {
+  if (error is ApiErrors) return error.message;
+  return ApiErrors.unknown().message;
+}
+
+void _showSnackBarCallback(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      elevation: 0,
+      dismissDirection: DismissDirection.none,
+      backgroundColor: AppColors.error,
+      content: AppText(message, color: AppColors.onError)));
 }

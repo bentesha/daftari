@@ -4,8 +4,8 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
   ProductPageBloc(this.productsService, this.categoriesService,
       this.openingStockItemsService)
       : super(ProductPageState.initial()) {
-    productsService.addListener(() => _handleProductUpdates());
-    categoriesService.addListener(() => _handleCategoryUpdates());
+    productsService.addListener(_handleProductUpdates);
+    categoriesService.addListener(_handleCategoryUpdates);
   }
 
   final ProductsService productsService;
@@ -21,13 +21,10 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
   void init(Pages page, {Product? product, PageActions? action}) async {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
-    await initServices(
-        productsService: productsService,
-        categoriesService: categoriesService,
-        openingStockItemsService: openingStockItemsService);
 
+    await _initServices();
     _initProductsPage(page);
-    _initProductPage(page, action!, product);
+    _initProductPage(page, action, product);
   }
 
   void updateAttributes(
@@ -64,18 +61,23 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     if (hasErrors) return;
 
     emit(ProductPageState.loading(supp));
-    await productsService.add(supp.product);
 
-    if (supp.hasAddedOpeningStockDetails) {
-      final openingStockItem = OpeningStockItem(
-          id: Utils.getRandomId(),
-          date: supp.openingStockItem.date,
-          product: supp.product,
-          unitValue: double.parse(supp.unitValue),
-          quantity: double.parse(supp.quantity));
-      await openingStockItemsService.add(openingStockItem);
+    try {
+      await productsService.add(supp.getProduct);
+
+      if (supp.hasAddedOpeningStockDetails) {
+        final openingStockItem = OpeningStockItem(
+            id: Utils.getRandomId(),
+            date: supp.openingStockItem.date,
+            product: supp.product,
+            unitValue: double.parse(supp.unitValue),
+            quantity: double.parse(supp.quantity));
+        await openingStockItemsService.add(openingStockItem);
+      }
+      emit(ProductPageState.success(supp));
+    } catch (e) {
+      _handleError(e);
     }
-    emit(ProductPageState.success(supp));
   }
 
   void editProduct() async {
@@ -86,11 +88,12 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     if (hasErrors) return;
 
     emit(ProductPageState.loading(supp));
+
     try {
-      await productsService.edit(supp.product);
+      await productsService.edit(supp.getProduct);
       emit(ProductPageState.success(supp));
-    } on ApiErrors catch (e) {
-      emit(ProductPageState.failed(supp, message: e.message));
+    } catch (e) {
+      _handleError(e);
     }
   }
 
@@ -101,8 +104,8 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     try {
       await productsService.delete(supp.product.id);
       emit(ProductPageState.success(supp));
-    } on ApiErrors catch (e) {
-      emit(ProductPageState.failed(supp, message: e.message));
+    } catch (e) {
+      _handleError(e);
     }
   }
 
@@ -157,11 +160,11 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     emit(ProductPageState.content(supp));
   }
 
-  _initProductPage(Pages page, PageActions action, [Product? product]) {
+  _initProductPage(Pages page, PageActions? action, [Product? product]) {
     if (page != Pages.product_page) return;
     var supp = state.supplements;
 
-    supp = supp.copyWith(action: action);
+    supp = supp.copyWith(action: action!);
 
     if (product != null) {
       final openingStockItem =
@@ -175,5 +178,22 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
     }
 
     emit(ProductPageState.content(supp));
+  }
+
+  Future<void> _initServices() async {
+    try {
+      await initServices(
+          productsService: productsService,
+          categoriesService: categoriesService,
+          openingStockItemsService: openingStockItemsService);
+    } on ApiErrors catch (e) {
+      emit(ProductPageState.failed(state.supplements,
+          message: e.message, showOnPage: true));
+    }
+  }
+
+  void _handleError(var error) {
+    final message = getErrorMessage(error);
+    emit(ProductPageState.failed(state.supplements, message: message));
   }
 }

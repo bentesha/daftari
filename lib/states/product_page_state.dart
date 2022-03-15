@@ -7,7 +7,8 @@ class ProductPageState with _$ProductPageState {
   const factory ProductPageState.loading(ProductPageSupplements supplements) = _Loading;
   const factory ProductPageState.content(ProductPageSupplements supplements) = _Content;
   const factory ProductPageState.success(ProductPageSupplements supplements) = _Success;
-  const factory ProductPageState.failed(ProductPageSupplements supplements, {String? message}) = _Failed;
+  const factory ProductPageState.failed(ProductPageSupplements supplements,
+      {String? message, @Default(false) bool showOnPage}) = _Failed;
 
   factory ProductPageState.initial() =>
       ProductPageState.content(ProductPageSupplements.empty());

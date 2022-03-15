@@ -28,18 +28,42 @@ class _ProductsPageState extends State<ProductsPage> {
   _buildBody() {
     return BlocConsumer<ProductPageBloc, ProductPageState>(
         bloc: bloc,
-        listener: (_, state) {},
+        listener: (_, state) {
+          final error = state.maybeWhen(
+              failed: (_, e, showOnPage) => showOnPage ? null : e,
+              orElse: () => null);
+          if (error != null) showSnackBar(error, context: context);
+        },
         builder: (_, state) {
           return state.when(
               loading: _buildLoading,
               content: _buildContent,
               success: _buildContent,
-              failed: (s, _) => _buildContent(s));
+              failed: _buildFailed);
         });
   }
 
   Widget _buildLoading(ProductPageSupplements supp) =>
       const AppLoadingIndicator();
+
+  Widget _buildFailed(
+      ProductPageSupplements supp, String? message, bool isShowOnPage) {
+    if (!isShowOnPage) return _buildContent(supp);
+
+    return Center(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        AppText(message!),
+        AppTextButton(
+            onPressed: _initBloc,
+            text: 'Try Again',
+            textColor: AppColors.onPrimary,
+            backgroundColor: AppColors.primary,
+            margin: EdgeInsets.only(top: 10.dh))
+      ],
+    ));
+  }
 
   Widget _buildContent(ProductPageSupplements supp) {
     final items = supp.productList;

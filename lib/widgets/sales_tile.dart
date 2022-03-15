@@ -2,19 +2,19 @@ import '../source.dart';
 
 class SalesTile extends StatelessWidget {
   const SalesTile(this.sales,
-      {required this.product, required this.action, Key? key})
+      {required this.product, required this.documentPageAction, Key? key})
       : super(key: key);
 
   final Sales sales;
   final Product product;
-  final PageActions action;
+  final PageActions documentPageAction;
 
   @override
   Widget build(BuildContext context) {
     return AppMaterialButton(
       padding: EdgeInsets.symmetric(horizontal: 19.dw, vertical: 8.dh),
       isFilled: false,
-      onPressed: () => push(SalesPage(action, sales: sales)),
+      onPressed: () => push(SalesPage(documentPageAction, sales: sales)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

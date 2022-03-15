@@ -4,8 +4,8 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     with ServicesInitializer {
   SalesDocumentsPagesBloc(this.salesService, this.productsService)
       : super(SalesDocumentsPagesState.initial()) {
-    salesService.addListener(() => _handleDocumentUpdates());
-    productsService.addListener(() => _handleProductListUpdates());
+    salesService.addListener(_handleDocumentUpdates);
+    productsService.addListener(_handleProductListUpdates);
   }
 
   final SalesService salesService;
@@ -19,12 +19,11 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
       {Document? document, Sales? sales, PageActions? action}) async {
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
-    await initServices(
-        productsService: productsService, salesService: salesService);
 
+    await _initServices();
     _initSalesDocumentsPage(page);
     _initDocumentSalesPage(page, document);
-    _initSalesEditPage(page, sales, action);
+    _initSalesPage(page, sales, action);
   }
 
   void updateAmount(String unitPrice) =>
@@ -63,8 +62,13 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
             supp.isDateAsTitle ? DateFormatter.convertToDMY(now) : form.title);
     final salesList = salesService.getSalesList;
     document = Document.sales(form, salesList);
-    await salesService.addDocument(document);
-    emit(SalesDocumentsPagesState.success(supp));
+
+    try {
+      await salesService.addDocument(document).catchError(_handleError);
+      emit(SalesDocumentsPagesState.success(supp));
+    } catch (e) {
+      _handleError(e);
+    }
   }
 
   void editDocument() async {
@@ -81,15 +85,23 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
       document = document.copyWith(form: form);
     }
 
-    await salesService.editDocument(document);
-    emit(SalesDocumentsPagesState.success(supp));
+    try {
+      await salesService.editDocument(document);
+      emit(SalesDocumentsPagesState.success(supp));
+    } catch (e) {
+      _handleError(e);
+    }
   }
 
   void deleteDocument() async {
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
-    await salesService.deleteDocument(supp.document.form.id);
-    emit(SalesDocumentsPagesState.success(supp));
+    try {
+      await salesService.deleteDocument(supp.document.form.id);
+      emit(SalesDocumentsPagesState.success(supp));
+    } catch (e) {
+      _handleError(e);
+    }
   }
 
   void addSales() async {
@@ -160,7 +172,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
   void clearChanges() {
     var supp = state.supplements;
     emit(SalesDocumentsPagesState.loading(supp));
-    salesService.clearTemporarySales();
+    salesService.markAsHasNoChanges();
     emit(SalesDocumentsPagesState.success(supp));
   }
 
@@ -191,11 +203,15 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
   ///document sales page
   _handleDocumentUpdates() {
     var supp = state.supplements;
+    log('before');
+    log(supp.documents.toString());
     emit(SalesDocumentsPagesState.loading(supp));
     final documents = salesService.getList;
     final temporarySales = salesService.getSalesList;
     final document = Document.sales(supp.document.form, temporarySales);
     supp = supp.copyWith(documents: documents, document: document);
+    log('after');
+    log(supp.documents.toString());
     emit(SalesDocumentsPagesState.content(supp));
   }
 
@@ -248,7 +264,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
   }
 
   ///action can't be null on the sales edit page.
-  void _initSalesEditPage(Pages page, [Sales? sales, PageActions? action]) {
+  void _initSalesPage(Pages page, [Sales? sales, PageActions? action]) {
     if (page != Pages.sales_page) return;
     var supp = state.supplements;
     supp = supp.copyWith(action: action!);
@@ -265,6 +281,18 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     emit(SalesDocumentsPagesState.content(supp));
   }
 
-  static const titleErrorMessage =
-      'ONLY TWO RECORDING FORMATS ARE ALLOWED IN A DAY:\n\n1. Creating multiple custom-titled groups\n\n2. Using a respective day as a group for all sales records in that day';
+  Future<void> _initServices() async {
+    try {
+      await initServices(
+          productsService: productsService, salesService: salesService);
+    } on ApiErrors catch (e) {
+      emit(SalesDocumentsPagesState.failed(state.supplements,
+          message: e.message, showOnPage: true));
+    }
+  }
+
+  void _handleError(var error) {
+    final message = getErrorMessage(error);
+    emit(SalesDocumentsPagesState.failed(state.supplements, message: message));
+  }
 }

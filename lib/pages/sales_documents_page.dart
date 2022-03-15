@@ -19,27 +19,51 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const PageAppBar(title: 'Sales'),
-      body: _buildBody(),
-      floatingActionButton: _buildFloatingButton(),
-    );
+        appBar: const PageAppBar(title: 'Sales'),
+        body: _buildBody(),
+        floatingActionButton: _buildFloatingButton());
   }
 
   Widget _buildBody() {
-    return BlocBuilder<SalesDocumentsPagesBloc, SalesDocumentsPagesState>(
+    return BlocConsumer<SalesDocumentsPagesBloc, SalesDocumentsPagesState>(
       bloc: bloc,
+      listener: (_, state) {
+        final error = state.maybeWhen(
+            failed: (_, e, showOnPage) => showOnPage ? null : e,
+            orElse: () => null);
+        if (error != null) showSnackBar(error, context: context);
+      },
       builder: (_, state) {
         return state.when(
-          loading: _buildLoading,
-          content: _buildContent,
-          success: _buildContent,
-        );
+            loading: _buildLoading,
+            content: _buildContent,
+            success: _buildContent,
+            failed: _buildFailed);
       },
     );
   }
 
   Widget _buildLoading(SalesDocumentSupplements supp) =>
       const AppLoadingIndicator();
+
+  Widget _buildFailed(
+      SalesDocumentSupplements supp, String? message, bool isShowOnPage) {
+    if (!isShowOnPage) return _buildContent(supp);
+
+    return Center(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        AppText(message!),
+        AppTextButton(
+            onPressed: _initBloc,
+            text: 'Try Again',
+            textColor: AppColors.onPrimary,
+            backgroundColor: AppColors.primary,
+            margin: EdgeInsets.only(top: 10.dh))
+      ],
+    ));
+  }
 
   Widget _buildContent(SalesDocumentSupplements supp) {
     final documents = supp.documents;

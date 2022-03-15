@@ -28,22 +28,41 @@ class _ProductPageState extends State<ProductPage> {
               state.maybeWhen(success: (_) => true, orElse: () => false);
           if (isSaved) pop();
 
-          final error =
-              state.maybeWhen(failed: (_, e) => e, orElse: () => null);
+          final error = state.maybeWhen(
+              failed: (_, e, showOnPage) => showOnPage ? null : e,
+              orElse: () => null);
           if (error != null) showSnackBar(error, scaffoldKey: _scaffoldKey);
         },
         builder: (_, state) {
           return state.when(
-            loading: _buildLoading,
-            content: _buildContent,
-            success: _buildContent,
-            failed: (s, _) => _buildContent(s),
-          );
+              loading: _buildLoading,
+              content: _buildContent,
+              success: _buildContent,
+              failed: _buildFailed);
         });
   }
 
   Widget _buildLoading(ProductPageSupplements supp) =>
       const AppLoadingIndicator.withScaffold();
+
+  Widget _buildFailed(
+      ProductPageSupplements supp, String? message, bool isShowOnPage) {
+    if (!isShowOnPage) return _buildContent(supp);
+
+    return Center(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        AppText(message!),
+        AppTextButton(
+            onPressed: _initBloc,
+            text: 'Try Again',
+            textColor: AppColors.onPrimary,
+            backgroundColor: AppColors.primary,
+            margin: EdgeInsets.only(top: 10.dh))
+      ],
+    ));
+  }
 
   Widget _buildContent(ProductPageSupplements supp) {
     return Scaffold(
@@ -75,74 +94,72 @@ class _ProductPageState extends State<ProductPage> {
     final errors = supp.errors;
     final product = supp.product;
 
-    return Padding(
-      padding: EdgeInsets.only(top: 10.dh),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 19.dw),
-            child: const AppText('PRODUCT DETAILS',
-                weight: FontWeight.bold, opacity: .7),
-          ),
-          SizedBox(height: 10.dh),
-          ValueSelector(
-            title: 'Category',
-            value: bloc.getSelectedCategory?.name,
-            error: supp.errors['category'],
-            isEditable: !supp.isViewing,
-            onPressed: () => push(ItemsSearchPage<Category>(
-                categoryType: CategoryType.products())),
-          ),
-          AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
-          !supp.isViewing
-              ? AppTextField(
-                  text: product.name,
-                  onChanged: (name) => bloc.updateAttributes(name: name),
-                  hintText: 'e.g. Clothes',
-                  keyboardType: TextInputType.name,
-                  textCapitalization: TextCapitalization.words,
-                  label: 'Name',
-                  error: errors['name'],
-                  isEnabled: !supp.isViewing,
-                )
-              : Container(),
-          Row(
-            children: [
-              Expanded(
-                child: AppTextField(
-                  text: product.unit,
-                  onChanged: (unit) => bloc.updateAttributes(unit: unit),
-                  hintText: 'ea.',
-                  keyboardType: TextInputType.name,
-                  shouldShowErrorText: false,
-                  label: 'Unit',
-                  error: errors['unit'],
-                  isEnabled: !supp.isViewing,
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        supp.isAdding
+            ? Padding(
+                padding:
+                    EdgeInsets.only(left: 19.dw, bottom: 10.dh, top: 10.dh),
+                child: const AppText('PRODUCT DETAILS',
+                    weight: FontWeight.bold, opacity: .7))
+            : Container(),
+        ValueSelector(
+          title: 'Category',
+          value: bloc.getSelectedCategory?.name,
+          error: supp.errors['category'],
+          isEditable: !supp.isViewing,
+          onPressed: () => push(
+              ItemsSearchPage<Category>(categoryType: CategoryType.products())),
+        ),
+        AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
+        !supp.isViewing
+            ? AppTextField(
+                text: product.name,
+                onChanged: (name) => bloc.updateAttributes(name: name),
+                hintText: 'e.g. Clothes',
+                keyboardType: TextInputType.name,
+                textCapitalization: TextCapitalization.words,
+                label: 'Name',
+                error: errors['name'],
+                isEnabled: !supp.isViewing,
+              )
+            : Container(),
+        Row(
+          children: [
+            Expanded(
+              child: AppTextField(
+                text: product.unit,
+                onChanged: (unit) => bloc.updateAttributes(unit: unit),
+                hintText: 'ea.',
+                keyboardType: TextInputType.name,
+                shouldShowErrorText: false,
+                label: 'Unit',
+                error: errors['unit'],
+                isEnabled: !supp.isViewing,
               ),
-              Expanded(
-                child: AppTextField(
-                  text: supp.unitPrice,
-                  onChanged: (price) => bloc.updateAttributes(unitPrice: price),
-                  hintText: '0',
-                  keyboardType: TextInputType.number,
-                  shouldShowErrorText: false,
-                  label: 'Unit Price',
-                  error: errors['unitPrice'],
-                  isEnabled: !supp.isViewing,
-                ),
+            ),
+            Expanded(
+              child: AppTextField(
+                text: supp.unitPrice,
+                onChanged: (price) => bloc.updateAttributes(unitPrice: price),
+                hintText: '0',
+                keyboardType: TextInputType.number,
+                shouldShowErrorText: false,
+                label: 'Unit Price',
+                error: errors['unitPrice'],
+                isEnabled: !supp.isViewing,
               ),
-            ],
-          ),
-          _buildUnitTextFieldsErrors(errors),
-          BarcodeField(
-              error: supp.errors['code'],
-              text: product.code,
-              isEnabled: !supp.isViewing,
-              onChanged: (code) => bloc.updateAttributes(code: code)),
-        ],
-      ),
+            ),
+          ],
+        ),
+        _buildUnitTextFieldsErrors(errors),
+        BarcodeField(
+            error: supp.errors['code'],
+            text: product.code,
+            isEnabled: !supp.isViewing,
+            onChanged: (code) => bloc.updateAttributes(code: code)),
+      ],
     );
   }
 

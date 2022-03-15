@@ -5,9 +5,9 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
   CategoryPageBloc(
       this.categoriesService, this.productsService, this.typeService)
       : super(CategoryPagesState.initial()) {
-    categoriesService.addListener(() => _handleCategoryUpdates());
-    productsService.addListener(() => _handleProductUpdates());
-    typeService.addListener(() => _handleTypeUpdates());
+    categoriesService.addListener(_handleCategoryUpdates);
+    productsService.addListener(_handleProductUpdates);
+    typeService.addListener(_handleTypeUpdates);
   }
 
   final CategoriesService categoriesService;
@@ -19,11 +19,9 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
 
-    await initServices(
-        productsService: productsService, categoriesService: categoriesService);
-
+    await _initServices();
     _initCategoriesPage(page, type);
-    _initCategoryPage(page, action!, type, category);
+    _initCategoryPage(page, action, type, category);
   }
 
   void updateName(String name) => _updateAttributes(name: name);
@@ -32,29 +30,9 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
 
   void updateAction(PageActions action) => _updateAttributes(action: action);
 
-  void save() async {
-    _validate();
+  void save() async => await _commitChanges();
 
-    var supp = state.supplements;
-    final hasErrors = InputValidation.checkErrors(supp.errors);
-    if (hasErrors) return;
-
-    emit(CategoryPagesState.loading(supp));
-    await categoriesService.add(supp.category);
-    emit(CategoryPagesState.success(supp));
-  }
-
-  void edit() async {
-    _validate();
-
-    var supp = state.supplements;
-    final hasErrors = InputValidation.checkErrors(supp.errors);
-    if (hasErrors) return;
-
-    emit(CategoryPagesState.loading(supp));
-    await categoriesService.edit(supp.category);
-    emit(CategoryPagesState.success(supp));
-  }
+  void edit() async => await _commitChanges(false);
 
   void delete() async {
     var supp = state.supplements;
@@ -62,8 +40,26 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
     try {
       await categoriesService.delete(supp.category.id);
       emit(CategoryPagesState.success(supp));
-    } on ApiErrors catch (e) {
-      emit(CategoryPagesState.failed(supp, message: e.message));
+    } catch (e) {
+      _handleError(e);
+    }
+  }
+
+  Future<void> _commitChanges([bool isSaving = true]) async {
+    _validate();
+
+    var supp = state.supplements;
+    final hasErrors = InputValidation.checkErrors(supp.errors);
+    if (hasErrors) return;
+
+    emit(CategoryPagesState.loading(supp));
+
+    try {
+      if (isSaving) await categoriesService.add(supp.category);
+      if (!isSaving) await categoriesService.edit(supp.category);
+      emit(CategoryPagesState.success(supp));
+    } catch (e) {
+      _handleError(e);
     }
   }
 
@@ -121,13 +117,16 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
     emit(CategoryPagesState.content(supp));
   }
 
-  _initCategoryPage(Pages page, PageActions action,
+  _initCategoryPage(Pages page, PageActions? action,
       [CategoryType? type, Category? category]) {
     if (page != Pages.category_page) return;
     var supp = state.supplements;
-    supp = supp.copyWith(action: action);
+    supp = supp.copyWith(action: action!);
 
-    if (type != null) CategoriesService.initType(type.name == 'Expenses');
+    if (type != null) {
+      CategoriesService.initType(type.name == 'Expenses');
+      supp = supp.copyWith( category: supp.category.copyWith(type: type.name));
+    }
     if (category != null) supp = supp.copyWith(category: category);
 
     emit(CategoryPagesState.content(supp));
@@ -139,10 +138,25 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
     emit(CategoryPagesState.loading(supp));
     var category = supp.category;
     category = category.copyWith(
-      name: name ?? category.name,
-      description: description,
-    );
+        name: name ?? category.name, description: description);
     supp = supp.copyWith(category: category, action: action ?? supp.action);
     emit(CategoryPagesState.content(supp));
+  }
+
+  Future<void> _initServices() async {
+    try {
+      await initServices(
+          productsService: productsService,
+          categoriesService: categoriesService);
+    } on ApiErrors catch (e) {
+      final message = getErrorMessage(e);
+      emit(CategoryPagesState.failed(state.supplements,
+          message: message, showOnPage: true));
+    }
+  }
+
+  void _handleError(var error) {
+    final message = getErrorMessage(error);
+    emit(CategoryPagesState.failed(state.supplements, message: message));
   }
 }

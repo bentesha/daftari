@@ -5,9 +5,8 @@ import 'constants.dart';
 class SalesService extends ChangeNotifier {
   static const url = root + 'sales';
   var _salesList = <Sales>[];
-  final _documents = <Document>[];
-
   var _hasChanges = false;
+  var _documents = <Document>[];
 
   List<Document> get getList => _documents;
 
@@ -18,15 +17,16 @@ class SalesService extends ChangeNotifier {
   ///Gets all sales documents from the server
   Future<void> init() async {
     if (_documents.isNotEmpty) return;
-
     final response = await http.get(Uri.parse(url), headers: headers);
-    final documents = json.decode(response.body);
+    final jsonDocuments = json.decode(response.body);
 
-    for (var jsonDocument in documents) {
+    final documents = <Document>[];
+
+    for (var jsonDocument in jsonDocuments) {
       final document = _getDocumentFromJson(jsonDocument);
-      log(document.toString());
-      _documents.add(document);
+      documents.add(document);
     }
+    _documents = documents;
   }
 
   Future<void> addDocument(Document document) async {
@@ -70,6 +70,7 @@ class SalesService extends ChangeNotifier {
   }
 
   editTemporarySales(Sales sales) {
+   
     final index = _salesList.indexWhere((s) => s.id == sales.id);
     _salesList[index] = sales;
     _hasChanges = true;
@@ -83,11 +84,7 @@ class SalesService extends ChangeNotifier {
     notifyListeners();
   }
 
-  clearTemporarySales() {
-    _salesList.clear();
-    _hasChanges = false;
-    notifyListeners();
-  }
+  markAsHasNoChanges() => _hasChanges = false;
 
   Document _getDocumentFromJson(var jsonDocument) {
     final form = DocumentForm.fromJson(jsonDocument);

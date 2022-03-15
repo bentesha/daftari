@@ -30,12 +30,18 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
                 state.maybeWhen(success: (_) => true, orElse: () => false);
 
             if (isSuccessful) pop();
+
+            final error = state.maybeWhen(
+                failed: (_, e, showOnPage) => showOnPage ? null : e,
+                orElse: () => null);
+            if (error != null) showSnackBar(error, context: context);
           },
           builder: (_, state) {
             return state.when(
                 loading: _buildLoading,
                 content: _buildContent,
-                success: _buildContent);
+                success: _buildContent,
+                failed: _buildFailed);
           }),
     );
   }
@@ -43,13 +49,31 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
   Widget _buildLoading(SalesDocumentSupplements supp) =>
       const AppLoadingIndicator.withScaffold();
 
+  Widget _buildFailed(
+      SalesDocumentSupplements supp, String? message, bool isShowOnPage) {
+    if (!isShowOnPage) return _buildContent(supp);
+
+    return Center(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        AppText(message!),
+        AppTextButton(
+            onPressed: _initBloc,
+            text: 'Try Again',
+            textColor: AppColors.onPrimary,
+            backgroundColor: AppColors.primary,
+            margin: EdgeInsets.only(top: 10.dh))
+      ],
+    ));
+  }
+
   Widget _buildContent(SalesDocumentSupplements supp) {
     return Scaffold(
-      appBar: _buildAppBar(supp),
-      body: _buildGroupDetails(supp),
-      floatingActionButton: _buildActionButton(supp),
-      bottomNavigationBar: _buildBottomNavBar(supp),
-    );
+        appBar: _buildAppBar(supp),
+        body: _buildGroupDetails(supp),
+        floatingActionButton: _buildActionButton(supp),
+        bottomNavigationBar: _buildBottomNavBar(supp));
   }
 
   _buildAppBar(SalesDocumentSupplements supp) {
@@ -149,8 +173,8 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
           itemBuilder: (_, i) {
             final sales = salesList[i];
             final product = bloc.getProductById(sales.productId);
-            final action = supp.isViewing ? supp.action : PageActions.editing;
-            return SalesTile(sales, product: product, action: action);
+            return SalesTile(sales,
+                product: product, documentPageAction: supp.action);
           },
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -186,17 +210,10 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
     bloc.init(Pages.document_sales_page, document: widget.document);
   }
 
-  static const emptyExpensesMessage =
-      'No sales have been added in this document yet.';
-
   Future<bool> _handlePop() async {
     final hasUnSavedSales = bloc.documentHasUnsavedChanges;
     if (hasUnSavedSales) {
-      showDialog(
-          context: context,
-          builder: (_) {
-            return _alertDialog();
-          });
+      showDialog(context: context, builder: (_) => _alertDialog());
     }
     return true;
   }
@@ -220,7 +237,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
             backgroundColor: AppColors.primary,
             textColor: AppColors.onPrimary),
         AppTextButton(
-            text: 'Close the page',
+            text: 'Discard Changes',
             onPressed: () {
               pop();
               bloc.clearChanges();
@@ -231,4 +248,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
       ],
     );
   }
+
+  static const emptyExpensesMessage =
+      'No sales have been added in this document yet.';
 }

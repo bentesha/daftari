@@ -30,8 +30,9 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
               state.maybeWhen(success: (_) => true, orElse: () => false);
           if (isSuccess) pop();
 
-          final error =
-              state.maybeWhen(failed: (_, e) => e, orElse: () => null);
+          final error = state.maybeWhen(
+              failed: (_, e, showOnPage) => showOnPage ? null : e,
+              orElse: () => null);
           if (error != null) showSnackBar(error, scaffoldKey: _scaffoldKey);
         },
         builder: (_, state) {
@@ -39,12 +40,31 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
               loading: _buildLoading,
               content: _buildContent,
               success: _buildContent,
-              failed: (s, _) => _buildContent(s));
+              failed: _buildFailed);
         });
   }
 
   Widget _buildLoading(CategoryPageSupplements supp) =>
       const AppLoadingIndicator.withScaffold();
+
+  Widget _buildFailed(
+      CategoryPageSupplements supp, String? message, bool isShowOnPage) {
+    if (!isShowOnPage) return _buildContent(supp);
+
+    return Center(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        AppText(message!),
+        AppTextButton(
+            onPressed: _initBloc,
+            text: 'Try Again',
+            textColor: AppColors.onPrimary,
+            backgroundColor: AppColors.primary,
+            margin: EdgeInsets.only(top: 10.dh))
+      ],
+    ));
+  }
 
   Widget _buildContent(CategoryPageSupplements supp) {
     return Scaffold(
@@ -73,7 +93,8 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
   Widget _buildBody(CategoryPageSupplements supp) {
     return Column(
       children: [
-        widget.categoryType != null || !supp.isAdding
+        //when obtained when making a new category from the search page
+        widget.categoryType != null
             ? Container()
             : ValueSelector(
                 title: 'Type',

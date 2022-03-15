@@ -64,7 +64,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     document = Document.sales(form, salesList);
 
     try {
-      await salesService.addDocument(document).catchError(_handleError);
+      await salesService.addDocument(document);
       emit(SalesDocumentsPagesState.success(supp));
     } catch (e) {
       _handleError(e);

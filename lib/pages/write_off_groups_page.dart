@@ -12,12 +12,12 @@ class _WriteOffGroupsPageState extends State<WriteOffGroupsPage> {
 
   @override
   void initState() {
-    final groupsService = getService<SalesService>(context);
+    final salesService = getService<SalesService>(context);
     final writeOffsService = getService<WriteOffsService>(context);
     final writeOffsTypesService = getService<WriteOffsTypesService>(context);
     final productsService = getService<ProductsService>(context);
     bloc = WriteOffPagesBloc(writeOffsService, writeOffsTypesService,
-        productsService, groupsService);
+        productsService, salesService);
     bloc.init(Pages.write_off_groups_page);
     super.initState();
   }

@@ -1,29 +1,27 @@
 import '../source.dart';
 
-part 'sales_document_supplements.freezed.dart';
-
-enum PageActions { viewing, editing, adding }
+part 'purchases_pages_supplements.freezed.dart';
 
 @freezed
-class SalesDocumentSupplements with _$SalesDocumentSupplements {
-   const SalesDocumentSupplements._();
+class PurchasesPagesSupplements with _$PurchasesPagesSupplements {
+   const PurchasesPagesSupplements._();
 
-  const factory SalesDocumentSupplements({@Default([]) List<Document> documents,
+  const factory PurchasesPagesSupplements({@Default([]) List<Document> documents,
     //for editing sales document
     required Document document,
     required DateTime date,
     @Default(true) bool isDateAsTitle,
     //for editing sales
-    @Default('') String salesId,
+    @Default('') String purchasesId,
     @Default('') String quantity,
     @Default('') String unitPrice,
     required Product product,
     //for both
     @Default(PageActions.viewing) PageActions action,
-    @Default({}) Map<String, String?> errors}) = _SalesDocumentSupplements;
+    @Default({}) Map<String, String?> errors}) = _PurchasesPagesSupplements;
 
-  factory SalesDocumentSupplements.empty() =>
-      SalesDocumentSupplements(
+  factory PurchasesPagesSupplements.empty() =>
+      PurchasesPagesSupplements(
           document: Document.empty(),
           product: const Product(),
           date: DateTime.now());

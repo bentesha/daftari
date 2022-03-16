@@ -1,31 +1,31 @@
 import '../source.dart';
 
-class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
+class PurchasesPagesBloc extends Cubit<PurchasesPagesState>
     with ServicesInitializer {
-  SalesDocumentsPagesBloc(this.salesService, this.productsService)
-      : super(SalesDocumentsPageState.initial()) {
-    salesService.addListener(_handleDocumentUpdates);
+  PurchasesPagesBloc(this.purchasesService, this.productsService)
+      : super(PurchasesPagesState.initial()) {
+    purchasesService.addListener(_handleDocumentUpdates);
     productsService.addListener(_handleProductUpdates);
   }
 
-  final SalesService salesService;
+  final PurchasesService purchasesService;
   final ProductsService productsService;
   late final Pages _page;
 
   Product getProductById(String id) => productsService.getById(id)!;
 
-  bool get documentHasUnsavedChanges => salesService.hasChanges;
+  bool get documentHasUnsavedChanges => purchasesService.hasChanges;
 
   void init(Pages page,
-      {Document? document, Sales? sales, PageActions? action}) async {
+      {Document? document, Purchases? purchase, PageActions? action}) async {
     var supp = state.supplements;
-    emit(SalesDocumentsPageState.loading(supp));
+    emit(PurchasesPagesState.loading(supp));
     _page = page;
 
     await _initServices();
     _initSalesDocumentsPage(page);
     _initDocumentSalesPage(page, document);
-    _initSalesPage(page, sales, action);
+    _initSalesPage(page, purchase, action);
   }
 
   void updateAmount(String unitPrice) =>
@@ -52,7 +52,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
-    emit(SalesDocumentsPageState.loading(supp));
+    emit(PurchasesPagesState.loading(supp));
 
     var document = supp.document;
     var form = document.form;
@@ -62,12 +62,12 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
         date: now.millisecondsSinceEpoch.toString(),
         title:
             supp.isDateAsTitle ? DateFormatter.convertToDMY(now) : form.title);
-    final salesList = salesService.getTemporaryList;
-    document = Document.sales(form, salesList);
+    final purchaseList = purchasesService.getTemporaryList;
+    document = Document.purchases(form, purchaseList);
 
     try {
-      await salesService.addDocument(document);
-      emit(SalesDocumentsPageState.success(supp));
+      await purchasesService.addDocument(document);
+      emit(PurchasesPagesState.success(supp));
     } catch (e) {
       _handleError(e);
     }
@@ -88,8 +88,8 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
     }
 
     try {
-      await salesService.editDocument(document);
-      emit(SalesDocumentsPageState.success(supp));
+      await purchasesService.editDocument(document);
+      emit(PurchasesPagesState.success(supp));
     } catch (e) {
       _handleError(e);
     }
@@ -97,53 +97,53 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
 
   void deleteDocument() async {
     var supp = state.supplements;
-    emit(SalesDocumentsPageState.loading(supp));
+    emit(PurchasesPagesState.loading(supp));
     try {
-      await salesService.deleteDocument(supp.document.form.id);
-      emit(SalesDocumentsPageState.success(supp));
+      await purchasesService.deleteDocument(supp.document.form.id);
+      emit(PurchasesPagesState.success(supp));
     } catch (e) {
       _handleError(e);
     }
   }
 
-  void addSales() async {
+  void addPurchase() async {
     _validateSalesDetails();
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
-    final sales = Sales.toServer(
+    final purchase = Purchases.toServer(
         id: Utils.getRandomId(),
         productId: supp.product.id,
         quantity: supp.parsedQuantity,
         unitPrice: supp.parsedUnitPrice);
 
-    salesService.addItemTemporarily(sales);
-    emit(SalesDocumentsPageState.success(supp));
+    purchasesService.addItemTemporarily(purchase);
+    emit(PurchasesPagesState.success(supp));
   }
 
-  void editSales() async {
+  void editPurchase() async {
     _validateSalesDetails();
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
-    final sales = Sales.toServer(
-        id: supp.salesId,
+    final purchase = Purchases.toServer(
+        id: supp.purchasesId,
         productId: supp.product.id,
         quantity: supp.parsedQuantity,
         unitPrice: supp.parsedUnitPrice);
 
-    salesService.editTemporaryItem(sales);
-    emit(SalesDocumentsPageState.success(supp));
+    purchasesService.editTemporaryItem(purchase);
+    emit(PurchasesPagesState.success(supp));
   }
 
-  void deleteSales() async {
+  void deletePurchase() async {
     var supp = state.supplements;
-    salesService.deleteTemporaryItem(supp.salesId);
-    emit(SalesDocumentsPageState.success(supp));
+    purchasesService.deleteTemporaryItem(supp.purchasesId);
+    emit(PurchasesPagesState.success(supp));
   }
 
   void _updateAttributes(
@@ -156,7 +156,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
       String? description}) {
     var supp = state.supplements;
 
-    emit(SalesDocumentsPageState.loading(supp));
+    emit(PurchasesPagesState.loading(supp));
     var form = supp.document.form;
     form = form.copyWith(
         title: title ?? form.title,
@@ -168,21 +168,21 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
         date: date ?? supp.date,
         action: action ?? supp.action,
         isDateAsTitle: isDateAsTitle ?? supp.isDateAsTitle);
-    emit(SalesDocumentsPageState.content(supp));
+    emit(PurchasesPagesState.content(supp));
   }
 
   void clearChanges() {
     var supp = state.supplements;
-    emit(SalesDocumentsPageState.loading(supp));
-    salesService.clearTemporaryList();
-    emit(SalesDocumentsPageState.success(supp));
+    emit(PurchasesPagesState.loading(supp));
+    purchasesService.clearTemporaryList();
+    emit(PurchasesPagesState.success(supp));
   }
 
   _validateSalesDetails() => _validate(false);
 
   _validate([bool isValidatingDocumentDetails = true]) {
     var supp = state.supplements;
-    emit(SalesDocumentsPageState.loading(supp));
+    emit(PurchasesPagesState.loading(supp));
 
     final form = supp.document.form;
     final errors = <String, String?>{};
@@ -198,51 +198,53 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
           InputValidation.validateNumber(supp.quantity, 'Quantity');
     }
     supp = supp.copyWith(errors: errors);
-    emit(SalesDocumentsPageState.content(supp));
+    emit(PurchasesPagesState.content(supp));
   }
 
   _handleDocumentUpdates() {
-    emit(SalesDocumentsPageState.loading(state.supplements));
-    _updateSalesDocumentsPage();
-    _updateDocumentSalesPage();
+    emit(PurchasesPagesState.loading(state.supplements));
+    _updatePurchasesDocumentsPage();
+    _updateDocumentPurchasesPage();
   }
 
-  _updateSalesDocumentsPage() {
-    if (_page != Pages.sales_documents_page) return;
-    final supp = state.supplements.copyWith(documents: salesService.getList);
-    emit(SalesDocumentsPageState.content(supp));
+  _updatePurchasesDocumentsPage() {
+    if (_page != Pages.purchases_documents_page) return;
+    final supp =
+        state.supplements.copyWith(documents: purchasesService.getList);
+    emit(PurchasesPagesState.content(supp));
   }
 
-  _updateDocumentSalesPage() {
-    if (_page != Pages.document_sales_page) return;
+  _updateDocumentPurchasesPage() {
+    if (_page != Pages.document_purchases_page) return;
     var supp = state.supplements;
-    final temporarySales = salesService.getTemporaryList;
-    final document = Document.sales(supp.document.form, temporarySales);
+    final temporaryPurchases = purchasesService.getTemporaryList;
+    final document = Document.purchases(supp.document.form, temporaryPurchases);
     supp = supp.copyWith(document: document);
-    emit(SalesDocumentsPageState.content(supp));
+    emit(PurchasesPagesState.content(supp));
   }
 
   ///updates the chosen product on the sales page
   _handleProductUpdates() {
-    if (_page != Pages.sales_page) return;
+    if (_page != Pages.purchases_page) return;
     final product = productsService.getCurrent;
     final supp = state.supplements.copyWith(
         product: product,
         quantity: '1',
         unitPrice: product.unitPrice.toString());
-    emit(SalesDocumentsPageState.content(supp));
+    emit(PurchasesPagesState.content(supp));
   }
 
   void _initSalesDocumentsPage(Pages page) {
-    if (page != Pages.sales_documents_page) return;
+    if (page != Pages.purchases_documents_page) return;
+
     var supp = state.supplements;
-    final documents = salesService.getList;
+    final documents = purchasesService.getList;
     supp = supp.copyWith(documents: documents);
-    emit(SalesDocumentsPageState.content(supp));
+    emit(PurchasesPagesState.content(supp));
   }
 
   void _initDocumentSalesPage(Pages page, [Document? document]) {
-    if (page != Pages.document_sales_page) return;
+    if (page != Pages.document_purchases_page) return;
 
     var supp = state.supplements;
     if (document == null) {
@@ -259,8 +261,8 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
           isDateAsTitle: isDateAsTitle,
           action: PageActions.viewing);
     }
-    salesService.initDocument(supp.document);
-    emit(SalesDocumentsPageState.content(supp));
+    purchasesService.initDocument(supp.document);
+    emit(PurchasesPagesState.content(supp));
   }
 
   bool _checkIfDateIsUsedAsTitle(String title, DateTime date) {
@@ -268,37 +270,37 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
     return title == dateFromTitle;
   }
 
-  void _initSalesPage(Pages page, [Sales? sales, PageActions? action]) {
-    if (page != Pages.sales_page) return;
+  void _initSalesPage(Pages page, [Purchases? purchases, PageActions? action]) {
+    if (page != Pages.purchases_page) return;
     var supp = state.supplements;
 
     //action can't be null on the sales edit page.
     supp = supp.copyWith(action: action!);
 
-    if (sales != null) {
+    if (purchases != null) {
       //is viewing / editing existing sales record
-      final product = productsService.getById(sales.productId)!;
+      final product = productsService.getById(purchases.productId)!;
       supp = supp.copyWith(
-          salesId: sales.id,
-          quantity: sales.quantity.toString(),
-          unitPrice: sales.unitPrice.toString(),
+          purchasesId: purchases.id,
+          quantity: purchases.quantity.toString(),
+          unitPrice: purchases.unitPrice.toString(),
           product: product);
     }
-    emit(SalesDocumentsPageState.content(supp));
+    emit(PurchasesPagesState.content(supp));
   }
 
   Future<void> _initServices() async {
     try {
       await initServices(
-          productsService: productsService, salesService: salesService);
+          productsService: productsService, purchasesService: purchasesService);
     } on ApiErrors catch (e) {
-      emit(SalesDocumentsPageState.failed(state.supplements,
+      emit(PurchasesPagesState.failed(state.supplements,
           message: e.message, showOnPage: true));
     }
   }
 
   void _handleError(var error) {
     final message = getErrorMessage(error);
-    emit(SalesDocumentsPageState.failed(state.supplements, message: message));
+    emit(PurchasesPagesState.failed(state.supplements, message: message));
   }
 }

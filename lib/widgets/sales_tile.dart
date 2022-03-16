@@ -1,11 +1,11 @@
 import '../source.dart';
 
-class SalesTile extends StatelessWidget {
-  const SalesTile(this.sales,
+class RecordTile<T> extends StatelessWidget {
+  const RecordTile(this.record,
       {required this.product, required this.documentPageAction, Key? key})
       : super(key: key);
 
-  final Sales sales;
+  final dynamic record;
   final Product product;
   final PageActions documentPageAction;
 
@@ -14,7 +14,9 @@ class SalesTile extends StatelessWidget {
     return AppMaterialButton(
       padding: EdgeInsets.symmetric(horizontal: 19.dw, vertical: 8.dh),
       isFilled: false,
-      onPressed: () => push(SalesPage(documentPageAction, sales: sales)),
+      onPressed: () => push(T == Sales
+          ? SalesPage(documentPageAction, sales: record)
+          : PurchasesPage(documentPageAction, purchase: record)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -22,11 +24,11 @@ class SalesTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AppText(product.name, weight: FontWeight.w300),
-              AppText(sales.formattedTotal, weight: FontWeight.bold)
+              AppText(record.formattedTotal, weight: FontWeight.bold)
             ],
           ),
           SizedBox(height: 5.dh),
-          AppText('${sales.quantity} ${product.unit} @ ${sales.unitPrice}',
+          AppText('${record.quantity} ${product.unit} @ ${record.unitPrice}',
               opacity: .7, size: 14.dw)
         ],
       ),

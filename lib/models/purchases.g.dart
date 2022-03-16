@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sales.dart';
+part of 'purchases.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Sales _$$_SalesFromJson(Map<String, dynamic> json) => _$_Sales(
+_$_Purchases _$$_PurchasesFromJson(Map<String, dynamic> json) => _$_Purchases(
       id: json['id'] as String? ?? '',
       documentId: json['documentId'] as String? ?? '',
       sort: (json['sort'] as num?)?.toDouble() ?? 0.0,
@@ -14,9 +14,11 @@ _$_Sales _$$_SalesFromJson(Map<String, dynamic> json) => _$_Sales(
       unitPrice: (json['unitPrice'] as num?)?.toDouble() ?? 0.0,
       total: (json['total'] as num?)?.toDouble() ?? 0.0,
       productId: json['productId'] as String? ?? '',
+      movementId: json['movementId'] as String? ?? '',
     );
 
-Map<String, dynamic> _$$_SalesToJson(_$_Sales instance) => <String, dynamic>{
+Map<String, dynamic> _$$_PurchasesToJson(_$_Purchases instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'documentId': instance.documentId,
       'sort': instance.sort,
@@ -24,4 +26,5 @@ Map<String, dynamic> _$$_SalesToJson(_$_Sales instance) => <String, dynamic>{
       'unitPrice': instance.unitPrice,
       'total': instance.total,
       'productId': instance.productId,
+      'movementId': instance.movementId,
     };

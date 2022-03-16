@@ -2,8 +2,8 @@ import 'constants.dart';
 import '../source.dart';
 import 'package:http/http.dart' as http;
 
-class NetworkService<T> extends ChangeNotifier {
-  NetworkService() {
+class WithNoDocumentBaseService<T> extends ChangeNotifier {
+  WithNoDocumentBaseService() {
     _current = _getInitialValue();
   }
 

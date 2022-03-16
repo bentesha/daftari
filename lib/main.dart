@@ -2,8 +2,6 @@ import 'app.dart';
 import 'source.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
-//TODO when back button is pressed should check if the sales list is empty
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appDirectory = await path_provider.getApplicationDocumentsDirectory();
@@ -22,6 +20,7 @@ void main() async {
     providers: [
       _createProvider<ProductsService>(ProductsService()),
       _createProvider<SalesService>(SalesService()),
+      _createProvider<PurchasesService>(PurchasesService()),
       _createProvider<CategoriesService>(CategoriesService()),
       _createProvider<CategoryTypesService>(CategoryTypesService()),
       _createProvider<WriteOffsService>(WriteOffsService()),

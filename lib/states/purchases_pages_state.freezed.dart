@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'sales_documents_pages_state.dart';
+part of 'purchases_pages_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,28 +15,28 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$SalesDocumentsPageStateTearOff {
-  const _$SalesDocumentsPageStateTearOff();
+class _$PurchasesPagesStateTearOff {
+  const _$PurchasesPagesStateTearOff();
 
-  _Loading loading(SalesDocumentSupplements supplements) {
+  _Loading loading(PurchasesPagesSupplements supplements) {
     return _Loading(
       supplements,
     );
   }
 
-  _Content content(SalesDocumentSupplements supplements) {
+  _Content content(PurchasesPagesSupplements supplements) {
     return _Content(
       supplements,
     );
   }
 
-  _Success success(SalesDocumentSupplements supplements) {
+  _Success success(PurchasesPagesSupplements supplements) {
     return _Success(
       supplements,
     );
   }
 
-  _Failed failed(SalesDocumentSupplements supplements,
+  _Failed failed(PurchasesPagesSupplements supplements,
       {String? message, bool showOnPage = false}) {
     return _Failed(
       supplements,
@@ -47,39 +47,39 @@ class _$SalesDocumentsPageStateTearOff {
 }
 
 /// @nodoc
-const $SalesDocumentsPageState = _$SalesDocumentsPageStateTearOff();
+const $PurchasesPagesState = _$PurchasesPagesStateTearOff();
 
 /// @nodoc
-mixin _$SalesDocumentsPageState {
-  SalesDocumentSupplements get supplements =>
+mixin _$PurchasesPagesState {
+  PurchasesPagesSupplements get supplements =>
       throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(SalesDocumentSupplements supplements) loading,
-    required TResult Function(SalesDocumentSupplements supplements) content,
-    required TResult Function(SalesDocumentSupplements supplements) success,
-    required TResult Function(SalesDocumentSupplements supplements,
+    required TResult Function(PurchasesPagesSupplements supplements) loading,
+    required TResult Function(PurchasesPagesSupplements supplements) content,
+    required TResult Function(PurchasesPagesSupplements supplements) success,
+    required TResult Function(PurchasesPagesSupplements supplements,
             String? message, bool showOnPage)
         failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(SalesDocumentSupplements supplements)? loading,
-    TResult Function(SalesDocumentSupplements supplements)? content,
-    TResult Function(SalesDocumentSupplements supplements)? success,
-    TResult Function(SalesDocumentSupplements supplements, String? message,
+    TResult Function(PurchasesPagesSupplements supplements)? loading,
+    TResult Function(PurchasesPagesSupplements supplements)? content,
+    TResult Function(PurchasesPagesSupplements supplements)? success,
+    TResult Function(PurchasesPagesSupplements supplements, String? message,
             bool showOnPage)?
         failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SalesDocumentSupplements supplements)? loading,
-    TResult Function(SalesDocumentSupplements supplements)? content,
-    TResult Function(SalesDocumentSupplements supplements)? success,
-    TResult Function(SalesDocumentSupplements supplements, String? message,
+    TResult Function(PurchasesPagesSupplements supplements)? loading,
+    TResult Function(PurchasesPagesSupplements supplements)? content,
+    TResult Function(PurchasesPagesSupplements supplements)? success,
+    TResult Function(PurchasesPagesSupplements supplements, String? message,
             bool showOnPage)?
         failed,
     required TResult orElse(),
@@ -112,28 +112,28 @@ mixin _$SalesDocumentsPageState {
       throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $SalesDocumentsPageStateCopyWith<SalesDocumentsPageState> get copyWith =>
+  $PurchasesPagesStateCopyWith<PurchasesPagesState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $SalesDocumentsPageStateCopyWith<$Res> {
-  factory $SalesDocumentsPageStateCopyWith(SalesDocumentsPageState value,
-          $Res Function(SalesDocumentsPageState) then) =
-      _$SalesDocumentsPageStateCopyWithImpl<$Res>;
-  $Res call({SalesDocumentSupplements supplements});
+abstract class $PurchasesPagesStateCopyWith<$Res> {
+  factory $PurchasesPagesStateCopyWith(
+          PurchasesPagesState value, $Res Function(PurchasesPagesState) then) =
+      _$PurchasesPagesStateCopyWithImpl<$Res>;
+  $Res call({PurchasesPagesSupplements supplements});
 
-  $SalesDocumentSupplementsCopyWith<$Res> get supplements;
+  $PurchasesPagesSupplementsCopyWith<$Res> get supplements;
 }
 
 /// @nodoc
-class _$SalesDocumentsPageStateCopyWithImpl<$Res>
-    implements $SalesDocumentsPageStateCopyWith<$Res> {
-  _$SalesDocumentsPageStateCopyWithImpl(this._value, this._then);
+class _$PurchasesPagesStateCopyWithImpl<$Res>
+    implements $PurchasesPagesStateCopyWith<$Res> {
+  _$PurchasesPagesStateCopyWithImpl(this._value, this._then);
 
-  final SalesDocumentsPageState _value;
+  final PurchasesPagesState _value;
   // ignore: unused_field
-  final $Res Function(SalesDocumentsPageState) _then;
+  final $Res Function(PurchasesPagesState) _then;
 
   @override
   $Res call({
@@ -143,13 +143,14 @@ class _$SalesDocumentsPageStateCopyWithImpl<$Res>
       supplements: supplements == freezed
           ? _value.supplements
           : supplements // ignore: cast_nullable_to_non_nullable
-              as SalesDocumentSupplements,
+              as PurchasesPagesSupplements,
     ));
   }
 
   @override
-  $SalesDocumentSupplementsCopyWith<$Res> get supplements {
-    return $SalesDocumentSupplementsCopyWith<$Res>(_value.supplements, (value) {
+  $PurchasesPagesSupplementsCopyWith<$Res> get supplements {
+    return $PurchasesPagesSupplementsCopyWith<$Res>(_value.supplements,
+        (value) {
       return _then(_value.copyWith(supplements: value));
     });
   }
@@ -157,19 +158,19 @@ class _$SalesDocumentsPageStateCopyWithImpl<$Res>
 
 /// @nodoc
 abstract class _$LoadingCopyWith<$Res>
-    implements $SalesDocumentsPageStateCopyWith<$Res> {
+    implements $PurchasesPagesStateCopyWith<$Res> {
   factory _$LoadingCopyWith(_Loading value, $Res Function(_Loading) then) =
       __$LoadingCopyWithImpl<$Res>;
   @override
-  $Res call({SalesDocumentSupplements supplements});
+  $Res call({PurchasesPagesSupplements supplements});
 
   @override
-  $SalesDocumentSupplementsCopyWith<$Res> get supplements;
+  $PurchasesPagesSupplementsCopyWith<$Res> get supplements;
 }
 
 /// @nodoc
 class __$LoadingCopyWithImpl<$Res>
-    extends _$SalesDocumentsPageStateCopyWithImpl<$Res>
+    extends _$PurchasesPagesStateCopyWithImpl<$Res>
     implements _$LoadingCopyWith<$Res> {
   __$LoadingCopyWithImpl(_Loading _value, $Res Function(_Loading) _then)
       : super(_value, (v) => _then(v as _Loading));
@@ -185,7 +186,7 @@ class __$LoadingCopyWithImpl<$Res>
       supplements == freezed
           ? _value.supplements
           : supplements // ignore: cast_nullable_to_non_nullable
-              as SalesDocumentSupplements,
+              as PurchasesPagesSupplements,
     ));
   }
 }
@@ -196,11 +197,11 @@ class _$_Loading implements _Loading {
   const _$_Loading(this.supplements);
 
   @override
-  final SalesDocumentSupplements supplements;
+  final PurchasesPagesSupplements supplements;
 
   @override
   String toString() {
-    return 'SalesDocumentsPageState.loading(supplements: $supplements)';
+    return 'PurchasesPagesState.loading(supplements: $supplements)';
   }
 
   @override
@@ -224,10 +225,10 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(SalesDocumentSupplements supplements) loading,
-    required TResult Function(SalesDocumentSupplements supplements) content,
-    required TResult Function(SalesDocumentSupplements supplements) success,
-    required TResult Function(SalesDocumentSupplements supplements,
+    required TResult Function(PurchasesPagesSupplements supplements) loading,
+    required TResult Function(PurchasesPagesSupplements supplements) content,
+    required TResult Function(PurchasesPagesSupplements supplements) success,
+    required TResult Function(PurchasesPagesSupplements supplements,
             String? message, bool showOnPage)
         failed,
   }) {
@@ -237,10 +238,10 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(SalesDocumentSupplements supplements)? loading,
-    TResult Function(SalesDocumentSupplements supplements)? content,
-    TResult Function(SalesDocumentSupplements supplements)? success,
-    TResult Function(SalesDocumentSupplements supplements, String? message,
+    TResult Function(PurchasesPagesSupplements supplements)? loading,
+    TResult Function(PurchasesPagesSupplements supplements)? content,
+    TResult Function(PurchasesPagesSupplements supplements)? success,
+    TResult Function(PurchasesPagesSupplements supplements, String? message,
             bool showOnPage)?
         failed,
   }) {
@@ -250,10 +251,10 @@ class _$_Loading implements _Loading {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SalesDocumentSupplements supplements)? loading,
-    TResult Function(SalesDocumentSupplements supplements)? content,
-    TResult Function(SalesDocumentSupplements supplements)? success,
-    TResult Function(SalesDocumentSupplements supplements, String? message,
+    TResult Function(PurchasesPagesSupplements supplements)? loading,
+    TResult Function(PurchasesPagesSupplements supplements)? content,
+    TResult Function(PurchasesPagesSupplements supplements)? success,
+    TResult Function(PurchasesPagesSupplements supplements, String? message,
             bool showOnPage)?
         failed,
     required TResult orElse(),
@@ -302,11 +303,11 @@ class _$_Loading implements _Loading {
   }
 }
 
-abstract class _Loading implements SalesDocumentsPageState {
-  const factory _Loading(SalesDocumentSupplements supplements) = _$_Loading;
+abstract class _Loading implements PurchasesPagesState {
+  const factory _Loading(PurchasesPagesSupplements supplements) = _$_Loading;
 
   @override
-  SalesDocumentSupplements get supplements;
+  PurchasesPagesSupplements get supplements;
   @override
   @JsonKey(ignore: true)
   _$LoadingCopyWith<_Loading> get copyWith =>
@@ -315,19 +316,19 @@ abstract class _Loading implements SalesDocumentsPageState {
 
 /// @nodoc
 abstract class _$ContentCopyWith<$Res>
-    implements $SalesDocumentsPageStateCopyWith<$Res> {
+    implements $PurchasesPagesStateCopyWith<$Res> {
   factory _$ContentCopyWith(_Content value, $Res Function(_Content) then) =
       __$ContentCopyWithImpl<$Res>;
   @override
-  $Res call({SalesDocumentSupplements supplements});
+  $Res call({PurchasesPagesSupplements supplements});
 
   @override
-  $SalesDocumentSupplementsCopyWith<$Res> get supplements;
+  $PurchasesPagesSupplementsCopyWith<$Res> get supplements;
 }
 
 /// @nodoc
 class __$ContentCopyWithImpl<$Res>
-    extends _$SalesDocumentsPageStateCopyWithImpl<$Res>
+    extends _$PurchasesPagesStateCopyWithImpl<$Res>
     implements _$ContentCopyWith<$Res> {
   __$ContentCopyWithImpl(_Content _value, $Res Function(_Content) _then)
       : super(_value, (v) => _then(v as _Content));
@@ -343,7 +344,7 @@ class __$ContentCopyWithImpl<$Res>
       supplements == freezed
           ? _value.supplements
           : supplements // ignore: cast_nullable_to_non_nullable
-              as SalesDocumentSupplements,
+              as PurchasesPagesSupplements,
     ));
   }
 }
@@ -354,11 +355,11 @@ class _$_Content implements _Content {
   const _$_Content(this.supplements);
 
   @override
-  final SalesDocumentSupplements supplements;
+  final PurchasesPagesSupplements supplements;
 
   @override
   String toString() {
-    return 'SalesDocumentsPageState.content(supplements: $supplements)';
+    return 'PurchasesPagesState.content(supplements: $supplements)';
   }
 
   @override
@@ -382,10 +383,10 @@ class _$_Content implements _Content {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(SalesDocumentSupplements supplements) loading,
-    required TResult Function(SalesDocumentSupplements supplements) content,
-    required TResult Function(SalesDocumentSupplements supplements) success,
-    required TResult Function(SalesDocumentSupplements supplements,
+    required TResult Function(PurchasesPagesSupplements supplements) loading,
+    required TResult Function(PurchasesPagesSupplements supplements) content,
+    required TResult Function(PurchasesPagesSupplements supplements) success,
+    required TResult Function(PurchasesPagesSupplements supplements,
             String? message, bool showOnPage)
         failed,
   }) {
@@ -395,10 +396,10 @@ class _$_Content implements _Content {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(SalesDocumentSupplements supplements)? loading,
-    TResult Function(SalesDocumentSupplements supplements)? content,
-    TResult Function(SalesDocumentSupplements supplements)? success,
-    TResult Function(SalesDocumentSupplements supplements, String? message,
+    TResult Function(PurchasesPagesSupplements supplements)? loading,
+    TResult Function(PurchasesPagesSupplements supplements)? content,
+    TResult Function(PurchasesPagesSupplements supplements)? success,
+    TResult Function(PurchasesPagesSupplements supplements, String? message,
             bool showOnPage)?
         failed,
   }) {
@@ -408,10 +409,10 @@ class _$_Content implements _Content {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SalesDocumentSupplements supplements)? loading,
-    TResult Function(SalesDocumentSupplements supplements)? content,
-    TResult Function(SalesDocumentSupplements supplements)? success,
-    TResult Function(SalesDocumentSupplements supplements, String? message,
+    TResult Function(PurchasesPagesSupplements supplements)? loading,
+    TResult Function(PurchasesPagesSupplements supplements)? content,
+    TResult Function(PurchasesPagesSupplements supplements)? success,
+    TResult Function(PurchasesPagesSupplements supplements, String? message,
             bool showOnPage)?
         failed,
     required TResult orElse(),
@@ -460,11 +461,11 @@ class _$_Content implements _Content {
   }
 }
 
-abstract class _Content implements SalesDocumentsPageState {
-  const factory _Content(SalesDocumentSupplements supplements) = _$_Content;
+abstract class _Content implements PurchasesPagesState {
+  const factory _Content(PurchasesPagesSupplements supplements) = _$_Content;
 
   @override
-  SalesDocumentSupplements get supplements;
+  PurchasesPagesSupplements get supplements;
   @override
   @JsonKey(ignore: true)
   _$ContentCopyWith<_Content> get copyWith =>
@@ -473,19 +474,19 @@ abstract class _Content implements SalesDocumentsPageState {
 
 /// @nodoc
 abstract class _$SuccessCopyWith<$Res>
-    implements $SalesDocumentsPageStateCopyWith<$Res> {
+    implements $PurchasesPagesStateCopyWith<$Res> {
   factory _$SuccessCopyWith(_Success value, $Res Function(_Success) then) =
       __$SuccessCopyWithImpl<$Res>;
   @override
-  $Res call({SalesDocumentSupplements supplements});
+  $Res call({PurchasesPagesSupplements supplements});
 
   @override
-  $SalesDocumentSupplementsCopyWith<$Res> get supplements;
+  $PurchasesPagesSupplementsCopyWith<$Res> get supplements;
 }
 
 /// @nodoc
 class __$SuccessCopyWithImpl<$Res>
-    extends _$SalesDocumentsPageStateCopyWithImpl<$Res>
+    extends _$PurchasesPagesStateCopyWithImpl<$Res>
     implements _$SuccessCopyWith<$Res> {
   __$SuccessCopyWithImpl(_Success _value, $Res Function(_Success) _then)
       : super(_value, (v) => _then(v as _Success));
@@ -501,7 +502,7 @@ class __$SuccessCopyWithImpl<$Res>
       supplements == freezed
           ? _value.supplements
           : supplements // ignore: cast_nullable_to_non_nullable
-              as SalesDocumentSupplements,
+              as PurchasesPagesSupplements,
     ));
   }
 }
@@ -512,11 +513,11 @@ class _$_Success implements _Success {
   const _$_Success(this.supplements);
 
   @override
-  final SalesDocumentSupplements supplements;
+  final PurchasesPagesSupplements supplements;
 
   @override
   String toString() {
-    return 'SalesDocumentsPageState.success(supplements: $supplements)';
+    return 'PurchasesPagesState.success(supplements: $supplements)';
   }
 
   @override
@@ -540,10 +541,10 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(SalesDocumentSupplements supplements) loading,
-    required TResult Function(SalesDocumentSupplements supplements) content,
-    required TResult Function(SalesDocumentSupplements supplements) success,
-    required TResult Function(SalesDocumentSupplements supplements,
+    required TResult Function(PurchasesPagesSupplements supplements) loading,
+    required TResult Function(PurchasesPagesSupplements supplements) content,
+    required TResult Function(PurchasesPagesSupplements supplements) success,
+    required TResult Function(PurchasesPagesSupplements supplements,
             String? message, bool showOnPage)
         failed,
   }) {
@@ -553,10 +554,10 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(SalesDocumentSupplements supplements)? loading,
-    TResult Function(SalesDocumentSupplements supplements)? content,
-    TResult Function(SalesDocumentSupplements supplements)? success,
-    TResult Function(SalesDocumentSupplements supplements, String? message,
+    TResult Function(PurchasesPagesSupplements supplements)? loading,
+    TResult Function(PurchasesPagesSupplements supplements)? content,
+    TResult Function(PurchasesPagesSupplements supplements)? success,
+    TResult Function(PurchasesPagesSupplements supplements, String? message,
             bool showOnPage)?
         failed,
   }) {
@@ -566,10 +567,10 @@ class _$_Success implements _Success {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SalesDocumentSupplements supplements)? loading,
-    TResult Function(SalesDocumentSupplements supplements)? content,
-    TResult Function(SalesDocumentSupplements supplements)? success,
-    TResult Function(SalesDocumentSupplements supplements, String? message,
+    TResult Function(PurchasesPagesSupplements supplements)? loading,
+    TResult Function(PurchasesPagesSupplements supplements)? content,
+    TResult Function(PurchasesPagesSupplements supplements)? success,
+    TResult Function(PurchasesPagesSupplements supplements, String? message,
             bool showOnPage)?
         failed,
     required TResult orElse(),
@@ -618,11 +619,11 @@ class _$_Success implements _Success {
   }
 }
 
-abstract class _Success implements SalesDocumentsPageState {
-  const factory _Success(SalesDocumentSupplements supplements) = _$_Success;
+abstract class _Success implements PurchasesPagesState {
+  const factory _Success(PurchasesPagesSupplements supplements) = _$_Success;
 
   @override
-  SalesDocumentSupplements get supplements;
+  PurchasesPagesSupplements get supplements;
   @override
   @JsonKey(ignore: true)
   _$SuccessCopyWith<_Success> get copyWith =>
@@ -631,20 +632,22 @@ abstract class _Success implements SalesDocumentsPageState {
 
 /// @nodoc
 abstract class _$FailedCopyWith<$Res>
-    implements $SalesDocumentsPageStateCopyWith<$Res> {
+    implements $PurchasesPagesStateCopyWith<$Res> {
   factory _$FailedCopyWith(_Failed value, $Res Function(_Failed) then) =
       __$FailedCopyWithImpl<$Res>;
   @override
   $Res call(
-      {SalesDocumentSupplements supplements, String? message, bool showOnPage});
+      {PurchasesPagesSupplements supplements,
+      String? message,
+      bool showOnPage});
 
   @override
-  $SalesDocumentSupplementsCopyWith<$Res> get supplements;
+  $PurchasesPagesSupplementsCopyWith<$Res> get supplements;
 }
 
 /// @nodoc
 class __$FailedCopyWithImpl<$Res>
-    extends _$SalesDocumentsPageStateCopyWithImpl<$Res>
+    extends _$PurchasesPagesStateCopyWithImpl<$Res>
     implements _$FailedCopyWith<$Res> {
   __$FailedCopyWithImpl(_Failed _value, $Res Function(_Failed) _then)
       : super(_value, (v) => _then(v as _Failed));
@@ -662,7 +665,7 @@ class __$FailedCopyWithImpl<$Res>
       supplements == freezed
           ? _value.supplements
           : supplements // ignore: cast_nullable_to_non_nullable
-              as SalesDocumentSupplements,
+              as PurchasesPagesSupplements,
       message: message == freezed
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -681,7 +684,7 @@ class _$_Failed implements _Failed {
   const _$_Failed(this.supplements, {this.message, this.showOnPage = false});
 
   @override
-  final SalesDocumentSupplements supplements;
+  final PurchasesPagesSupplements supplements;
   @override
   final String? message;
   @JsonKey()
@@ -690,7 +693,7 @@ class _$_Failed implements _Failed {
 
   @override
   String toString() {
-    return 'SalesDocumentsPageState.failed(supplements: $supplements, message: $message, showOnPage: $showOnPage)';
+    return 'PurchasesPagesState.failed(supplements: $supplements, message: $message, showOnPage: $showOnPage)';
   }
 
   @override
@@ -720,10 +723,10 @@ class _$_Failed implements _Failed {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(SalesDocumentSupplements supplements) loading,
-    required TResult Function(SalesDocumentSupplements supplements) content,
-    required TResult Function(SalesDocumentSupplements supplements) success,
-    required TResult Function(SalesDocumentSupplements supplements,
+    required TResult Function(PurchasesPagesSupplements supplements) loading,
+    required TResult Function(PurchasesPagesSupplements supplements) content,
+    required TResult Function(PurchasesPagesSupplements supplements) success,
+    required TResult Function(PurchasesPagesSupplements supplements,
             String? message, bool showOnPage)
         failed,
   }) {
@@ -733,10 +736,10 @@ class _$_Failed implements _Failed {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(SalesDocumentSupplements supplements)? loading,
-    TResult Function(SalesDocumentSupplements supplements)? content,
-    TResult Function(SalesDocumentSupplements supplements)? success,
-    TResult Function(SalesDocumentSupplements supplements, String? message,
+    TResult Function(PurchasesPagesSupplements supplements)? loading,
+    TResult Function(PurchasesPagesSupplements supplements)? content,
+    TResult Function(PurchasesPagesSupplements supplements)? success,
+    TResult Function(PurchasesPagesSupplements supplements, String? message,
             bool showOnPage)?
         failed,
   }) {
@@ -746,10 +749,10 @@ class _$_Failed implements _Failed {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SalesDocumentSupplements supplements)? loading,
-    TResult Function(SalesDocumentSupplements supplements)? content,
-    TResult Function(SalesDocumentSupplements supplements)? success,
-    TResult Function(SalesDocumentSupplements supplements, String? message,
+    TResult Function(PurchasesPagesSupplements supplements)? loading,
+    TResult Function(PurchasesPagesSupplements supplements)? content,
+    TResult Function(PurchasesPagesSupplements supplements)? success,
+    TResult Function(PurchasesPagesSupplements supplements, String? message,
             bool showOnPage)?
         failed,
     required TResult orElse(),
@@ -798,12 +801,12 @@ class _$_Failed implements _Failed {
   }
 }
 
-abstract class _Failed implements SalesDocumentsPageState {
-  const factory _Failed(SalesDocumentSupplements supplements,
+abstract class _Failed implements PurchasesPagesState {
+  const factory _Failed(PurchasesPagesSupplements supplements,
       {String? message, bool showOnPage}) = _$_Failed;
 
   @override
-  SalesDocumentSupplements get supplements;
+  PurchasesPagesSupplements get supplements;
   String? get message;
   bool get showOnPage;
   @override

@@ -1,14 +1,14 @@
 import '../source.dart';
 
-class SalesDocumentsPage extends StatefulWidget {
-  const SalesDocumentsPage({Key? key}) : super(key: key);
+class PurchasesDocumentsPage extends StatefulWidget {
+  const PurchasesDocumentsPage({Key? key}) : super(key: key);
 
   @override
-  State<SalesDocumentsPage> createState() => _SalesDocumentsPageState();
+  State<PurchasesDocumentsPage> createState() => _PurchasesDocumentsPageState();
 }
 
-class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
-  late final SalesDocumentsPagesBloc bloc;
+class _PurchasesDocumentsPageState extends State<PurchasesDocumentsPage> {
+  late final PurchasesPagesBloc bloc;
 
   @override
   void initState() {
@@ -19,13 +19,13 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const PageAppBar(title: 'Sales'),
+        appBar: const PageAppBar(title: 'Purchases'),
         body: _buildBody(),
         floatingActionButton: _buildFloatingButton());
   }
 
   Widget _buildBody() {
-    return BlocConsumer<SalesDocumentsPagesBloc, SalesDocumentsPageState>(
+    return BlocConsumer<PurchasesPagesBloc, PurchasesPagesState>(
       bloc: bloc,
       listener: (_, state) {
         final error = state.maybeWhen(
@@ -43,11 +43,11 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
     );
   }
 
-  Widget _buildLoading(SalesDocumentSupplements supp) =>
+  Widget _buildLoading(PurchasesPagesSupplements supp) =>
       const AppLoadingIndicator();
 
   Widget _buildFailed(
-      SalesDocumentSupplements supp, String? message, bool isShowOnPage) {
+      PurchasesPagesSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
     return Center(
@@ -65,10 +65,10 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
     ));
   }
 
-  Widget _buildContent(SalesDocumentSupplements supp) {
+  Widget _buildContent(PurchasesPagesSupplements supp) {
     final documents = supp.documents;
     if (documents.isEmpty) {
-      return const EmptyStateWidget(message: emptySalesDocumentsMessage);
+      return const EmptyStateWidget(message: emptyPurchasesDocumentsMessage);
     }
 
     return ListView.separated(
@@ -77,7 +77,7 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
       itemBuilder: (context, index) {
         final document = documents[index];
         return document.maybeWhen(
-            sales: (_, __) => DocumentTile<Sales>(document),
+            purchases: (_, __) => DocumentTile<Purchases>(document),
             orElse: () => Container());
       },
       shrinkWrap: true,
@@ -85,23 +85,23 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
   }
 
   _buildFloatingButton() {
-    return BlocBuilder<SalesDocumentsPagesBloc, SalesDocumentsPageState>(
+    return BlocBuilder<PurchasesPagesBloc, PurchasesPagesState>(
         bloc: bloc,
         builder: (_, state) {
           final isLoading =
               state.maybeWhen(loading: (_) => true, orElse: () => false);
           if (isLoading) return Container();
-          return const AddButton(nextPage: DocumentSalesPage());
+          return const AddButton(nextPage: DocumentPurchasesPage());
         });
   }
 
   _initBloc() {
-    final salesService = getService<SalesService>(context);
+    final purchasesService = getService<PurchasesService>(context);
     final productsService = getService<ProductsService>(context);
-    bloc = SalesDocumentsPagesBloc(salesService, productsService);
-    bloc.init(Pages.sales_documents_page);
+    bloc = PurchasesPagesBloc(purchasesService, productsService);
+    bloc.init(Pages.purchases_documents_page);
   }
 
-  static const emptySalesDocumentsMessage =
-      'No sales record has been added. Add one by clicking the button on a bottom-right corner.';
+  static const emptyPurchasesDocumentsMessage =
+      'No purchases record has been added. Add one by clicking the button on a bottom-right corner.';
 }

@@ -1,18 +1,18 @@
 import '../source.dart';
 
-class SalesPage extends StatefulWidget {
-  const SalesPage(this.documentPageAction, {this.sales, Key? key})
+class PurchasesPage extends StatefulWidget {
+  const PurchasesPage(this.documentPageAction, {this.purchase, Key? key})
       : super(key: key);
 
-  final Sales? sales;
+  final Purchases? purchase;
   final PageActions documentPageAction;
 
   @override
-  State<SalesPage> createState() => _SalesPageState();
+  State<PurchasesPage> createState() => _PurchasesPageState();
 }
 
-class _SalesPageState extends State<SalesPage> {
-  late final SalesDocumentsPagesBloc bloc;
+class _PurchasesPageState extends State<PurchasesPage> {
+  late final PurchasesPagesBloc bloc;
 
   @override
   void initState() {
@@ -22,7 +22,7 @@ class _SalesPageState extends State<SalesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SalesDocumentsPagesBloc, SalesDocumentsPageState>(
+    return BlocConsumer<PurchasesPagesBloc, PurchasesPagesState>(
         bloc: bloc,
         listener: (_, state) {
           final isSuccessful =
@@ -43,11 +43,11 @@ class _SalesPageState extends State<SalesPage> {
         });
   }
 
-  Widget _buildLoading(SalesDocumentSupplements supp) =>
+  Widget _buildLoading(PurchasesPagesSupplements supp) =>
       const AppLoadingIndicator.withScaffold();
 
   Widget _buildFailed(
-      SalesDocumentSupplements supp, String? message, bool isShowOnPage) {
+      PurchasesPagesSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
     return Center(
@@ -65,11 +65,11 @@ class _SalesPageState extends State<SalesPage> {
     ));
   }
 
-  Widget _buildContent(SalesDocumentSupplements supp) {
+  Widget _buildContent(PurchasesPagesSupplements supp) {
     return Scaffold(appBar: _buildAppBar(supp), body: _buildBody(supp));
   }
 
-  Widget _buildBody(SalesDocumentSupplements supp) {
+  Widget _buildBody(PurchasesPagesSupplements supp) {
     return Column(
       children: [
         ValueSelector(
@@ -103,7 +103,7 @@ class _SalesPageState extends State<SalesPage> {
     );
   }
 
-  _buildAppBar(SalesDocumentSupplements supp) {
+  _buildAppBar(PurchasesPagesSupplements supp) {
     final wasViewingDocument = widget.documentPageAction == PageActions.viewing;
     updateActionCallback() {
       bloc.updateAction(PageActions.editing);
@@ -111,10 +111,10 @@ class _SalesPageState extends State<SalesPage> {
 
     return PageAppBar(
         title: supp.isAdding
-            ? 'New Sales Record'
+            ? 'New Purchase Record'
             : supp.isViewing
-                ? 'Sales Record'
-                : 'Edit Sales Record',
+                ? 'Purchase Record'
+                : 'Edit Purchase Record',
         actionIcons: wasViewingDocument
             ? []
             : supp.isViewing
@@ -123,17 +123,17 @@ class _SalesPageState extends State<SalesPage> {
         actionCallbacks: wasViewingDocument
             ? []
             : supp.isViewing
-                ? [updateActionCallback, bloc.deleteSales]
-                : [supp.isEditing ? bloc.editSales : bloc.addSales]);
+                ? [updateActionCallback, bloc.deletePurchase]
+                : [supp.isEditing ? bloc.editPurchase : bloc.addPurchase]);
   }
 
   _initBloc() {
     final productsService = getService<ProductsService>(context);
-    final salesService = getService<SalesService>(context);
-    bloc = SalesDocumentsPagesBloc(salesService, productsService);
+    final purchasesService = getService<PurchasesService>(context);
+    bloc = PurchasesPagesBloc(purchasesService, productsService);
     final action = widget.documentPageAction == PageActions.editing
         ? PageActions.viewing
         : widget.documentPageAction;
-    bloc.init(Pages.sales_page, sales: widget.sales, action: action);
+    bloc.init(Pages.purchases_page, purchase: widget.purchase, action: action);
   }
 }

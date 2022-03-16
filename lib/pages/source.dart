@@ -3,8 +3,9 @@ export 'categories_page.dart';
 export 'category_page.dart';
 export 'product_page.dart';
 export 'sales_page.dart';
+export 'purchases_page.dart';
 export 'document_sales_page.dart';
-export 'document_sales_page.dart';
+export 'document_purchases_page.dart';
 export 'products_page.dart';
 export 'search_page.dart';
 export 'dashboard.dart';
@@ -15,6 +16,7 @@ export 'group_write_offs_page.dart';
 export 'write_off_edit_page.dart';
 export 'opening_stock_edit_page.dart';
 export 'opening_stock_page.dart';
+export 'purchases_documents_page.dart';
 
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:provider/provider.dart';

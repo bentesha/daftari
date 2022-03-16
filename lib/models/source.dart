@@ -18,3 +18,5 @@ export 'opening_stock_item.dart';
 export 'opening_stock_supplements.dart';
 export 'document.dart';
 export 'document_form.dart';
+export 'purchases_pages_supplements.dart';
+export 'purchases.dart';

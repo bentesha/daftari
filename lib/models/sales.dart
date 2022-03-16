@@ -9,7 +9,6 @@ part 'sales.g.dart';
 class Sales with _$Sales {
   const Sales._();
 
-  // @JsonSerializable(explicitToJson: true)
   const factory Sales(
       {@Default('') String id,
       @Default('') String documentId,

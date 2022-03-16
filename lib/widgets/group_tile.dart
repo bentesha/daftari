@@ -1,6 +1,6 @@
 import '../source.dart';
 
-class DocumentTile extends StatelessWidget {
+class DocumentTile<T> extends StatelessWidget {
   const DocumentTile(this.document, {Key? key}) : super(key: key);
 
   final Document document;
@@ -11,7 +11,9 @@ class DocumentTile extends StatelessWidget {
 
     return AppTextButton(
         isFilled: false,
-        onPressed: () => push(DocumentSalesPage(document: document)),
+        onPressed: () => push(T == Sales
+            ? DocumentSalesPage(document: document)
+            : DocumentPurchasesPage(document: document)),
         padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 15.dh),
         child: Row(
           children: [
@@ -19,9 +21,7 @@ class DocumentTile extends StatelessWidget {
             Expanded(
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                AppText(form.formattedTotal, weight: FontWeight.bold)
-              ],
+              children: [AppText(form.formattedTotal, weight: FontWeight.bold)],
             ))
           ],
         ));

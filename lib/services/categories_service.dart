@@ -1,9 +1,9 @@
 import '../source.dart';
 import 'constants.dart';
-import 'network_service.dart';
+import 'with_no_document_base_service.dart';
 import 'package:http/http.dart' as http;
 
-class CategoriesService extends NetworkService<Category> {
+class CategoriesService extends WithNoDocumentBaseService<Category> {
   static bool _isExpenses = false;
   static const expenseCategoryEndpoint = 'expenseCategory';
   static const productCategoryEndpoint = 'category';

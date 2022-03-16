@@ -63,6 +63,7 @@ class AppDrawer extends StatelessWidget {
         children: [
           _buildListTile('Dashboard', Pages.dashboard),
           _buildListTile('Sales', Pages.sales_documents_page),
+          _buildListTile('Purchases', Pages.purchases_documents_page),
           _buildListTile('Expenses', Pages.group_expenses_page),
           _buildListTile('Purchases', Pages.purchases_page),
           _buildListTile('Stock Write-offs', Pages.stock_write_offs_page),
@@ -116,6 +117,9 @@ class AppDrawer extends StatelessWidget {
       case Pages.sales_documents_page:
         nextPage = const SalesDocumentsPage();
         break;
+      case Pages.purchases_documents_page:
+        nextPage = const PurchasesDocumentsPage();
+        break;
       case Pages.reports_page:
         nextPage = const ReportsPage();
         break;
@@ -156,6 +160,8 @@ enum Pages {
   expenses_categories_page,
   stock_write_offs_page,
   products_page,
+  document_purchases_page,
+  purchases_documents_page,
   product_page,
   settings_page,
   opening_stock

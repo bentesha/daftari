@@ -3,6 +3,7 @@ export 'dart:convert';
 
 export 'products_service.dart';
 export 'sales_service.dart';
+export 'purchases_service.dart';
 export 'categories_service.dart';
 export 'type_service.dart';
 export 'expenses_service.dart';

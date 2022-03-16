@@ -201,8 +201,6 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPagesState>
     emit(SalesDocumentsPagesState.content(supp));
   }
 
-  ///updates the documents on the sales documents page and a sales list on
-  ///document sales page
   _handleDocumentUpdates() {
     emit(SalesDocumentsPagesState.loading(state.supplements));
     _updateSalesDocumentsPage();

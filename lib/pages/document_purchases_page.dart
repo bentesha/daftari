@@ -27,7 +27,7 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
           bloc: bloc,
           listener: (_, state) {
             final isSuccessful =
-            state.maybeWhen(success: (_) => true, orElse: () => false);
+                state.maybeWhen(success: (_) => true, orElse: () => false);
 
             if (isSuccessful) pop();
 
@@ -55,17 +55,17 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
 
     return Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            AppText(message!),
-            AppTextButton(
-                onPressed: _initBloc,
-                text: 'Try Again',
-                textColor: AppColors.onPrimary,
-                backgroundColor: AppColors.primary,
-                margin: EdgeInsets.only(top: 10.dh))
-          ],
-        ));
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        AppText(message!),
+        AppTextButton(
+            onPressed: _initBloc,
+            text: 'Try Again',
+            textColor: AppColors.onPrimary,
+            backgroundColor: AppColors.primary,
+            margin: EdgeInsets.only(top: 10.dh))
+      ],
+    ));
   }
 
   Widget _buildContent(PurchasesPagesSupplements supp) {
@@ -80,8 +80,8 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
     final title = supp.isViewing
         ? supp.document.form.title
         : supp.isEditing
-        ? 'Edit Purchases Document'
-        : 'New Purchases Document';
+            ? 'Edit Purchases Document'
+            : 'New Purchases Document';
 
     return PageAppBar(
         title: title,
@@ -90,9 +90,9 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
             : [Icons.done],
         actionCallbacks: supp.isViewing
             ? [
-              () => bloc.updateAction(PageActions.editing),
-          bloc.deleteDocument
-        ]
+                () => bloc.updateAction(PageActions.editing),
+                bloc.deleteDocument
+              ]
             : [supp.isEditing ? bloc.editDocument : bloc.saveDocument]);
   }
 
@@ -101,11 +101,11 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
       children: [
         supp.isEditing || supp.isAdding
             ? DateSelector(
-          title: 'Date',
-          onDateSelected: bloc.updateDate,
-          date: supp.date,
-          isEditable: /*!hasDocument*/ false,
-        )
+                title: 'Date',
+                onDateSelected: bloc.updateDate,
+                date: supp.date,
+                isEditable: /*!hasDocument*/ false,
+              )
             : Container(),
         const AppDivider(margin: EdgeInsets.zero),
         _buildGroupTitle(supp),
@@ -118,26 +118,26 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
     return supp.isViewing
         ? Container()
         : Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildCheckBox(supp),
-        supp.isDateAsTitle
-            ? Container()
-            : AppTextField(
-            text: supp.document.form.title,
-            onChanged: bloc.updateTitle,
-            hintText: '',
-            keyboardType: TextInputType.name,
-            textCapitalization: TextCapitalization.words,
-            label: 'Title',
-            error: supp.errors['title']),
-      ],
-    );
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildCheckBox(supp),
+              supp.isDateAsTitle
+                  ? Container()
+                  : AppTextField(
+                      text: supp.document.form.title,
+                      onChanged: bloc.updateTitle,
+                      hintText: '',
+                      keyboardType: TextInputType.name,
+                      textCapitalization: TextCapitalization.words,
+                      label: 'Title',
+                      error: supp.errors['title']),
+            ],
+          );
   }
 
   _buildCheckBox(PurchasesPagesSupplements supp) {
     final text =
-    supp.isDateAsTitle ? 'Date used as title' : 'Use date as title';
+        supp.isDateAsTitle ? 'Date used as title' : 'Use date as title';
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5.dw),
       child: Row(
@@ -154,7 +154,7 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
   _buildItems(PurchasesPagesSupplements supp) {
     final document = supp.document;
     final purchaseList =
-    document.maybeWhen(purchases: (_, s) => s, orElse: () => <Purchases>[]);
+        document.maybeWhen(purchases: (_, s) => s, orElse: () => <Purchases>[]);
     if (purchaseList.isEmpty) return _buildEmptyState(emptyExpensesMessage);
 
     return Column(
@@ -163,13 +163,13 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
         supp.isViewing
             ? Container()
             : Padding(
-          padding: EdgeInsets.only(left: 19.dw),
-          child: const AppText('Purchases', weight: FontWeight.bold),
-        ),
+                padding: EdgeInsets.only(left: 19.dw),
+                child: const AppText('Purchases', weight: FontWeight.bold),
+              ),
         ListView.separated(
           itemCount: purchaseList.length,
           separatorBuilder: (_, __) =>
-          const AppDivider(margin: EdgeInsets.zero),
+              const AppDivider(margin: EdgeInsets.zero),
           itemBuilder: (_, i) {
             final purchase = purchaseList[i];
             final product = bloc.getProductById(purchase.productId);
@@ -194,7 +194,7 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
   _buildActionButton(PurchasesPagesSupplements supp) {
     return supp.isViewing
         ? Container()
-        : const AddButton(nextPage: SalesPage(PageActions.adding));
+        : const AddButton(nextPage: PurchasesPage(PageActions.adding));
   }
 
   _buildBottomNavBar(PurchasesPagesSupplements supp) {

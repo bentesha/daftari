@@ -8,11 +8,9 @@ void main() async {
 
   Hive
     ..init(appDirectory.path)
-    ..registerAdapter(ExpenseAdapter())
     ..registerAdapter(WriteOffAdapter())
     ..registerAdapter(OpeningStockItemAdapter());
 
-  await Hive.openBox(Constants.kExpenseBox);
   await Hive.openBox(Constants.kWriteOffsBox);
   await Hive.openBox(Constants.kOpeningStockItemsBox);
 
@@ -33,7 +31,7 @@ void main() async {
 /* 
   await Hive.box(Constants.kOpeningStockItemsBox).clear();
   await Hive.box(Constants.kWriteOffsBox).clear();
-  await Hive.box(Constants.kExpenseBox).clear(); */
+ */
 
   runApp(myApp);
 }

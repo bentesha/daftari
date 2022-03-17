@@ -19,27 +19,27 @@ class _$ExpenseSupplementsTearOff {
   const _$ExpenseSupplementsTearOff();
 
   _ExpenseSupplements call(
-      {required List<Expense> expenses,
-      required List<Category> categories,
-      required List<Document> groups,
-      required Map<String, String?> errors,
-      required String amount,
+      {List<Document> documents = const [],
+      required Document document,
       required DateTime date,
-      String? notes,
-      required String id,
-      required Document group,
-      required Category category}) {
+      bool isDateAsTitle = true,
+      String amount = '',
+      String expenseId = '',
+      String? description,
+      required Category category,
+      PageActions action = PageActions.viewing,
+      Map<String, String?> errors = const {}}) {
     return _ExpenseSupplements(
-      expenses: expenses,
-      categories: categories,
-      groups: groups,
-      errors: errors,
-      amount: amount,
+      documents: documents,
+      document: document,
       date: date,
-      notes: notes,
-      id: id,
-      group: group,
+      isDateAsTitle: isDateAsTitle,
+      amount: amount,
+      expenseId: expenseId,
+      description: description,
       category: category,
+      action: action,
+      errors: errors,
     );
   }
 }
@@ -49,16 +49,18 @@ const $ExpenseSupplements = _$ExpenseSupplementsTearOff();
 
 /// @nodoc
 mixin _$ExpenseSupplements {
-  List<Expense> get expenses => throw _privateConstructorUsedError;
-  List<Category> get categories => throw _privateConstructorUsedError;
-  List<Document> get groups => throw _privateConstructorUsedError;
-  Map<String, String?> get errors => throw _privateConstructorUsedError;
-  String get amount => throw _privateConstructorUsedError;
+  List<Document> get documents =>
+      throw _privateConstructorUsedError; //for editing expenses document
+  Document get document => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
-  String? get notes => throw _privateConstructorUsedError;
-  String get id => throw _privateConstructorUsedError;
-  Document get group => throw _privateConstructorUsedError;
-  Category get category => throw _privateConstructorUsedError;
+  bool get isDateAsTitle =>
+      throw _privateConstructorUsedError; //for editing expenses
+  String get amount => throw _privateConstructorUsedError;
+  String get expenseId => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
+  Category get category => throw _privateConstructorUsedError; //for both
+  PageActions get action => throw _privateConstructorUsedError;
+  Map<String, String?> get errors => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $ExpenseSupplementsCopyWith<ExpenseSupplements> get copyWith =>
@@ -71,18 +73,18 @@ abstract class $ExpenseSupplementsCopyWith<$Res> {
           ExpenseSupplements value, $Res Function(ExpenseSupplements) then) =
       _$ExpenseSupplementsCopyWithImpl<$Res>;
   $Res call(
-      {List<Expense> expenses,
-      List<Category> categories,
-      List<Document> groups,
-      Map<String, String?> errors,
-      String amount,
+      {List<Document> documents,
+      Document document,
       DateTime date,
-      String? notes,
-      String id,
-      Document group,
-      Category category});
+      bool isDateAsTitle,
+      String amount,
+      String expenseId,
+      String? description,
+      Category category,
+      PageActions action,
+      Map<String, String?> errors});
 
-  $DocumentCopyWith<$Res> get group;
+  $DocumentCopyWith<$Res> get document;
 }
 
 /// @nodoc
@@ -96,65 +98,65 @@ class _$ExpenseSupplementsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? expenses = freezed,
-    Object? categories = freezed,
-    Object? groups = freezed,
-    Object? errors = freezed,
-    Object? amount = freezed,
+    Object? documents = freezed,
+    Object? document = freezed,
     Object? date = freezed,
-    Object? notes = freezed,
-    Object? id = freezed,
-    Object? group = freezed,
+    Object? isDateAsTitle = freezed,
+    Object? amount = freezed,
+    Object? expenseId = freezed,
+    Object? description = freezed,
     Object? category = freezed,
+    Object? action = freezed,
+    Object? errors = freezed,
   }) {
     return _then(_value.copyWith(
-      expenses: expenses == freezed
-          ? _value.expenses
-          : expenses // ignore: cast_nullable_to_non_nullable
-              as List<Expense>,
-      categories: categories == freezed
-          ? _value.categories
-          : categories // ignore: cast_nullable_to_non_nullable
-              as List<Category>,
-      groups: groups == freezed
-          ? _value.groups
-          : groups // ignore: cast_nullable_to_non_nullable
+      documents: documents == freezed
+          ? _value.documents
+          : documents // ignore: cast_nullable_to_non_nullable
               as List<Document>,
-      errors: errors == freezed
-          ? _value.errors
-          : errors // ignore: cast_nullable_to_non_nullable
-              as Map<String, String?>,
-      amount: amount == freezed
-          ? _value.amount
-          : amount // ignore: cast_nullable_to_non_nullable
-              as String,
+      document: document == freezed
+          ? _value.document
+          : document // ignore: cast_nullable_to_non_nullable
+              as Document,
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      notes: notes == freezed
-          ? _value.notes
-          : notes // ignore: cast_nullable_to_non_nullable
-              as String?,
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      isDateAsTitle: isDateAsTitle == freezed
+          ? _value.isDateAsTitle
+          : isDateAsTitle // ignore: cast_nullable_to_non_nullable
+              as bool,
+      amount: amount == freezed
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
               as String,
-      group: group == freezed
-          ? _value.group
-          : group // ignore: cast_nullable_to_non_nullable
-              as Document,
+      expenseId: expenseId == freezed
+          ? _value.expenseId
+          : expenseId // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
       category: category == freezed
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
               as Category,
+      action: action == freezed
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as PageActions,
+      errors: errors == freezed
+          ? _value.errors
+          : errors // ignore: cast_nullable_to_non_nullable
+              as Map<String, String?>,
     ));
   }
 
   @override
-  $DocumentCopyWith<$Res> get group {
-    return $DocumentCopyWith<$Res>(_value.group, (value) {
-      return _then(_value.copyWith(group: value));
+  $DocumentCopyWith<$Res> get document {
+    return $DocumentCopyWith<$Res>(_value.document, (value) {
+      return _then(_value.copyWith(document: value));
     });
   }
 }
@@ -167,19 +169,19 @@ abstract class _$ExpenseSupplementsCopyWith<$Res>
       __$ExpenseSupplementsCopyWithImpl<$Res>;
   @override
   $Res call(
-      {List<Expense> expenses,
-      List<Category> categories,
-      List<Document> groups,
-      Map<String, String?> errors,
-      String amount,
+      {List<Document> documents,
+      Document document,
       DateTime date,
-      String? notes,
-      String id,
-      Document group,
-      Category category});
+      bool isDateAsTitle,
+      String amount,
+      String expenseId,
+      String? description,
+      Category category,
+      PageActions action,
+      Map<String, String?> errors});
 
   @override
-  $DocumentCopyWith<$Res> get group;
+  $DocumentCopyWith<$Res> get document;
 }
 
 /// @nodoc
@@ -195,101 +197,108 @@ class __$ExpenseSupplementsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? expenses = freezed,
-    Object? categories = freezed,
-    Object? groups = freezed,
-    Object? errors = freezed,
-    Object? amount = freezed,
+    Object? documents = freezed,
+    Object? document = freezed,
     Object? date = freezed,
-    Object? notes = freezed,
-    Object? id = freezed,
-    Object? group = freezed,
+    Object? isDateAsTitle = freezed,
+    Object? amount = freezed,
+    Object? expenseId = freezed,
+    Object? description = freezed,
     Object? category = freezed,
+    Object? action = freezed,
+    Object? errors = freezed,
   }) {
     return _then(_ExpenseSupplements(
-      expenses: expenses == freezed
-          ? _value.expenses
-          : expenses // ignore: cast_nullable_to_non_nullable
-              as List<Expense>,
-      categories: categories == freezed
-          ? _value.categories
-          : categories // ignore: cast_nullable_to_non_nullable
-              as List<Category>,
-      groups: groups == freezed
-          ? _value.groups
-          : groups // ignore: cast_nullable_to_non_nullable
+      documents: documents == freezed
+          ? _value.documents
+          : documents // ignore: cast_nullable_to_non_nullable
               as List<Document>,
-      errors: errors == freezed
-          ? _value.errors
-          : errors // ignore: cast_nullable_to_non_nullable
-              as Map<String, String?>,
-      amount: amount == freezed
-          ? _value.amount
-          : amount // ignore: cast_nullable_to_non_nullable
-              as String,
+      document: document == freezed
+          ? _value.document
+          : document // ignore: cast_nullable_to_non_nullable
+              as Document,
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      notes: notes == freezed
-          ? _value.notes
-          : notes // ignore: cast_nullable_to_non_nullable
-              as String?,
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      isDateAsTitle: isDateAsTitle == freezed
+          ? _value.isDateAsTitle
+          : isDateAsTitle // ignore: cast_nullable_to_non_nullable
+              as bool,
+      amount: amount == freezed
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
               as String,
-      group: group == freezed
-          ? _value.group
-          : group // ignore: cast_nullable_to_non_nullable
-              as Document,
+      expenseId: expenseId == freezed
+          ? _value.expenseId
+          : expenseId // ignore: cast_nullable_to_non_nullable
+              as String,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
       category: category == freezed
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
               as Category,
+      action: action == freezed
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as PageActions,
+      errors: errors == freezed
+          ? _value.errors
+          : errors // ignore: cast_nullable_to_non_nullable
+              as Map<String, String?>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_ExpenseSupplements implements _ExpenseSupplements {
+class _$_ExpenseSupplements extends _ExpenseSupplements {
   const _$_ExpenseSupplements(
-      {required this.expenses,
-      required this.categories,
-      required this.groups,
-      required this.errors,
-      required this.amount,
+      {this.documents = const [],
+      required this.document,
       required this.date,
-      this.notes,
-      required this.id,
-      required this.group,
-      required this.category});
+      this.isDateAsTitle = true,
+      this.amount = '',
+      this.expenseId = '',
+      this.description,
+      required this.category,
+      this.action = PageActions.viewing,
+      this.errors = const {}})
+      : super._();
 
+  @JsonKey()
   @override
-  final List<Expense> expenses;
-  @override
-  final List<Category> categories;
-  @override
-  final List<Document> groups;
-  @override
-  final Map<String, String?> errors;
-  @override
-  final String amount;
+  final List<Document> documents;
+  @override //for editing expenses document
+  final Document document;
   @override
   final DateTime date;
+  @JsonKey()
   @override
-  final String? notes;
+  final bool isDateAsTitle;
+  @JsonKey()
+  @override //for editing expenses
+  final String amount;
+  @JsonKey()
   @override
-  final String id;
+  final String expenseId;
   @override
-  final Document group;
+  final String? description;
   @override
   final Category category;
+  @JsonKey()
+  @override //for both
+  final PageActions action;
+  @JsonKey()
+  @override
+  final Map<String, String?> errors;
 
   @override
   String toString() {
-    return 'ExpenseSupplements(expenses: $expenses, categories: $categories, groups: $groups, errors: $errors, amount: $amount, date: $date, notes: $notes, id: $id, group: $group, category: $category)';
+    return 'ExpenseSupplements(documents: $documents, document: $document, date: $date, isDateAsTitle: $isDateAsTitle, amount: $amount, expenseId: $expenseId, description: $description, category: $category, action: $action, errors: $errors)';
   }
 
   @override
@@ -297,32 +306,33 @@ class _$_ExpenseSupplements implements _ExpenseSupplements {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _ExpenseSupplements &&
-            const DeepCollectionEquality().equals(other.expenses, expenses) &&
-            const DeepCollectionEquality()
-                .equals(other.categories, categories) &&
-            const DeepCollectionEquality().equals(other.groups, groups) &&
-            const DeepCollectionEquality().equals(other.errors, errors) &&
-            const DeepCollectionEquality().equals(other.amount, amount) &&
+            const DeepCollectionEquality().equals(other.documents, documents) &&
+            const DeepCollectionEquality().equals(other.document, document) &&
             const DeepCollectionEquality().equals(other.date, date) &&
-            const DeepCollectionEquality().equals(other.notes, notes) &&
-            const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.group, group) &&
-            const DeepCollectionEquality().equals(other.category, category));
+            const DeepCollectionEquality()
+                .equals(other.isDateAsTitle, isDateAsTitle) &&
+            const DeepCollectionEquality().equals(other.amount, amount) &&
+            const DeepCollectionEquality().equals(other.expenseId, expenseId) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.category, category) &&
+            const DeepCollectionEquality().equals(other.action, action) &&
+            const DeepCollectionEquality().equals(other.errors, errors));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(expenses),
-      const DeepCollectionEquality().hash(categories),
-      const DeepCollectionEquality().hash(groups),
-      const DeepCollectionEquality().hash(errors),
-      const DeepCollectionEquality().hash(amount),
+      const DeepCollectionEquality().hash(documents),
+      const DeepCollectionEquality().hash(document),
       const DeepCollectionEquality().hash(date),
-      const DeepCollectionEquality().hash(notes),
-      const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(group),
-      const DeepCollectionEquality().hash(category));
+      const DeepCollectionEquality().hash(isDateAsTitle),
+      const DeepCollectionEquality().hash(amount),
+      const DeepCollectionEquality().hash(expenseId),
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(category),
+      const DeepCollectionEquality().hash(action),
+      const DeepCollectionEquality().hash(errors));
 
   @JsonKey(ignore: true)
   @override
@@ -330,39 +340,40 @@ class _$_ExpenseSupplements implements _ExpenseSupplements {
       __$ExpenseSupplementsCopyWithImpl<_ExpenseSupplements>(this, _$identity);
 }
 
-abstract class _ExpenseSupplements implements ExpenseSupplements {
+abstract class _ExpenseSupplements extends ExpenseSupplements {
   const factory _ExpenseSupplements(
-      {required List<Expense> expenses,
-      required List<Category> categories,
-      required List<Document> groups,
-      required Map<String, String?> errors,
-      required String amount,
+      {List<Document> documents,
+      required Document document,
       required DateTime date,
-      String? notes,
-      required String id,
-      required Document group,
-      required Category category}) = _$_ExpenseSupplements;
+      bool isDateAsTitle,
+      String amount,
+      String expenseId,
+      String? description,
+      required Category category,
+      PageActions action,
+      Map<String, String?> errors}) = _$_ExpenseSupplements;
+  const _ExpenseSupplements._() : super._();
 
   @override
-  List<Expense> get expenses;
-  @override
-  List<Category> get categories;
-  @override
-  List<Document> get groups;
-  @override
-  Map<String, String?> get errors;
-  @override
-  String get amount;
+  List<Document> get documents;
+  @override //for editing expenses document
+  Document get document;
   @override
   DateTime get date;
   @override
-  String? get notes;
+  bool get isDateAsTitle;
+  @override //for editing expenses
+  String get amount;
   @override
-  String get id;
+  String get expenseId;
   @override
-  Document get group;
+  String? get description;
   @override
   Category get category;
+  @override //for both
+  PageActions get action;
+  @override
+  Map<String, String?> get errors;
   @override
   @JsonKey(ignore: true)
   _$ExpenseSupplementsCopyWith<_ExpenseSupplements> get copyWith =>

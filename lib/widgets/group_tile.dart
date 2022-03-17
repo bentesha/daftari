@@ -12,8 +12,10 @@ class DocumentTile<T> extends StatelessWidget {
     return AppTextButton(
         isFilled: false,
         onPressed: () => push(T == Sales
-            ? DocumentSalesPage(document: document)
-            : DocumentPurchasesPage(document: document)),
+            ? DocumentSalesPage(document)
+            : T == Purchases
+                ? DocumentPurchasesPage(document)
+                : DocumentExpensesPage(document)),
         padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 15.dh),
         child: Row(
           children: [

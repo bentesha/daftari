@@ -10,13 +10,14 @@ export 'products_page.dart';
 export 'search_page.dart';
 export 'dashboard.dart';
 export 'reports_page.dart';
-export 'expense_edit_page.dart';
-export 'expenses_groups_page.dart';
+export 'expense_page.dart';
+export 'expenses_documents_page.dart';
 export 'group_write_offs_page.dart';
 export 'write_off_edit_page.dart';
 export 'opening_stock_edit_page.dart';
 export 'opening_stock_page.dart';
 export 'purchases_documents_page.dart';
+export 'document_expenses_page.dart';
 
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:provider/provider.dart';

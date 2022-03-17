@@ -74,6 +74,10 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
         itemList = document.maybeWhen(
             purchases: (_, p) => p, orElse: () => <Purchases>[]);
         break;
+      case Expense:
+        itemList = document.maybeWhen(
+            expenses: (_, e) => e, orElse: () => <Expense>[]);
+        break;
     }
 
     _temporaryList = List.from(itemList);
@@ -121,6 +125,8 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
         return Sales.fromJson(json);
       case Purchases:
         return Purchases.fromJson(json);
+      case Expense:
+        return Expense.fromJson(json);
     }
   }
 
@@ -132,6 +138,9 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
       case Purchases:
         final purchaseList = itemList.whereType<Purchases>().toList();
         return Document.purchases(form, purchaseList);
+      case Expense:
+        final purchaseList = itemList.whereType<Expense>().toList();
+        return Document.expenses(form, purchaseList);
     }
     return Document.empty();
   }

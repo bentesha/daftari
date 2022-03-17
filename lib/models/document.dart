@@ -8,10 +8,9 @@ enum DocumentType { sales, purchases, expenses, writeOffs }
 class Document with _$Document {
   const Document._();
 
-  const factory Document.sales(DocumentForm form, List<Sales> sales) = _Sales;
-  const factory Document.purchases(
-      DocumentForm form, List<Purchases> purchases) = _Purchases;
-  const factory Document.expenses(DocumentForm form) = _Expenses;
+  const factory Document.sales(DocumentForm form, List<Sales> salesList) = _Sales;
+  const factory Document.purchases(DocumentForm form, List<Purchases> purchaseList) = _Purchases;
+  const factory Document.expenses(DocumentForm form, List<Expense> expenseList) = _Expenses;
   const factory Document.writeOffs(DocumentForm form) = _WriteOffs;
 
   factory Document.empty() => const Document.sales(DocumentForm(), <Sales>[]);
@@ -33,7 +32,9 @@ class Document with _$Document {
             purchases: (_, purchaseList) => purchaseList,
             orElse: () => <Purchases>[]);
       case DocumentType.expenses:
-        return maybeWhen(sales: (_, sales) => sales, orElse: () => []);
+        return maybeWhen(
+            expenses: (_, expenseList) => expenseList,
+            orElse: () => <Expense>[]);
       case DocumentType.writeOffs:
         return maybeWhen(sales: (_, sales) => sales, orElse: () => []);
     }

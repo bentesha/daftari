@@ -4,27 +4,34 @@ part 'expense_supplements.freezed.dart';
 
 @freezed
 class ExpenseSupplements with _$ExpenseSupplements {
-  const factory ExpenseSupplements(
-      {required List<Expense> expenses,
-      required List<Category> categories,
-      required List<Document> groups,
-      required Map<String, String?> errors,
-      required String amount,
-      required DateTime date,
-      String? notes,
-      required String id,
-      required Document group,
-      required Category category}) = _ExpenseSupplements;
+    const ExpenseSupplements._();
 
-  factory ExpenseSupplements.empty() => ExpenseSupplements(
-      expenses: <Expense>[],
-      categories: <Category>[],
-      groups: <Document>[],
-      errors: <String, String?>{},
-      date: DateTime.now(),
-      notes: null,
-      category: const Category(),
-      group: const Document.expenses(DocumentForm()),
-      id: '',
-      amount: '');
+    const factory ExpenseSupplements({@Default([]) List<Document> documents,
+        //for editing expenses document
+        required Document document,
+        required DateTime date,
+        @Default(true) bool isDateAsTitle,
+        //for editing expenses
+        @Default('') String amount,
+        @Default('') String expenseId,
+        String? description,
+        required Category category,
+        //for both
+        @Default(PageActions.viewing) PageActions action,
+        @Default({}) Map<String, String?> errors}) = _ExpenseSupplements;
+
+    factory ExpenseSupplements.empty() =>
+        ExpenseSupplements(
+            document: Document.empty(),
+            category: const Category(),
+            date: DateTime.now());
+
+    double get parsedAmount => double.parse(amount);
+
+    bool get isEditing => action == PageActions.editing;
+
+    bool get isViewing => action == PageActions.viewing;
+
+    bool get isAdding => action == PageActions.adding;
+
 }

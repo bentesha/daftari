@@ -189,7 +189,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState>
     if (isValidatingDocumentDetails && (!supp.isDateAsTitle)) {
       errors['title'] = InputValidation.validateText(form.title, 'Title');
     }
-    //validating sales details
+    //validating purchases details
     if (!isValidatingDocumentDetails) {
       errors['product'] =
           InputValidation.validateText(supp.product.id, 'Product');

@@ -2,7 +2,7 @@ import '../source.dart';
 import '../widgets/bottom_total_amount_tile.dart';
 
 class DocumentSalesPage extends StatefulWidget {
-  const DocumentSalesPage({this.document, Key? key}) : super(key: key);
+  const DocumentSalesPage([this.document, Key? key]) : super(key: key);
 
   final Document? document;
 

@@ -20,3 +20,4 @@ export 'document.dart';
 export 'document_form.dart';
 export 'purchases_pages_supplements.dart';
 export 'purchases.dart';
+export 'expense.dart';

@@ -9,6 +9,45 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<VoidCallback?>? actionCallbacks;
   final List<IconData?>? actionIcons;
 
+  factory PageAppBar.onDocumentPage(
+      {required String title,
+      required PageActions action,
+      required VoidCallback updateActionCallback,
+      required VoidCallback deleteDocumentCallback,
+      required VoidCallback saveDocumentCallback,
+      required VoidCallback editDocumentCallback}) {
+    return PageAppBar(
+        title: title,
+        actionIcons: action.isViewing
+            ? [Icons.edit_outlined, Icons.delete_outlined]
+            : [Icons.done],
+        actionCallbacks: action.isViewing
+            ? [updateActionCallback, deleteDocumentCallback]
+            : [action.isEditing ? editDocumentCallback : saveDocumentCallback]);
+  }
+
+  factory PageAppBar.onModelPage(
+      {required String title,
+      required PageActions action,
+      required bool wasViewingDocument,
+      required VoidCallback updateActionCallback,
+      required VoidCallback deleteModelCallback,
+      required VoidCallback saveModelCallback,
+      required VoidCallback editModelCallback}) {
+    return PageAppBar(
+        title: title,
+        actionIcons: wasViewingDocument
+            ? []
+            : action.isViewing
+                ? [Icons.edit_outlined, Icons.delete_outlined]
+                : [Icons.check],
+        actionCallbacks: wasViewingDocument
+            ? []
+            : action.isViewing
+                ? [updateActionCallback, deleteModelCallback]
+                : [action.isEditing ? editModelCallback : saveModelCallback]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppBar(

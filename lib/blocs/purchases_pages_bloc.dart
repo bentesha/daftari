@@ -1,7 +1,6 @@
 import '../source.dart';
 
-class PurchasesPagesBloc extends Cubit<PurchasesPagesState>
-    with ServicesInitializer {
+class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
   PurchasesPagesBloc(this.purchasesService, this.productsService)
       : super(PurchasesPagesState.initial()) {
     purchasesService.addListener(_handleDocumentUpdates);
@@ -17,7 +16,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState>
   bool get documentHasUnsavedChanges => purchasesService.hasChanges;
 
   void init(Pages page,
-      {Document? document, Purchases? purchase, PageActions? action}) async {
+      {Document? document, Purchase? purchase, PageActions? action}) async {
     var supp = state.supplements;
     emit(PurchasesPagesState.loading(supp));
     _page = page;
@@ -106,14 +105,14 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState>
     }
   }
 
-  void addPurchase() async {
+  void addPurchase() {
     _validateSalesDetails();
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
-    final purchase = Purchases.toServer(
+    final purchase = Purchase.toServer(
         id: Utils.getRandomId(),
         productId: supp.product.id,
         quantity: supp.parsedQuantity,
@@ -123,14 +122,14 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState>
     emit(PurchasesPagesState.success(supp));
   }
 
-  void editPurchase() async {
+  void editPurchase() {
     _validateSalesDetails();
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
-    final purchase = Purchases.toServer(
+    final purchase = Purchase.toServer(
         id: supp.purchasesId,
         productId: supp.product.id,
         quantity: supp.parsedQuantity,
@@ -140,7 +139,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState>
     emit(PurchasesPagesState.success(supp));
   }
 
-  void deletePurchase() async {
+  void deletePurchase() {
     var supp = state.supplements;
     purchasesService.deleteTemporaryItem(supp.purchasesId);
     emit(PurchasesPagesState.success(supp));
@@ -270,7 +269,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState>
     return title == dateFromTitle;
   }
 
-  void _initSalesPage(Pages page, [Purchases? purchases, PageActions? action]) {
+  void _initSalesPage(Pages page, [Purchase? purchases, PageActions? action]) {
     if (page != Pages.purchases_page) return;
     var supp = state.supplements;
 
@@ -291,8 +290,8 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState>
 
   Future<void> _initServices() async {
     try {
-      await initServices(
-          productsService: productsService, purchasesService: purchasesService);
+      await purchasesService.init();
+      await productsService.init();
     } on ApiErrors catch (e) {
       emit(PurchasesPagesState.failed(state.supplements,
           message: e.message, showOnPage: true));

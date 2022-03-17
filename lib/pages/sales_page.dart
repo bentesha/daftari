@@ -70,13 +70,15 @@ class _SalesPageState extends State<SalesPage> {
   }
 
   Widget _buildBody(SalesDocumentSupplements supp) {
+    final action = supp.action;
+
     return Column(
       children: [
         ValueSelector(
           title: 'Product',
           value: supp.product.name,
           error: supp.errors['product'],
-          isEditable: !supp.isViewing,
+          isEditable: !action.isViewing,
           onPressed: () => push(
               ItemsSearchPage<Product>(categoryType: CategoryType.products())),
         ),
@@ -89,7 +91,7 @@ class _SalesPageState extends State<SalesPage> {
             label: 'Quantity',
             error: supp.errors['quantity'],
             isUpdatingOnRebuild: true,
-            isEnabled: !supp.isViewing),
+            isEnabled: !action.isViewing),
         AppTextField(
             text: supp.unitPrice,
             onChanged: bloc.updateAmount,
@@ -98,33 +100,32 @@ class _SalesPageState extends State<SalesPage> {
             label: 'Unit Price',
             error: supp.errors['price'],
             isUpdatingOnRebuild: true,
-            isEnabled: !supp.isViewing),
+            isEnabled: !action.isViewing),
       ],
     );
   }
 
   _buildAppBar(SalesDocumentSupplements supp) {
+    final action = supp.action;
     final wasViewingDocument = widget.documentPageAction == PageActions.viewing;
     updateActionCallback() {
       bloc.updateAction(PageActions.editing);
     }
 
-    return PageAppBar(
-        title: supp.isAdding
-            ? 'New Sales Record'
-            : supp.isViewing
-                ? 'Sales Record'
-                : 'Edit Sales Record',
-        actionIcons: wasViewingDocument
-            ? []
-            : supp.isViewing
-                ? [Icons.edit_outlined, Icons.delete_outlined]
-                : [Icons.check],
-        actionCallbacks: wasViewingDocument
-            ? []
-            : supp.isViewing
-                ? [updateActionCallback, bloc.deleteSales]
-                : [supp.isEditing ? bloc.editSales : bloc.addSales]);
+    final title = action.isAdding
+        ? 'New Sales Record'
+        : action.isViewing
+            ? 'Sales Record'
+            : 'Edit Sales Record';
+
+    return PageAppBar.onModelPage(
+        title: title,
+        action: action,
+        wasViewingDocument: wasViewingDocument,
+        updateActionCallback: updateActionCallback,
+        deleteModelCallback: bloc.deleteSales,
+        saveModelCallback: bloc.addSales,
+        editModelCallback: bloc.editSales);
   }
 
   _initBloc() {

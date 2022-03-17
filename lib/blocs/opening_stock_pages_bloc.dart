@@ -1,22 +1,20 @@
 import '../source.dart';
 
-class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState>
-    with ServicesInitializer {
+class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState> {
   OpeningStockPagesBloc(this.openingStockItemsService, this.productsService)
       : super(OpeningStockPagesState.initial()) {
-    productsService.addListener(() => _handleProductUpdates());
-    openingStockItemsService.addListener(() => _handleItemsUpdates());
+    productsService.addListener(_handleProductUpdates);
+    openingStockItemsService.addListener(_handleItemsUpdates);
   }
 
   final OpeningStockItemsService openingStockItemsService;
   final ProductsService productsService;
 
-  void init([OpeningStockItem? openingStockItem]) {
+  void init([OpeningStockItem? openingStockItem]) async {
     var supp = state.supplements;
     emit(OpeningStockPagesState.loading(supp));
-    initServices(
-        openingStockItemsService: openingStockItemsService,
-        productsService: productsService);
+    openingStockItemsService.init();
+    await productsService.init();
 
     if (openingStockItem != null) {
       supp = supp.copyWith(
@@ -48,7 +46,6 @@ class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState>
 
     emit(OpeningStockPagesState.loading(supp));
 
-
     final item = OpeningStockItem(
         id: Utils.getRandomId(),
         date: supp.openingStockItem.date,
@@ -68,7 +65,6 @@ class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState>
     if (hasErrors) return;
 
     emit(OpeningStockPagesState.loading(supp));
-
 
     final item = OpeningStockItem(
         id: supp.openingStockItem.id,

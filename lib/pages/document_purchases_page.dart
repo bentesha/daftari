@@ -77,29 +77,28 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
   }
 
   _buildAppBar(PurchasesPagesSupplements supp) {
-    final title = supp.isViewing
+    final action = supp.action;
+    final title = action.isViewing
         ? supp.document.form.title
-        : supp.isEditing
+        : action.isEditing
             ? 'Edit Purchases Document'
             : 'New Purchases Document';
 
-    return PageAppBar(
+    return PageAppBar.onDocumentPage(
         title: title,
-        actionIcons: supp.isViewing
-            ? [Icons.edit_outlined, Icons.delete_outlined]
-            : [Icons.done],
-        actionCallbacks: supp.isViewing
-            ? [
-                () => bloc.updateAction(PageActions.editing),
-                bloc.deleteDocument
-              ]
-            : [supp.isEditing ? bloc.editDocument : bloc.saveDocument]);
+        action: action,
+        updateActionCallback: () => bloc.updateAction(PageActions.editing),
+        deleteDocumentCallback: bloc.deleteDocument,
+        saveDocumentCallback: bloc.saveDocument,
+        editDocumentCallback: bloc.editDocument);
   }
 
   Widget _buildGroupDetails(PurchasesPagesSupplements supp) {
+    final action = supp.action;
+
     return ListView(
       children: [
-        supp.isEditing || supp.isAdding
+        action.isEditing || action.isAdding
             ? DateSelector(
                 title: 'Date',
                 onDateSelected: bloc.updateDate,
@@ -115,7 +114,7 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
   }
 
   _buildGroupTitle(PurchasesPagesSupplements supp) {
-    return supp.isViewing
+    return supp.action.isViewing
         ? Container()
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,15 +151,13 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
   }
 
   _buildItems(PurchasesPagesSupplements supp) {
-    final document = supp.document;
-    final purchaseList =
-        document.maybeWhen(purchases: (_, s) => s, orElse: () => <Purchases>[]);
+    final purchaseList = supp.getPurchaseList;
     if (purchaseList.isEmpty) return _buildEmptyState(emptyExpensesMessage);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        supp.isViewing
+        supp.action.isViewing
             ? Container()
             : Padding(
                 padding: EdgeInsets.only(left: 19.dw),
@@ -173,7 +170,7 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
           itemBuilder: (_, i) {
             final purchase = purchaseList[i];
             final product = bloc.getProductById(purchase.productId);
-            return RecordTile<Purchases>(purchase,
+            return RecordTile<Purchase>(purchase,
                 product: product, documentPageAction: supp.action);
           },
           shrinkWrap: true,
@@ -192,13 +189,13 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
   }
 
   _buildActionButton(PurchasesPagesSupplements supp) {
-    return supp.isViewing
+    return supp.action.isViewing
         ? Container()
         : const AddButton(nextPage: PurchasesPage(PageActions.adding));
   }
 
   _buildBottomNavBar(PurchasesPagesSupplements supp) {
-    return supp.isViewing
+    return supp.action.isViewing
         ? BottomTotalAmountTile(supp.document.form.total)
         : const SizedBox(height: .00001);
   }
@@ -213,40 +210,16 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
   Future<bool> _handlePop() async {
     final hasUnSavedSales = bloc.documentHasUnsavedChanges;
     if (hasUnSavedSales) {
-      showDialog(context: context, builder: (_) => _alertDialog());
+      showDialog(
+          context: context,
+          builder: (_) => DocumentAlertDialog(
+                isEditing: widget.document != null,
+                editDocumentCallback: bloc.editDocument,
+                saveDocumentCallback: bloc.saveDocument,
+                clearChangesCallback: bloc.clearChanges,
+              ));
     }
     return true;
-  }
-
-  _alertDialog() {
-    return AlertDialog(
-      content: AppText(
-          'You have unsaved changes!\nGoing back will delete all changes you have made.',
-          size: 16.dw),
-      actions: [
-        AppTextButton(
-            text: 'Save',
-            height: 40.dh,
-            onPressed: () {
-              pop();
-              widget.document != null
-                  ? bloc.editDocument()
-                  : bloc.saveDocument();
-            },
-            margin: EdgeInsets.only(bottom: 10.dh),
-            backgroundColor: AppColors.primary,
-            textColor: AppColors.onPrimary),
-        AppTextButton(
-            text: 'Discard Changes',
-            onPressed: () {
-              pop();
-              bloc.clearChanges();
-            },
-            height: 40.dh,
-            backgroundColor: AppColors.disabled,
-            textColor: AppColors.onBackground)
-      ],
-    );
   }
 
   static const emptyExpensesMessage =

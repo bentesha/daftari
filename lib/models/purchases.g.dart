@@ -6,7 +6,7 @@ part of 'purchases.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Purchases _$$_PurchasesFromJson(Map<String, dynamic> json) => _$_Purchases(
+_$_Purchase _$$_PurchaseFromJson(Map<String, dynamic> json) => _$_Purchase(
       id: json['id'] as String? ?? '',
       documentId: json['documentId'] as String? ?? '',
       sort: (json['sort'] as num?)?.toDouble() ?? 0.0,
@@ -17,7 +17,7 @@ _$_Purchases _$$_PurchasesFromJson(Map<String, dynamic> json) => _$_Purchases(
       movementId: json['movementId'] as String? ?? '',
     );
 
-Map<String, dynamic> _$$_PurchasesToJson(_$_Purchases instance) =>
+Map<String, dynamic> _$$_PurchaseToJson(_$_Purchase instance) =>
     <String, dynamic>{
       'id': instance.id,
       'documentId': instance.documentId,

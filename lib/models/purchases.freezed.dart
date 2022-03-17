@@ -14,15 +14,15 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Purchases _$PurchasesFromJson(Map<String, dynamic> json) {
-  return _Purchases.fromJson(json);
+Purchase _$PurchaseFromJson(Map<String, dynamic> json) {
+  return _Purchase.fromJson(json);
 }
 
 /// @nodoc
-class _$PurchasesTearOff {
-  const _$PurchasesTearOff();
+class _$PurchaseTearOff {
+  const _$PurchaseTearOff();
 
-  _Purchases call(
+  _Purchase call(
       {String id = '',
       String documentId = '',
       double sort = 0.0,
@@ -31,7 +31,7 @@ class _$PurchasesTearOff {
       double total = 0.0,
       String productId = '',
       String movementId = ''}) {
-    return _Purchases(
+    return _Purchase(
       id: id,
       documentId: documentId,
       sort: sort,
@@ -43,16 +43,16 @@ class _$PurchasesTearOff {
     );
   }
 
-  Purchases fromJson(Map<String, Object?> json) {
-    return Purchases.fromJson(json);
+  Purchase fromJson(Map<String, Object?> json) {
+    return Purchase.fromJson(json);
   }
 }
 
 /// @nodoc
-const $Purchases = _$PurchasesTearOff();
+const $Purchase = _$PurchaseTearOff();
 
 /// @nodoc
-mixin _$Purchases {
+mixin _$Purchase {
   String get id => throw _privateConstructorUsedError;
   String get documentId => throw _privateConstructorUsedError;
   double get sort => throw _privateConstructorUsedError;
@@ -64,14 +64,14 @@ mixin _$Purchases {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $PurchasesCopyWith<Purchases> get copyWith =>
+  $PurchaseCopyWith<Purchase> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $PurchasesCopyWith<$Res> {
-  factory $PurchasesCopyWith(Purchases value, $Res Function(Purchases) then) =
-      _$PurchasesCopyWithImpl<$Res>;
+abstract class $PurchaseCopyWith<$Res> {
+  factory $PurchaseCopyWith(Purchase value, $Res Function(Purchase) then) =
+      _$PurchaseCopyWithImpl<$Res>;
   $Res call(
       {String id,
       String documentId,
@@ -84,12 +84,12 @@ abstract class $PurchasesCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PurchasesCopyWithImpl<$Res> implements $PurchasesCopyWith<$Res> {
-  _$PurchasesCopyWithImpl(this._value, this._then);
+class _$PurchaseCopyWithImpl<$Res> implements $PurchaseCopyWith<$Res> {
+  _$PurchaseCopyWithImpl(this._value, this._then);
 
-  final Purchases _value;
+  final Purchase _value;
   // ignore: unused_field
-  final $Res Function(Purchases) _then;
+  final $Res Function(Purchase) _then;
 
   @override
   $Res call({
@@ -140,10 +140,9 @@ class _$PurchasesCopyWithImpl<$Res> implements $PurchasesCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$PurchasesCopyWith<$Res> implements $PurchasesCopyWith<$Res> {
-  factory _$PurchasesCopyWith(
-          _Purchases value, $Res Function(_Purchases) then) =
-      __$PurchasesCopyWithImpl<$Res>;
+abstract class _$PurchaseCopyWith<$Res> implements $PurchaseCopyWith<$Res> {
+  factory _$PurchaseCopyWith(_Purchase value, $Res Function(_Purchase) then) =
+      __$PurchaseCopyWithImpl<$Res>;
   @override
   $Res call(
       {String id,
@@ -157,13 +156,13 @@ abstract class _$PurchasesCopyWith<$Res> implements $PurchasesCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$PurchasesCopyWithImpl<$Res> extends _$PurchasesCopyWithImpl<$Res>
-    implements _$PurchasesCopyWith<$Res> {
-  __$PurchasesCopyWithImpl(_Purchases _value, $Res Function(_Purchases) _then)
-      : super(_value, (v) => _then(v as _Purchases));
+class __$PurchaseCopyWithImpl<$Res> extends _$PurchaseCopyWithImpl<$Res>
+    implements _$PurchaseCopyWith<$Res> {
+  __$PurchaseCopyWithImpl(_Purchase _value, $Res Function(_Purchase) _then)
+      : super(_value, (v) => _then(v as _Purchase));
 
   @override
-  _Purchases get _value => super._value as _Purchases;
+  _Purchase get _value => super._value as _Purchase;
 
   @override
   $Res call({
@@ -176,7 +175,7 @@ class __$PurchasesCopyWithImpl<$Res> extends _$PurchasesCopyWithImpl<$Res>
     Object? productId = freezed,
     Object? movementId = freezed,
   }) {
-    return _then(_Purchases(
+    return _then(_Purchase(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -215,8 +214,8 @@ class __$PurchasesCopyWithImpl<$Res> extends _$PurchasesCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Purchases extends _Purchases {
-  const _$_Purchases(
+class _$_Purchase extends _Purchase {
+  const _$_Purchase(
       {this.id = '',
       this.documentId = '',
       this.sort = 0.0,
@@ -227,8 +226,8 @@ class _$_Purchases extends _Purchases {
       this.movementId = ''})
       : super._();
 
-  factory _$_Purchases.fromJson(Map<String, dynamic> json) =>
-      _$$_PurchasesFromJson(json);
+  factory _$_Purchase.fromJson(Map<String, dynamic> json) =>
+      _$$_PurchaseFromJson(json);
 
   @JsonKey()
   @override
@@ -257,14 +256,14 @@ class _$_Purchases extends _Purchases {
 
   @override
   String toString() {
-    return 'Purchases(id: $id, documentId: $documentId, sort: $sort, quantity: $quantity, unitPrice: $unitPrice, total: $total, productId: $productId, movementId: $movementId)';
+    return 'Purchase(id: $id, documentId: $documentId, sort: $sort, quantity: $quantity, unitPrice: $unitPrice, total: $total, productId: $productId, movementId: $movementId)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Purchases &&
+            other is _Purchase &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality()
                 .equals(other.documentId, documentId) &&
@@ -291,17 +290,17 @@ class _$_Purchases extends _Purchases {
 
   @JsonKey(ignore: true)
   @override
-  _$PurchasesCopyWith<_Purchases> get copyWith =>
-      __$PurchasesCopyWithImpl<_Purchases>(this, _$identity);
+  _$PurchaseCopyWith<_Purchase> get copyWith =>
+      __$PurchaseCopyWithImpl<_Purchase>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_PurchasesToJson(this);
+    return _$$_PurchaseToJson(this);
   }
 }
 
-abstract class _Purchases extends Purchases {
-  const factory _Purchases(
+abstract class _Purchase extends Purchase {
+  const factory _Purchase(
       {String id,
       String documentId,
       double sort,
@@ -309,11 +308,10 @@ abstract class _Purchases extends Purchases {
       double unitPrice,
       double total,
       String productId,
-      String movementId}) = _$_Purchases;
-  const _Purchases._() : super._();
+      String movementId}) = _$_Purchase;
+  const _Purchase._() : super._();
 
-  factory _Purchases.fromJson(Map<String, dynamic> json) =
-      _$_Purchases.fromJson;
+  factory _Purchase.fromJson(Map<String, dynamic> json) = _$_Purchase.fromJson;
 
   @override
   String get id;
@@ -333,6 +331,6 @@ abstract class _Purchases extends Purchases {
   String get movementId;
   @override
   @JsonKey(ignore: true)
-  _$PurchasesCopyWith<_Purchases> get copyWith =>
+  _$PurchaseCopyWith<_Purchase> get copyWith =>
       throw _privateConstructorUsedError;
 }

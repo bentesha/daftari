@@ -25,7 +25,7 @@ class _$DocumentTearOff {
     );
   }
 
-  _Purchases purchases(DocumentForm form, List<Purchases> purchaseList) {
+  _Purchases purchases(DocumentForm form, List<Purchase> purchaseList) {
     return _Purchases(
       form,
       purchaseList,
@@ -56,7 +56,7 @@ mixin _$Document {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DocumentForm form, List<Sales> salesList) sales,
-    required TResult Function(DocumentForm form, List<Purchases> purchaseList)
+    required TResult Function(DocumentForm form, List<Purchase> purchaseList)
         purchases,
     required TResult Function(DocumentForm form, List<Expense> expenseList)
         expenses,
@@ -66,8 +66,7 @@ mixin _$Document {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
-    TResult Function(DocumentForm form, List<Purchases> purchaseList)?
-        purchases,
+    TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
     TResult Function(DocumentForm form)? writeOffs,
   }) =>
@@ -75,8 +74,7 @@ mixin _$Document {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
-    TResult Function(DocumentForm form, List<Purchases> purchaseList)?
-        purchases,
+    TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
     TResult Function(DocumentForm form)? writeOffs,
     required TResult orElse(),
@@ -227,7 +225,7 @@ class _$_Sales extends _Sales {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DocumentForm form, List<Sales> salesList) sales,
-    required TResult Function(DocumentForm form, List<Purchases> purchaseList)
+    required TResult Function(DocumentForm form, List<Purchase> purchaseList)
         purchases,
     required TResult Function(DocumentForm form, List<Expense> expenseList)
         expenses,
@@ -240,8 +238,7 @@ class _$_Sales extends _Sales {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
-    TResult Function(DocumentForm form, List<Purchases> purchaseList)?
-        purchases,
+    TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
     TResult Function(DocumentForm form)? writeOffs,
   }) {
@@ -252,8 +249,7 @@ class _$_Sales extends _Sales {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
-    TResult Function(DocumentForm form, List<Purchases> purchaseList)?
-        purchases,
+    TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
     TResult Function(DocumentForm form)? writeOffs,
     required TResult orElse(),
@@ -320,7 +316,7 @@ abstract class _$PurchasesCopyWith<$Res> implements $DocumentCopyWith<$Res> {
           _Purchases value, $Res Function(_Purchases) then) =
       __$PurchasesCopyWithImpl<$Res>;
   @override
-  $Res call({DocumentForm form, List<Purchases> purchaseList});
+  $Res call({DocumentForm form, List<Purchase> purchaseList});
 
   @override
   $DocumentFormCopyWith<$Res> get form;
@@ -348,7 +344,7 @@ class __$PurchasesCopyWithImpl<$Res> extends _$DocumentCopyWithImpl<$Res>
       purchaseList == freezed
           ? _value.purchaseList
           : purchaseList // ignore: cast_nullable_to_non_nullable
-              as List<Purchases>,
+              as List<Purchase>,
     ));
   }
 }
@@ -361,7 +357,7 @@ class _$_Purchases extends _Purchases {
   @override
   final DocumentForm form;
   @override
-  final List<Purchases> purchaseList;
+  final List<Purchase> purchaseList;
 
   @override
   String toString() {
@@ -393,7 +389,7 @@ class _$_Purchases extends _Purchases {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DocumentForm form, List<Sales> salesList) sales,
-    required TResult Function(DocumentForm form, List<Purchases> purchaseList)
+    required TResult Function(DocumentForm form, List<Purchase> purchaseList)
         purchases,
     required TResult Function(DocumentForm form, List<Expense> expenseList)
         expenses,
@@ -406,8 +402,7 @@ class _$_Purchases extends _Purchases {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
-    TResult Function(DocumentForm form, List<Purchases> purchaseList)?
-        purchases,
+    TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
     TResult Function(DocumentForm form)? writeOffs,
   }) {
@@ -418,8 +413,7 @@ class _$_Purchases extends _Purchases {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
-    TResult Function(DocumentForm form, List<Purchases> purchaseList)?
-        purchases,
+    TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
     TResult Function(DocumentForm form)? writeOffs,
     required TResult orElse(),
@@ -469,13 +463,13 @@ class _$_Purchases extends _Purchases {
 }
 
 abstract class _Purchases extends Document {
-  const factory _Purchases(DocumentForm form, List<Purchases> purchaseList) =
+  const factory _Purchases(DocumentForm form, List<Purchase> purchaseList) =
       _$_Purchases;
   const _Purchases._() : super._();
 
   @override
   DocumentForm get form;
-  List<Purchases> get purchaseList;
+  List<Purchase> get purchaseList;
   @override
   @JsonKey(ignore: true)
   _$PurchasesCopyWith<_Purchases> get copyWith =>
@@ -560,7 +554,7 @@ class _$_Expenses extends _Expenses {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DocumentForm form, List<Sales> salesList) sales,
-    required TResult Function(DocumentForm form, List<Purchases> purchaseList)
+    required TResult Function(DocumentForm form, List<Purchase> purchaseList)
         purchases,
     required TResult Function(DocumentForm form, List<Expense> expenseList)
         expenses,
@@ -573,8 +567,7 @@ class _$_Expenses extends _Expenses {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
-    TResult Function(DocumentForm form, List<Purchases> purchaseList)?
-        purchases,
+    TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
     TResult Function(DocumentForm form)? writeOffs,
   }) {
@@ -585,8 +578,7 @@ class _$_Expenses extends _Expenses {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
-    TResult Function(DocumentForm form, List<Purchases> purchaseList)?
-        purchases,
+    TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
     TResult Function(DocumentForm form)? writeOffs,
     required TResult orElse(),
@@ -717,7 +709,7 @@ class _$_WriteOffs extends _WriteOffs {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(DocumentForm form, List<Sales> salesList) sales,
-    required TResult Function(DocumentForm form, List<Purchases> purchaseList)
+    required TResult Function(DocumentForm form, List<Purchase> purchaseList)
         purchases,
     required TResult Function(DocumentForm form, List<Expense> expenseList)
         expenses,
@@ -730,8 +722,7 @@ class _$_WriteOffs extends _WriteOffs {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
-    TResult Function(DocumentForm form, List<Purchases> purchaseList)?
-        purchases,
+    TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
     TResult Function(DocumentForm form)? writeOffs,
   }) {
@@ -742,8 +733,7 @@ class _$_WriteOffs extends _WriteOffs {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
-    TResult Function(DocumentForm form, List<Purchases> purchaseList)?
-        purchases,
+    TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
     TResult Function(DocumentForm form)? writeOffs,
     required TResult orElse(),

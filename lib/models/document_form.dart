@@ -23,10 +23,6 @@ class DocumentForm with _$DocumentForm {
   String get formattedTotal => Utils.convertToMoneyFormat(total);
 
   Map<String, dynamic> convertToJson() {
-    return {
-      'title': title,
-      'description': description,
-      'date': date,
-    };
+    return {'title': title, 'description': description, 'date': date};
   }
 }

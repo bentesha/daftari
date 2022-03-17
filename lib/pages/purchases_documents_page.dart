@@ -77,7 +77,7 @@ class _PurchasesDocumentsPageState extends State<PurchasesDocumentsPage> {
       itemBuilder: (context, index) {
         final document = documents[index];
         return document.maybeWhen(
-            purchases: (_, __) => DocumentTile<Purchases>(document),
+            purchases: (_, __) => DocumentTile<Purchase>(document),
             orElse: () => Container());
       },
       shrinkWrap: true,

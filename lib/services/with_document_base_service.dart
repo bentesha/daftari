@@ -1,6 +1,6 @@
 import '../source.dart';
 import 'package:http/http.dart' as http;
-import 'constants.dart';
+import 'service_constants.dart';
 
 class WithDocumentBaseService<T> extends ChangeNotifier {
   final String url;
@@ -20,46 +20,69 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
   ///Gets all sales documents from the server
   Future<void> init() async {
     if (_documents.isNotEmpty) return;
-    final response = await http.get(Uri.parse(url), headers: headers);
-    final jsonDocuments = json.decode(response.body);
+    try {
+      final response =
+          await http.get(Uri.parse(url), headers: headers).timeout(timeLimit);
+      final jsonDocuments = json.decode(response.body);
 
-    final documents = <Document>[];
+      final documents = <Document>[];
 
-    for (var jsonDocument in jsonDocuments) {
-      final document = _getDocumentFromJson(jsonDocument);
-      documents.add(document);
+      for (var jsonDocument in jsonDocuments) {
+        final document = _getDocumentFromJson(jsonDocument);
+        documents.add(document);
+      }
+      _documents = documents;
+    } catch (e) {
+      throw getError(e);
     }
-    _documents = documents;
   }
 
   Future<void> addDocument(Document document) async {
-    final response = await http.post(Uri.parse(url),
-        body: json.encode(document.toJson(documentType)), headers: headers);
-    final jsonDocument = json.decode(response.body);
-    final _document = _getDocumentFromJson(jsonDocument);
-    _documents.add(_document);
-    clearTemporaryList();
-    notifyListeners();
+    try {
+      final response = await http
+          .post(Uri.parse(url),
+              body: json.encode(document.toJson(documentType)),
+              headers: headers)
+          .timeout(timeLimit);
+      final jsonDocument = json.decode(response.body);
+      final _document = _getDocumentFromJson(jsonDocument);
+      _documents.add(_document);
+      clearTemporaryList();
+      notifyListeners();
+    } catch (e) {
+      throw getError(e);
+    }
   }
 
   Future<void> editDocument(Document document) async {
-    final response = await http.put(Uri.parse(url + '/${document.form.id}'),
-        body: json.encode(document.toJson(documentType)), headers: headers);
-    // log(response.body);
-    final jsonDocument = json.decode(response.body);
-    final _document = _getDocumentFromJson(jsonDocument);
+    try {
+      final response = await http
+          .put(Uri.parse(url + '/${document.form.id}'),
+              body: json.encode(document.toJson(documentType)),
+              headers: headers)
+          .timeout(timeLimit);
+      // log(response.body);
+      final jsonDocument = json.decode(response.body);
+      final _document = _getDocumentFromJson(jsonDocument);
 
-    final index = _documents.indexWhere((d) => d.form.id == document.form.id);
-    _documents[index] = _document;
-    clearTemporaryList();
-    notifyListeners();
+      final index = _documents.indexWhere((d) => d.form.id == document.form.id);
+      _documents[index] = _document;
+      clearTemporaryList();
+      notifyListeners();
+    } catch (e) {
+      throw getError(e);
+    }
   }
 
   Future<void> deleteDocument(String id) async {
-    await http.delete(Uri.parse(url + '/$id'));
-    final index = _documents.indexWhere((e) => e.form.id == id);
-    _documents.removeAt(index);
-    notifyListeners();
+    try {
+      await http.delete(Uri.parse(url + '/$id')).timeout(timeLimit);
+      final index = _documents.indexWhere((e) => e.form.id == id);
+      _documents.removeAt(index);
+      notifyListeners();
+    } catch (e) {
+      throw getError(e);
+    }
   }
 
   void initDocument(Document document) {
@@ -70,9 +93,9 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
         itemList =
             document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
         break;
-      case Purchases:
+      case Purchase:
         itemList = document.maybeWhen(
-            purchases: (_, p) => p, orElse: () => <Purchases>[]);
+            purchases: (_, p) => p, orElse: () => <Purchase>[]);
         break;
       case Expense:
         itemList = document.maybeWhen(
@@ -123,8 +146,8 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
     switch (T) {
       case Sales:
         return Sales.fromJson(json);
-      case Purchases:
-        return Purchases.fromJson(json);
+      case Purchase:
+        return Purchase.fromJson(json);
       case Expense:
         return Expense.fromJson(json);
     }
@@ -135,12 +158,12 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
       case Sales:
         final salesList = itemList.whereType<Sales>().toList();
         return Document.sales(form, salesList);
-      case Purchases:
-        final purchaseList = itemList.whereType<Purchases>().toList();
+      case Purchase:
+        final purchaseList = itemList.whereType<Purchase>().toList();
         return Document.purchases(form, purchaseList);
       case Expense:
-        final purchaseList = itemList.whereType<Expense>().toList();
-        return Document.expenses(form, purchaseList);
+        final expenseList = itemList.whereType<Expense>().toList();
+        return Document.expenses(form, expenseList);
     }
     return Document.empty();
   }

@@ -1,6 +1,6 @@
 import '../source.dart';
 
-class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
+class ProductPageBloc extends Cubit<ProductPageState> {
   ProductPageBloc(this.productsService, this.categoriesService,
       this.openingStockItemsService)
       : super(ProductPageState.initial()) {
@@ -182,10 +182,9 @@ class ProductPageBloc extends Cubit<ProductPageState> with ServicesInitializer {
 
   Future<void> _initServices() async {
     try {
-      await initServices(
-          productsService: productsService,
-          categoriesService: categoriesService,
-          openingStockItemsService: openingStockItemsService);
+      await categoriesService.init();
+      await productsService.init();
+      openingStockItemsService.init();
     } on ApiErrors catch (e) {
       emit(ProductPageState.failed(state.supplements,
           message: e.message, showOnPage: true));

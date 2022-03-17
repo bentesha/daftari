@@ -1,4 +1,4 @@
-import 'constants.dart';
+import 'service_constants.dart';
 import '../source.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,19 +15,21 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
   List<T> get getList => _list.whereType<T>().toList();
   T get getCurrent => _current!;
 
-  Future<List<T>> getAll([bool isRefreshing = false]) async {
-    if (_list.isNotEmpty) return getList;
+  Future<void> getAll([bool isRefreshing = false]) async {
+    if (_list.isNotEmpty) return;
+    try {
+      final response = await http.get(Uri.parse(_url)).timeout(timeLimit);
+      //log(response.body.toString());
+      final results = json.decode(response.body);
+      if (results.isEmpty) return;
 
-    final response = await http.get(Uri.parse(_url));
-    //log(response.body.toString());
-    final results = json.decode(response.body);
-    if (results.isEmpty) return [];
-
-    for (var item in results) {
-      final index = _list.indexWhere((e) => e.id == item['id']);
-      if (index == -1) _list.add(_getValueFromJson(item));
+      for (var item in results) {
+        final index = _list.indexWhere((e) => e.id == item['id']);
+        if (index == -1) _list.add(_getValueFromJson(item));
+      }
+    } catch (e) {
+      throw getError(e);
     }
-    return _list.whereType<T>().toList();
   }
 
   void updateAttributes(List<T> list, {String? currentId}) {
@@ -42,32 +44,44 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
   }
 
   Future<void> add(var item) async {
-    final response = await http.post(Uri.parse(_url),
-        body: json.encode(item.toJson()), headers: headers);
-    //  log(response.body);
-    final body = json.decode(response.body);
-    _current = _getValueFromJson(body);
-    _list.add(_current);
-    notifyListeners();
+    try {
+      final response = await http.post(Uri.parse(_url),
+          body: json.encode(item.toJson()), headers: headers);
+      //  log(response.body);
+      final body = json.decode(response.body);
+      _current = _getValueFromJson(body);
+      _list.add(_current);
+      notifyListeners();
+    } catch (e) {
+      throw getError(e);
+    }
   }
 
   Future<void> edit(var item, [String? url]) async {
-    final response = await http.put(Uri.parse((url ?? _url) + '/${item.id}'),
-        body: json.encode(item.toJson()), headers: headers);
-    // log(response.body);
-    final index = _list.indexWhere((e) => e.id == item.id);
-    final body = json.decode(response.body);
-    _list[index] = _getValueFromJson(body, url);
-    notifyListeners();
+    try {
+      final response = await http.put(Uri.parse((url ?? _url) + '/${item.id}'),
+          body: json.encode(item.toJson()), headers: headers);
+      // log(response.body);
+      final index = _list.indexWhere((e) => e.id == item.id);
+      final body = json.decode(response.body);
+      _list[index] = _getValueFromJson(body, url);
+      notifyListeners();
+    } catch (e) {
+      throw getError(e);
+    }
   }
 
   Future<void> delete(String id, [String? url]) async {
-    final response = await http.delete(Uri.parse((url ?? _url) + '/$id'));
-    //log(response.body);
-    _handleStatusCodes(response.statusCode);
-    final index = _list.indexWhere((e) => e.id == id);
-    _list.removeAt(index);
-    notifyListeners();
+    try {
+      final response = await http.delete(Uri.parse((url ?? _url) + '/$id'));
+      //log(response.body);
+      _handleStatusCodes(response.statusCode);
+      final index = _list.indexWhere((e) => e.id == id);
+      _list.removeAt(index);
+      notifyListeners();
+    } catch (e) {
+      throw getError(e);
+    }
   }
 
   ///used mainly by the search bloc to update the current selected category or

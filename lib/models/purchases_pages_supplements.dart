@@ -26,14 +26,14 @@ class PurchasesPagesSupplements with _$PurchasesPagesSupplements {
           product: const Product(),
           date: DateTime.now());
 
+  List<Purchase> get getPurchaseList {
+    final purchaseList =
+    document.maybeWhen(purchases: (_, s) => s, orElse: () => <Purchase>[]);
+    purchaseList.sort((a,b)=>a.sort.compareTo(b.sort));
+    return purchaseList;
+  }
+
   double get parsedQuantity => double.parse(quantity);
 
   double get parsedUnitPrice => double.parse(unitPrice);
-
-  bool get isEditing => action == PageActions.editing;
-
-  bool get isViewing => action == PageActions.viewing;
-
-  bool get isAdding => action == PageActions.adding;
-
 }

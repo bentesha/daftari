@@ -4,38 +4,44 @@ part 'sales_document_supplements.freezed.dart';
 
 enum PageActions { viewing, editing, adding }
 
+extension PageActionsExtension on PageActions {
+  bool get isViewing => this == PageActions.viewing;
+  bool get isEditing => this == PageActions.editing;
+  bool get isAdding => this == PageActions.adding;
+}
+
 @freezed
 class SalesDocumentSupplements with _$SalesDocumentSupplements {
-   const SalesDocumentSupplements._();
+  const SalesDocumentSupplements._();
 
-  const factory SalesDocumentSupplements({@Default([]) List<Document> documents,
-    //for editing sales document
-    required Document document,
-    required DateTime date,
-    @Default(true) bool isDateAsTitle,
-    //for editing sales
-    @Default('') String salesId,
-    @Default('') String quantity,
-    @Default('') String unitPrice,
-    required Product product,
-    //for both
-    @Default(PageActions.viewing) PageActions action,
-    @Default({}) Map<String, String?> errors}) = _SalesDocumentSupplements;
+  const factory SalesDocumentSupplements(
+      {@Default([]) List<Document> documents,
+      //for editing sales document
+      required Document document,
+      required DateTime date,
+      @Default(true) bool isDateAsTitle,
+      //for editing sales
+      @Default('') String salesId,
+      @Default('') String quantity,
+      @Default('') String unitPrice,
+      required Product product,
+      //for both
+      @Default(PageActions.viewing) PageActions action,
+      @Default({}) Map<String, String?> errors}) = _SalesDocumentSupplements;
 
-  factory SalesDocumentSupplements.empty() =>
-      SalesDocumentSupplements(
-          document: Document.empty(),
-          product: const Product(),
-          date: DateTime.now());
+  factory SalesDocumentSupplements.empty() => SalesDocumentSupplements(
+      document: Document.empty(),
+      product: const Product(),
+      date: DateTime.now());
+
+  List<Sales> get getSalesList {
+    final salesList =
+        document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
+    salesList.sort((a, b) => a.sort.compareTo(b.sort));
+    return salesList;
+  }
 
   double get parsedQuantity => double.parse(quantity);
 
   double get parsedUnitPrice => double.parse(unitPrice);
-
-  bool get isEditing => action == PageActions.editing;
-
-  bool get isViewing => action == PageActions.viewing;
-
-  bool get isAdding => action == PageActions.adding;
-
 }

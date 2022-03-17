@@ -70,13 +70,15 @@ class _ExpensePageState extends State<ExpensePage> {
   }
 
   Widget _buildBody(ExpenseSupplements supp) {
+    final action = supp.action;
+
     return Column(
       children: [
         ValueSelector(
           title: 'Category',
           value: supp.category.name,
           error: supp.errors['category'],
-          isEditable: !supp.isViewing,
+          isEditable: !action.isViewing,
           onPressed: () => push(
               ItemsSearchPage<Category>(categoryType: CategoryType.expenses())),
         ),
@@ -89,42 +91,42 @@ class _ExpensePageState extends State<ExpensePage> {
             label: 'Amount',
             error: supp.errors['amount'],
             isUpdatingOnRebuild: true,
-            isEnabled: !supp.isViewing),
+            isEnabled: !action.isViewing),
         AppTextField(
             text: supp.description,
             onChanged: bloc.updateAmount,
             hintText: '',
             keyboardType: TextInputType.number,
             label: 'Description',
+            maxLines: 3,
             error: supp.errors['description'],
             isUpdatingOnRebuild: true,
-            isEnabled: !supp.isViewing),
+            isEnabled: !action.isViewing),
       ],
     );
   }
 
   _buildAppBar(ExpenseSupplements supp) {
+    final action = supp.action;
     final wasViewingDocument = widget.documentPageAction == PageActions.viewing;
     updateActionCallback() {
       bloc.updateAction(PageActions.editing);
     }
 
-    return PageAppBar(
-        title: supp.isAdding
-            ? 'New Expense Record'
-            : supp.isViewing
-                ? 'Expense Record'
-                : 'Edit Expense Record',
-        actionIcons: wasViewingDocument
-            ? []
-            : supp.isViewing
-                ? [Icons.edit_outlined, Icons.delete_outlined]
-                : [Icons.check],
-        actionCallbacks: wasViewingDocument
-            ? []
-            : supp.isViewing
-                ? [updateActionCallback, bloc.deleteExpense]
-                : [supp.isEditing ? bloc.editExpense : bloc.addExpense]);
+    final title = action.isAdding
+        ? 'New Expense Record'
+        : action.isViewing
+            ? 'Expense Record'
+            : 'Edit Expense Record';
+
+    return PageAppBar.onModelPage(
+        title: title,
+        action: action,
+        wasViewingDocument: wasViewingDocument,
+        updateActionCallback: updateActionCallback,
+        deleteModelCallback: bloc.deleteExpense,
+        saveModelCallback: bloc.addExpense,
+        editModelCallback: bloc.editExpense);
   }
 
   _initBloc() {

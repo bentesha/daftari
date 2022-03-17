@@ -9,7 +9,7 @@ class Document with _$Document {
   const Document._();
 
   const factory Document.sales(DocumentForm form, List<Sales> salesList) = _Sales;
-  const factory Document.purchases(DocumentForm form, List<Purchases> purchaseList) = _Purchases;
+  const factory Document.purchases(DocumentForm form, List<Purchase> purchaseList) = _Purchases;
   const factory Document.expenses(DocumentForm form, List<Expense> expenseList) = _Expenses;
   const factory Document.writeOffs(DocumentForm form) = _WriteOffs;
 
@@ -30,7 +30,7 @@ class Document with _$Document {
       case DocumentType.purchases:
         return maybeWhen(
             purchases: (_, purchaseList) => purchaseList,
-            orElse: () => <Purchases>[]);
+            orElse: () => <Purchase>[]);
       case DocumentType.expenses:
         return maybeWhen(
             expenses: (_, expenseList) => expenseList,

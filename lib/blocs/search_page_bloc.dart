@@ -1,12 +1,11 @@
 import '../source.dart';
 
-class SearchPageBloc<T> extends Cubit<SearchPageState<T>>
-    with ServicesInitializer {
+class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
   SearchPageBloc(this.productsService, this.categoriesService,
       this.categoryTypesService, this.writeOffTypesService)
       : super(SearchPageState<T>.initial()) {
-    productsService.addListener(() => _handleItemUpdates());
-    categoriesService.addListener(() => _handleCategoryUpdates());
+    productsService.addListener(_handleItemUpdates);
+    categoriesService.addListener(_handleCategoryUpdates);
   }
 
   final ProductsService productsService;
@@ -87,11 +86,12 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>>
     emit(SearchPageState.content(supp));
   }
 
+  //TODO to this point it is services are already initiated. This could be removed.
   Future<void> _initServices() async {
-    if (T == Product) initServices(productsService: productsService);
+    if (T == Product) await productsService.init();
     if (T == Category) {
       if (_categoryType == CategoryType.products().name) {
-        await initServices(categoriesService: categoriesService);
+        await categoriesService.init();
       }
     }
   }

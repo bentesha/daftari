@@ -65,7 +65,6 @@ class AppDrawer extends StatelessWidget {
           _buildListTile('Sales', Pages.sales_documents_page),
           _buildListTile('Purchases', Pages.purchases_documents_page),
           _buildListTile('Expenses', Pages.expenses_documents_page),
-          _buildListTile('Purchases', Pages.purchases_page),
           _buildListTile('Stock Write-offs', Pages.stock_write_offs_page),
           _buildListTile('Reports', Pages.reports_page),
         ],

@@ -1,7 +1,6 @@
 import '../source.dart';
 
-class CategoryPageBloc extends Cubit<CategoryPagesState>
-    with ServicesInitializer {
+class CategoryPageBloc extends Cubit<CategoryPagesState> {
   CategoryPageBloc(
       this.categoriesService, this.productsService, this.typeService)
       : super(CategoryPagesState.initial()) {
@@ -125,7 +124,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
 
     if (type != null) {
       CategoriesService.initType(type.name == 'Expenses');
-      supp = supp.copyWith( category: supp.category.copyWith(type: type.name));
+      supp = supp.copyWith(category: supp.category.copyWith(type: type.name));
     }
     if (category != null) supp = supp.copyWith(category: category);
 
@@ -145,9 +144,8 @@ class CategoryPageBloc extends Cubit<CategoryPagesState>
 
   Future<void> _initServices() async {
     try {
-      await initServices(
-          productsService: productsService,
-          categoriesService: categoriesService);
+      await categoriesService.init();
+      await productsService.init();
     } on ApiErrors catch (e) {
       final message = getErrorMessage(e);
       emit(CategoryPagesState.failed(state.supplements,

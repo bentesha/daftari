@@ -13,7 +13,7 @@ class DocumentTile<T> extends StatelessWidget {
         isFilled: false,
         onPressed: () => push(T == Sales
             ? DocumentSalesPage(document)
-            : T == Purchases
+            : T == Purchase
                 ? DocumentPurchasesPage(document)
                 : DocumentExpensesPage(document)),
         padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 15.dh),

@@ -12,5 +12,3 @@ export 'blocs/source.dart';
 export 'states/source.dart';
 export 'services/source.dart';
 export 'utils/source.dart';
-
-export 'mixins/service_initializer_mixin.dart';

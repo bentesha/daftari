@@ -4,7 +4,7 @@ class PurchasesPage extends StatefulWidget {
   const PurchasesPage(this.documentPageAction, {this.purchase, Key? key})
       : super(key: key);
 
-  final Purchases? purchase;
+  final Purchase? purchase;
   final PageActions documentPageAction;
 
   @override
@@ -70,13 +70,15 @@ class _PurchasesPageState extends State<PurchasesPage> {
   }
 
   Widget _buildBody(PurchasesPagesSupplements supp) {
+    final action = supp.action;
+
     return Column(
       children: [
         ValueSelector(
           title: 'Product',
           value: supp.product.name,
           error: supp.errors['product'],
-          isEditable: !supp.isViewing,
+          isEditable: !action.isViewing,
           onPressed: () => push(
               ItemsSearchPage<Product>(categoryType: CategoryType.products())),
         ),
@@ -89,7 +91,7 @@ class _PurchasesPageState extends State<PurchasesPage> {
             label: 'Quantity',
             error: supp.errors['quantity'],
             isUpdatingOnRebuild: true,
-            isEnabled: !supp.isViewing),
+            isEnabled: !action.isViewing),
         AppTextField(
             text: supp.unitPrice,
             onChanged: bloc.updateAmount,
@@ -98,33 +100,32 @@ class _PurchasesPageState extends State<PurchasesPage> {
             label: 'Unit Price',
             error: supp.errors['price'],
             isUpdatingOnRebuild: true,
-            isEnabled: !supp.isViewing),
+            isEnabled: !action.isViewing),
       ],
     );
   }
 
   _buildAppBar(PurchasesPagesSupplements supp) {
+    final action = supp.action;
     final wasViewingDocument = widget.documentPageAction == PageActions.viewing;
     updateActionCallback() {
       bloc.updateAction(PageActions.editing);
     }
 
-    return PageAppBar(
-        title: supp.isAdding
-            ? 'New Purchase Record'
-            : supp.isViewing
-                ? 'Purchase Record'
-                : 'Edit Purchase Record',
-        actionIcons: wasViewingDocument
-            ? []
-            : supp.isViewing
-                ? [Icons.edit_outlined, Icons.delete_outlined]
-                : [Icons.check],
-        actionCallbacks: wasViewingDocument
-            ? []
-            : supp.isViewing
-                ? [updateActionCallback, bloc.deletePurchase]
-                : [supp.isEditing ? bloc.editPurchase : bloc.addPurchase]);
+    final title = action.isAdding
+        ? 'New Purchase Record'
+        : action.isViewing
+            ? 'Purchase Record'
+            : 'Edit Purchase Record';
+
+    return PageAppBar.onModelPage(
+        title: title,
+        action: action,
+        wasViewingDocument: wasViewingDocument,
+        updateActionCallback: updateActionCallback,
+        deleteModelCallback: bloc.deletePurchase,
+        saveModelCallback: bloc.addPurchase,
+        editModelCallback: bloc.editPurchase);
   }
 
   _initBloc() {

@@ -1,7 +1,6 @@
 import '../source.dart';
 
-class ExpensesPagesBloc extends Cubit<ExpensePagesState>
-    with ServicesInitializer {
+class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
   ExpensesPagesBloc(this.expensesService, this.categoriesService)
       : super(ExpensePagesState.initial()) {
     expensesService.addListener(_handleDocumentUpdates);
@@ -106,7 +105,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState>
     }
   }
 
-  void addExpense() async {
+  void addExpense() {
     _validateSalesDetails();
 
     var supp = state.supplements;
@@ -123,7 +122,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState>
     emit(ExpensePagesState.success(supp));
   }
 
-  void editExpense() async {
+  void editExpense() {
     _validateSalesDetails();
 
     var supp = state.supplements;
@@ -140,7 +139,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState>
     emit(ExpensePagesState.success(supp));
   }
 
-  void deleteExpense() async {
+  void deleteExpense() {
     var supp = state.supplements;
     expensesService.deleteTemporaryItem(supp.expenseId);
     emit(ExpensePagesState.success(supp));
@@ -202,7 +201,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState>
   _handleDocumentUpdates() {
     emit(ExpensePagesState.loading(state.supplements));
     _updateExpenseDocumentsPage();
-    _updateDocumentxpensesPage();
+    _updateDocumentExpensesPage();
   }
 
   _updateExpenseDocumentsPage() {
@@ -211,7 +210,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState>
     emit(ExpensePagesState.content(supp));
   }
 
-  _updateDocumentxpensesPage() {
+  _updateDocumentExpensesPage() {
     if (_page != Pages.document_expenses_page) return;
     var supp = state.supplements;
     final temporaryExpenses = expensesService.getTemporaryList;
@@ -232,6 +231,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState>
     if (page != Pages.expenses_documents_page) return;
     var supp = state.supplements;
     final documents = expensesService.getList;
+    log(documents.toString());
     supp = supp.copyWith(documents: documents);
     emit(ExpensePagesState.content(supp));
   }
@@ -274,7 +274,8 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState>
       //is viewing / editing existing sales record
       final category = categoriesService.getById(expense.categoryId)!;
       supp = supp.copyWith(
-          expenseId: category.id,
+          category: category,
+          expenseId: expense.id,
           amount: expense.amount.toString(),
           description: expense.description);
     }
@@ -283,8 +284,8 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState>
 
   Future<void> _initServices() async {
     try {
-      await initServices(
-          categoriesService: categoriesService, expensesService: expensesService);
+      await categoriesService.init();
+      await expensesService.init();
     } on ApiErrors catch (e) {
       emit(ExpensePagesState.failed(state.supplements,
           message: e.message, showOnPage: true));

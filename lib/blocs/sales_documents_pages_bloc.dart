@@ -1,7 +1,6 @@
 import '../source.dart';
 
-class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
-    with ServicesInitializer {
+class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState> {
   SalesDocumentsPagesBloc(this.salesService, this.productsService)
       : super(SalesDocumentsPageState.initial()) {
     salesService.addListener(_handleDocumentUpdates);
@@ -106,7 +105,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
     }
   }
 
-  void addSales() async {
+  void addSales() {
     _validateSalesDetails();
 
     var supp = state.supplements;
@@ -123,7 +122,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
     emit(SalesDocumentsPageState.success(supp));
   }
 
-  void editSales() async {
+  void editSales() {
     _validateSalesDetails();
 
     var supp = state.supplements;
@@ -140,7 +139,7 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
     emit(SalesDocumentsPageState.success(supp));
   }
 
-  void deleteSales() async {
+  void deleteSales() {
     var supp = state.supplements;
     salesService.deleteTemporaryItem(supp.salesId);
     emit(SalesDocumentsPageState.success(supp));
@@ -289,8 +288,8 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState>
 
   Future<void> _initServices() async {
     try {
-      await initServices(
-          productsService: productsService, salesService: salesService);
+      await salesService.init();
+      await productsService.init();
     } on ApiErrors catch (e) {
       emit(SalesDocumentsPageState.failed(state.supplements,
           message: e.message, showOnPage: true));

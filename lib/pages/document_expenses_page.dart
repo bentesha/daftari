@@ -77,29 +77,28 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
   }
 
   _buildAppBar(ExpenseSupplements supp) {
-    final title = supp.isViewing
+    final action = supp.action;
+    final title = action.isViewing
         ? supp.document.form.title
-        : supp.isEditing
+        : action.isEditing
             ? 'Edit Expenses Document'
             : 'New Expenses Document';
 
-    return PageAppBar(
+    return PageAppBar.onDocumentPage(
         title: title,
-        actionIcons: supp.isViewing
-            ? [Icons.edit_outlined, Icons.delete_outlined]
-            : [Icons.done],
-        actionCallbacks: supp.isViewing
-            ? [
-                () => bloc.updateAction(PageActions.editing),
-                bloc.deleteDocument
-              ]
-            : [supp.isEditing ? bloc.editDocument : bloc.saveDocument]);
+        action: action,
+        updateActionCallback: () => bloc.updateAction(PageActions.editing),
+        deleteDocumentCallback: bloc.deleteDocument,
+        saveDocumentCallback: bloc.saveDocument,
+        editDocumentCallback: bloc.editDocument);
   }
 
   Widget _buildGroupDetails(ExpenseSupplements supp) {
+    final action = supp.action;
+
     return ListView(
       children: [
-        supp.isEditing || supp.isAdding
+        action.isEditing || action.isAdding
             ? DateSelector(
                 title: 'Date',
                 onDateSelected: bloc.updateDate,
@@ -115,7 +114,7 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
   }
 
   _buildGroupTitle(ExpenseSupplements supp) {
-    return supp.isViewing
+    return supp.action.isViewing
         ? Container()
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,15 +151,13 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
   }
 
   _buildItems(ExpenseSupplements supp) {
-    final document = supp.document;
-    final expenseList =
-        document.maybeWhen(expenses: (_, s) => s, orElse: () => <Expense>[]);
+    final expenseList = supp.getExpenseList;
     if (expenseList.isEmpty) return _buildEmptyState(emptyExpensesMessage);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        supp.isViewing
+        supp.action.isViewing
             ? Container()
             : Padding(
                 padding: EdgeInsets.only(left: 19.dw),
@@ -192,13 +189,13 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
   }
 
   _buildActionButton(ExpenseSupplements supp) {
-    return supp.isViewing
+    return supp.action.isViewing
         ? Container()
         : const AddButton(nextPage: ExpensePage(PageActions.adding));
   }
 
   _buildBottomNavBar(ExpenseSupplements supp) {
-    return supp.isViewing
+    return supp.action.isViewing
         ? BottomTotalAmountTile(supp.document.form.total)
         : const SizedBox(height: .00001);
   }
@@ -213,40 +210,16 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
   Future<bool> _handlePop() async {
     final hasUnSavedSales = bloc.documentHasUnsavedChanges;
     if (hasUnSavedSales) {
-      showDialog(context: context, builder: (_) => _alertDialog());
+      showDialog(
+          context: context,
+          builder: (_) => DocumentAlertDialog(
+                isEditing: widget.document != null,
+                editDocumentCallback: bloc.editDocument,
+                saveDocumentCallback: bloc.saveDocument,
+                clearChangesCallback: bloc.clearChanges,
+              ));
     }
     return true;
-  }
-
-  _alertDialog() {
-    return AlertDialog(
-      content: AppText(
-          'You have unsaved changes!\nGoing back will delete all changes you have made.',
-          size: 16.dw),
-      actions: [
-        AppTextButton(
-            text: 'Save',
-            height: 40.dh,
-            onPressed: () {
-              pop();
-              widget.document != null
-                  ? bloc.editDocument()
-                  : bloc.saveDocument();
-            },
-            margin: EdgeInsets.only(bottom: 10.dh),
-            backgroundColor: AppColors.primary,
-            textColor: AppColors.onPrimary),
-        AppTextButton(
-            text: 'Discard Changes',
-            onPressed: () {
-              pop();
-              bloc.clearChanges();
-            },
-            height: 40.dh,
-            backgroundColor: AppColors.disabled,
-            textColor: AppColors.onBackground)
-      ],
-    );
   }
 
   static const emptyExpensesMessage =

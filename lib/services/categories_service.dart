@@ -1,5 +1,5 @@
 import '../source.dart';
-import 'constants.dart';
+import 'service_constants.dart';
 import 'with_no_document_base_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,35 +20,43 @@ class CategoriesService extends WithNoDocumentBaseService<Category> {
   Future<List<Category>> getAll([bool isRefreshing = false]) async {
     if (super.getList.isNotEmpty) return super.getList;
 
-    const expenseCategoriesUrl = root + expenseCategoryEndpoint;
-    const productCategoriesUrl = root + productCategoryEndpoint;
-    final response1 = await http.get(Uri.parse(expenseCategoriesUrl));
-    final response2 = await http.get(Uri.parse(productCategoriesUrl));
+    try {
+      const expenseCategoriesUrl = root + expenseCategoryEndpoint;
+      const productCategoriesUrl = root + productCategoryEndpoint;
+      final response1 = await http.get(Uri.parse(expenseCategoriesUrl));
+      final response2 = await http.get(Uri.parse(productCategoriesUrl));
 
-    final result1 = json.decode(response1.body);
-    final result2 = json.decode(response2.body);
-    final categories1 = _addCategoriesFrom(result1, 'Expenses');
-    final categories2 = _addCategoriesFrom(result2, 'Products');
+      final result1 = json.decode(response1.body);
+      final result2 = json.decode(response2.body);
+      final categories1 = _addCategoriesFrom(result1, 'Expenses');
+      final categories2 = _addCategoriesFrom(result2, 'Products');
 
-    categories1.addAll(categories2);
-    super.updateAttributes(categories1);
-    return categories1;
+      categories1.addAll(categories2);
+      super.updateAttributes(categories1);
+      return categories1;
+    } catch (e) {
+      throw getError(e);
+    }
   }
 
   @override
   Future<void> add(var item) async {
-    final url = root +
-        (_isExpenses ? expenseCategoryEndpoint : productCategoryEndpoint);
-    final response = await http.post(Uri.parse(url),
-        body: json.encode(item.toJson()), headers: headers);
-    // log(response.body.toString());
-    final jsonCategory = json.decode(response.body);
+    try {
+      final url = root +
+          (_isExpenses ? expenseCategoryEndpoint : productCategoryEndpoint);
+      final response = await http.post(Uri.parse(url),
+          body: json.encode(item.toJson()), headers: headers);
+      // log(response.body.toString());
+      final jsonCategory = json.decode(response.body);
 
-    final list = super.getList;
-    final category = Category.fromJson(jsonCategory, _isExpenses);
-    list.add(category);
-    super.updateAttributes(list, currentId: category.id);
-    notifyListeners();
+      final list = super.getList;
+      final category = Category.fromJson(jsonCategory, _isExpenses);
+      list.add(category);
+      super.updateAttributes(list, currentId: category.id);
+      notifyListeners();
+    } catch (e) {
+      throw getError(e);
+    }
   }
 
   @override

@@ -3,6 +3,18 @@ import '../source.dart';
 part 'document.freezed.dart';
 
 enum DocumentType { sales, purchases, expenses, writeOffs }
+enum WriteOffTypes { stolen, damaged, expired, other }
+
+extension WriteOffTypesString on WriteOffTypes {
+  String get string {
+    switch(this){
+      case WriteOffTypes.stolen: return 'Stolen';
+      case WriteOffTypes.damaged: return 'Damaged';
+      case WriteOffTypes.expired: return 'Expired';
+      case WriteOffTypes.other: return 'Other';
+    }
+  }
+}
 
 @freezed
 class Document with _$Document {
@@ -11,12 +23,15 @@ class Document with _$Document {
   const factory Document.sales(DocumentForm form, List<Sales> salesList) = _Sales;
   const factory Document.purchases(DocumentForm form, List<Purchase> purchaseList) = _Purchases;
   const factory Document.expenses(DocumentForm form, List<Expense> expenseList) = _Expenses;
-  const factory Document.writeOffs(DocumentForm form) = _WriteOffs;
+  const factory Document.writeOffs(DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList) = _WriteOffs;
 
   factory Document.empty() => const Document.sales(DocumentForm(), <Sales>[]);
 
   Map<String, dynamic> toJson(DocumentType documentType) {
     final jsonDocument = form.convertToJson();
+    if(documentType == DocumentType.writeOffs) {
+      jsonDocument['type'] = _getType();
+    }
     final details = _getDetails(documentType);
     jsonDocument['details'] = details.map((e) => e.convertToJson()).toList();
     return jsonDocument;
@@ -36,7 +51,15 @@ class Document with _$Document {
             expenses: (_, expenseList) => expenseList,
             orElse: () => <Expense>[]);
       case DocumentType.writeOffs:
-        return maybeWhen(sales: (_, sales) => sales, orElse: () => []);
+        return maybeWhen(writeOffs: (_,__, writeOffList) => writeOffList,
+            orElse: () => <WriteOff>[]);
     }
+  }
+
+  String _getType(){
+    final writeOffType = maybeWhen( writeOffs: (_, type, __) => type,
+        orElse: ()=> null);
+    if(writeOffType == null) return '';
+    return writeOffType.string;
   }
 }

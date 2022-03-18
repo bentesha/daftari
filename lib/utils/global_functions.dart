@@ -22,6 +22,7 @@ void showSnackBar(String message,
 }
 
 String getErrorMessage(var error) {
+  log(error.toString());
   if (error is ApiErrors) return error.message;
   return ApiErrors.unknown().message;
 }

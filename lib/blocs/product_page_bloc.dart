@@ -193,6 +193,7 @@ class ProductPagesBloc extends Cubit<ProductPageState> {
       await categoriesService.init();
       await productsService.init();
       openingStockItemsService.init();
+      isSuccessful = true;
     } on ApiErrors catch (e) {
       emit(ProductPageState.failed(state.supplements,
           message: e.message, showOnPage: true));

@@ -1,29 +1,28 @@
-import 'package:inventory_management/source.dart';
+import 'package:inventory_management/models/source.dart';
 
+part 'write_off.freezed.dart';
 part 'write_off.g.dart';
 
-@HiveType(typeId: 5)
-class WriteOff {
-  @HiveField(0)
-  final String id;
+@freezed
+class WriteOff with _$WriteOff {
+  const WriteOff._();
 
-  @HiveField(1)
-  final String groupId;
+  const factory WriteOff(
+      {@Default('') String id,
+      @Default('') String documentId,
+      @Default('') String productId,
+      @Default(0.0) double quantity}) = _WriteOff;
 
-  @HiveField(2)
-  final Product product;
+  factory WriteOff.fromJson(Map<String, dynamic> json) =>
+      _$WriteOffFromJson(json);
 
-  @HiveField(3)
-  final double quantity;
+  factory WriteOff.toServer(
+          {required String id,
+          required String productId,
+          required double quantity}) =>
+      WriteOff(productId: productId, quantity: quantity, id: id);
 
-  WriteOff(
-      {required this.id,
-      required this.groupId,
-      required this.product,
-      required this.quantity});
-
-  factory WriteOff.empty() =>
-      WriteOff(id: '', groupId: '', product: const Product(), quantity: 0.0);
-
-  double get amount => product.unitPrice * quantity;
+  Map<String, dynamic> convertToJson() {
+    return {'quantity': quantity, 'productId': productId};
+  }
 }

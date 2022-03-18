@@ -15,17 +15,15 @@ class DocumentTile<T> extends StatelessWidget {
             ? DocumentSalesPage(document)
             : T == Purchase
                 ? DocumentPurchasesPage(document)
-                : DocumentExpensesPage(document)),
-        padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 15.dh),
-        child: Row(
-          children: [
-            AppText(form.title, color: AppColors.secondary),
-            Expanded(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [AppText(form.formattedTotal, weight: FontWeight.bold)],
-            ))
-          ],
+                : T == Expense
+                    ? DocumentExpensesPage(document)
+                    : DocumentWriteOffsPage(document)),
+        padding: EdgeInsets.symmetric(horizontal: 15.dw),
+        child: ListTile(
+          title: AppText(form.title, color: AppColors.secondary),
+          trailing: T != WriteOff
+              ? AppText(form.formattedTotal, weight: FontWeight.bold)
+              : const SizedBox(width: .0001),
         ));
   }
 }

@@ -14,7 +14,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
 
   final PurchasesService purchasesService;
   final ProductsService productsService;
-  var  _page = Pages.purchases_page;
+  var _page = Pages.purchases_page;
 
   Product getProductById(String id) => productsService.getById(id)!;
 
@@ -28,9 +28,9 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
 
     final isSuccessful = await _initServices();
     if (!isSuccessful) return;
-    _initSalesDocumentsPage(page);
-    _initDocumentSalesPage(page, document);
-    _initSalesPage(page, purchase, action);
+    _initPurchasesDocumentsPage(page);
+    _initDocumentPurchasesPage(page, document);
+    _initPurchasesPage(page, purchase, action);
   }
 
   void updateAmount(String unitPrice) =>
@@ -239,7 +239,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     emit(PurchasesPagesState.content(supp));
   }
 
-  void _initSalesDocumentsPage(Pages page) {
+  void _initPurchasesDocumentsPage(Pages page) {
     if (page != Pages.purchases_documents_page) return;
 
     var supp = state.supplements;
@@ -248,7 +248,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     emit(PurchasesPagesState.content(supp));
   }
 
-  void _initDocumentSalesPage(Pages page, [Document? document]) {
+  void _initDocumentPurchasesPage(Pages page, [Document? document]) {
     if (page != Pages.document_purchases_page) return;
 
     var supp = state.supplements;
@@ -275,7 +275,8 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     return title == dateFromTitle;
   }
 
-  void _initSalesPage(Pages page, [Purchase? purchases, PageActions? action]) {
+  void _initPurchasesPage(Pages page,
+      [Purchase? purchases, PageActions? action]) {
     if (page != Pages.purchases_page) return;
     var supp = state.supplements;
 
@@ -299,6 +300,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     try {
       await purchasesService.init();
       await productsService.init();
+      isSuccessful = true;
     } on ApiErrors catch (e) {
       emit(PurchasesPagesState.failed(state.supplements,
           message: e.message, showOnPage: true));

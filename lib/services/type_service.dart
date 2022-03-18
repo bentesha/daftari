@@ -27,12 +27,13 @@ class CategoryTypesService extends TypesService<CategoryType> {
   ];
 }
 
-class WriteOffsTypesService extends TypesService<WriteOffType> {
+class WriteOffsTypesService extends TypesService<WriteOffTypes> {
   WriteOffsTypesService() : super(kWriteOffTypesList);
 
-  static final kWriteOffTypesList = <WriteOffType>[
-    WriteOffType.spoilage(),
-    WriteOffType.expiry(),
-    WriteOffType.theft()
+  static final kWriteOffTypesList = <WriteOffTypes>[
+    WriteOffTypes.damaged,
+    WriteOffTypes.stolen,
+    WriteOffTypes.expired,
+    WriteOffTypes.other
   ];
 }

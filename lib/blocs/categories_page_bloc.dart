@@ -154,6 +154,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
     try {
       await categoriesService.init();
       await productsService.init();
+      isSuccessful = true;
     } on ApiErrors catch (e) {
       final message = getErrorMessage(e);
       emit(CategoryPagesState.failed(state.supplements,

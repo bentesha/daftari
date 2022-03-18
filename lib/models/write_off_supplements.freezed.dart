@@ -19,23 +19,27 @@ class _$WriteOffSupplementsTearOff {
   const _$WriteOffSupplementsTearOff();
 
   _WriteOffSupplements call(
-      {required List<Document> groups,
-      required List<WriteOff> writeOffs,
-      required Map<String, String?> errors,
-      required String quantity,
-      required Product product,
-      required Document group,
+      {List<Document> documents = const [],
+      required Document document,
       required DateTime date,
-      required String id}) {
+      bool isDateAsTitle = true,
+      String quantity = '',
+      String writeOffId = '',
+      required WriteOffTypes type,
+      required Product product,
+      PageActions action = PageActions.viewing,
+      Map<String, String?> errors = const {}}) {
     return _WriteOffSupplements(
-      groups: groups,
-      writeOffs: writeOffs,
-      errors: errors,
-      quantity: quantity,
-      product: product,
-      group: group,
+      documents: documents,
+      document: document,
       date: date,
-      id: id,
+      isDateAsTitle: isDateAsTitle,
+      quantity: quantity,
+      writeOffId: writeOffId,
+      type: type,
+      product: product,
+      action: action,
+      errors: errors,
     );
   }
 }
@@ -45,14 +49,18 @@ const $WriteOffSupplements = _$WriteOffSupplementsTearOff();
 
 /// @nodoc
 mixin _$WriteOffSupplements {
-  List<Document> get groups => throw _privateConstructorUsedError;
-  List<WriteOff> get writeOffs => throw _privateConstructorUsedError;
-  Map<String, String?> get errors => throw _privateConstructorUsedError;
-  String get quantity => throw _privateConstructorUsedError;
-  Product get product => throw _privateConstructorUsedError;
-  Document get group => throw _privateConstructorUsedError;
+  List<Document> get documents =>
+      throw _privateConstructorUsedError; //for editing sales document
+  Document get document => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
-  String get id => throw _privateConstructorUsedError;
+  bool get isDateAsTitle =>
+      throw _privateConstructorUsedError; //for editing write-offs
+  String get quantity => throw _privateConstructorUsedError;
+  String get writeOffId => throw _privateConstructorUsedError;
+  WriteOffTypes get type => throw _privateConstructorUsedError;
+  Product get product => throw _privateConstructorUsedError; //for both
+  PageActions get action => throw _privateConstructorUsedError;
+  Map<String, String?> get errors => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $WriteOffSupplementsCopyWith<WriteOffSupplements> get copyWith =>
@@ -65,16 +73,18 @@ abstract class $WriteOffSupplementsCopyWith<$Res> {
           WriteOffSupplements value, $Res Function(WriteOffSupplements) then) =
       _$WriteOffSupplementsCopyWithImpl<$Res>;
   $Res call(
-      {List<Document> groups,
-      List<WriteOff> writeOffs,
-      Map<String, String?> errors,
-      String quantity,
-      Product product,
-      Document group,
+      {List<Document> documents,
+      Document document,
       DateTime date,
-      String id});
+      bool isDateAsTitle,
+      String quantity,
+      String writeOffId,
+      WriteOffTypes type,
+      Product product,
+      PageActions action,
+      Map<String, String?> errors});
 
-  $DocumentCopyWith<$Res> get group;
+  $DocumentCopyWith<$Res> get document;
 }
 
 /// @nodoc
@@ -88,55 +98,65 @@ class _$WriteOffSupplementsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? groups = freezed,
-    Object? writeOffs = freezed,
-    Object? errors = freezed,
-    Object? quantity = freezed,
-    Object? product = freezed,
-    Object? group = freezed,
+    Object? documents = freezed,
+    Object? document = freezed,
     Object? date = freezed,
-    Object? id = freezed,
+    Object? isDateAsTitle = freezed,
+    Object? quantity = freezed,
+    Object? writeOffId = freezed,
+    Object? type = freezed,
+    Object? product = freezed,
+    Object? action = freezed,
+    Object? errors = freezed,
   }) {
     return _then(_value.copyWith(
-      groups: groups == freezed
-          ? _value.groups
-          : groups // ignore: cast_nullable_to_non_nullable
+      documents: documents == freezed
+          ? _value.documents
+          : documents // ignore: cast_nullable_to_non_nullable
               as List<Document>,
-      writeOffs: writeOffs == freezed
-          ? _value.writeOffs
-          : writeOffs // ignore: cast_nullable_to_non_nullable
-              as List<WriteOff>,
-      errors: errors == freezed
-          ? _value.errors
-          : errors // ignore: cast_nullable_to_non_nullable
-              as Map<String, String?>,
-      quantity: quantity == freezed
-          ? _value.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
-              as String,
-      product: product == freezed
-          ? _value.product
-          : product // ignore: cast_nullable_to_non_nullable
-              as Product,
-      group: group == freezed
-          ? _value.group
-          : group // ignore: cast_nullable_to_non_nullable
+      document: document == freezed
+          ? _value.document
+          : document // ignore: cast_nullable_to_non_nullable
               as Document,
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      isDateAsTitle: isDateAsTitle == freezed
+          ? _value.isDateAsTitle
+          : isDateAsTitle // ignore: cast_nullable_to_non_nullable
+              as bool,
+      quantity: quantity == freezed
+          ? _value.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
               as String,
+      writeOffId: writeOffId == freezed
+          ? _value.writeOffId
+          : writeOffId // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as WriteOffTypes,
+      product: product == freezed
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
+              as Product,
+      action: action == freezed
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as PageActions,
+      errors: errors == freezed
+          ? _value.errors
+          : errors // ignore: cast_nullable_to_non_nullable
+              as Map<String, String?>,
     ));
   }
 
   @override
-  $DocumentCopyWith<$Res> get group {
-    return $DocumentCopyWith<$Res>(_value.group, (value) {
-      return _then(_value.copyWith(group: value));
+  $DocumentCopyWith<$Res> get document {
+    return $DocumentCopyWith<$Res>(_value.document, (value) {
+      return _then(_value.copyWith(document: value));
     });
   }
 }
@@ -149,17 +169,19 @@ abstract class _$WriteOffSupplementsCopyWith<$Res>
       __$WriteOffSupplementsCopyWithImpl<$Res>;
   @override
   $Res call(
-      {List<Document> groups,
-      List<WriteOff> writeOffs,
-      Map<String, String?> errors,
-      String quantity,
-      Product product,
-      Document group,
+      {List<Document> documents,
+      Document document,
       DateTime date,
-      String id});
+      bool isDateAsTitle,
+      String quantity,
+      String writeOffId,
+      WriteOffTypes type,
+      Product product,
+      PageActions action,
+      Map<String, String?> errors});
 
   @override
-  $DocumentCopyWith<$Res> get group;
+  $DocumentCopyWith<$Res> get document;
 }
 
 /// @nodoc
@@ -175,85 +197,108 @@ class __$WriteOffSupplementsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? groups = freezed,
-    Object? writeOffs = freezed,
-    Object? errors = freezed,
-    Object? quantity = freezed,
-    Object? product = freezed,
-    Object? group = freezed,
+    Object? documents = freezed,
+    Object? document = freezed,
     Object? date = freezed,
-    Object? id = freezed,
+    Object? isDateAsTitle = freezed,
+    Object? quantity = freezed,
+    Object? writeOffId = freezed,
+    Object? type = freezed,
+    Object? product = freezed,
+    Object? action = freezed,
+    Object? errors = freezed,
   }) {
     return _then(_WriteOffSupplements(
-      groups: groups == freezed
-          ? _value.groups
-          : groups // ignore: cast_nullable_to_non_nullable
+      documents: documents == freezed
+          ? _value.documents
+          : documents // ignore: cast_nullable_to_non_nullable
               as List<Document>,
-      writeOffs: writeOffs == freezed
-          ? _value.writeOffs
-          : writeOffs // ignore: cast_nullable_to_non_nullable
-              as List<WriteOff>,
-      errors: errors == freezed
-          ? _value.errors
-          : errors // ignore: cast_nullable_to_non_nullable
-              as Map<String, String?>,
-      quantity: quantity == freezed
-          ? _value.quantity
-          : quantity // ignore: cast_nullable_to_non_nullable
-              as String,
-      product: product == freezed
-          ? _value.product
-          : product // ignore: cast_nullable_to_non_nullable
-              as Product,
-      group: group == freezed
-          ? _value.group
-          : group // ignore: cast_nullable_to_non_nullable
+      document: document == freezed
+          ? _value.document
+          : document // ignore: cast_nullable_to_non_nullable
               as Document,
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      id: id == freezed
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
+      isDateAsTitle: isDateAsTitle == freezed
+          ? _value.isDateAsTitle
+          : isDateAsTitle // ignore: cast_nullable_to_non_nullable
+              as bool,
+      quantity: quantity == freezed
+          ? _value.quantity
+          : quantity // ignore: cast_nullable_to_non_nullable
               as String,
+      writeOffId: writeOffId == freezed
+          ? _value.writeOffId
+          : writeOffId // ignore: cast_nullable_to_non_nullable
+              as String,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as WriteOffTypes,
+      product: product == freezed
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
+              as Product,
+      action: action == freezed
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as PageActions,
+      errors: errors == freezed
+          ? _value.errors
+          : errors // ignore: cast_nullable_to_non_nullable
+              as Map<String, String?>,
     ));
   }
 }
 
 /// @nodoc
 
-class _$_WriteOffSupplements implements _WriteOffSupplements {
+class _$_WriteOffSupplements extends _WriteOffSupplements {
   const _$_WriteOffSupplements(
-      {required this.groups,
-      required this.writeOffs,
-      required this.errors,
-      required this.quantity,
-      required this.product,
-      required this.group,
+      {this.documents = const [],
+      required this.document,
       required this.date,
-      required this.id});
+      this.isDateAsTitle = true,
+      this.quantity = '',
+      this.writeOffId = '',
+      required this.type,
+      required this.product,
+      this.action = PageActions.viewing,
+      this.errors = const {}})
+      : super._();
 
+  @JsonKey()
   @override
-  final List<Document> groups;
-  @override
-  final List<WriteOff> writeOffs;
-  @override
-  final Map<String, String?> errors;
-  @override
-  final String quantity;
-  @override
-  final Product product;
-  @override
-  final Document group;
+  final List<Document> documents;
+  @override //for editing sales document
+  final Document document;
   @override
   final DateTime date;
+  @JsonKey()
   @override
-  final String id;
+  final bool isDateAsTitle;
+  @JsonKey()
+  @override //for editing write-offs
+  final String quantity;
+  @JsonKey()
+  @override
+  final String writeOffId;
+  @override
+  final WriteOffTypes type;
+  @override
+  final Product product;
+  @JsonKey()
+  @override //for both
+  final PageActions action;
+  @JsonKey()
+  @override
+  final Map<String, String?> errors;
 
   @override
   String toString() {
-    return 'WriteOffSupplements(groups: $groups, writeOffs: $writeOffs, errors: $errors, quantity: $quantity, product: $product, group: $group, date: $date, id: $id)';
+    return 'WriteOffSupplements(documents: $documents, document: $document, date: $date, isDateAsTitle: $isDateAsTitle, quantity: $quantity, writeOffId: $writeOffId, type: $type, product: $product, action: $action, errors: $errors)';
   }
 
   @override
@@ -261,27 +306,33 @@ class _$_WriteOffSupplements implements _WriteOffSupplements {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _WriteOffSupplements &&
-            const DeepCollectionEquality().equals(other.groups, groups) &&
-            const DeepCollectionEquality().equals(other.writeOffs, writeOffs) &&
-            const DeepCollectionEquality().equals(other.errors, errors) &&
-            const DeepCollectionEquality().equals(other.quantity, quantity) &&
-            const DeepCollectionEquality().equals(other.product, product) &&
-            const DeepCollectionEquality().equals(other.group, group) &&
+            const DeepCollectionEquality().equals(other.documents, documents) &&
+            const DeepCollectionEquality().equals(other.document, document) &&
             const DeepCollectionEquality().equals(other.date, date) &&
-            const DeepCollectionEquality().equals(other.id, id));
+            const DeepCollectionEquality()
+                .equals(other.isDateAsTitle, isDateAsTitle) &&
+            const DeepCollectionEquality().equals(other.quantity, quantity) &&
+            const DeepCollectionEquality()
+                .equals(other.writeOffId, writeOffId) &&
+            const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality().equals(other.product, product) &&
+            const DeepCollectionEquality().equals(other.action, action) &&
+            const DeepCollectionEquality().equals(other.errors, errors));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(groups),
-      const DeepCollectionEquality().hash(writeOffs),
-      const DeepCollectionEquality().hash(errors),
-      const DeepCollectionEquality().hash(quantity),
-      const DeepCollectionEquality().hash(product),
-      const DeepCollectionEquality().hash(group),
+      const DeepCollectionEquality().hash(documents),
+      const DeepCollectionEquality().hash(document),
       const DeepCollectionEquality().hash(date),
-      const DeepCollectionEquality().hash(id));
+      const DeepCollectionEquality().hash(isDateAsTitle),
+      const DeepCollectionEquality().hash(quantity),
+      const DeepCollectionEquality().hash(writeOffId),
+      const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(product),
+      const DeepCollectionEquality().hash(action),
+      const DeepCollectionEquality().hash(errors));
 
   @JsonKey(ignore: true)
   @override
@@ -290,33 +341,40 @@ class _$_WriteOffSupplements implements _WriteOffSupplements {
           this, _$identity);
 }
 
-abstract class _WriteOffSupplements implements WriteOffSupplements {
+abstract class _WriteOffSupplements extends WriteOffSupplements {
   const factory _WriteOffSupplements(
-      {required List<Document> groups,
-      required List<WriteOff> writeOffs,
-      required Map<String, String?> errors,
-      required String quantity,
-      required Product product,
-      required Document group,
+      {List<Document> documents,
+      required Document document,
       required DateTime date,
-      required String id}) = _$_WriteOffSupplements;
+      bool isDateAsTitle,
+      String quantity,
+      String writeOffId,
+      required WriteOffTypes type,
+      required Product product,
+      PageActions action,
+      Map<String, String?> errors}) = _$_WriteOffSupplements;
+  const _WriteOffSupplements._() : super._();
 
   @override
-  List<Document> get groups;
-  @override
-  List<WriteOff> get writeOffs;
-  @override
-  Map<String, String?> get errors;
-  @override
-  String get quantity;
-  @override
-  Product get product;
-  @override
-  Document get group;
+  List<Document> get documents;
+  @override //for editing sales document
+  Document get document;
   @override
   DateTime get date;
   @override
-  String get id;
+  bool get isDateAsTitle;
+  @override //for editing write-offs
+  String get quantity;
+  @override
+  String get writeOffId;
+  @override
+  WriteOffTypes get type;
+  @override
+  Product get product;
+  @override //for both
+  PageActions get action;
+  @override
+  Map<String, String?> get errors;
   @override
   @JsonKey(ignore: true)
   _$WriteOffSupplementsCopyWith<_WriteOffSupplements> get copyWith =>

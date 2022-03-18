@@ -294,6 +294,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     try {
       await categoriesService.init();
       await expensesService.init();
+      isSuccessful = true;
     } on ApiErrors catch (e) {
       emit(ExpensePagesState.failed(state.supplements,
           message: e.message, showOnPage: true));

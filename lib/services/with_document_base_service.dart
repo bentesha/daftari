@@ -17,7 +17,7 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
 
   bool get hasChanges => _hasChanges;
 
-  ///Gets all sales documents from the server
+  ///Gets all documents from the server
   Future<void> init() async {
     if (_documents.isNotEmpty) return;
     try {
@@ -33,6 +33,7 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
       }
       _documents = documents;
     } catch (e) {
+      log(e.toString());
       throw getError(e);
     }
   }
@@ -101,6 +102,10 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
         itemList = document.maybeWhen(
             expenses: (_, e) => e, orElse: () => <Expense>[]);
         break;
+      case WriteOff:
+        itemList = document.maybeWhen(
+            writeOffs: (_, __, w) => w, orElse: () => <WriteOff>[]);
+        break;
     }
 
     _temporaryList = List.from(itemList);
@@ -132,14 +137,13 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
   }
 
   Document _getDocumentFromJson(var jsonDocument) {
-    final form = DocumentForm.fromJson(jsonDocument);
     final itemList = <T>[];
 
     for (var json in jsonDocument['details']) {
       final item = _getItemFromJson(json);
       itemList.add(item);
     }
-    return _getSpecificTypeDocument(form, itemList);
+    return _getSpecificTypeDocument(jsonDocument, itemList);
   }
 
   dynamic _getItemFromJson(var json) {
@@ -150,10 +154,14 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
         return Purchase.fromJson(json);
       case Expense:
         return Expense.fromJson(json);
+      case WriteOff:
+        return WriteOff.fromJson(json);
     }
   }
 
-  Document _getSpecificTypeDocument(DocumentForm form, List<T> itemList) {
+  Document _getSpecificTypeDocument(var jsonDocument, List<T> itemList) {
+    final form = DocumentForm.fromJson(jsonDocument);
+
     switch (T) {
       case Sales:
         final salesList = itemList.whereType<Sales>().toList();
@@ -164,7 +172,18 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
       case Expense:
         final expenseList = itemList.whereType<Expense>().toList();
         return Document.expenses(form, expenseList);
+      case WriteOff:
+        final writeOffList = itemList.whereType<WriteOff>().toList();
+        final type = _getWriteOffTypeFrom(jsonDocument['type']);
+        return Document.writeOffs(form, type, writeOffList);
     }
     return Document.empty();
+  }
+
+  WriteOffTypes _getWriteOffTypeFrom(String type) {
+    if (type == 'Stolen') return WriteOffTypes.stolen;
+    if (type == 'Damaged') return WriteOffTypes.damaged;
+    if (type == 'Expired') return WriteOffTypes.expired;
+    return WriteOffTypes.other;
   }
 }

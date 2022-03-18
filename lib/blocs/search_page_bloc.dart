@@ -61,7 +61,7 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
     emit(SearchPageState.success(supp));
   }
 
-  void updateWriteOffType(WriteOffType writeOffType) {
+  void updateWriteOffType(WriteOffTypes writeOffType) {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
     writeOffTypesService.updateType(writeOffType);

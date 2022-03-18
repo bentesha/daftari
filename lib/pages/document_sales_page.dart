@@ -153,8 +153,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
               ),
         ListView.separated(
           itemCount: salesList.length,
-          separatorBuilder: (_, __) =>
-              const AppDivider(margin: EdgeInsets.zero),
+          separatorBuilder: (_, __) => AppDivider.onDocumentPage(),
           itemBuilder: (_, i) {
             final sales = salesList[i];
             final product = bloc.getProductById(sales.productId);

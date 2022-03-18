@@ -1,7 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:inventory_management/pages/settings_page.dart';
-import 'package:inventory_management/pages/write_off_groups_page.dart';
+import 'package:inventory_management/pages/write_offs_documents_page.dart';
 import '../source.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -126,7 +126,7 @@ class AppDrawer extends StatelessWidget {
         nextPage = const ExpensesDocumentsPage();
         break;
       case Pages.stock_write_offs_page:
-        nextPage = const WriteOffGroupsPage();
+        nextPage = const WriteOffsDocumentsPages();
         break;
       case Pages.settings_page:
         nextPage = const SettingsPage();
@@ -148,9 +148,9 @@ enum Pages {
   expenses_documents_page,
   document_expenses_page,
   expense_page,
-  write_off_groups_page,
-  group_write_offs_page,
-  write_offs_edit_page,
+  write_off_page,
+  document_write_offs_page,
+  write_offs_documents_page,
   reports_page,
   categories_page,
   category_page,

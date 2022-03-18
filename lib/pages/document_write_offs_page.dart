@@ -1,17 +1,18 @@
+import '../widgets/type_selector.dart';
 import '../source.dart';
 import '../widgets/bottom_total_amount_tile.dart';
 
-class DocumentPurchasesPage extends StatefulWidget {
-  const DocumentPurchasesPage([this.document, Key? key]) : super(key: key);
+class DocumentWriteOffsPage extends StatefulWidget {
+  const DocumentWriteOffsPage([this.document, Key? key]) : super(key: key);
 
   final Document? document;
 
   @override
-  State<DocumentPurchasesPage> createState() => _DocumentPurchasesPageState();
+  State<DocumentWriteOffsPage> createState() => _DocumentWriteOffsPageState();
 }
 
-class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
-  var bloc = PurchasesPagesBloc.empty();
+class _DocumentWriteOffsPageState extends State<DocumentWriteOffsPage> {
+  var bloc = WriteOffPagesBloc.empty();
 
   @override
   void initState() {
@@ -23,12 +24,11 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _handlePop,
-      child: BlocConsumer<PurchasesPagesBloc, PurchasesPagesState>(
+      child: BlocConsumer<WriteOffPagesBloc, WriteOffPagesState>(
           bloc: bloc,
           listener: (_, state) {
             final isSuccessful =
                 state.maybeWhen(success: (_) => true, orElse: () => false);
-
             if (isSuccessful) pop();
 
             final error = state.maybeWhen(
@@ -46,17 +46,17 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
     );
   }
 
-  Widget _buildLoading(PurchasesPagesSupplements supp) =>
+  Widget _buildLoading(WriteOffSupplements supp) =>
       const AppLoadingIndicator.withScaffold();
 
   Widget _buildFailed(
-      PurchasesPagesSupplements supp, String? message, bool isShowOnPage) {
+      WriteOffSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
     return OnScreenError(message: message!, tryAgainCallback: _tryInitAgain);
   }
 
-  Widget _buildContent(PurchasesPagesSupplements supp) {
+  Widget _buildContent(WriteOffSupplements supp) {
     return Scaffold(
         appBar: _buildAppBar(supp),
         body: _buildGroupDetails(supp),
@@ -64,13 +64,13 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
         bottomNavigationBar: _buildBottomNavBar(supp));
   }
 
-  _buildAppBar(PurchasesPagesSupplements supp) {
+  _buildAppBar(WriteOffSupplements supp) {
     final action = supp.action;
     final title = action.isViewing
         ? supp.document.form.title
         : action.isEditing
-            ? 'Edit Purchases Document'
-            : 'New Purchases Document';
+            ? 'Edit Write-off Document'
+            : 'New Write-off Document';
 
     return PageAppBar.onDocumentPage(
         title: title,
@@ -81,19 +81,23 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
         editDocumentCallback: bloc.editDocument);
   }
 
-  Widget _buildGroupDetails(PurchasesPagesSupplements supp) {
+  Widget _buildGroupDetails(WriteOffSupplements supp) {
     final action = supp.action;
 
     return ListView(
       children: [
-        action.isEditing || action.isAdding
+        !action.isViewing
             ? DateSelector(
                 title: 'Date',
                 onDateSelected: bloc.updateDate,
                 date: supp.date,
-                isEditable: /*!hasDocument*/ false,
-              )
+                isEditable: false)
             : Container(),
+        TypeSelector(
+            onTypeSelected: bloc.updateType,
+            selectedType: supp.type,
+            title: 'Type',
+            isEditable: action.isAdding),
         const AppDivider(margin: EdgeInsets.zero),
         _buildGroupTitle(supp),
         _buildItems(supp)
@@ -101,7 +105,7 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
     );
   }
 
-  _buildGroupTitle(PurchasesPagesSupplements supp) {
+  _buildGroupTitle(WriteOffSupplements supp) {
     return supp.action.isViewing
         ? Container()
         : Column(
@@ -122,7 +126,7 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
           );
   }
 
-  _buildCheckBox(PurchasesPagesSupplements supp) {
+  _buildCheckBox(WriteOffSupplements supp) {
     final text =
         supp.isDateAsTitle ? 'Date used as title' : 'Use date as title';
     return Padding(
@@ -138,26 +142,24 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
     );
   }
 
-  _buildItems(PurchasesPagesSupplements supp) {
-    final purchaseList = supp.getPurchaseList;
-    if (purchaseList.isEmpty) return _buildEmptyState(emptyExpensesMessage);
+  _buildItems(WriteOffSupplements supp) {
+    final writeOffList = supp.getWriteOffList;
+    if (writeOffList.isEmpty) return _buildEmptyState(emptyExpensesMessage);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        supp.action.isViewing
-            ? Container()
-            : Padding(
-                padding: EdgeInsets.only(left: 19.dw),
-                child: const AppText('Purchases', weight: FontWeight.bold),
-              ),
+        Padding(
+          padding: EdgeInsets.only(left: 19.dw, top: 10.dh),
+          child: const AppText('Items', weight: FontWeight.bold),
+        ),
         ListView.separated(
-          itemCount: purchaseList.length,
+          itemCount: writeOffList.length,
           separatorBuilder: (_, __) => AppDivider.onDocumentPage(),
           itemBuilder: (_, i) {
-            final purchase = purchaseList[i];
-            final product = bloc.getProductById(purchase.productId);
-            return RecordTile<Purchase>(purchase,
+            final writeOff = writeOffList[i];
+            final product = bloc.getProductById(writeOff.productId);
+            return WriteOffTile(writeOff,
                 product: product, documentPageAction: supp.action);
           },
           shrinkWrap: true,
@@ -175,13 +177,13 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
         child: EmptyStateWidget(message: message));
   }
 
-  _buildActionButton(PurchasesPagesSupplements supp) {
+  _buildActionButton(WriteOffSupplements supp) {
     return supp.action.isViewing
         ? Container()
-        : const AddButton(nextPage: PurchasesPage(PageActions.adding));
+        : const AddButton(nextPage: WriteOffPage(PageActions.adding));
   }
 
-  _buildBottomNavBar(PurchasesPagesSupplements supp) {
+  _buildBottomNavBar(WriteOffSupplements supp) {
     return supp.action.isViewing
         ? BottomTotalAmountTile(supp.document.form.total)
         : const SizedBox(height: .00001);
@@ -189,18 +191,20 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
 
   _initBloc([bool isFirstTimeInit = true]) {
     if (isFirstTimeInit) {
-      final purchasesService = getService<PurchasesService>(context);
+      final writeOffsTypesService = getService<WriteOffsTypesService>(context);
+      final writeOffsService = getService<WriteOffsService>(context);
       final productsService = getService<ProductsService>(context);
-      bloc = PurchasesPagesBloc(purchasesService, productsService);
+      bloc = WriteOffPagesBloc(
+          writeOffsService, productsService, writeOffsTypesService);
     }
-    bloc.init(Pages.document_purchases_page, document: widget.document);
+    bloc.init(Pages.document_write_offs_page, document: widget.document);
   }
 
   _tryInitAgain() => _initBloc(false);
 
   Future<bool> _handlePop() async {
-    final hasUnSavedSales = bloc.documentHasUnsavedChanges;
-    if (hasUnSavedSales) {
+    final hasUnSavedChanges = bloc.documentHasUnsavedChanges;
+    if (hasUnSavedChanges) {
       showDialog(
           context: context,
           builder: (_) => DocumentAlertDialog(
@@ -214,5 +218,5 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
   }
 
   static const emptyExpensesMessage =
-      'No purchases have been added in this document yet.';
+      'No write-offs have been added in this document yet.';
 }

@@ -8,10 +8,8 @@ void main() async {
 
   Hive
     ..init(appDirectory.path)
-    ..registerAdapter(WriteOffAdapter())
     ..registerAdapter(OpeningStockItemAdapter());
 
-  await Hive.openBox(Constants.kWriteOffsBox);
   await Hive.openBox(Constants.kOpeningStockItemsBox);
 
   final myApp = MultiProvider(
@@ -30,7 +28,6 @@ void main() async {
   );
 /* 
   await Hive.box(Constants.kOpeningStockItemsBox).clear();
-  await Hive.box(Constants.kWriteOffsBox).clear();
  */
 
   runApp(myApp);

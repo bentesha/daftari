@@ -153,8 +153,7 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
               ),
         ListView.separated(
           itemCount: expenseList.length,
-          separatorBuilder: (_, __) =>
-              const AppDivider(margin: EdgeInsets.zero),
+          separatorBuilder: (_, __) => AppDivider.onDocumentPage(),
           itemBuilder: (_, i) {
             final expense = expenseList[i];
             final category = bloc.getCategoryById(expense.categoryId);

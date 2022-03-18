@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
     return ScreenSizeInit(
       designSize: const Size(411.4, 866.3),
       child: MaterialApp(
-        title: 'Inventory Managament App',
+        title: 'Inventory Management App',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.themeData(),
         navigatorKey: navigatorKey,

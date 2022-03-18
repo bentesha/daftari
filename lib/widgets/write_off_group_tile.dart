@@ -1,24 +1,23 @@
-import '../source.dart';
+/* import '../source.dart';
 
 class WriteOffsGroupTile extends StatelessWidget {
-  const WriteOffsGroupTile(this.group, this.groupAmount, {Key? key})
-      : super(key: key);
+  const WriteOffsGroupTile(this.document, {Key? key}) : super(key: key);
 
-  final Document group;
-  final double groupAmount;
+  final Document document;
 
   @override
   Widget build(BuildContext context) {
-    final formattedAmount = Utils.convertToMoneyFormat(groupAmount);
+    final form = document.form;
     return AppMaterialButton(
-      onPressed: () => push(GroupWriteOffsPage(group: group)),
+      onPressed: () => push(DocumentWriteOffsPage(document: document)),
       isFilled: false,
       padding: EdgeInsets.symmetric(horizontal: 19.dw),
       child: ListTile(
-        title: AppText(group.form.title),
-        subtitle: AppText(group.form.date, opacity: .7, size: 14.dw),
-        trailing: AppText(formattedAmount, weight: FontWeight.bold),
+        title: AppText(form.title),
+        subtitle: AppText(form.date, opacity: .7, size: 14.dw),
+        trailing: AppText(form.formattedTotal, weight: FontWeight.bold),
       ),
     );
   }
 }
+ */

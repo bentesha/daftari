@@ -4,6 +4,13 @@ class AppDivider extends StatelessWidget {
   const AppDivider({Key? key, this.height, this.margin, this.color, this.width})
       : super(key: key);
 
+  AppDivider.onDocumentPage({Key? key})
+      : height = null,
+        width = null,
+        margin = EdgeInsets.zero,
+        color = AppColors.divider.withOpacity(.35),
+        super(key: key);
+
   final double? height, width;
   final EdgeInsets? margin;
   final Color? color;

@@ -39,9 +39,12 @@ class _$DocumentTearOff {
     );
   }
 
-  _WriteOffs writeOffs(DocumentForm form) {
+  _WriteOffs writeOffs(
+      DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList) {
     return _WriteOffs(
       form,
+      type,
+      writeOffList,
     );
   }
 }
@@ -60,7 +63,9 @@ mixin _$Document {
         purchases,
     required TResult Function(DocumentForm form, List<Expense> expenseList)
         expenses,
-    required TResult Function(DocumentForm form) writeOffs,
+    required TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)
+        writeOffs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -68,7 +73,9 @@ mixin _$Document {
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
     TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
-    TResult Function(DocumentForm form)? writeOffs,
+    TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)?
+        writeOffs,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -76,7 +83,9 @@ mixin _$Document {
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
     TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
-    TResult Function(DocumentForm form)? writeOffs,
+    TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)?
+        writeOffs,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -229,7 +238,9 @@ class _$_Sales extends _Sales {
         purchases,
     required TResult Function(DocumentForm form, List<Expense> expenseList)
         expenses,
-    required TResult Function(DocumentForm form) writeOffs,
+    required TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)
+        writeOffs,
   }) {
     return sales(form, salesList);
   }
@@ -240,7 +251,9 @@ class _$_Sales extends _Sales {
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
     TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
-    TResult Function(DocumentForm form)? writeOffs,
+    TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)?
+        writeOffs,
   }) {
     return sales?.call(form, salesList);
   }
@@ -251,7 +264,9 @@ class _$_Sales extends _Sales {
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
     TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
-    TResult Function(DocumentForm form)? writeOffs,
+    TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)?
+        writeOffs,
     required TResult orElse(),
   }) {
     if (sales != null) {
@@ -393,7 +408,9 @@ class _$_Purchases extends _Purchases {
         purchases,
     required TResult Function(DocumentForm form, List<Expense> expenseList)
         expenses,
-    required TResult Function(DocumentForm form) writeOffs,
+    required TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)
+        writeOffs,
   }) {
     return purchases(form, purchaseList);
   }
@@ -404,7 +421,9 @@ class _$_Purchases extends _Purchases {
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
     TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
-    TResult Function(DocumentForm form)? writeOffs,
+    TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)?
+        writeOffs,
   }) {
     return purchases?.call(form, purchaseList);
   }
@@ -415,7 +434,9 @@ class _$_Purchases extends _Purchases {
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
     TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
-    TResult Function(DocumentForm form)? writeOffs,
+    TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)?
+        writeOffs,
     required TResult orElse(),
   }) {
     if (purchases != null) {
@@ -558,7 +579,9 @@ class _$_Expenses extends _Expenses {
         purchases,
     required TResult Function(DocumentForm form, List<Expense> expenseList)
         expenses,
-    required TResult Function(DocumentForm form) writeOffs,
+    required TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)
+        writeOffs,
   }) {
     return expenses(form, expenseList);
   }
@@ -569,7 +592,9 @@ class _$_Expenses extends _Expenses {
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
     TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
-    TResult Function(DocumentForm form)? writeOffs,
+    TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)?
+        writeOffs,
   }) {
     return expenses?.call(form, expenseList);
   }
@@ -580,7 +605,9 @@ class _$_Expenses extends _Expenses {
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
     TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
-    TResult Function(DocumentForm form)? writeOffs,
+    TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)?
+        writeOffs,
     required TResult orElse(),
   }) {
     if (expenses != null) {
@@ -647,7 +674,8 @@ abstract class _$WriteOffsCopyWith<$Res> implements $DocumentCopyWith<$Res> {
           _WriteOffs value, $Res Function(_WriteOffs) then) =
       __$WriteOffsCopyWithImpl<$Res>;
   @override
-  $Res call({DocumentForm form});
+  $Res call(
+      {DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList});
 
   @override
   $DocumentFormCopyWith<$Res> get form;
@@ -665,12 +693,22 @@ class __$WriteOffsCopyWithImpl<$Res> extends _$DocumentCopyWithImpl<$Res>
   @override
   $Res call({
     Object? form = freezed,
+    Object? type = freezed,
+    Object? writeOffList = freezed,
   }) {
     return _then(_WriteOffs(
       form == freezed
           ? _value.form
           : form // ignore: cast_nullable_to_non_nullable
               as DocumentForm,
+      type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as WriteOffTypes,
+      writeOffList == freezed
+          ? _value.writeOffList
+          : writeOffList // ignore: cast_nullable_to_non_nullable
+              as List<WriteOff>,
     ));
   }
 }
@@ -678,14 +716,18 @@ class __$WriteOffsCopyWithImpl<$Res> extends _$DocumentCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_WriteOffs extends _WriteOffs {
-  const _$_WriteOffs(this.form) : super._();
+  const _$_WriteOffs(this.form, this.type, this.writeOffList) : super._();
 
   @override
   final DocumentForm form;
+  @override
+  final WriteOffTypes type;
+  @override
+  final List<WriteOff> writeOffList;
 
   @override
   String toString() {
-    return 'Document.writeOffs(form: $form)';
+    return 'Document.writeOffs(form: $form, type: $type, writeOffList: $writeOffList)';
   }
 
   @override
@@ -693,12 +735,18 @@ class _$_WriteOffs extends _WriteOffs {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _WriteOffs &&
-            const DeepCollectionEquality().equals(other.form, form));
+            const DeepCollectionEquality().equals(other.form, form) &&
+            const DeepCollectionEquality().equals(other.type, type) &&
+            const DeepCollectionEquality()
+                .equals(other.writeOffList, writeOffList));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(form));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(form),
+      const DeepCollectionEquality().hash(type),
+      const DeepCollectionEquality().hash(writeOffList));
 
   @JsonKey(ignore: true)
   @override
@@ -713,9 +761,11 @@ class _$_WriteOffs extends _WriteOffs {
         purchases,
     required TResult Function(DocumentForm form, List<Expense> expenseList)
         expenses,
-    required TResult Function(DocumentForm form) writeOffs,
+    required TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)
+        writeOffs,
   }) {
-    return writeOffs(form);
+    return writeOffs(form, type, writeOffList);
   }
 
   @override
@@ -724,9 +774,11 @@ class _$_WriteOffs extends _WriteOffs {
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
     TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
-    TResult Function(DocumentForm form)? writeOffs,
+    TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)?
+        writeOffs,
   }) {
-    return writeOffs?.call(form);
+    return writeOffs?.call(form, type, writeOffList);
   }
 
   @override
@@ -735,11 +787,13 @@ class _$_WriteOffs extends _WriteOffs {
     TResult Function(DocumentForm form, List<Sales> salesList)? sales,
     TResult Function(DocumentForm form, List<Purchase> purchaseList)? purchases,
     TResult Function(DocumentForm form, List<Expense> expenseList)? expenses,
-    TResult Function(DocumentForm form)? writeOffs,
+    TResult Function(
+            DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList)?
+        writeOffs,
     required TResult orElse(),
   }) {
     if (writeOffs != null) {
-      return writeOffs(form);
+      return writeOffs(form, type, writeOffList);
     }
     return orElse();
   }
@@ -783,11 +837,15 @@ class _$_WriteOffs extends _WriteOffs {
 }
 
 abstract class _WriteOffs extends Document {
-  const factory _WriteOffs(DocumentForm form) = _$_WriteOffs;
+  const factory _WriteOffs(
+          DocumentForm form, WriteOffTypes type, List<WriteOff> writeOffList) =
+      _$_WriteOffs;
   const _WriteOffs._() : super._();
 
   @override
   DocumentForm get form;
+  WriteOffTypes get type;
+  List<WriteOff> get writeOffList;
   @override
   @JsonKey(ignore: true)
   _$WriteOffsCopyWith<_WriteOffs> get copyWith =>

@@ -10,7 +10,7 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  late final ProductPageBloc bloc;
+  var bloc = ProductPagesBloc.empty();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -21,7 +21,7 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProductPageBloc, ProductPageState>(
+    return BlocConsumer<ProductPagesBloc, ProductPageState>(
         bloc: bloc,
         listener: (_, state) {
           final isSaved =
@@ -49,19 +49,7 @@ class _ProductPageState extends State<ProductPage> {
       ProductPageSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
-    return Center(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppText(message!),
-        AppTextButton(
-            onPressed: _initBloc,
-            text: 'Try Again',
-            textColor: AppColors.onPrimary,
-            backgroundColor: AppColors.primary,
-            margin: EdgeInsets.only(top: 10.dh))
-      ],
-    ));
+    return OnScreenError(message: message!, tryAgainCallback: _tryInitAgain);
   }
 
   Widget _buildContent(ProductPageSupplements supp) {
@@ -244,15 +232,19 @@ class _ProductPageState extends State<ProductPage> {
     );
   }
 
-  _initBloc() {
-    final productsService = getService<ProductsService>(context);
-    final categoriesService = getService<CategoriesService>(context);
-    final openingStockItemsService =
-        getService<OpeningStockItemsService>(context);
-    bloc = ProductPageBloc(
-        productsService, categoriesService, openingStockItemsService);
+  _initBloc([bool isFirstTimeInit = true]) {
+    if (isFirstTimeInit) {
+      final productsService = getService<ProductsService>(context);
+      final categoriesService = getService<CategoriesService>(context);
+      final openingStockItemsService =
+          getService<OpeningStockItemsService>(context);
+      bloc = ProductPagesBloc(
+          productsService, categoriesService, openingStockItemsService);
+    }
     final action =
         widget.product == null ? PageActions.adding : PageActions.viewing;
     bloc.init(Pages.product_page, product: widget.product, action: action);
   }
+
+  _tryInitAgain() => _initBloc(false);
 }

@@ -8,7 +8,7 @@ class PurchasesDocumentsPage extends StatefulWidget {
 }
 
 class _PurchasesDocumentsPageState extends State<PurchasesDocumentsPage> {
-  late final PurchasesPagesBloc bloc;
+  var bloc = PurchasesPagesBloc.empty();
 
   @override
   void initState() {
@@ -50,19 +50,7 @@ class _PurchasesDocumentsPageState extends State<PurchasesDocumentsPage> {
       PurchasesPagesSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
-    return Center(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppText(message!),
-        AppTextButton(
-            onPressed: _initBloc,
-            text: 'Try Again',
-            textColor: AppColors.onPrimary,
-            backgroundColor: AppColors.primary,
-            margin: EdgeInsets.only(top: 10.dh))
-      ],
-    ));
+    return OnScreenError(message: message!, tryAgainCallback: _tryInitAgain);
   }
 
   Widget _buildContent(PurchasesPagesSupplements supp) {
@@ -88,19 +76,25 @@ class _PurchasesDocumentsPageState extends State<PurchasesDocumentsPage> {
     return BlocBuilder<PurchasesPagesBloc, PurchasesPagesState>(
         bloc: bloc,
         builder: (_, state) {
-          final isLoading =
-              state.maybeWhen(loading: (_) => true, orElse: () => false);
-          if (isLoading) return Container();
+          final shouldShowButton = state.maybeWhen(
+              content: (_) => true,
+              failed: (_, __, showOnPage) => !showOnPage,
+              orElse: () => false);
+          if (!shouldShowButton) return Container();
           return const AddButton(nextPage: DocumentPurchasesPage());
         });
   }
 
-  _initBloc() {
-    final purchasesService = getService<PurchasesService>(context);
-    final productsService = getService<ProductsService>(context);
-    bloc = PurchasesPagesBloc(purchasesService, productsService);
+  _initBloc([bool isFirstTimeInit = true]) {
+    if (isFirstTimeInit) {
+      final purchasesService = getService<PurchasesService>(context);
+      final productsService = getService<ProductsService>(context);
+      bloc = PurchasesPagesBloc(purchasesService, productsService);
+    }
     bloc.init(Pages.purchases_documents_page);
   }
+
+  _tryInitAgain() => _initBloc(false);
 
   static const emptyPurchasesDocumentsMessage =
       'No purchases record has been added. Add one by clicking the button on a bottom-right corner.';

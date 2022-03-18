@@ -10,7 +10,7 @@ class CategoriesPage extends StatefulWidget {
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
-  late final CategoryPageBloc bloc;
+  var bloc = CategoryPageBloc.empty();
   late final bool isProductsCategory;
 
   @override
@@ -57,19 +57,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       CategoryPageSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
-    return Center(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppText(message!),
-        AppTextButton(
-            onPressed: _initBloc,
-            text: 'Try Again',
-            textColor: AppColors.onPrimary,
-            backgroundColor: AppColors.primary,
-            margin: EdgeInsets.only(top: 10.dh))
-      ],
-    ));
+    return OnScreenError(message: message!, tryAgainCallback: _tryInitAgain);
   }
 
   Widget _buildContent(CategoryPageSupplements supp) {
@@ -102,9 +90,11 @@ class _CategoriesPageState extends State<CategoriesPage> {
     return BlocBuilder<CategoryPageBloc, CategoryPagesState>(
         bloc: bloc,
         builder: (_, state) {
-          final isLoading =
-              state.maybeWhen(loading: (_) => true, orElse: () => false);
-          if (isLoading) return Container();
+          final shouldShowButton = state.maybeWhen(
+              content: (_) => true,
+              failed: (_, __, showOnPage) => !showOnPage,
+              orElse: () => false);
+          if (!shouldShowButton) return Container();
           return AddButton(
               nextPage: CategoryEditPage(categoryType: widget.categoryType));
         });
@@ -113,11 +103,15 @@ class _CategoriesPageState extends State<CategoriesPage> {
   _emptyCategoriesMessage() =>
       'No ${isProductsCategory ? 'products' : 'expenses'} categories found. Start creating categories by clicking on the bottom-right corner add button.';
 
-  _initBloc() {
-    final categoriesService = getService<CategoriesService>(context);
-    final itemsService = getService<ProductsService>(context);
-    final typeService = getService<CategoryTypesService>(context);
-    bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
+  _initBloc([bool isFirstTimeInit = true]) {
+    if (isFirstTimeInit) {
+      final categoriesService = getService<CategoriesService>(context);
+      final itemsService = getService<ProductsService>(context);
+      final typeService = getService<CategoryTypesService>(context);
+      bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
+    }
     bloc.init(Pages.categories_page, type: widget.categoryType);
   }
+
+  _tryInitAgain() => _initBloc(false);
 }

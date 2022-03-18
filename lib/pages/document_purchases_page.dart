@@ -11,7 +11,7 @@ class DocumentPurchasesPage extends StatefulWidget {
 }
 
 class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
-  late final PurchasesPagesBloc bloc;
+  var bloc = PurchasesPagesBloc.empty();
 
   @override
   void initState() {
@@ -53,19 +53,7 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
       PurchasesPagesSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
-    return Center(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppText(message!),
-        AppTextButton(
-            onPressed: _initBloc,
-            text: 'Try Again',
-            textColor: AppColors.onPrimary,
-            backgroundColor: AppColors.primary,
-            margin: EdgeInsets.only(top: 10.dh))
-      ],
-    ));
+    return OnScreenError(message: message!, tryAgainCallback: _tryInitAgain);
   }
 
   Widget _buildContent(PurchasesPagesSupplements supp) {
@@ -200,12 +188,16 @@ class _DocumentPurchasesPageState extends State<DocumentPurchasesPage> {
         : const SizedBox(height: .00001);
   }
 
-  _initBloc() {
-    final purchasesService = getService<PurchasesService>(context);
-    final productsService = getService<ProductsService>(context);
-    bloc = PurchasesPagesBloc(purchasesService, productsService);
+  _initBloc([bool isFirstTimeInit = true]) {
+    if (isFirstTimeInit) {
+      final purchasesService = getService<PurchasesService>(context);
+      final productsService = getService<ProductsService>(context);
+      bloc = PurchasesPagesBloc(purchasesService, productsService);
+    }
     bloc.init(Pages.document_purchases_page, document: widget.document);
   }
+
+  _tryInitAgain() => _initBloc(false);
 
   Future<bool> _handlePop() async {
     final hasUnSavedSales = bloc.documentHasUnsavedChanges;

@@ -1,15 +1,20 @@
 import '../source.dart';
 
-class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState> {
-  SalesDocumentsPagesBloc(this.salesService, this.productsService)
+class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
+  SalesPagesBloc(this.salesService, this.productsService)
       : super(SalesDocumentsPageState.initial()) {
     salesService.addListener(_handleDocumentUpdates);
     productsService.addListener(_handleProductUpdates);
   }
 
+  SalesPagesBloc.empty()
+      : salesService = SalesService(),
+        productsService = ProductsService(),
+        super(SalesDocumentsPageState.initial());
+
   final SalesService salesService;
   final ProductsService productsService;
-  late final Pages _page;
+  var  _page = Pages.sales_page;
 
   Product getProductById(String id) => productsService.getById(id)!;
 
@@ -21,7 +26,8 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState> {
     emit(SalesDocumentsPageState.loading(supp));
     _page = page;
 
-    await _initServices();
+    final isSuccessful = await _initServices();
+    if (!isSuccessful) return;
     _initSalesDocumentsPage(page);
     _initDocumentSalesPage(page, document);
     _initSalesPage(page, sales, action);
@@ -286,14 +292,17 @@ class SalesDocumentsPagesBloc extends Cubit<SalesDocumentsPageState> {
     emit(SalesDocumentsPageState.content(supp));
   }
 
-  Future<void> _initServices() async {
+  Future<bool> _initServices() async {
+    var isSuccessful = false;
     try {
       await salesService.init();
       await productsService.init();
+      isSuccessful = true;
     } on ApiErrors catch (e) {
       emit(SalesDocumentsPageState.failed(state.supplements,
           message: e.message, showOnPage: true));
     }
+    return isSuccessful;
   }
 
   void _handleError(var error) {

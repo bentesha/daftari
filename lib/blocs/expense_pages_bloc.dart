@@ -7,9 +7,15 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     categoriesService.addListener(_handleCategoryUpdates);
   }
 
+  ExpensesPagesBloc.empty()
+      : categoriesService = CategoriesService(),
+        expensesService = ExpensesService(),
+        super(ExpensePagesState.initial());
+
   final ExpensesService expensesService;
   final CategoriesService categoriesService;
-  late final Pages _page;
+  var  _page = Pages.expense_page;
+
 
   Category getCategoryById(String id) => categoriesService.getById(id)!;
 
@@ -21,7 +27,8 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     emit(ExpensePagesState.loading(supp));
     _page = page;
 
-    await _initServices();
+    final isSuccessful = await _initServices();
+    if (!isSuccessful) return;
     _initExpensesDocumentsPage(page);
     _initDocumentExpensesPage(page, document);
     _initExpensePage(page, expense, action);
@@ -282,7 +289,8 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     emit(ExpensePagesState.content(supp));
   }
 
-  Future<void> _initServices() async {
+  Future<bool> _initServices() async {
+    var isSuccessful = false;
     try {
       await categoriesService.init();
       await expensesService.init();
@@ -290,6 +298,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
       emit(ExpensePagesState.failed(state.supplements,
           message: e.message, showOnPage: true));
     }
+    return isSuccessful;
   }
 
   void _handleError(var error) {

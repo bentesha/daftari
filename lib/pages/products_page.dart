@@ -8,7 +8,7 @@ class ProductsPage extends StatefulWidget {
 }
 
 class _ProductsPageState extends State<ProductsPage> {
-  late final ProductPageBloc bloc;
+  var bloc = ProductPagesBloc.empty();
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   _buildBody() {
-    return BlocConsumer<ProductPageBloc, ProductPageState>(
+    return BlocConsumer<ProductPagesBloc, ProductPageState>(
         bloc: bloc,
         listener: (_, state) {
           final error = state.maybeWhen(
@@ -50,19 +50,7 @@ class _ProductsPageState extends State<ProductsPage> {
       ProductPageSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
-    return Center(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppText(message!),
-        AppTextButton(
-            onPressed: _initBloc,
-            text: 'Try Again',
-            textColor: AppColors.onPrimary,
-            backgroundColor: AppColors.primary,
-            margin: EdgeInsets.only(top: 10.dh))
-      ],
-    ));
+    return OnScreenError(message: message!, tryAgainCallback: _tryInitAgain);
   }
 
   Widget _buildContent(ProductPageSupplements supp) {
@@ -84,25 +72,32 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 
   _buildFloatingButton() {
-    return BlocBuilder<ProductPageBloc, ProductPageState>(
+    return BlocBuilder<ProductPagesBloc, ProductPageState>(
         bloc: bloc,
         builder: (_, state) {
-          final isLoading =
-              state.maybeWhen(loading: (_) => true, orElse: () => false);
-          if (isLoading) return Container();
+          final shouldShowButton = state.maybeWhen(
+              content: (_) => true,
+              failed: (_, __, showOnPage) => !showOnPage,
+              orElse: () => false);
+          if (!shouldShowButton) return Container();
           return const AddButton(nextPage: ProductPage());
         });
   }
 
-  _initBloc() {
-    final productsService = getService<ProductsService>(context);
-    final categoriesService = getService<CategoriesService>(context);
-    final openingStockItemsService =
-        getService<OpeningStockItemsService>(context);
-    bloc = ProductPageBloc(
-        productsService, categoriesService, openingStockItemsService);
+  _initBloc([bool isFirstTimeInit = true]) {
+    ///necessary to avoid re-initializing of the late variable [bloc]
+    if (isFirstTimeInit) {
+      final productsService = getService<ProductsService>(context);
+      final categoriesService = getService<CategoriesService>(context);
+      final openingStockItemsService =
+          getService<OpeningStockItemsService>(context);
+      bloc = ProductPagesBloc(
+          productsService, categoriesService, openingStockItemsService);
+    }
     bloc.init(Pages.products_page);
   }
+
+  _tryInitAgain() => _initBloc(false);
 
   static const emptyItemsDesc =
       'No products have been added. Add one by clicking on the bottom-right corner button.';

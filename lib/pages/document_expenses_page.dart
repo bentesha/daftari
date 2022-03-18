@@ -11,7 +11,7 @@ class DocumentExpensesPage extends StatefulWidget {
 }
 
 class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
-  late final ExpensesPagesBloc bloc;
+  var bloc = ExpensesPagesBloc.empty();
 
   @override
   void initState() {
@@ -53,19 +53,7 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
       ExpenseSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
-    return Center(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppText(message!),
-        AppTextButton(
-            onPressed: _initBloc,
-            text: 'Try Again',
-            textColor: AppColors.onPrimary,
-            backgroundColor: AppColors.primary,
-            margin: EdgeInsets.only(top: 10.dh))
-      ],
-    ));
+    return OnScreenError(message: message!, tryAgainCallback: _tryInitAgain);
   }
 
   Widget _buildContent(ExpenseSupplements supp) {
@@ -200,12 +188,16 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
         : const SizedBox(height: .00001);
   }
 
-  _initBloc() {
-    final expensesService = getService<ExpensesService>(context);
-    final categoriesService = getService<CategoriesService>(context);
-    bloc = ExpensesPagesBloc(expensesService, categoriesService);
+  _initBloc([bool isFirstTimeInit = true]) {
+    if (isFirstTimeInit) {
+      final expensesService = getService<ExpensesService>(context);
+      final categoriesService = getService<CategoriesService>(context);
+      bloc = ExpensesPagesBloc(expensesService, categoriesService);
+    }
     bloc.init(Pages.document_expenses_page, document: widget.document);
   }
+
+  _tryInitAgain() => _initBloc(false);
 
   Future<bool> _handlePop() async {
     final hasUnSavedSales = bloc.documentHasUnsavedChanges;

@@ -8,7 +8,7 @@ class SalesDocumentsPage extends StatefulWidget {
 }
 
 class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
-  late final SalesDocumentsPagesBloc bloc;
+  var bloc = SalesPagesBloc.empty();
 
   @override
   void initState() {
@@ -25,7 +25,7 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
   }
 
   Widget _buildBody() {
-    return BlocConsumer<SalesDocumentsPagesBloc, SalesDocumentsPageState>(
+    return BlocConsumer<SalesPagesBloc, SalesDocumentsPageState>(
       bloc: bloc,
       listener: (_, state) {
         final error = state.maybeWhen(
@@ -50,19 +50,7 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
       SalesDocumentSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
-    return Center(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppText(message!),
-        AppTextButton(
-            onPressed: _initBloc,
-            text: 'Try Again',
-            textColor: AppColors.onPrimary,
-            backgroundColor: AppColors.primary,
-            margin: EdgeInsets.only(top: 10.dh))
-      ],
-    ));
+    return OnScreenError(message: message!, tryAgainCallback: _tryInitAgain);
   }
 
   Widget _buildContent(SalesDocumentSupplements supp) {
@@ -85,22 +73,28 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
   }
 
   _buildFloatingButton() {
-    return BlocBuilder<SalesDocumentsPagesBloc, SalesDocumentsPageState>(
+    return BlocBuilder<SalesPagesBloc, SalesDocumentsPageState>(
         bloc: bloc,
         builder: (_, state) {
-          final isLoading =
-              state.maybeWhen(loading: (_) => true, orElse: () => false);
-          if (isLoading) return Container();
+          final shouldShowButton = state.maybeWhen(
+              content: (_) => true,
+              failed: (_, __, showOnPage) => !showOnPage,
+              orElse: () => false);
+          if (!shouldShowButton) return Container();
           return const AddButton(nextPage: DocumentSalesPage());
         });
   }
 
-  _initBloc() {
-    final salesService = getService<SalesService>(context);
-    final productsService = getService<ProductsService>(context);
-    bloc = SalesDocumentsPagesBloc(salesService, productsService);
+  _initBloc([bool isFirstTimeInit = true]) {
+    if (isFirstTimeInit) {
+      final salesService = getService<SalesService>(context);
+      final productsService = getService<ProductsService>(context);
+      bloc = SalesPagesBloc(salesService, productsService);
+    }
     bloc.init(Pages.sales_documents_page);
   }
+
+  _tryInitAgain() => _initBloc(false);
 
   static const emptySalesDocumentsMessage =
       'No sales record has been added. Add one by clicking the button on a bottom-right corner.';

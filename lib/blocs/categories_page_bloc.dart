@@ -9,6 +9,12 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
     typeService.addListener(_handleTypeUpdates);
   }
 
+  CategoryPageBloc.empty()
+      : categoriesService = CategoriesService(),
+        productsService = ProductsService(),
+        typeService = CategoryTypesService(),
+        super(CategoryPagesState.initial());
+
   final CategoriesService categoriesService;
   final ProductsService productsService;
   final CategoryTypesService typeService;
@@ -18,7 +24,8 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
 
-    await _initServices();
+    final isSuccessful = await _initServices();
+    if (!isSuccessful) return;
     _initCategoriesPage(page, type);
     _initCategoryPage(page, action, type, category);
   }
@@ -142,7 +149,8 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
     emit(CategoryPagesState.content(supp));
   }
 
-  Future<void> _initServices() async {
+  Future<bool> _initServices() async {
+    var isSuccessful = false;
     try {
       await categoriesService.init();
       await productsService.init();
@@ -151,6 +159,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
       emit(CategoryPagesState.failed(state.supplements,
           message: message, showOnPage: true));
     }
+    return isSuccessful;
   }
 
   void _handleError(var error) {

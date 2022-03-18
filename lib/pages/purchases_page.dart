@@ -12,7 +12,7 @@ class PurchasesPage extends StatefulWidget {
 }
 
 class _PurchasesPageState extends State<PurchasesPage> {
-  late final PurchasesPagesBloc bloc;
+  var bloc = PurchasesPagesBloc.empty();
 
   @override
   void initState() {
@@ -50,19 +50,7 @@ class _PurchasesPageState extends State<PurchasesPage> {
       PurchasesPagesSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
-    return Center(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppText(message!),
-        AppTextButton(
-            onPressed: _initBloc,
-            text: 'Try Again',
-            textColor: AppColors.onPrimary,
-            backgroundColor: AppColors.primary,
-            margin: EdgeInsets.only(top: 10.dh))
-      ],
-    ));
+    return OnScreenError(message: message!, tryAgainCallback: _tryInitAgain);
   }
 
   Widget _buildContent(PurchasesPagesSupplements supp) {
@@ -128,13 +116,17 @@ class _PurchasesPageState extends State<PurchasesPage> {
         editModelCallback: bloc.editPurchase);
   }
 
-  _initBloc() {
-    final productsService = getService<ProductsService>(context);
-    final purchasesService = getService<PurchasesService>(context);
-    bloc = PurchasesPagesBloc(purchasesService, productsService);
+  _initBloc([bool isFirstTimeInit = true]) {
+    if (isFirstTimeInit) {
+      final productsService = getService<ProductsService>(context);
+      final purchasesService = getService<PurchasesService>(context);
+      bloc = PurchasesPagesBloc(purchasesService, productsService);
+    }
     final action = widget.documentPageAction == PageActions.editing
         ? PageActions.viewing
         : widget.documentPageAction;
     bloc.init(Pages.purchases_page, purchase: widget.purchase, action: action);
   }
+
+  _tryInitAgain() => _initBloc(false);
 }

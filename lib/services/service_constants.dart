@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:developer';
 
 import '../errors/api_errors.dart';
 
@@ -11,12 +12,7 @@ const headers = {
 const timeLimit = Duration(seconds: 5);
 
 ApiErrors getError(var error) {
-  switch (error) {
-    case SocketException:
-      throw ApiErrors.socket();
-    case TimeoutException:
-      throw ApiErrors.timeOut();
-    default:
-      throw ApiErrors.unknown();
-  }
+  if (error is SocketException) throw ApiErrors.socket();
+  if (error is TimeoutException) throw ApiErrors.timeOut();
+  throw ApiErrors.unknown();
 }

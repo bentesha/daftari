@@ -7,9 +7,14 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     productsService.addListener(_handleProductUpdates);
   }
 
+  PurchasesPagesBloc.empty()
+      : purchasesService = PurchasesService(),
+        productsService = ProductsService(),
+        super(PurchasesPagesState.initial());
+
   final PurchasesService purchasesService;
   final ProductsService productsService;
-  late final Pages _page;
+  var  _page = Pages.purchases_page;
 
   Product getProductById(String id) => productsService.getById(id)!;
 
@@ -21,7 +26,8 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     emit(PurchasesPagesState.loading(supp));
     _page = page;
 
-    await _initServices();
+    final isSuccessful = await _initServices();
+    if (!isSuccessful) return;
     _initSalesDocumentsPage(page);
     _initDocumentSalesPage(page, document);
     _initSalesPage(page, purchase, action);
@@ -288,7 +294,8 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     emit(PurchasesPagesState.content(supp));
   }
 
-  Future<void> _initServices() async {
+  Future<bool> _initServices() async {
+    var isSuccessful = false;
     try {
       await purchasesService.init();
       await productsService.init();
@@ -296,6 +303,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
       emit(PurchasesPagesState.failed(state.supplements,
           message: e.message, showOnPage: true));
     }
+    return isSuccessful;
   }
 
   void _handleError(var error) {

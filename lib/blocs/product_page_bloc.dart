@@ -1,12 +1,18 @@
 import '../source.dart';
 
-class ProductPageBloc extends Cubit<ProductPageState> {
-  ProductPageBloc(this.productsService, this.categoriesService,
+class ProductPagesBloc extends Cubit<ProductPageState> {
+  ProductPagesBloc(this.productsService, this.categoriesService,
       this.openingStockItemsService)
       : super(ProductPageState.initial()) {
     productsService.addListener(_handleProductUpdates);
     categoriesService.addListener(_handleCategoryUpdates);
   }
+
+  ProductPagesBloc.empty()
+      : categoriesService = CategoriesService(),
+        productsService = ProductsService(),
+        openingStockItemsService = OpeningStockItemsService(),
+        super(ProductPageState.initial());
 
   final ProductsService productsService;
   final CategoriesService categoriesService;
@@ -22,7 +28,8 @@ class ProductPageBloc extends Cubit<ProductPageState> {
     var supp = state.supplements;
     emit(ProductPageState.loading(supp));
 
-    await _initServices();
+    final isSuccessful = await _initServices();
+    if (!isSuccessful) return;
     _initProductsPage(page);
     _initProductPage(page, action, product);
   }
@@ -180,7 +187,8 @@ class ProductPageBloc extends Cubit<ProductPageState> {
     emit(ProductPageState.content(supp));
   }
 
-  Future<void> _initServices() async {
+  Future<bool> _initServices() async {
+    var isSuccessful = false;
     try {
       await categoriesService.init();
       await productsService.init();
@@ -189,6 +197,7 @@ class ProductPageBloc extends Cubit<ProductPageState> {
       emit(ProductPageState.failed(state.supplements,
           message: e.message, showOnPage: true));
     }
+    return isSuccessful;
   }
 
   void _handleError(var error) {

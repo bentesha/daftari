@@ -12,7 +12,7 @@ class CategoryEditPage extends StatefulWidget {
 }
 
 class _CategoryEditPageState extends State<CategoryEditPage> {
-  late final CategoryPageBloc bloc;
+  var bloc = CategoryPageBloc.empty();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -51,19 +51,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
       CategoryPageSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
-    return Center(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppText(message!),
-        AppTextButton(
-            onPressed: _initBloc,
-            text: 'Try Again',
-            textColor: AppColors.onPrimary,
-            backgroundColor: AppColors.primary,
-            margin: EdgeInsets.only(top: 10.dh))
-      ],
-    ));
+    return OnScreenError(message: message!, tryAgainCallback: _tryInitAgain);
   }
 
   Widget _buildContent(CategoryPageSupplements supp) {
@@ -130,14 +118,18 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
     );
   }
 
-  _initBloc() {
-    final categoriesService = getService<CategoriesService>(context);
-    final itemsService = getService<ProductsService>(context);
-    final typeService = getService<CategoryTypesService>(context);
-    bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
+  _initBloc([bool isFirstTimeInit = true]) {
+    if (isFirstTimeInit) {
+      final categoriesService = getService<CategoriesService>(context);
+      final itemsService = getService<ProductsService>(context);
+      final typeService = getService<CategoryTypesService>(context);
+      bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
+    }
     final action =
         widget.category == null ? PageActions.adding : PageActions.viewing;
     bloc.init(Pages.category_page,
         type: widget.categoryType, category: widget.category, action: action);
   }
+
+  _tryInitAgain() => _initBloc(false);
 }

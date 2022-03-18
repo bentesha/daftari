@@ -12,7 +12,7 @@ class ExpensePage extends StatefulWidget {
 }
 
 class _ExpensePageState extends State<ExpensePage> {
-  late final ExpensesPagesBloc bloc;
+  var bloc = ExpensesPagesBloc.empty();
 
   @override
   void initState() {
@@ -50,19 +50,7 @@ class _ExpensePageState extends State<ExpensePage> {
       ExpenseSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
-    return Center(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppText(message!),
-        AppTextButton(
-            onPressed: _initBloc,
-            text: 'Try Again',
-            textColor: AppColors.onPrimary,
-            backgroundColor: AppColors.primary,
-            margin: EdgeInsets.only(top: 10.dh))
-      ],
-    ));
+    return OnScreenError(message: message!, tryAgainCallback: _tryInitAgain);
   }
 
   Widget _buildContent(ExpenseSupplements supp) {
@@ -129,13 +117,17 @@ class _ExpensePageState extends State<ExpensePage> {
         editModelCallback: bloc.editExpense);
   }
 
-  _initBloc() {
-    final categoriesService = getService<CategoriesService>(context);
-    final expensesService = getService<ExpensesService>(context);
-    bloc = ExpensesPagesBloc(expensesService, categoriesService);
+  _initBloc([bool isFirstTimeInit = true]) {
+    if (isFirstTimeInit) {
+      final categoriesService = getService<CategoriesService>(context);
+      final expensesService = getService<ExpensesService>(context);
+      bloc = ExpensesPagesBloc(expensesService, categoriesService);
+    }
     final action = widget.documentPageAction == PageActions.editing
         ? PageActions.viewing
         : widget.documentPageAction;
     bloc.init(Pages.expense_page, expense: widget.expense, action: action);
   }
+
+  _tryInitAgain() => _initBloc(false);
 }

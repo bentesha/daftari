@@ -11,7 +11,7 @@ class DocumentSalesPage extends StatefulWidget {
 }
 
 class _DocumentSalesPageState extends State<DocumentSalesPage> {
-  late final SalesDocumentsPagesBloc bloc;
+  var bloc = SalesPagesBloc.empty();
 
   @override
   void initState() {
@@ -23,7 +23,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _handlePop,
-      child: BlocConsumer<SalesDocumentsPagesBloc, SalesDocumentsPageState>(
+      child: BlocConsumer<SalesPagesBloc, SalesDocumentsPageState>(
           bloc: bloc,
           listener: (_, state) {
             final isSuccessful =
@@ -53,19 +53,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
       SalesDocumentSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
-    return Center(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppText(message!),
-        AppTextButton(
-            onPressed: _initBloc,
-            text: 'Try Again',
-            textColor: AppColors.onPrimary,
-            backgroundColor: AppColors.primary,
-            margin: EdgeInsets.only(top: 10.dh))
-      ],
-    ));
+    return OnScreenError(message: message!, tryAgainCallback: _tryInitAgain);
   }
 
   Widget _buildContent(SalesDocumentSupplements supp) {
@@ -200,12 +188,16 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
         : const SizedBox(height: .00001);
   }
 
-  _initBloc() {
-    final salesService = getService<SalesService>(context);
-    final productsService = getService<ProductsService>(context);
-    bloc = SalesDocumentsPagesBloc(salesService, productsService);
+  _initBloc([bool isFirstTimeInit = true]) {
+    if (isFirstTimeInit) {
+      final salesService = getService<SalesService>(context);
+      final productsService = getService<ProductsService>(context);
+      bloc = SalesPagesBloc(salesService, productsService);
+    }
     bloc.init(Pages.document_sales_page, document: widget.document);
   }
+
+  _tryInitAgain() => _initBloc(false);
 
   Future<bool> _handlePop() async {
     final hasUnSavedSales = bloc.documentHasUnsavedChanges;

@@ -8,7 +8,7 @@ class ExpensesDocumentsPage extends StatefulWidget {
 }
 
 class _ExpensesDocumentsPage extends State<ExpensesDocumentsPage> {
-  late final ExpensesPagesBloc bloc;
+  var bloc = ExpensesPagesBloc.empty();
 
   @override
   void initState() {
@@ -49,19 +49,7 @@ class _ExpensesDocumentsPage extends State<ExpensesDocumentsPage> {
       ExpenseSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
-    return Center(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppText(message!),
-        AppTextButton(
-            onPressed: _initBloc,
-            text: 'Try Again',
-            textColor: AppColors.onPrimary,
-            backgroundColor: AppColors.primary,
-            margin: EdgeInsets.only(top: 10.dh))
-      ],
-    ));
+    return OnScreenError(message: message!, tryAgainCallback: _tryInitAgain);
   }
 
   Widget _buildContent(ExpenseSupplements supp) {
@@ -87,19 +75,25 @@ class _ExpensesDocumentsPage extends State<ExpensesDocumentsPage> {
     return BlocBuilder<ExpensesPagesBloc, ExpensePagesState>(
         bloc: bloc,
         builder: (_, state) {
-          final isLoading =
-              state.maybeWhen(loading: (_) => true, orElse: () => false);
-          if (isLoading) return Container();
+          final shouldShowButton = state.maybeWhen(
+              content: (_) => true,
+              failed: (_, __, showOnPage) => !showOnPage,
+              orElse: () => false);
+          if (!shouldShowButton) return Container();
           return const AddButton(nextPage: DocumentExpensesPage());
         });
   }
 
-  _initBloc() {
-    final categoriesService = getService<CategoriesService>(context);
-    final expensesService = getService<ExpensesService>(context);
-    bloc = ExpensesPagesBloc(expensesService, categoriesService);
+  _initBloc([bool isFirstTimeInit = true]) {
+    if (isFirstTimeInit) {
+      final categoriesService = getService<CategoriesService>(context);
+      final expensesService = getService<ExpensesService>(context);
+      bloc = ExpensesPagesBloc(expensesService, categoriesService);
+    }
     bloc.init(Pages.expenses_documents_page);
   }
+
+  _tryInitAgain() => _initBloc(false);
 
   static const emptyExpensesDocumentsMessage =
       'No expense record has been added. Add one by clicking the button on a bottom-right corner.';

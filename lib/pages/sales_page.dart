@@ -12,7 +12,7 @@ class SalesPage extends StatefulWidget {
 }
 
 class _SalesPageState extends State<SalesPage> {
-  late final SalesDocumentsPagesBloc bloc;
+  var bloc = SalesPagesBloc.empty();
 
   @override
   void initState() {
@@ -22,7 +22,7 @@ class _SalesPageState extends State<SalesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SalesDocumentsPagesBloc, SalesDocumentsPageState>(
+    return BlocConsumer<SalesPagesBloc, SalesDocumentsPageState>(
         bloc: bloc,
         listener: (_, state) {
           final isSuccessful =
@@ -50,19 +50,7 @@ class _SalesPageState extends State<SalesPage> {
       SalesDocumentSupplements supp, String? message, bool isShowOnPage) {
     if (!isShowOnPage) return _buildContent(supp);
 
-    return Center(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        AppText(message!),
-        AppTextButton(
-            onPressed: _initBloc,
-            text: 'Try Again',
-            textColor: AppColors.onPrimary,
-            backgroundColor: AppColors.primary,
-            margin: EdgeInsets.only(top: 10.dh))
-      ],
-    ));
+    return OnScreenError(message: message!, tryAgainCallback: _tryInitAgain);
   }
 
   Widget _buildContent(SalesDocumentSupplements supp) {
@@ -128,13 +116,17 @@ class _SalesPageState extends State<SalesPage> {
         editModelCallback: bloc.editSales);
   }
 
-  _initBloc() {
-    final productsService = getService<ProductsService>(context);
-    final salesService = getService<SalesService>(context);
-    bloc = SalesDocumentsPagesBloc(salesService, productsService);
+  _initBloc([bool isFirstTimeInit = true]) {
+    if (isFirstTimeInit) {
+      final productsService = getService<ProductsService>(context);
+      final salesService = getService<SalesService>(context);
+      bloc = SalesPagesBloc(salesService, productsService);
+    }
     final action = widget.documentPageAction == PageActions.editing
         ? PageActions.viewing
         : widget.documentPageAction;
     bloc.init(Pages.sales_page, sales: widget.sales, action: action);
   }
+
+  _tryInitAgain() => _initBloc(false);
 }

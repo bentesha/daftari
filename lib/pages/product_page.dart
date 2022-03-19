@@ -64,28 +64,31 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   _buildAppBar(ProductPageSupplements supp) {
+    final action = supp.action;
+
     return PageAppBar(
-        title: supp.isViewing
+        title: action.isViewing
             ? supp.product.name
-            : supp.isAdding
+            : action.isAdding
                 ? 'New Product'
                 : 'Edit Product',
-        actionIcons: supp.isViewing
+        actionIcons: action.isViewing
             ? [Icons.edit_outlined, Icons.delete_outlined]
             : [Icons.check],
-        actionCallbacks: supp.isViewing
+        actionCallbacks: action.isViewing
             ? [() => bloc.updateAction(PageActions.editing), bloc.deleteProduct]
-            : [supp.isEditing ? bloc.editProduct : bloc.saveProduct]);
+            : [action.isEditing ? bloc.editProduct : bloc.saveProduct]);
   }
 
   _buildProductDetails(ProductPageSupplements supp) {
     final errors = supp.errors;
     final product = supp.product;
+    final action = supp.action;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        supp.isAdding
+        action.isAdding
             ? Padding(
                 padding:
                     EdgeInsets.only(left: 19.dw, bottom: 10.dh, top: 10.dh),
@@ -96,12 +99,12 @@ class _ProductPageState extends State<ProductPage> {
           title: 'Category',
           value: bloc.getSelectedCategory?.name,
           error: supp.errors['category'],
-          isEditable: !supp.isViewing,
+          isEditable: !action.isViewing,
           onPressed: () => push(
               ItemsSearchPage<Category>(categoryType: CategoryType.products())),
         ),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
-        !supp.isViewing
+        !action.isViewing
             ? AppTextField(
                 text: product.name,
                 onChanged: (name) => bloc.updateAttributes(name: name),
@@ -110,7 +113,7 @@ class _ProductPageState extends State<ProductPage> {
                 textCapitalization: TextCapitalization.words,
                 label: 'Name',
                 error: errors['name'],
-                isEnabled: !supp.isViewing,
+                isEnabled: !action.isViewing,
               )
             : Container(),
         Row(
@@ -124,7 +127,7 @@ class _ProductPageState extends State<ProductPage> {
                 shouldShowErrorText: false,
                 label: 'Unit',
                 error: errors['unit'],
-                isEnabled: !supp.isViewing,
+                isEnabled: !action.isViewing,
               ),
             ),
             Expanded(
@@ -136,7 +139,7 @@ class _ProductPageState extends State<ProductPage> {
                 shouldShowErrorText: false,
                 label: 'Unit Price',
                 error: errors['unitPrice'],
-                isEnabled: !supp.isViewing,
+                isEnabled: !action.isViewing,
               ),
             ),
           ],
@@ -145,14 +148,14 @@ class _ProductPageState extends State<ProductPage> {
         BarcodeField(
             error: supp.errors['code'],
             text: product.code,
-            isEnabled: !supp.isViewing,
+            isEnabled: !action.isViewing,
             onChanged: (code) => bloc.updateAttributes(code: code)),
       ],
     );
   }
 
   _buildOpeningStockDetails(ProductPageSupplements supp) {
-    if (!supp.isAdding) return Container();
+    if (!supp.action.isAdding) return Container();
     return ExpansionTile(
         title: const AppText('OPENING STOCK DETAILS',
             weight: FontWeight.bold, opacity: .7),
@@ -163,12 +166,14 @@ class _ProductPageState extends State<ProductPage> {
 
   List<Widget> _openingStockDetails(ProductPageSupplements supp) {
     final errors = supp.errors;
+    final action = supp.action;
+
     return [
       DateSelector(
           title: 'DATE',
-          onDateSelected: (date) => bloc.updateAttributes(date: date),
-          isEditable: !supp.isViewing,
-          date: supp.openingStockItem.date),
+          onDateSelected: (_) {},
+          isEditable: false,
+          date: supp.date),
       SizedBox(height: 8.dh),
       AppTextField(
         text: supp.quantity,
@@ -176,7 +181,7 @@ class _ProductPageState extends State<ProductPage> {
         hintText: '0',
         keyboardType: TextInputType.number,
         label: 'Quantity',
-        isEnabled: !supp.isViewing,
+        isEnabled: !action.isViewing,
         error: errors['quantity'],
       ),
       AppTextField(
@@ -185,7 +190,7 @@ class _ProductPageState extends State<ProductPage> {
         hintText: '0',
         keyboardType: TextInputType.number,
         label: 'Unit Value',
-        isEnabled: !supp.isViewing,
+        isEnabled: !action.isViewing,
         error: errors['unitValue'],
       ),
       _buildTotalOpeningValue(supp)

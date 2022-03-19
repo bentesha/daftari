@@ -1,16 +1,8 @@
 import 'app.dart';
 import 'source.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final appDirectory = await path_provider.getApplicationDocumentsDirectory();
-
-  Hive
-    ..init(appDirectory.path)
-    ..registerAdapter(OpeningStockItemAdapter());
-
-  await Hive.openBox(Constants.kOpeningStockItemsBox);
 
   final myApp = MultiProvider(
     providers: [
@@ -26,9 +18,6 @@ void main() async {
     ],
     child: const MyApp(),
   );
-/* 
-  await Hive.box(Constants.kOpeningStockItemsBox).clear();
- */
 
   runApp(myApp);
 }

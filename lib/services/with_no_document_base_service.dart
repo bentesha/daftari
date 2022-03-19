@@ -10,7 +10,7 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
   var _list = [];
   late T _current;
 
-  String get _path => T == Product ? 'product' : '';
+  String get _path => T == Product ? 'product' : 'openingStock';
   String get _url => root + _path;
   List<T> get getList => _list.whereType<T>().toList();
   T get getCurrent => _current!;
@@ -23,11 +23,14 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
       final results = json.decode(response.body);
       if (results.isEmpty) return;
 
+      log(results.toString());
+
       for (var item in results) {
         final index = _list.indexWhere((e) => e.id == item['id']);
         if (index == -1) _list.add(_getValueFromJson(item));
       }
     } catch (e) {
+      log(e.toString());
       throw getError(e);
     }
   }
@@ -45,8 +48,10 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
 
   Future<void> add(var item) async {
     try {
-      final response = await http.post(Uri.parse(_url),
-          body: json.encode(item.toJson()), headers: headers);
+      final response = await http
+          .post(Uri.parse(_url),
+              body: json.encode(item.toJson()), headers: headers)
+          .timeout(timeLimit);
       //  log(response.body);
       final body = json.decode(response.body);
       _current = _getValueFromJson(body);
@@ -59,8 +64,10 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
 
   Future<void> edit(var item, [String? url]) async {
     try {
-      final response = await http.put(Uri.parse((url ?? _url) + '/${item.id}'),
-          body: json.encode(item.toJson()), headers: headers);
+      final response = await http
+          .put(Uri.parse((url ?? _url) + '/${item.id}'),
+              body: json.encode(item.toJson()), headers: headers)
+          .timeout(timeLimit);
       // log(response.body);
       final index = _list.indexWhere((e) => e.id == item.id);
       final body = json.decode(response.body);
@@ -73,7 +80,9 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
 
   Future<void> delete(String id, [String? url]) async {
     try {
-      final response = await http.delete(Uri.parse((url ?? _url) + '/$id'));
+      final response = await http
+          .delete(Uri.parse((url ?? _url) + '/$id'))
+          .timeout(timeLimit);
       //log(response.body);
       _handleStatusCodes(response.statusCode);
       final index = _list.indexWhere((e) => e.id == id);
@@ -100,6 +109,7 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
   ///Used only for categories
   dynamic _getValueFromJson(var json, [String? url]) {
     if (T == Product) return Product.fromJson(json);
+    if (T == OpeningStockItem) return OpeningStockItem.fromJson(json);
     if (T == Category) {
       final isExpense = url!.contains('expense');
       return Category.fromJson(json, isExpense);
@@ -115,5 +125,6 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
   dynamic _getInitialValue() {
     if (T == Product) return const Product();
     if (T == Category) return const Category();
+    if (T == OpeningStockItem) return const OpeningStockItem();
   }
 }

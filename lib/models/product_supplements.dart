@@ -13,17 +13,16 @@ class ProductPageSupplements with _$ProductPageSupplements {
       @Default([]) List<Category> categoryList,
       //for product page,
       @Default(PageActions.viewing) PageActions action,
-      //for editing product-items
       required Product product,
       @Default('') String unitPrice,
       @Default({}) Map<String, String?> errors,
       //for opening stock item
       @Default('') String quantity,
       @Default('') String unitValue,
-      required OpeningStockItem openingStockItem}) = _ProductPageSupplements;
+      String? description}) = _ProductPageSupplements;
 
-  factory ProductPageSupplements.empty() => ProductPageSupplements(
-      openingStockItem: OpeningStockItem.empty(), product: const Product());
+  factory ProductPageSupplements.empty() =>
+      const ProductPageSupplements(product: Product());
 
   bool get canCalculateTotalPrice =>
       double.tryParse(unitValue) != null && double.tryParse(quantity) != null;
@@ -31,14 +30,14 @@ class ProductPageSupplements with _$ProductPageSupplements {
   String get getStockValue => Utils.convertToMoneyFormat(
       double.parse(unitValue) * double.parse(quantity));
 
+  double get parsedUnitValue => double.parse(unitValue);
+
+  double get parsedQuantity => double.parse(quantity);
+
+  DateTime get date => DateTime.now();
+
   bool get hasAddedOpeningStockDetails =>
       unitValue.isNotEmpty || quantity.isNotEmpty;
-
-  bool get isEditing => action == PageActions.editing;
-
-  bool get isViewing => action == PageActions.viewing;
-
-  bool get isAdding => action == PageActions.adding;
 
   Product get getProduct => Product(
       id: product.id,

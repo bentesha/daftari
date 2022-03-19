@@ -40,7 +40,7 @@ class ProductPagesBloc extends Cubit<ProductPageState> {
       String? unit,
       String? code,
       String? unitValue,
-      DateTime? date,
+      String? description,
       String? unitPrice,
       PageActions? action,
       String? quantity}) {
@@ -52,8 +52,8 @@ class ProductPagesBloc extends Cubit<ProductPageState> {
 
     supp = supp.copyWith(
         product: product,
+        description: description,
         unitValue: unitValue?.trim() ?? supp.unitValue,
-        openingStockItem: supp.openingStockItem.copyWith(date: date),
         unitPrice: unitPrice?.trim() ?? supp.unitPrice,
         quantity: quantity?.trim() ?? supp.quantity,
         action: action ?? supp.action);
@@ -73,12 +73,14 @@ class ProductPagesBloc extends Cubit<ProductPageState> {
       await productsService.add(supp.getProduct);
 
       if (supp.hasAddedOpeningStockDetails) {
+        final product = productsService.getCurrent;
+
         final openingStockItem = OpeningStockItem(
-            id: Utils.getRandomId(),
-            date: supp.openingStockItem.date,
-            product: supp.product,
-            unitValue: double.parse(supp.unitValue),
-            quantity: double.parse(supp.quantity));
+            date: DateFormatter.convertToDMY(DateTime.now()),
+            productId: product.id,
+            unitValue: supp.parsedUnitValue,
+            description: supp.description,
+            quantity: supp.parsedQuantity);
         await openingStockItemsService.add(openingStockItem);
       }
       emit(ProductPageState.success(supp));
@@ -95,7 +97,6 @@ class ProductPagesBloc extends Cubit<ProductPageState> {
     if (hasErrors) return;
 
     emit(ProductPageState.loading(supp));
-
     try {
       await productsService.edit(supp.getProduct);
       emit(ProductPageState.success(supp));
@@ -169,21 +170,14 @@ class ProductPagesBloc extends Cubit<ProductPageState> {
 
   _initProductPage(Pages page, PageActions? action, [Product? product]) {
     if (page != Pages.product_page) return;
-    var supp = state.supplements;
 
+    var supp = state.supplements;
     supp = supp.copyWith(action: action!);
 
     if (product != null) {
-      final openingStockItem =
-          openingStockItemsService.getByProductId(product.id);
       supp = supp.copyWith(
-          product: product,
-          unitPrice: product.unitPrice.toString(),
-          openingStockItem: openingStockItem ?? supp.openingStockItem,
-          unitValue: openingStockItem?.unitValue.toString() ?? supp.unitValue,
-          quantity: openingStockItem?.quantity.toString() ?? supp.quantity);
+          product: product, unitPrice: product.unitPrice.toString());
     }
-
     emit(ProductPageState.content(supp));
   }
 
@@ -192,7 +186,7 @@ class ProductPagesBloc extends Cubit<ProductPageState> {
     try {
       await categoriesService.init();
       await productsService.init();
-      openingStockItemsService.init();
+      await openingStockItemsService.init();
       isSuccessful = true;
     } on ApiErrors catch (e) {
       emit(ProductPageState.failed(state.supplements,

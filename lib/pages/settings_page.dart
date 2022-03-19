@@ -50,7 +50,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
     switch (page) {
       case Pages.opening_stock:
-        nextPage = const OpeningStockPage();
+        nextPage = const OpeningStockItemsPage();
         break;
       case Pages.products_page:
         nextPage = const ProductsPage();

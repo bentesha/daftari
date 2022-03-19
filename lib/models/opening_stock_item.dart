@@ -1,45 +1,49 @@
 import '../source.dart';
 
-part 'opening_stock_item.g.dart';
-
-@HiveType(typeId: 6)
 class OpeningStockItem {
-  @HiveField(0)
-  final String id;
+  final String id, date, productId;
+  final double unitValue, quantity, total;
+  final String? description;
 
-  @HiveField(1)
-  final DateTime date;
+  const OpeningStockItem(
+      {this.id = '',
+      this.date = '',
+      this.productId = '',
+      this.unitValue = 0.0,
+      this.quantity = 0.0,
+      this.total = 0.0,
+      this.description});
 
-  @HiveField(2)
-  final Product product;
-
-  @HiveField(3)
-  final double quantity;
-
-  @HiveField(4)
-  final double unitValue;
-
-  OpeningStockItem(
-      {required this.id,
-      required this.date,
-      required this.product,
-      required this.unitValue,
-      required this.quantity});
-
-  factory OpeningStockItem.empty() => OpeningStockItem(
-      id: '',
-      date: DateTime.now(),
-      product: const Product(),
-      quantity: 0,
-      unitValue: 0);
-
-  OpeningStockItem copyWith({DateTime? date, Product? product}) =>
+  factory OpeningStockItem.fromJson(Map<String, dynamic> json) =>
       OpeningStockItem(
-          id: id,
-          date: date ?? this.date,
-          product: product ?? this.product,
-          unitValue: unitValue,
-          quantity: quantity);
+        id: json['id'],
+        date: json['date'],
+        productId: json['productId'],
+        unitValue: json['unitValue'].toDouble(),
+        quantity: json['quantity'].toDouble(),
+        total: json['total'].toDouble(),
+        description: json['description'],
+      );
 
-  double get totalValue => unitValue * quantity;
+  Map<String, dynamic> toJson() {
+    String? _description;
+    if (description != null) {
+      //code can be '', that is empty and empty faces validation errors
+      //from the server
+      if (description!.isNotEmpty) _description = description!;
+    }
+    return {
+      'date': date,
+      'unitValue': unitValue,
+      'quantity': quantity,
+      'description': _description,
+      'productId': productId
+    };
+  }
+
+  String get formattedDate => DateFormatter.convertToDMY(DateTime.parse(date));
+
+  String get formattedUnitValue => Utils.convertToMoneyFormat(unitValue);
+
+  String get formattedTotal => Utils.convertToMoneyFormat(total);
 }

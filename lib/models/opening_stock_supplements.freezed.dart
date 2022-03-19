@@ -19,18 +19,22 @@ class _$OpeningStockSupplementsTearOff {
   const _$OpeningStockSupplementsTearOff();
 
   _OpeningStockSupplements call(
-      {required OpeningStockItem openingStockItem,
-      required String quantity,
-      required String unitPrice,
-      required String unitValue,
-      required Map<String, String?> errors,
-      required List<OpeningStockItem> openingStockItems}) {
+      {String quantity = '',
+      String unitValue = '',
+      String openingStockItemId = '',
+      PageActions action = PageActions.viewing,
+      Map<String, String?> errors = const {},
+      String? description,
+      required Product product,
+      List<OpeningStockItem> openingStockItems = const []}) {
     return _OpeningStockSupplements(
-      openingStockItem: openingStockItem,
       quantity: quantity,
-      unitPrice: unitPrice,
       unitValue: unitValue,
+      openingStockItemId: openingStockItemId,
+      action: action,
       errors: errors,
+      description: description,
+      product: product,
       openingStockItems: openingStockItems,
     );
   }
@@ -41,11 +45,13 @@ const $OpeningStockSupplements = _$OpeningStockSupplementsTearOff();
 
 /// @nodoc
 mixin _$OpeningStockSupplements {
-  OpeningStockItem get openingStockItem => throw _privateConstructorUsedError;
   String get quantity => throw _privateConstructorUsedError;
-  String get unitPrice => throw _privateConstructorUsedError;
   String get unitValue => throw _privateConstructorUsedError;
+  String get openingStockItemId => throw _privateConstructorUsedError;
+  PageActions get action => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
+  Product get product => throw _privateConstructorUsedError;
   List<OpeningStockItem> get openingStockItems =>
       throw _privateConstructorUsedError;
 
@@ -60,11 +66,13 @@ abstract class $OpeningStockSupplementsCopyWith<$Res> {
           $Res Function(OpeningStockSupplements) then) =
       _$OpeningStockSupplementsCopyWithImpl<$Res>;
   $Res call(
-      {OpeningStockItem openingStockItem,
-      String quantity,
-      String unitPrice,
+      {String quantity,
       String unitValue,
+      String openingStockItemId,
+      PageActions action,
       Map<String, String?> errors,
+      String? description,
+      Product product,
       List<OpeningStockItem> openingStockItems});
 }
 
@@ -79,34 +87,44 @@ class _$OpeningStockSupplementsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? openingStockItem = freezed,
     Object? quantity = freezed,
-    Object? unitPrice = freezed,
     Object? unitValue = freezed,
+    Object? openingStockItemId = freezed,
+    Object? action = freezed,
     Object? errors = freezed,
+    Object? description = freezed,
+    Object? product = freezed,
     Object? openingStockItems = freezed,
   }) {
     return _then(_value.copyWith(
-      openingStockItem: openingStockItem == freezed
-          ? _value.openingStockItem
-          : openingStockItem // ignore: cast_nullable_to_non_nullable
-              as OpeningStockItem,
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
-              as String,
-      unitPrice: unitPrice == freezed
-          ? _value.unitPrice
-          : unitPrice // ignore: cast_nullable_to_non_nullable
               as String,
       unitValue: unitValue == freezed
           ? _value.unitValue
           : unitValue // ignore: cast_nullable_to_non_nullable
               as String,
+      openingStockItemId: openingStockItemId == freezed
+          ? _value.openingStockItemId
+          : openingStockItemId // ignore: cast_nullable_to_non_nullable
+              as String,
+      action: action == freezed
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as PageActions,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
               as Map<String, String?>,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      product: product == freezed
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
+              as Product,
       openingStockItems: openingStockItems == freezed
           ? _value.openingStockItems
           : openingStockItems // ignore: cast_nullable_to_non_nullable
@@ -123,11 +141,13 @@ abstract class _$OpeningStockSupplementsCopyWith<$Res>
       __$OpeningStockSupplementsCopyWithImpl<$Res>;
   @override
   $Res call(
-      {OpeningStockItem openingStockItem,
-      String quantity,
-      String unitPrice,
+      {String quantity,
       String unitValue,
+      String openingStockItemId,
+      PageActions action,
       Map<String, String?> errors,
+      String? description,
+      Product product,
       List<OpeningStockItem> openingStockItems});
 }
 
@@ -145,34 +165,44 @@ class __$OpeningStockSupplementsCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? openingStockItem = freezed,
     Object? quantity = freezed,
-    Object? unitPrice = freezed,
     Object? unitValue = freezed,
+    Object? openingStockItemId = freezed,
+    Object? action = freezed,
     Object? errors = freezed,
+    Object? description = freezed,
+    Object? product = freezed,
     Object? openingStockItems = freezed,
   }) {
     return _then(_OpeningStockSupplements(
-      openingStockItem: openingStockItem == freezed
-          ? _value.openingStockItem
-          : openingStockItem // ignore: cast_nullable_to_non_nullable
-              as OpeningStockItem,
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
-              as String,
-      unitPrice: unitPrice == freezed
-          ? _value.unitPrice
-          : unitPrice // ignore: cast_nullable_to_non_nullable
               as String,
       unitValue: unitValue == freezed
           ? _value.unitValue
           : unitValue // ignore: cast_nullable_to_non_nullable
               as String,
+      openingStockItemId: openingStockItemId == freezed
+          ? _value.openingStockItemId
+          : openingStockItemId // ignore: cast_nullable_to_non_nullable
+              as String,
+      action: action == freezed
+          ? _value.action
+          : action // ignore: cast_nullable_to_non_nullable
+              as PageActions,
       errors: errors == freezed
           ? _value.errors
           : errors // ignore: cast_nullable_to_non_nullable
               as Map<String, String?>,
+      description: description == freezed
+          ? _value.description
+          : description // ignore: cast_nullable_to_non_nullable
+              as String?,
+      product: product == freezed
+          ? _value.product
+          : product // ignore: cast_nullable_to_non_nullable
+              as Product,
       openingStockItems: openingStockItems == freezed
           ? _value.openingStockItems
           : openingStockItems // ignore: cast_nullable_to_non_nullable
@@ -183,31 +213,44 @@ class __$OpeningStockSupplementsCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_OpeningStockSupplements implements _OpeningStockSupplements {
+class _$_OpeningStockSupplements extends _OpeningStockSupplements {
   const _$_OpeningStockSupplements(
-      {required this.openingStockItem,
-      required this.quantity,
-      required this.unitPrice,
-      required this.unitValue,
-      required this.errors,
-      required this.openingStockItems});
+      {this.quantity = '',
+      this.unitValue = '',
+      this.openingStockItemId = '',
+      this.action = PageActions.viewing,
+      this.errors = const {},
+      this.description,
+      required this.product,
+      this.openingStockItems = const []})
+      : super._();
 
-  @override
-  final OpeningStockItem openingStockItem;
+  @JsonKey()
   @override
   final String quantity;
-  @override
-  final String unitPrice;
+  @JsonKey()
   @override
   final String unitValue;
+  @JsonKey()
+  @override
+  final String openingStockItemId;
+  @JsonKey()
+  @override
+  final PageActions action;
+  @JsonKey()
   @override
   final Map<String, String?> errors;
+  @override
+  final String? description;
+  @override
+  final Product product;
+  @JsonKey()
   @override
   final List<OpeningStockItem> openingStockItems;
 
   @override
   String toString() {
-    return 'OpeningStockSupplements(openingStockItem: $openingStockItem, quantity: $quantity, unitPrice: $unitPrice, unitValue: $unitValue, errors: $errors, openingStockItems: $openingStockItems)';
+    return 'OpeningStockSupplements(quantity: $quantity, unitValue: $unitValue, openingStockItemId: $openingStockItemId, action: $action, errors: $errors, description: $description, product: $product, openingStockItems: $openingStockItems)';
   }
 
   @override
@@ -215,12 +258,15 @@ class _$_OpeningStockSupplements implements _OpeningStockSupplements {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _OpeningStockSupplements &&
-            const DeepCollectionEquality()
-                .equals(other.openingStockItem, openingStockItem) &&
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
-            const DeepCollectionEquality().equals(other.unitPrice, unitPrice) &&
             const DeepCollectionEquality().equals(other.unitValue, unitValue) &&
+            const DeepCollectionEquality()
+                .equals(other.openingStockItemId, openingStockItemId) &&
+            const DeepCollectionEquality().equals(other.action, action) &&
             const DeepCollectionEquality().equals(other.errors, errors) &&
+            const DeepCollectionEquality()
+                .equals(other.description, description) &&
+            const DeepCollectionEquality().equals(other.product, product) &&
             const DeepCollectionEquality()
                 .equals(other.openingStockItems, openingStockItems));
   }
@@ -228,11 +274,13 @@ class _$_OpeningStockSupplements implements _OpeningStockSupplements {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(openingStockItem),
       const DeepCollectionEquality().hash(quantity),
-      const DeepCollectionEquality().hash(unitPrice),
       const DeepCollectionEquality().hash(unitValue),
+      const DeepCollectionEquality().hash(openingStockItemId),
+      const DeepCollectionEquality().hash(action),
       const DeepCollectionEquality().hash(errors),
+      const DeepCollectionEquality().hash(description),
+      const DeepCollectionEquality().hash(product),
       const DeepCollectionEquality().hash(openingStockItems));
 
   @JsonKey(ignore: true)
@@ -242,26 +290,32 @@ class _$_OpeningStockSupplements implements _OpeningStockSupplements {
           this, _$identity);
 }
 
-abstract class _OpeningStockSupplements implements OpeningStockSupplements {
+abstract class _OpeningStockSupplements extends OpeningStockSupplements {
   const factory _OpeningStockSupplements(
-          {required OpeningStockItem openingStockItem,
-          required String quantity,
-          required String unitPrice,
-          required String unitValue,
-          required Map<String, String?> errors,
-          required List<OpeningStockItem> openingStockItems}) =
-      _$_OpeningStockSupplements;
+      {String quantity,
+      String unitValue,
+      String openingStockItemId,
+      PageActions action,
+      Map<String, String?> errors,
+      String? description,
+      required Product product,
+      List<OpeningStockItem> openingStockItems}) = _$_OpeningStockSupplements;
+  const _OpeningStockSupplements._() : super._();
 
-  @override
-  OpeningStockItem get openingStockItem;
   @override
   String get quantity;
   @override
-  String get unitPrice;
-  @override
   String get unitValue;
   @override
+  String get openingStockItemId;
+  @override
+  PageActions get action;
+  @override
   Map<String, String?> get errors;
+  @override
+  String? get description;
+  @override
+  Product get product;
   @override
   List<OpeningStockItem> get openingStockItems;
   @override

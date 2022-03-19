@@ -14,8 +14,8 @@ export 'expense_page.dart';
 export 'expenses_documents_page.dart';
 export 'document_write_offs_page.dart';
 export 'write_off_page.dart';
-export 'opening_stock_edit_page.dart';
-export 'opening_stock_page.dart';
+export 'opening_stock_item_page.dart';
+export 'opening_stock_items_page.dart';
 export 'purchases_documents_page.dart';
 export 'document_expenses_page.dart';
 

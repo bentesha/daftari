@@ -162,6 +162,8 @@ enum Pages {
   document_purchases_page,
   purchases_documents_page,
   product_page,
+  opening_stock_item_page,
+  opening_stock_items_page,
   settings_page,
   opening_stock
 }

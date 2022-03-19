@@ -1,27 +1,28 @@
 import '../source.dart';
 
 class OpeningStockItemTile extends StatelessWidget {
-  const OpeningStockItemTile(this.openingStockItem, {Key? key})
+  const OpeningStockItemTile(this.openingStockItem,
+      {required this.product, Key? key})
       : super(key: key);
 
   final OpeningStockItem openingStockItem;
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
-    final date = DateFormatter.convertToDMY(openingStockItem.date);
-    final totalValue = Utils.convertToMoneyFormat(openingStockItem.totalValue);
-    final unitValue = Utils.convertToMoneyFormat(openingStockItem.unitValue);
+    final date = openingStockItem.formattedDate;
     final quantity = openingStockItem.quantity;
-
+    final unitValue = openingStockItem.formattedUnitValue;
     return AppMaterialButton(
         isFilled: false,
         padding: EdgeInsets.symmetric(horizontal: 19.dw),
         child: ListTile(
-            title: AppText(openingStockItem.product.name),
+            title: AppText(product.name),
             subtitle: AppText('$date @ $quantity x $unitValue',
                 opacity: .7, size: 14.dw),
-            trailing: AppText(totalValue, weight: FontWeight.bold)),
+            trailing: AppText(openingStockItem.formattedTotal,
+                weight: FontWeight.bold)),
         onPressed: () =>
-            push(OpeningStockEditPage(openingStockItem: openingStockItem)));
+            push(OpeningStockItemPage(openingStockItem: openingStockItem)));
   }
 }

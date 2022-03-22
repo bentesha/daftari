@@ -5,7 +5,8 @@ class Utils {
 
   static getRandomId() => _uuid.v4();
 
-  static String convertToMoneyFormat(double number) {
+  static String convertToMoneyFormat(double number,
+      [bool returnWithDecimals = true]) {
     final pieces = <String>[];
     String stringVersion = number.toString();
     final index = stringVersion.indexOf('.');
@@ -26,7 +27,9 @@ class Utils {
     pieces.add(stringVersion);
 
     if (pieces.length == 1) {
-      return (isNegative ? '- ' : '') + pieces.first.toString() + '.00';
+      return (isNegative ? '- ' : '') +
+          pieces.first.toString() +
+          (returnWithDecimals ? '.00' : '');
     }
 
     final reversedList = pieces.reversed.toList();
@@ -38,6 +41,8 @@ class Utils {
 
     return (isNegative ? '-' : '') +
         money +
-        (decimals.length == 2 ? '${decimals}0' : decimals);
+        (returnWithDecimals
+            ? (decimals.length == 2 ? '${decimals}0' : decimals)
+            : '');
   }
 }

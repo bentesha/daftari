@@ -46,4 +46,7 @@ class Category {
     }
     return {'name': name, 'description': _description};
   }
+
+  @override
+  String toString() => 'name: $name, type: $type';
 }

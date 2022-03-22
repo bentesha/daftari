@@ -7,11 +7,10 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: _buildAppBar(),
-      drawer: const AppDrawer(),
-      body: const Center(child: AppText('DASHBOARD')),
-    );
+        key: _scaffoldKey,
+        appBar: _buildAppBar(),
+        drawer: const AppDrawer(),
+        body: _buildCharts());
   }
 
   _buildAppBar() {
@@ -27,5 +26,13 @@ class Dashboard extends StatelessWidget {
     }
 
     return AppTopBar(showDrawerCallback: _openDrawer);
+  }
+
+  _buildCharts() {
+    return ListView(children: [_buildBarChart()]);
+  }
+
+  _buildBarChart() {
+    return Container();
   }
 }

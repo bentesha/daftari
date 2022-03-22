@@ -133,7 +133,10 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
       CategoriesService.initType(type.name == 'Expenses');
       supp = supp.copyWith(category: supp.category.copyWith(type: type.name));
     }
-    if (category != null) supp = supp.copyWith(category: category);
+    if (category != null) {
+      CategoriesService.initType(category.type == 'Expenses');
+      supp = supp.copyWith(category: category);
+    }
 
     emit(CategoryPagesState.content(supp));
   }

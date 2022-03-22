@@ -68,7 +68,6 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
           .put(Uri.parse((url ?? _url) + '/${item.id}'),
               body: json.encode(item.toJson()), headers: headers)
           .timeout(timeLimit);
-      // log(response.body);
       final index = _list.indexWhere((e) => e.id == item.id);
       final body = json.decode(response.body);
       _list[index] = _getValueFromJson(body, url);

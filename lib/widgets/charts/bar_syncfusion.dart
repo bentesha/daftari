@@ -1,10 +1,10 @@
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:intl/intl.dart';
 import '../../source.dart';
 import 'data.dart';
+import 'package:intl/intl.dart';
 
-class LineChart3 extends StatelessWidget {
-  const LineChart3({Key? key}) : super(key: key);
+class BarChart3 extends StatelessWidget {
+  const BarChart3({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +16,7 @@ class LineChart3 extends StatelessWidget {
               enable: true, color: Colors.white, textStyle: toolTipTextStyle),
           primaryXAxis: NumericAxis(
               edgeLabelPlacement: EdgeLabelPlacement.shift,
+              //   numberFormat: NumberFormat.currency(decimalDigits: 0, symbol: ''),
               labelStyle: textStyle),
           primaryYAxis: NumericAxis(
               labelStyle: textStyle,
@@ -27,7 +28,7 @@ class LineChart3 extends StatelessWidget {
 }
 
 final series = [
-  LineSeries<SalesData, num>(
+  ColumnSeries<SalesData, num>(
     name: 'Sales',
     color: Colors.blue,
     dataSource: chartData,

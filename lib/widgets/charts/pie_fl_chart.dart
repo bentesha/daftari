@@ -16,5 +16,5 @@ final data = PieChartData(sections: sections);
 
 final sections = chartData
     .map((e) => PieChartSectionData(
-        value: e.value.toDouble(), title: '30%', color: Colors.blue))
+        value: e.value.toDouble(), title: e.percent, color: Colors.blue))
     .toList();

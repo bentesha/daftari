@@ -11,7 +11,7 @@ class PieChart extends StatelessWidget {
     return SizedBox(
         height: 300,
         width: ScreenSizeConfig.getFullWidth,
-        child: charts.PieChart<num>(series,
+        child: charts.PieChart<String>(series,
             animate: true,
             defaultRenderer: charts.ArcRendererConfig(arcRendererDecorators: [
               charts.ArcLabelDecorator(
@@ -20,11 +20,11 @@ class PieChart extends StatelessWidget {
   }
 }
 
-List<charts.Series<SalesData, num>> series = [
+List<charts.Series<SalesData, String>> series = [
   charts.Series(
     id: "sales",
     data: chartData,
-    domainFn: (SalesData series, _) => series.date.year,
+    domainFn: (SalesData series, _) => series.percent,
     measureFn: (SalesData series, _) => series.value,
     // colorFn: (Sales series, _) => series.barColor
   )

@@ -8,15 +8,17 @@ class SalesData {
 
   double get doubleValue => value.toDouble();
 
-  SalesData(this.date, this.value);
+  String get percent => '${(value / 7025585 * 100).toInt()} %';
+
+  const SalesData(this.date, this.value);
 }
 
 class Date {
   final int year, month;
-  Date(this.year, this.month);
+  const Date(this.year, this.month);
 }
 
-final chartData = <SalesData>[
+const chartData = <SalesData>[
   SalesData(Date(2005, 01), 760000),
   SalesData(Date(2006, 02), 880560),
   SalesData(Date(2007, 03), 788000),

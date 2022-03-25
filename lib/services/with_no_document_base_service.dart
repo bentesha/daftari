@@ -1,8 +1,8 @@
-import 'service_constants.dart';
+import '../utils/error_handler_mixin.dart';
 import '../source.dart';
-import 'package:http/http.dart' as http;
+import 'package:inventory_management/utils/http_utils.dart' as http;
 
-class WithNoDocumentBaseService<T> extends ChangeNotifier {
+class WithNoDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
   WithNoDocumentBaseService() {
     _current = _getInitialValue();
   }
@@ -18,19 +18,12 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
   Future<void> getAll([bool isRefreshing = false]) async {
     if (_list.isNotEmpty) return;
     try {
-      final response = await http.get(Uri.parse(_url)).timeout(timeLimit);
-      //log(response.body.toString());
-      final results = json.decode(response.body);
+      final results = await http.get(_url) as List;
       if (results.isEmpty) return;
 
-      log(results.toString());
-
-      for (var item in results) {
-        final index = _list.indexWhere((e) => e.id == item['id']);
-        if (index == -1) _list.add(_getValueFromJson(item));
-      }
+      final itemList = results.map((item) => _getValueFromJson(item)).toList();
+      _list.addAll(itemList);
     } catch (e) {
-      log(e.toString());
       throw getError(e);
     }
   }
@@ -48,12 +41,7 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
 
   Future<void> add(var item) async {
     try {
-      final response = await http
-          .post(Uri.parse(_url),
-              body: json.encode(item.toJson()), headers: headers)
-          .timeout(timeLimit);
-      //  log(response.body);
-      final body = json.decode(response.body);
+      final body = await http.post(_url, json: item.toJson());
       _current = _getValueFromJson(body);
       _list.add(_current);
       notifyListeners();
@@ -64,10 +52,8 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
 
   Future<void> edit(var item, [String? url]) async {
     try {
-      final response = await http
-          .put(Uri.parse((url ?? _url) + '/${item.id}'),
-              body: json.encode(item.toJson()), headers: headers)
-          .timeout(timeLimit);
+      final response =
+          await http.put(url ?? _url, item.id, json: item.toJson());
       final index = _list.indexWhere((e) => e.id == item.id);
       final body = json.decode(response.body);
       _list[index] = _getValueFromJson(body, url);
@@ -79,11 +65,7 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
 
   Future<void> delete(String id, [String? url]) async {
     try {
-      final response = await http
-          .delete(Uri.parse((url ?? _url) + '/$id'))
-          .timeout(timeLimit);
-      //log(response.body);
-      _handleStatusCodes(response.statusCode);
+      await http.delete(url ?? _url, id);
       final index = _list.indexWhere((e) => e.id == id);
       _list.removeAt(index);
       notifyListeners();
@@ -113,12 +95,6 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier {
       final isExpense = url!.contains('expense');
       return Category.fromJson(json, isExpense);
     }
-  }
-
-  void _handleStatusCodes(int statusCode) {
-    if (statusCode == 200) return;
-    if (statusCode == 400) throw ApiErrors.invalidDelete();
-    throw ApiErrors.unknown();
   }
 
   dynamic _getInitialValue() {

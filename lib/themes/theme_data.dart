@@ -10,7 +10,7 @@ class AppTheme {
   static ThemeData themeData() {
     return ThemeData(
         scaffoldBackgroundColor: AppColors.background,
-        fontFamily: Constants.kFontFam,
+        fontFamily: kFontFam,
         primaryColor: AppColors.primary,
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: AppColors.primary,
@@ -23,7 +23,7 @@ class AppTheme {
             titleTextStyle: TextStyle(
                 color: AppColors.onSecondary,
                 fontSize: 18,
-                fontFamily: Constants.kFontFam,
+                fontFamily: kFontFam,
                 fontWeight: FontWeight.w500)),
         progressIndicatorTheme: const ProgressIndicatorThemeData(
             color: AppColors.primary, circularTrackColor: AppColors.onPrimary),

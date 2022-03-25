@@ -1,15 +1,17 @@
 import '../source.dart';
-import 'package:http/http.dart' as http;
-import 'service_constants.dart';
+import '../utils/error_handler_mixin.dart';
+import 'package:inventory_management/utils/http_utils.dart' as http;
 
-class WithDocumentBaseService<T> extends ChangeNotifier {
+part 'with_document_base_service_type_handler.dart';
+
+class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
   final String url;
   final DocumentType documentType;
   WithDocumentBaseService({required this.url, required this.documentType});
 
   var _hasChanges = false;
-  var _temporaryList = [];
-  var _documents = <Document>[];
+  final _temporaryList = [];
+  final _documents = <Document>[];
 
   List<Document> get getList => _documents;
 
@@ -21,32 +23,18 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
   Future<void> init() async {
     if (_documents.isNotEmpty) return;
     try {
-      final response =
-          await http.get(Uri.parse(url), headers: headers).timeout(timeLimit);
-      final jsonDocuments = json.decode(response.body);
-
-      final documents = <Document>[];
-
-      for (var jsonDocument in jsonDocuments) {
-        final document = _getDocumentFromJson(jsonDocument);
-        documents.add(document);
-      }
-      _documents = documents;
+      final results = await http.get(url) as List;
+      final documentList = results.map((e) => _getDocumentFromJson(e)).toList();
+      _documents.addAll(documentList);
     } catch (e) {
-      log(e.toString());
       throw getError(e);
     }
   }
 
   Future<void> addDocument(Document document) async {
     try {
-      final response = await http
-          .post(Uri.parse(url),
-              body: json.encode(document.toJson(documentType)),
-              headers: headers)
-          .timeout(timeLimit);
-      final jsonDocument = json.decode(response.body);
-      final _document = _getDocumentFromJson(jsonDocument);
+      final result = await http.post(url, json: document.toJson(documentType));
+      final _document = _getDocumentFromJson(result);
       _documents.add(_document);
       clearTemporaryList();
       notifyListeners();
@@ -57,16 +45,11 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
 
   Future<void> editDocument(Document document) async {
     try {
-      final response = await http
-          .put(Uri.parse(url + '/${document.form.id}'),
-              body: json.encode(document.toJson(documentType)),
-              headers: headers)
-          .timeout(timeLimit);
-      // log(response.body);
-      final jsonDocument = json.decode(response.body);
-      final _document = _getDocumentFromJson(jsonDocument);
-
-      final index = _documents.indexWhere((d) => d.form.id == document.form.id);
+      final documentId = document.form.id;
+      final result =
+          await http.put(url, documentId, json: document.toJson(documentType));
+      final _document = _getDocumentFromJson(result);
+      final index = _documents.indexWhere((d) => d.form.id == documentId);
       _documents[index] = _document;
       clearTemporaryList();
       notifyListeners();
@@ -77,7 +60,7 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
 
   Future<void> deleteDocument(String id) async {
     try {
-      await http.delete(Uri.parse(url + '/$id')).timeout(timeLimit);
+      await http.delete(url, id);
       final index = _documents.indexWhere((e) => e.form.id == id);
       _documents.removeAt(index);
       notifyListeners();
@@ -86,29 +69,15 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
     }
   }
 
+  ///initializes the temporary list to store user edits, because they won't
+  ///be directly sent to the server. When the user commits the changes, this list
+  ///is used to form a document that will be sent to the server.
+  ///If user discards changes, his data on the server is not messed up with.
   void initDocument(Document document) {
-    late final List itemList;
-
-    switch (T) {
-      case Sales:
-        itemList =
-            document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
-        break;
-      case Purchase:
-        itemList = document.maybeWhen(
-            purchases: (_, p) => p, orElse: () => <Purchase>[]);
-        break;
-      case Expense:
-        itemList = document.maybeWhen(
-            expenses: (_, e) => e, orElse: () => <Expense>[]);
-        break;
-      case WriteOff:
-        itemList = document.maybeWhen(
-            writeOffs: (_, __, w) => w, orElse: () => <WriteOff>[]);
-        break;
-    }
-
-    _temporaryList = List.from(itemList);
+    final documentItemList = _initTemporaryList(document);
+    _temporaryList
+      ..clear()
+      ..addAll(documentItemList);
   }
 
   addItemTemporarily(var item) {
@@ -134,56 +103,5 @@ class WithDocumentBaseService<T> extends ChangeNotifier {
   clearTemporaryList() {
     _temporaryList.clear();
     _hasChanges = false;
-  }
-
-  Document _getDocumentFromJson(var jsonDocument) {
-    final itemList = <T>[];
-
-    for (var json in jsonDocument['details']) {
-      final item = _getItemFromJson(json);
-      itemList.add(item);
-    }
-    return _getSpecificTypeDocument(jsonDocument, itemList);
-  }
-
-  dynamic _getItemFromJson(var json) {
-    switch (T) {
-      case Sales:
-        return Sales.fromJson(json);
-      case Purchase:
-        return Purchase.fromJson(json);
-      case Expense:
-        return Expense.fromJson(json);
-      case WriteOff:
-        return WriteOff.fromJson(json);
-    }
-  }
-
-  Document _getSpecificTypeDocument(var jsonDocument, List<T> itemList) {
-    final form = DocumentForm.fromJson(jsonDocument);
-
-    switch (T) {
-      case Sales:
-        final salesList = itemList.whereType<Sales>().toList();
-        return Document.sales(form, salesList);
-      case Purchase:
-        final purchaseList = itemList.whereType<Purchase>().toList();
-        return Document.purchases(form, purchaseList);
-      case Expense:
-        final expenseList = itemList.whereType<Expense>().toList();
-        return Document.expenses(form, expenseList);
-      case WriteOff:
-        final writeOffList = itemList.whereType<WriteOff>().toList();
-        final type = _getWriteOffTypeFrom(jsonDocument['type']);
-        return Document.writeOffs(form, type, writeOffList);
-    }
-    return Document.empty();
-  }
-
-  WriteOffTypes _getWriteOffTypeFrom(String type) {
-    if (type == 'Stolen') return WriteOffTypes.stolen;
-    if (type == 'Damaged') return WriteOffTypes.damaged;
-    if (type == 'Expired') return WriteOffTypes.expired;
-    return WriteOffTypes.other;
   }
 }

@@ -24,7 +24,10 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
     if (_documents.isNotEmpty) return;
     try {
       final results = await http.get(url) as List;
-      final documentList = results.map((e) => _getDocumentFromJson(e)).toList();
+      if (results.isEmpty) return;
+
+      final documentList =
+          results.map((e) => _getDocumentFromJson<T>(e)).toList();
       _documents.addAll(documentList);
     } catch (e) {
       throw getError(e);
@@ -33,8 +36,9 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
 
   Future<void> addDocument(Document document) async {
     try {
-      final result = await http.post(url, json: document.toJson(documentType));
-      final _document = _getDocumentFromJson(result);
+      final result =
+          await http.post(url, jsonItem: document.toJson(documentType));
+      final _document = _getDocumentFromJson<T>(result);
       _documents.add(_document);
       clearTemporaryList();
       notifyListeners();
@@ -46,9 +50,9 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
   Future<void> editDocument(Document document) async {
     try {
       final documentId = document.form.id;
-      final result =
-          await http.put(url, documentId, json: document.toJson(documentType));
-      final _document = _getDocumentFromJson(result);
+      final result = await http.put(url, documentId,
+          jsonItem: document.toJson(documentType));
+      final _document = _getDocumentFromJson<T>(result);
       final index = _documents.indexWhere((d) => d.form.id == documentId);
       _documents[index] = _document;
       clearTemporaryList();
@@ -71,10 +75,10 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
 
   ///initializes the temporary list to store user edits, because they won't
   ///be directly sent to the server. When the user commits the changes, this list
-  ///is used to form a document that will be sent to the server.
+  ///is used to create a document that will be sent to the server.
   ///If user discards changes, his data on the server is not messed up with.
   void initDocument(Document document) {
-    final documentItemList = _initTemporaryList(document);
+    final documentItemList = _initTemporaryList<T>(document);
     _temporaryList
       ..clear()
       ..addAll(documentItemList);

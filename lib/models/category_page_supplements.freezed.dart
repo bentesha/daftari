@@ -20,10 +20,10 @@ class _$CategoryPageSupplementsTearOff {
 
   _CategoryPageSupplements call(
       {required Category category,
-      required List<Category> categoryList,
-      required List<Product> productList,
+      List<Category> categoryList = const [],
+      List<Product> productList = const [],
       PageActions action = PageActions.viewing,
-      required Map<String, String?> errors}) {
+      Map<String, String?> errors = const {}}) {
     return _CategoryPageSupplements(
       category: category,
       categoryList: categoryList,
@@ -170,21 +170,24 @@ class __$CategoryPageSupplementsCopyWithImpl<$Res>
 class _$_CategoryPageSupplements extends _CategoryPageSupplements {
   const _$_CategoryPageSupplements(
       {required this.category,
-      required this.categoryList,
-      required this.productList,
+      this.categoryList = const [],
+      this.productList = const [],
       this.action = PageActions.viewing,
-      required this.errors})
+      this.errors = const {}})
       : super._();
 
   @override
   final Category category;
+  @JsonKey()
   @override
   final List<Category> categoryList;
+  @JsonKey()
   @override
   final List<Product> productList;
   @JsonKey()
   @override
   final PageActions action;
+  @JsonKey()
   @override
   final Map<String, String?> errors;
 
@@ -226,10 +229,10 @@ class _$_CategoryPageSupplements extends _CategoryPageSupplements {
 abstract class _CategoryPageSupplements extends CategoryPageSupplements {
   const factory _CategoryPageSupplements(
       {required Category category,
-      required List<Category> categoryList,
-      required List<Product> productList,
+      List<Category> categoryList,
+      List<Product> productList,
       PageActions action,
-      required Map<String, String?> errors}) = _$_CategoryPageSupplements;
+      Map<String, String?> errors}) = _$_CategoryPageSupplements;
   const _CategoryPageSupplements._() : super._();
 
   @override

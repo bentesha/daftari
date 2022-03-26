@@ -87,11 +87,9 @@ class _WriteOffsDocumentsPagesState extends State<WriteOffsDocumentsPages> {
 
   _initBloc([bool isFirstTimeInit = true]) {
     if (isFirstTimeInit) {
-      final writeOffsTypesService = getService<WriteOffsTypesService>(context);
       final writeOffsService = getService<WriteOffsService>(context);
       final productsService = getService<ProductsService>(context);
-      bloc = WriteOffPagesBloc(
-          writeOffsService, productsService, writeOffsTypesService);
+      bloc = WriteOffPagesBloc(writeOffsService, productsService);
     }
     bloc.init(Pages.write_offs_documents_page);
   }

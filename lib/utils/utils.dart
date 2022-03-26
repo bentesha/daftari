@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class Utils {
@@ -6,6 +7,10 @@ class Utils {
   static getRandomId() => _uuid.v4();
 
   static String convertToMoneyFormat(double number) {
+    return NumberFormat.currency(symbol: '').format(number);
+  }
+
+  /*static String convertToMoneyFormat(double number) {
     final pieces = <String>[];
     String stringVersion = number.toString();
     final index = stringVersion.indexOf('.');
@@ -39,5 +44,5 @@ class Utils {
     return (isNegative ? '-' : '') +
         money +
         (decimals.length == 2 ? '${decimals}0' : decimals);
-  }
+  }*/
 }

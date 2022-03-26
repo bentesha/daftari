@@ -22,7 +22,6 @@ void showSnackBar(String message,
 }
 
 String getErrorMessage(var error) {
-  log(error.toString());
   if (error is ApiErrors) return error.message;
   return ApiErrors.unknown().message;
 }
@@ -32,5 +31,5 @@ void _showSnackBarCallback(BuildContext context, String message) {
       elevation: 0,
       dismissDirection: DismissDirection.none,
       backgroundColor: AppColors.error,
-      content: AppText(message, color: AppColors.onError)));
+      content: AppText(message, color: AppColors.onError, size: 14.dw)));
 }

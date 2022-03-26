@@ -1,23 +1,19 @@
 import '../source.dart';
 
 class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
-  WriteOffPagesBloc(
-      this.writeOffsService, this.productsService, this.writeOffsTypesService)
+  WriteOffPagesBloc(this.writeOffsService, this.productsService)
       : super(WriteOffPagesState.initial()) {
     writeOffsService.addListener(_handleDocumentUpdates);
     productsService.addListener(_handleProductUpdates);
-    writeOffsTypesService.addListener(_handleWriteOffTypesUpdates);
   }
 
   WriteOffPagesBloc.empty()
       : writeOffsService = WriteOffsService(),
         productsService = ProductsService(),
-        writeOffsTypesService = WriteOffsTypesService(),
         super(WriteOffPagesState.initial());
 
   final WriteOffsService writeOffsService;
   final ProductsService productsService;
-  final WriteOffsTypesService writeOffsTypesService;
   var _page = Pages.purchases_page;
 
   Product getProductById(String id) => productsService.getById(id)!;
@@ -234,13 +230,6 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
     if (_page != Pages.write_off_page) return;
     final product = productsService.getCurrent;
     final supp = state.supplements.copyWith(product: product, quantity: '1');
-    emit(WriteOffPagesState.content(supp));
-  }
-
-  _handleWriteOffTypesUpdates() {
-    if (_page != Pages.write_off_page) return;
-    final type = writeOffsTypesService.getSelectedType;
-    final supp = state.supplements.copyWith(type: type);
     emit(WriteOffPagesState.content(supp));
   }
 

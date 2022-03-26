@@ -78,8 +78,8 @@ class _OpeningStockItemPageState extends State<OpeningStockItemPage> {
             value: supp.product.name,
             error: supp.errors['product'],
             isEditable: !action.isViewing,
-            onPressed: () => push(ItemsSearchPage<Product>(
-                categoryType: CategoryType.products()))),
+            onPressed: () => push(const ItemsSearchPage<Product>(
+                categoryType: CategoryTypes.products))),
         DateSelector(
             title: 'Date',
             onDateSelected: (_) {},

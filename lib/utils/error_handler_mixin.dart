@@ -9,6 +9,7 @@ mixin ErrorHandler {
     log(error.toString());
     if (error is SocketException) throw ApiErrors.socket();
     if (error is TimeoutException) throw ApiErrors.timeOut();
+    if(error is ApiErrors) throw error;
     throw ApiErrors.unknown();
   }
 }

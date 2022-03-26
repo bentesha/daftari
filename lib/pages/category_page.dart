@@ -1,11 +1,12 @@
 import '../source.dart';
+import '../widgets/type_selector.dart';
 
 class CategoryEditPage extends StatefulWidget {
   const CategoryEditPage({Key? key, this.category, this.categoryType})
       : super(key: key);
 
   final Category? category;
-  final CategoryType? categoryType;
+  final CategoryTypes? categoryType;
 
   @override
   State<CategoryEditPage> createState() => _CategoryEditPageState();
@@ -63,37 +64,38 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
   }
 
   _buildAppBar(CategoryPageSupplements supp) {
+    final action = supp.action;
     return PageAppBar(
-      title: supp.isViewing
+      title: action.isViewing
           ? supp.category.name
-          : supp.isAdding
+          : action.isAdding
               ? 'New Category'
               : 'Edit Category',
-      actionCallbacks: supp.isViewing
+      actionCallbacks: action.isViewing
           ? [() => bloc.updateAction(PageActions.editing), bloc.delete]
-          : [supp.isEditing ? bloc.edit : bloc.save],
-      actionIcons: supp.isViewing
+          : [action.isEditing ? bloc.edit : bloc.save],
+      actionIcons: action.isViewing
           ? [Icons.edit_outlined, Icons.delete_outlined]
           : [Icons.check],
     );
   }
 
   Widget _buildBody(CategoryPageSupplements supp) {
+    final action = supp.action;
+
     return Column(
       children: [
         //when obtained when making a new category from the search page
         widget.categoryType != null
             ? Container()
-            : ValueSelector(
+            : TypeSelector<CategoryTypes>(
                 title: 'Type',
-                value: supp.category.type,
+                selectedType: supp.category.type,
                 error: supp.errors['type'],
-                isEditable: !supp.isViewing,
-                onPressed: () => push(ItemsSearchPage<CategoryType>(
-                    categoryType: widget.categoryType)),
-              ),
+                isEditable: !action.isViewing,
+                onTypeSelected: bloc.updateType),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
-        !supp.isViewing
+        !action.isViewing
             ? AppTextField(
                 text: supp.category.name,
                 onChanged: bloc.updateName,
@@ -102,7 +104,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
                 textCapitalization: TextCapitalization.words,
                 label: 'Name',
                 error: supp.errors['name'],
-                isEnabled: !supp.isViewing)
+                isEnabled: !action.isViewing)
             : Container(),
         AppTextField(
             error: supp.errors['description'],
@@ -113,7 +115,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
             textCapitalization: TextCapitalization.sentences,
             label: 'Description',
             maxLines: 3,
-            isEnabled: !supp.isViewing),
+            isEnabled: !action.isViewing),
       ],
     );
   }
@@ -122,8 +124,7 @@ class _CategoryEditPageState extends State<CategoryEditPage> {
     if (isFirstTimeInit) {
       final categoriesService = getService<CategoriesService>(context);
       final itemsService = getService<ProductsService>(context);
-      final typeService = getService<CategoryTypesService>(context);
-      bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
+      bloc = CategoryPageBloc(categoriesService, itemsService);
     }
     final action =
         widget.category == null ? PageActions.adding : PageActions.viewing;

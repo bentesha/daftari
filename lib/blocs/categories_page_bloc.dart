@@ -1,26 +1,22 @@
 import '../source.dart';
 
 class CategoryPageBloc extends Cubit<CategoryPagesState> {
-  CategoryPageBloc(
-      this.categoriesService, this.productsService, this.typeService)
+  CategoryPageBloc(this.categoriesService, this.productsService)
       : super(CategoryPagesState.initial()) {
     categoriesService.addListener(_handleCategoryUpdates);
     productsService.addListener(_handleProductUpdates);
-    typeService.addListener(_handleTypeUpdates);
   }
 
   CategoryPageBloc.empty()
       : categoriesService = CategoriesService(),
         productsService = ProductsService(),
-        typeService = CategoryTypesService(),
         super(CategoryPagesState.initial());
 
   final CategoriesService categoriesService;
   final ProductsService productsService;
-  final CategoryTypesService typeService;
 
   void init(Pages page,
-      {CategoryType? type, Category? category, PageActions? action}) async {
+      {CategoryTypes? type, Category? category, PageActions? action}) async {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
 
@@ -35,6 +31,8 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
   void updateDescription(String desc) => _updateAttributes(name: desc);
 
   void updateAction(PageActions action) => _updateAttributes(action: action);
+
+  void updateType(CategoryTypes type) => _updateAttributes(categoryType: type);
 
   void save() async => await _commitChanges();
 
@@ -75,7 +73,8 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
 
     emit(CategoryPagesState.loading(supp));
     errors['name'] = InputValidation.validateText(supp.category.name, 'Name');
-    errors['type'] = InputValidation.validateText(supp.category.type, 'Type');
+    errors['type'] =
+        InputValidation.validateText(supp.category.type.string, 'Type');
 
     supp = supp.copyWith(errors: errors);
     emit(CategoryPagesState.content(supp));
@@ -99,23 +98,13 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
     emit(CategoryPagesState.content(supp));
   }
 
-  _handleTypeUpdates() {
-    var supp = state.supplements;
-    emit(CategoryPagesState.loading(supp));
-    final type = typeService.getSelectedType;
-    final category = supp.category.copyWith(type: type.name);
-    supp = supp.copyWith(category: category);
-    emit(CategoryPagesState.content(supp));
-  }
-
-  _initCategoriesPage(Pages page, [CategoryType? type]) {
+  _initCategoriesPage(Pages page, [CategoryTypes? type]) {
     if (page != Pages.categories_page) return;
     var supp = state.supplements;
     var categories = categoriesService.getList;
 
     if (type != null) {
-      categories = categories.where((e) => e.type == type.name).toList();
-      supp = supp.copyWith(category: supp.category.copyWith(type: type.name));
+      categories = categories.where((e) => e.type == type).toList();
     }
 
     final products = productsService.getList;
@@ -124,17 +113,16 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
   }
 
   _initCategoryPage(Pages page, PageActions? action,
-      [CategoryType? type, Category? category]) {
+      [CategoryTypes? type, Category? category]) {
     if (page != Pages.category_page) return;
     var supp = state.supplements;
     supp = supp.copyWith(action: action!);
 
     if (type != null) {
-      CategoriesService.initType(type.name == 'Expenses');
-      supp = supp.copyWith(category: supp.category.copyWith(type: type.name));
+      CategoriesService.initType(type);
     }
     if (category != null) {
-      CategoriesService.initType(category.type == 'Expenses');
+      CategoriesService.initType(category.type);
       supp = supp.copyWith(category: category);
     }
 
@@ -142,12 +130,17 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
   }
 
   void _updateAttributes(
-      {String? name, String? description, PageActions? action}) {
+      {String? name,
+      String? description,
+      PageActions? action,
+      CategoryTypes? categoryType}) {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
     var category = supp.category;
     category = category.copyWith(
-        name: name ?? category.name, description: description);
+        name: name ?? category.name,
+        description: description,
+        type: categoryType);
     supp = supp.copyWith(category: category, action: action ?? supp.action);
     emit(CategoryPagesState.content(supp));
   }

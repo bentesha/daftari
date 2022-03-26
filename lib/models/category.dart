@@ -5,21 +5,38 @@
 //and creates the classes itself and it becomes controversial.
 //Second option is to writing the boilerplate yourself.
 
+enum CategoryTypes { products, expenses }
+
+extension CategoryTypesString on CategoryTypes {
+  String get string {
+    switch (this) {
+      case CategoryTypes.products:
+        return 'Products';
+      case CategoryTypes.expenses:
+        return 'Expenses';
+    }
+  }
+}
+
 class Category {
-  final String id, type, name;
+  final String id, name;
   final String? description;
+  final CategoryTypes type;
 
   const Category(
-      {this.id = '', this.description, this.name = '', this.type = ''});
+      {this.id = '',
+      this.description,
+      this.name = '',
+      this.type = CategoryTypes.expenses});
 
   Category.expenses({required this.id, this.description, required this.name})
-      : type = 'Expenses';
+      : type = CategoryTypes.expenses;
 
   Category.products({required this.id, this.description, required this.name})
-      : type = 'Products';
+      : type = CategoryTypes.products;
 
   Category copyWith(
-      {String? id, String? type, String? name, String? description}) {
+      {String? id, CategoryTypes? type, String? name, String? description}) {
     return Category(
         id: id ?? this.id,
         description: description ?? this.description,
@@ -27,8 +44,8 @@ class Category {
         type: type ?? this.type);
   }
 
-  factory Category.fromJson(var json, [bool isExpenses = true]) {
-    if (isExpenses) {
+  factory Category.fromJson(var json, {required CategoryTypes type}) {
+    if (type == CategoryTypes.expenses) {
       return Category.expenses(
           id: json['id'], description: json['description'], name: json['name']);
     } else {

@@ -5,20 +5,22 @@ List<T> _initTemporaryList<T>(Document document) {
 
   switch (T) {
     case Sales:
-      itemList =
-          document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
+      itemList = document.maybeWhen(
+          sales: (_, salesList) => salesList, orElse: () => <Sales>[]);
       break;
     case Purchase:
       itemList = document.maybeWhen(
-          purchases: (_, p) => p, orElse: () => <Purchase>[]);
+          purchases: (_, purchaseList) => purchaseList,
+          orElse: () => <Purchase>[]);
       break;
     case Expense:
-      itemList =
-          document.maybeWhen(expenses: (_, e) => e, orElse: () => <Expense>[]);
+      itemList = document.maybeWhen(
+          expenses: (_, expenseList) => expenseList, orElse: () => <Expense>[]);
       break;
     case WriteOff:
       itemList = document.maybeWhen(
-          writeOffs: (_, __, w) => w, orElse: () => <WriteOff>[]);
+          writeOffs: (_, __, writeOffList) => writeOffList,
+          orElse: () => <WriteOff>[]);
       break;
   }
   return itemList.whereType<T>().toList();
@@ -27,9 +29,9 @@ List<T> _initTemporaryList<T>(Document document) {
 Document _getDocumentFromJson<T>(var jsonDocument) {
   final details = jsonDocument['details'] as List;
   final itemList =
-      details.map((e) => _getItemFromJson(e)).whereType<T>().toList();
+      details.map((e) => _getItemFromJson<T>(e)).whereType<T>().toList();
 
-  return _getSpecificTypeDocument(jsonDocument, itemList);
+  return _getSpecificTypeDocument<T>(jsonDocument, itemList);
 }
 
 dynamic _getItemFromJson<T>(var json) {

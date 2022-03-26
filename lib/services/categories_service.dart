@@ -5,32 +5,34 @@ import 'package:inventory_management/utils/http_utils.dart' as http;
 
 class CategoriesService extends WithNoDocumentBaseService<Category>
     with ErrorHandler {
-  static bool _isExpenses = false;
+  static var categoryType = CategoryTypes.expenses;
   static const expenseCategoryEndpoint = 'expenseCategory';
   static const productCategoryEndpoint = 'category';
 
-  static initType(bool isExpenses) {
-    _isExpenses = isExpenses;
-    log('isExpenses: $isExpenses');
+  static bool get _isExpenses => categoryType == CategoryTypes.expenses;
+
+  static initType(CategoryTypes type) {
+    categoryType = type;
+    log('Type: $type');
   }
 
   ///Gets all categories from the server
   Future<void> init() async => await getAll();
 
   @override
-  Future<List<Category>> getAll([bool isRefreshing = false]) async {
-    if (super.getList.isNotEmpty) return super.getList;
+  Future<void> getAll() async {
+    if (super.getList.isNotEmpty) return;
 
     try {
-      final result1 = await http.get(root + expenseCategoryEndpoint);
-      final result2 = await http.get(root + productCategoryEndpoint);
+      final result1 = await http.get(root + expenseCategoryEndpoint) as List;
+      final result2 = await http.get(root + productCategoryEndpoint) as List;
 
-      var categories1 = _addCategoriesFrom(result1, 'Expenses');
-      var categories2 = _addCategoriesFrom(result2, 'Products');
-
-      categories1 = [...categories2];
-      super.updateAttributes(categories1);
-      return categories1;
+      var expenseCategories =
+          _getCategoriesFrom(result1, CategoryTypes.expenses);
+      var productsCategories =
+          _getCategoriesFrom(result2, CategoryTypes.products);
+      final categories = [...expenseCategories, ...productsCategories];
+      updateAttributes(categories);
     } catch (e) {
       throw getError(e);
     }
@@ -41,11 +43,11 @@ class CategoriesService extends WithNoDocumentBaseService<Category>
     try {
       final url = root +
           (_isExpenses ? expenseCategoryEndpoint : productCategoryEndpoint);
-      final json = await http.post(url, json: item.toJson());
-      final category = Category.fromJson(json, _isExpenses);
+      final json = await http.post(url, jsonItem: item.toJson());
+      final category = Category.fromJson(json, type: categoryType);
       final list = super.getList;
       list.add(category);
-      super.updateAttributes(list, currentId: category.id);
+      updateAttributes(list, currentId: category.id);
       notifyListeners();
     } catch (e) {
       throw getError(e);
@@ -56,24 +58,19 @@ class CategoriesService extends WithNoDocumentBaseService<Category>
   Future<void> edit(var item, [String? url]) async {
     final url = root +
         (_isExpenses ? expenseCategoryEndpoint : productCategoryEndpoint);
-    await super.edit(item, url);
+    await edit(item, url);
   }
 
   @override
   Future<void> delete(String id, [String? url]) async {
     final url = root +
         (_isExpenses ? expenseCategoryEndpoint : productCategoryEndpoint);
-    await super.delete(id, url);
+    await delete(id, url);
   }
 
-  List<Category> _addCategoriesFrom(var result, String categoryType) {
-    final list = <Category>[];
-    for (var item in result) {
-      final index = list.indexWhere((e) => e.id == item['id']);
-      if (index == -1) {
-        list.add(Category.fromJson(item, categoryType == 'Expenses'));
-      }
-    }
-    return list;
+  List<Category> _getCategoriesFrom(List result, CategoryTypes categoryType) {
+    final list = result
+        .map((category) => Category.fromJson(category, type: categoryType));
+    return list.whereType<Category>().toList();
   }
 }

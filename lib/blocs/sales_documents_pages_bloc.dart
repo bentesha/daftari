@@ -14,7 +14,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
 
   final SalesService salesService;
   final ProductsService productsService;
-  var  _page = Pages.sales_page;
+  var _page = Pages.sales_page;
 
   Product getProductById(String id) => productsService.getById(id)!;
 

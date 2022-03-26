@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:inventory_management/source.dart';
 import '../errors/api_errors.dart';
 
 const headers = {
@@ -17,11 +18,11 @@ Future<dynamic> get(String url) async {
 ///form.
 ///item has to be converted to json directly before passed here, as for
 ///documents toJson method is different (has an document-type argument). Hence
-///variable name json as a reminder.
-Future<dynamic> put(String url, String itemId, {required var json}) async {
+///variable name jsonItem as a reminder.
+Future<dynamic> put(String url, String itemId, {required var jsonItem}) async {
   final response = await http
       .put(Uri.parse(url + '/$itemId'),
-          body: json.encode(json), headers: headers)
+          body: json.encode(jsonItem), headers: headers)
       .timeout(timeLimit);
 
   return json.decode(response.body);
@@ -29,10 +30,10 @@ Future<dynamic> put(String url, String itemId, {required var json}) async {
 
 ///item has to be converted to json directly before passed here, as for
 ///documents toJson method is different (has an document-type argument). Hence
-///variable name json as a reminder.
-Future<dynamic> post(String url, {required var json}) async {
+///variable name jsonItem as a reminder.
+Future<dynamic> post(String url, {required var jsonItem}) async {
   final response = await http
-      .post(Uri.parse(url), body: json.encode(json), headers: headers)
+      .post(Uri.parse(url), body: json.encode(jsonItem), headers: headers)
       .timeout(timeLimit);
 
   return json.decode(response.body);

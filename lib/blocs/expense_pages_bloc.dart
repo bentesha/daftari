@@ -14,8 +14,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
 
   final ExpensesService expensesService;
   final CategoriesService categoriesService;
-  var  _page = Pages.expense_page;
-
+  var _page = Pages.expense_page;
 
   Category getCategoryById(String id) => categoriesService.getById(id)!;
 

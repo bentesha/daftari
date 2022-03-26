@@ -1,35 +1,57 @@
 import '../source.dart';
 
-class TypeSelector extends StatelessWidget {
+class TypeSelector<T> extends StatefulWidget {
   const TypeSelector(
       {Key? key,
       required this.onTypeSelected,
       required this.selectedType,
       required this.title,
+      required this.error,
       required this.isEditable})
       : super(key: key);
 
-  final ValueChanged<WriteOffTypes> onTypeSelected;
-  final WriteOffTypes? selectedType;
+  final ValueChanged<T> onTypeSelected;
+  final T? selectedType;
   final String title;
+  final String? error;
   final bool isEditable;
 
   @override
+  State<TypeSelector<T>> createState() => _TypeSelectorState<T>();
+}
+
+class _TypeSelectorState<T> extends State<TypeSelector<T>> {
+  late List<T> options;
+
+  @override
+  void initState() {
+    options = _getOptions();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final selectedType = _getType(widget.selectedType);
     return AppTextButton(
       backgroundColor: AppColors.surface,
-      onPressed: isEditable ? () => _showOptionsDialog(context) : () {},
+      onPressed: widget.isEditable ? () => _showOptionsDialog(context) : () {},
       isFilled: false,
       padding: EdgeInsets.symmetric(horizontal: 19.dw),
-      child: ListTile(
-        title: AppText(title.toUpperCase(), opacity: .7),
-        subtitle: Padding(
-          padding: EdgeInsets.only(top: 5.dh),
-          child: AppText(selectedType?.string ?? 'Tap to select',
-              weight: FontWeight.w500),
-        ),
-        trailing:
-            isEditable ? const Icon(Icons.chevron_right) : Container(width: .1),
+      child: Column(
+        children: [
+          ListTile(
+            title: AppText(widget.title.toUpperCase(), opacity: .7),
+            subtitle: Padding(
+              padding: EdgeInsets.only(top: 5.dh),
+              child: AppText(selectedType ?? 'Tap to select',
+                  weight: FontWeight.w500),
+            ),
+            trailing: widget.isEditable
+                ? const Icon(Icons.chevron_right)
+                : Container(width: .1),
+          ),
+          _buildError()
+        ],
       ),
     );
   }
@@ -40,7 +62,7 @@ class TypeSelector extends StatelessWidget {
         builder: (_) {
           return Dialog(
             child: SizedBox(
-              height: 205.dh,
+              height: T == WriteOffTypes ? 205.dh : 123.dh,
               child: Column(
                 children: [_buildTitle(), _buildOptions()],
               ),
@@ -55,39 +77,70 @@ class TypeSelector extends StatelessWidget {
       width: double.infinity,
       alignment: Alignment.center,
       color: AppColors.primary,
-      child: AppText('Choose Write-Off Type'.toUpperCase(),
+      child: AppText(
+          T == WriteOffTypes ? 'CHOOSE WRITE-OFF TYPE' : 'CHOOSE CATEGORY TYPE',
           color: AppColors.onPrimary),
     );
   }
 
   _buildOptions() {
-    final types = [
-      WriteOffTypes.stolen,
-      WriteOffTypes.damaged,
-      WriteOffTypes.expired,
-      WriteOffTypes.other
-    ];
     return ListView.separated(
       separatorBuilder: (_, __) => const AppDivider(margin: EdgeInsets.zero),
-      itemBuilder: (_, index) => _buildOption(types[index]),
-      itemCount: types.length,
+      itemBuilder: (_, index) => _buildOption(options[index]),
+      itemCount: options.length,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
     );
   }
 
-  _buildOption(WriteOffTypes type) {
+  _buildOption(var type) {
+    final typeString = _getType(type);
     return AppTextButton(
         onPressed: () {
           pop();
-          onTypeSelected(type);
+          widget.onTypeSelected(type);
         },
         isFilled: false,
         child: Container(
           height: 40.dh,
           alignment: Alignment.center,
-          child: AppText(type.string),
+          child: AppText(typeString!),
           width: double.infinity,
         ));
+  }
+
+  _buildError() {
+    final hasError = widget.error != null;
+    if (hasError) {
+      return Padding(
+        padding: EdgeInsets.only(top: 10.dh),
+        child: AppText(widget.error!),
+      );
+    }
+    return Container();
+  }
+
+  List<T> _getOptions() {
+    late List list;
+    if (T == WriteOffTypes) {
+      list = [
+        WriteOffTypes.stolen,
+        WriteOffTypes.damaged,
+        WriteOffTypes.expired,
+        WriteOffTypes.other
+      ];
+    } else {
+      list = [CategoryTypes.products, CategoryTypes.expenses];
+    }
+    return list.whereType<T>().toList();
+  }
+
+  String? _getType(dynamic type) {
+    if (type == null) return null;
+    if (T == WriteOffTypes) {
+      return (type as WriteOffTypes).string;
+    } else {
+      return (type as CategoryTypes).string;
+    }
   }
 }

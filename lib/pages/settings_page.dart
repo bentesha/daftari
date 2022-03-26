@@ -56,10 +56,10 @@ class _SettingsPageState extends State<SettingsPage> {
         nextPage = const ProductsPage();
         break;
       case Pages.products_categories_page:
-        nextPage = CategoriesPage(CategoryType.products());
+        nextPage = const CategoriesPage(CategoryTypes.products);
         break;
       case Pages.expenses_categories_page:
-        nextPage = CategoriesPage(CategoryType.expenses());
+        nextPage = const CategoriesPage(CategoryTypes.expenses);
         break;
       default:
     }

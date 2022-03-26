@@ -1,8 +1,7 @@
 import '../source.dart';
 
 class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
-  SearchPageBloc(this.productsService, this.categoriesService,
-      this.categoryTypesService, this.writeOffTypesService)
+  SearchPageBloc(this.productsService, this.categoriesService)
       : super(SearchPageState<T>.initial()) {
     productsService.addListener(_handleItemUpdates);
     categoriesService.addListener(_handleCategoryUpdates);
@@ -10,13 +9,11 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
 
   final ProductsService productsService;
   final CategoriesService categoriesService;
-  final CategoryTypesService categoryTypesService;
-  final WriteOffsTypesService writeOffTypesService;
 
   var _options = [];
   var _categoryType = '';
 
-  void init([CategoryType? categoryType]) async {
+  void init([CategoryTypes? categoryType]) async {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
     if (categoryType != null) _categoryType = categoryType.name;
@@ -54,20 +51,6 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
     emit(SearchPageState.success(supp));
   }
 
-  void updateType(CategoryType type) {
-    var supp = state.supplements;
-    emit(SearchPageState.loading(supp));
-    categoryTypesService.updateType(type);
-    emit(SearchPageState.success(supp));
-  }
-
-  void updateWriteOffType(WriteOffTypes writeOffType) {
-    var supp = state.supplements;
-    emit(SearchPageState.loading(supp));
-    writeOffTypesService.updateType(writeOffType);
-    emit(SearchPageState.success(supp));
-  }
-
   _handleItemUpdates() {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
@@ -86,11 +69,11 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
     emit(SearchPageState.content(supp));
   }
 
-  //TODO to this point it is services are already initiated. This could be removed.
+  //TODO to this point these services are already initiated. This could be removed.
   Future<void> _initServices() async {
     if (T == Product) await productsService.init();
     if (T == Category) {
-      if (_categoryType == CategoryType.products().name) {
+      if (_categoryType == CategoryTypes.products.string) {
         await categoriesService.init();
       }
     }
@@ -98,8 +81,6 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
 
   List _getOptions() {
     if (T == Product) return productsService.getList;
-    if (T == CategoryType) return categoryTypesService.getTypeList;
-    if (T == WriteOffType) return writeOffTypesService.getTypeList;
     if (T == Category) {
       final categories = categoriesService.getList;
       return categories.where((e) => e.type == _categoryType).toList();

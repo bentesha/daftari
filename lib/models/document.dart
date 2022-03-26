@@ -3,18 +3,6 @@ import '../source.dart';
 part 'document.freezed.dart';
 
 enum DocumentType { sales, purchases, expenses, writeOffs }
-enum WriteOffTypes { stolen, damaged, expired, other }
-
-extension WriteOffTypesString on WriteOffTypes {
-  String get string {
-    switch(this){
-      case WriteOffTypes.stolen: return 'Stolen';
-      case WriteOffTypes.damaged: return 'Damaged';
-      case WriteOffTypes.expired: return 'Expired';
-      case WriteOffTypes.other: return 'Other';
-    }
-  }
-}
 
 @freezed
 class Document with _$Document {

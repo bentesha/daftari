@@ -3,7 +3,7 @@ import '../source.dart';
 class ItemsSearchPage<T> extends StatefulWidget {
   const ItemsSearchPage({this.categoryType, Key? key}) : super(key: key);
 
-  final CategoryType? categoryType;
+  final CategoryTypes? categoryType;
 
   @override
   State<ItemsSearchPage<T>> createState() => _ItemsSearchPageState();
@@ -18,10 +18,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
   void initState() {
     final productsService = getService<ProductsService>(context);
     final categoriesService = getService<CategoriesService>(context);
-    final categoryTypesService = getService<CategoryTypesService>(context);
-    final writeOffsTypesService = getService<WriteOffsTypesService>(context);
-    bloc = SearchPageBloc(productsService, categoriesService,
-        categoryTypesService, writeOffsTypesService);
+    bloc = SearchPageBloc(productsService, categoriesService);
     bloc.init(widget.categoryType);
     super.initState();
   }
@@ -66,7 +63,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
                 ? () => focusNode.requestFocus()
                 : bloc.clearQuery,
             iconThemeData: iconThemeData.copyWith(size: 24.dw)),
-        T == CategoryType || T == WriteOffType
+        T == CategoryTypes || T == WriteOffTypes
             ? SizedBox(width: 15.dw)
             : AppIconButton(
                 onPressed: _navigateToSpecificTypeWidget,
@@ -91,10 +88,9 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
   }
 
   _buildEmptyItemState(List<T> options, String query) {
+    dynamic categoryType = widget.categoryType;
     final type = T == Category
-        ? widget.categoryType!.name == CategoryType.expenses().name
-            ? 'expense category'
-            : 'product category'
+        ? '${categoryType.string.toLowerCase()} category'
         : 'product';
     final message = options.isEmpty && query.isEmpty
         ? 'No $type has been recorded yet. Create one by clicking on the add button on the page top bar'
@@ -104,11 +100,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
 
   Widget _buildItemTile(var item) {
     return AppTextButton(
-      onPressed: () => T == CategoryType
-          ? bloc.updateType(item)
-          : T == WriteOffType
-              ? bloc.updateWriteOffType(item)
-              : bloc.updateId(item.id),
+      onPressed: () => bloc.updateId(item.id),
       child: ListTile(title: AppText(item.name, weight: FontWeight.w500)),
       isFilled: false,
       padding: EdgeInsets.symmetric(horizontal: 19.dw),

@@ -100,8 +100,8 @@ class _ProductPageState extends State<ProductPage> {
           value: bloc.getSelectedCategory?.name,
           error: supp.errors['category'],
           isEditable: !action.isViewing,
-          onPressed: () => push(
-              ItemsSearchPage<Category>(categoryType: CategoryType.products())),
+          onPressed: () => push(const ItemsSearchPage<Category>(
+              categoryType: CategoryTypes.products)),
         ),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
         !action.isViewing

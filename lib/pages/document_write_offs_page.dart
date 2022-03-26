@@ -97,6 +97,7 @@ class _DocumentWriteOffsPageState extends State<DocumentWriteOffsPage> {
             onTypeSelected: bloc.updateType,
             selectedType: supp.type,
             title: 'Type',
+            error: supp.errors['type'],
             isEditable: action.isAdding),
         const AppDivider(margin: EdgeInsets.zero),
         _buildGroupTitle(supp),
@@ -191,11 +192,9 @@ class _DocumentWriteOffsPageState extends State<DocumentWriteOffsPage> {
 
   _initBloc([bool isFirstTimeInit = true]) {
     if (isFirstTimeInit) {
-      final writeOffsTypesService = getService<WriteOffsTypesService>(context);
       final writeOffsService = getService<WriteOffsService>(context);
       final productsService = getService<ProductsService>(context);
-      bloc = WriteOffPagesBloc(
-          writeOffsService, productsService, writeOffsTypesService);
+      bloc = WriteOffPagesBloc(writeOffsService, productsService);
     }
     bloc.init(Pages.document_write_offs_page, document: widget.document);
   }

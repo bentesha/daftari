@@ -3,7 +3,7 @@ import '../source.dart';
 class CategoriesPage extends StatefulWidget {
   const CategoriesPage(this.categoryType, {Key? key}) : super(key: key);
 
-  final CategoryType categoryType;
+  final CategoryTypes categoryType;
 
   @override
   State<CategoriesPage> createState() => _CategoriesPageState();
@@ -15,8 +15,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   @override
   void initState() {
-    isProductsCategory =
-        widget.categoryType.name == CategoryType.products().name;
+    isProductsCategory = widget.categoryType == CategoryTypes.products;
     _initBloc();
     super.initState();
   }
@@ -107,8 +106,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
     if (isFirstTimeInit) {
       final categoriesService = getService<CategoriesService>(context);
       final itemsService = getService<ProductsService>(context);
-      final typeService = getService<CategoryTypesService>(context);
-      bloc = CategoryPageBloc(categoriesService, itemsService, typeService);
+      bloc = CategoryPageBloc(categoriesService, itemsService);
     }
     bloc.init(Pages.categories_page, type: widget.categoryType);
   }

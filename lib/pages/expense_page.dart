@@ -67,8 +67,8 @@ class _ExpensePageState extends State<ExpensePage> {
           value: supp.category.name,
           error: supp.errors['category'],
           isEditable: !action.isViewing,
-          onPressed: () => push(
-              ItemsSearchPage<Category>(categoryType: CategoryType.expenses())),
+          onPressed: () => push(const ItemsSearchPage<Category>(
+              categoryType: CategoryTypes.expenses)),
         ),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
         AppTextField(

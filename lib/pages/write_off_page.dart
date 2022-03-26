@@ -108,11 +108,9 @@ class _WriteOffPageState extends State<WriteOffPage> {
 
   _initBloc([bool isFirstTimeInit = true]) {
     if (isFirstTimeInit) {
-      final writeOffsTypesService = getService<WriteOffsTypesService>(context);
       final writeOffsService = getService<WriteOffsService>(context);
       final productsService = getService<ProductsService>(context);
-      bloc = WriteOffPagesBloc(
-          writeOffsService, productsService, writeOffsTypesService);
+      bloc = WriteOffPagesBloc(writeOffsService, productsService);
     }
     final action = widget.documentPageAction == PageActions.editing
         ? PageActions.viewing

@@ -21,7 +21,7 @@ Future<dynamic> get(String url) async {
 ///variable name jsonItem as a reminder.
 Future<dynamic> put(String url, String itemId, {required var jsonItem}) async {
   final response = await http
-      .put(Uri.parse(url + '/$itemId'),
+      .put(Uri.parse('$url/$itemId'),
           body: json.encode(jsonItem), headers: headers)
       .timeout(timeLimit);
 
@@ -39,13 +39,10 @@ Future<dynamic> post(String url, {required var jsonItem}) async {
   return json.decode(response.body);
 }
 
-Future<dynamic> delete(String url, String itemId) async {
+Future<void> delete(String url, String itemId) async {
   final response =
-      await http.delete(Uri.parse(url + '/$itemId')).timeout(timeLimit);
-
+      await http.delete(Uri.parse('$url/$itemId')).timeout(timeLimit);
   _handleStatusCodes(response.statusCode);
-
-  return json.decode(response.body);
 }
 
 void _handleStatusCodes(int statusCode) {

@@ -5,14 +5,14 @@ import 'package:inventory_management/utils/http_utils.dart' as http;
 
 class CategoriesService extends WithNoDocumentBaseService<Category>
     with ErrorHandler {
-  static var categoryType = CategoryTypes.expenses;
+  static late CategoryTypes _categoryType;
   static const expenseCategoryEndpoint = 'expenseCategory';
   static const productCategoryEndpoint = 'category';
 
-  static bool get _isExpenses => categoryType == CategoryTypes.expenses;
+  static bool get _isExpenses => _categoryType == CategoryTypes.expenses;
 
   static initType(CategoryTypes type) {
-    categoryType = type;
+    _categoryType = type;
     log('Type: $type');
   }
 
@@ -44,7 +44,7 @@ class CategoriesService extends WithNoDocumentBaseService<Category>
       final url = root +
           (_isExpenses ? expenseCategoryEndpoint : productCategoryEndpoint);
       final json = await http.post(url, jsonItem: item.toJson());
-      final category = Category.fromJson(json, type: categoryType);
+      final category = Category.fromJson(json, type: _categoryType);
       final list = super.getList;
       list.add(category);
       updateAttributes(list, currentId: category.id);

@@ -1,7 +1,7 @@
 
 import '../source.dart';
 
-part 'search_page_supplements.freezed.dart';
+part 'freezed_models/search_page_supplements.freezed.dart';
 
 @freezed
 class SearchPageSupplements<T> with _$SearchPageSupplements<T> {

@@ -6,6 +6,7 @@ class AppMaterialButton extends StatefulWidget {
       this.margin,
       this.height,
       this.width,
+      this.borderRadius,
       this.alignment,
       required this.child,
       this.isFilled = true,
@@ -14,11 +15,10 @@ class AppMaterialButton extends StatefulWidget {
       Key? key})
       : super(key: key);
 
-  final double? height;
-  final double? width;
+  final double? height, width;
+  final BorderRadiusGeometry? borderRadius;
   final VoidCallback onPressed;
-  final EdgeInsetsGeometry? padding;
-  final EdgeInsetsGeometry? margin;
+  final EdgeInsetsGeometry? padding, margin;
   final bool isFilled;
   final Widget child;
   final Alignment? alignment;
@@ -67,7 +67,9 @@ class _AppMaterialButtonState extends State<AppMaterialButton>
               margin: widget.margin ?? EdgeInsets.zero,
               padding: widget.padding ?? EdgeInsets.zero,
               alignment: widget.alignment ?? Alignment.center,
-              color: animation.value,
+              decoration: BoxDecoration(
+                  color: animation.value,
+                  borderRadius: widget.borderRadius ?? BorderRadius.zero),
               child: child),
         );
       },

@@ -1,6 +1,6 @@
 import '../source.dart';
 
-part 'expense_supplements.freezed.dart';
+part 'freezed_models/expense_supplements.freezed.dart';
 
 @freezed
 class ExpenseSupplements with _$ExpenseSupplements {
@@ -27,8 +27,10 @@ class ExpenseSupplements with _$ExpenseSupplements {
       date: DateTime.now());
 
   List<Expense> get getExpenseList {
-    final expenseList =
+    final list =
         document.maybeWhen(expenses: (_, e) => e, orElse: () => <Expense>[]);
+    //list is a unmodified list, doing this b'se list are mutable
+    final expenseList = List.from(list).whereType<Expense>().toList();
     return expenseList;
   }
 

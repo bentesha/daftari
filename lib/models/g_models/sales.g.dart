@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sales.dart';
+part of '../sales.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

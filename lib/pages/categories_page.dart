@@ -75,7 +75,6 @@ class _CategoriesPageState extends State<CategoriesPage> {
           itemCount: categories.length,
           itemBuilder: (_, index) {
             final category = categories[index];
-
             return CategoryTile(category: category);
           },
           physics: const NeverScrollableScrollPhysics(),

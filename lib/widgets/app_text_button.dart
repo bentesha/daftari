@@ -9,6 +9,7 @@ class AppTextButton extends StatefulWidget {
       this.width,
       this.text,
       this.alignment,
+      this.borderRadius,
       this.child,
       this.withIcon = false,
       this.isFilled = true,
@@ -23,6 +24,7 @@ class AppTextButton extends StatefulWidget {
   final IconData? icon;
   final double? height;
   final double? width;
+  final BorderRadiusGeometry? borderRadius;
   final VoidCallback onPressed;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
@@ -76,7 +78,9 @@ class _AppTextButtonState extends State<AppTextButton>
               margin: widget.margin ?? EdgeInsets.zero,
               padding: widget.padding ?? EdgeInsets.zero,
               alignment: widget.alignment ?? Alignment.center,
-              color: animation.value,
+              decoration: BoxDecoration(
+                  color: animation.value,
+                  borderRadius: widget.borderRadius ?? BorderRadius.zero),
               child: child),
         );
       },
@@ -104,7 +108,8 @@ class _AppTextButtonState extends State<AppTextButton>
 
   _text() {
     return AppText(widget.text ?? 'Click Me',
-        weight: FontWeight.w500, color: widget.textColor);
+        weight: widget.textStyle?.fontWeight ?? FontWeight.w500,
+        color: widget.textStyle?.color ?? widget.textColor);
   }
 
   @override

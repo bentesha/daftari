@@ -1,6 +1,6 @@
 import '../source.dart';
 
-part 'product_supplements.freezed.dart';
+part 'freezed_models/product_supplements.freezed.dart';
 
 @freezed
 class ProductPageSupplements with _$ProductPageSupplements {

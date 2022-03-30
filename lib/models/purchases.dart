@@ -1,9 +1,9 @@
 // ignore_for_file: invalid_annotation_target
 import '../source.dart';
 
-part 'purchases.freezed.dart';
+part 'freezed_models/purchases.freezed.dart';
 
-part 'purchases.g.dart';
+part 'g_models/purchases.g.dart';
 
 @freezed
 class Purchase with _$Purchase {

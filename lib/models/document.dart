@@ -1,6 +1,6 @@
 import '../source.dart';
 
-part 'document.freezed.dart';
+part 'freezed_models/document.freezed.dart';
 
 enum DocumentType { sales, purchases, expenses, writeOffs }
 

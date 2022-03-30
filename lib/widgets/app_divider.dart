@@ -4,6 +4,9 @@ class AppDivider extends StatelessWidget {
   const AppDivider({Key? key, this.height, this.margin, this.color, this.width})
       : super(key: key);
 
+  factory AppDivider.withVerticalMargin(value) =>
+      AppDivider(margin: EdgeInsets.symmetric(vertical: value));
+
   AppDivider.onDocumentPage({Key? key})
       : height = null,
         width = null,

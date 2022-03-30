@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'write_off.dart';
+part of '../write_off.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator

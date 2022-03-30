@@ -1,7 +1,7 @@
 import 'package:inventory_management/models/source.dart';
 
-part 'write_off.freezed.dart';
-part 'write_off.g.dart';
+part 'freezed_models/write_off.freezed.dart';
+part 'g_models/write_off.g.dart';
 
 @freezed
 class WriteOff with _$WriteOff {

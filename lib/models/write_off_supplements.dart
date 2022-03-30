@@ -1,6 +1,6 @@
 import '../source.dart';
 
-part 'write_off_supplements.freezed.dart';
+part 'freezed_models/write_off_supplements.freezed.dart';
 
 @freezed
 class WriteOffSupplements with _$WriteOffSupplements {
@@ -28,8 +28,9 @@ class WriteOffSupplements with _$WriteOffSupplements {
       date: DateTime.now());
 
   List<WriteOff> get getWriteOffList {
-    final writeOffList = document.maybeWhen(
+    final list = document.maybeWhen(
         writeOffs: (_, __, w) => w, orElse: () => <WriteOff>[]);
+    final writeOffList = List.from(list).whereType<WriteOff>().toList();
     return writeOffList;
   }
 

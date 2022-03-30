@@ -1,6 +1,6 @@
 import '../source.dart';
 
-part 'purchases_pages_supplements.freezed.dart';
+part 'freezed_models/purchases_pages_supplements.freezed.dart';
 
 @freezed
 class PurchasesPagesSupplements with _$PurchasesPagesSupplements {
@@ -27,8 +27,9 @@ class PurchasesPagesSupplements with _$PurchasesPagesSupplements {
           date: DateTime.now());
 
   List<Purchase> get getPurchaseList {
-    final purchaseList =
+    final list =
     document.maybeWhen(purchases: (_, s) => s, orElse: () => <Purchase>[]);
+    final purchaseList = List.from(list).whereType<Purchase>().toList();
     purchaseList.sort((a,b)=>a.sort.compareTo(b.sort));
     return purchaseList;
   }

@@ -1,6 +1,6 @@
 import '../source.dart';
 
-part 'sales_document_supplements.freezed.dart';
+part 'freezed_models/sales_document_supplements.freezed.dart';
 
 enum PageActions { viewing, editing, adding }
 
@@ -35,8 +35,10 @@ class SalesDocumentSupplements with _$SalesDocumentSupplements {
       date: DateTime.now());
 
   List<Sales> get getSalesList {
-    final salesList =
+    final list =
         document.maybeWhen(sales: (_, s) => s, orElse: () => <Sales>[]);
+    //list is a unmodified list, doing this b'se list are mutable
+    final salesList = List.from(list).whereType<Sales>().toList();
     salesList.sort((a, b) => a.sort.compareTo(b.sort));
     return salesList;
   }

@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of 'sales_document_supplements.dart';
+part of '../write_off_supplements.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,28 +15,28 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-class _$SalesDocumentSupplementsTearOff {
-  const _$SalesDocumentSupplementsTearOff();
+class _$WriteOffSupplementsTearOff {
+  const _$WriteOffSupplementsTearOff();
 
-  _SalesDocumentSupplements call(
+  _WriteOffSupplements call(
       {List<Document> documents = const [],
       required Document document,
       required DateTime date,
       bool isDateAsTitle = true,
-      String salesId = '',
       String quantity = '',
-      String unitPrice = '',
+      String writeOffId = '',
+      required WriteOffTypes type,
       required Product product,
       PageActions action = PageActions.viewing,
       Map<String, String?> errors = const {}}) {
-    return _SalesDocumentSupplements(
+    return _WriteOffSupplements(
       documents: documents,
       document: document,
       date: date,
       isDateAsTitle: isDateAsTitle,
-      salesId: salesId,
       quantity: quantity,
-      unitPrice: unitPrice,
+      writeOffId: writeOffId,
+      type: type,
       product: product,
       action: action,
       errors: errors,
@@ -45,41 +45,41 @@ class _$SalesDocumentSupplementsTearOff {
 }
 
 /// @nodoc
-const $SalesDocumentSupplements = _$SalesDocumentSupplementsTearOff();
+const $WriteOffSupplements = _$WriteOffSupplementsTearOff();
 
 /// @nodoc
-mixin _$SalesDocumentSupplements {
+mixin _$WriteOffSupplements {
   List<Document> get documents =>
       throw _privateConstructorUsedError; //for editing sales document
   Document get document => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
   bool get isDateAsTitle =>
-      throw _privateConstructorUsedError; //for editing sales
-  String get salesId => throw _privateConstructorUsedError;
+      throw _privateConstructorUsedError; //for editing write-offs
   String get quantity => throw _privateConstructorUsedError;
-  String get unitPrice => throw _privateConstructorUsedError;
+  String get writeOffId => throw _privateConstructorUsedError;
+  WriteOffTypes get type => throw _privateConstructorUsedError;
   Product get product => throw _privateConstructorUsedError; //for both
   PageActions get action => throw _privateConstructorUsedError;
   Map<String, String?> get errors => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $SalesDocumentSupplementsCopyWith<SalesDocumentSupplements> get copyWith =>
+  $WriteOffSupplementsCopyWith<WriteOffSupplements> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $SalesDocumentSupplementsCopyWith<$Res> {
-  factory $SalesDocumentSupplementsCopyWith(SalesDocumentSupplements value,
-          $Res Function(SalesDocumentSupplements) then) =
-      _$SalesDocumentSupplementsCopyWithImpl<$Res>;
+abstract class $WriteOffSupplementsCopyWith<$Res> {
+  factory $WriteOffSupplementsCopyWith(
+          WriteOffSupplements value, $Res Function(WriteOffSupplements) then) =
+      _$WriteOffSupplementsCopyWithImpl<$Res>;
   $Res call(
       {List<Document> documents,
       Document document,
       DateTime date,
       bool isDateAsTitle,
-      String salesId,
       String quantity,
-      String unitPrice,
+      String writeOffId,
+      WriteOffTypes type,
       Product product,
       PageActions action,
       Map<String, String?> errors});
@@ -88,13 +88,13 @@ abstract class $SalesDocumentSupplementsCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SalesDocumentSupplementsCopyWithImpl<$Res>
-    implements $SalesDocumentSupplementsCopyWith<$Res> {
-  _$SalesDocumentSupplementsCopyWithImpl(this._value, this._then);
+class _$WriteOffSupplementsCopyWithImpl<$Res>
+    implements $WriteOffSupplementsCopyWith<$Res> {
+  _$WriteOffSupplementsCopyWithImpl(this._value, this._then);
 
-  final SalesDocumentSupplements _value;
+  final WriteOffSupplements _value;
   // ignore: unused_field
-  final $Res Function(SalesDocumentSupplements) _then;
+  final $Res Function(WriteOffSupplements) _then;
 
   @override
   $Res call({
@@ -102,9 +102,9 @@ class _$SalesDocumentSupplementsCopyWithImpl<$Res>
     Object? document = freezed,
     Object? date = freezed,
     Object? isDateAsTitle = freezed,
-    Object? salesId = freezed,
     Object? quantity = freezed,
-    Object? unitPrice = freezed,
+    Object? writeOffId = freezed,
+    Object? type = freezed,
     Object? product = freezed,
     Object? action = freezed,
     Object? errors = freezed,
@@ -126,18 +126,18 @@ class _$SalesDocumentSupplementsCopyWithImpl<$Res>
           ? _value.isDateAsTitle
           : isDateAsTitle // ignore: cast_nullable_to_non_nullable
               as bool,
-      salesId: salesId == freezed
-          ? _value.salesId
-          : salesId // ignore: cast_nullable_to_non_nullable
-              as String,
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as String,
-      unitPrice: unitPrice == freezed
-          ? _value.unitPrice
-          : unitPrice // ignore: cast_nullable_to_non_nullable
+      writeOffId: writeOffId == freezed
+          ? _value.writeOffId
+          : writeOffId // ignore: cast_nullable_to_non_nullable
               as String,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as WriteOffTypes,
       product: product == freezed
           ? _value.product
           : product // ignore: cast_nullable_to_non_nullable
@@ -162,20 +162,20 @@ class _$SalesDocumentSupplementsCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class _$SalesDocumentSupplementsCopyWith<$Res>
-    implements $SalesDocumentSupplementsCopyWith<$Res> {
-  factory _$SalesDocumentSupplementsCopyWith(_SalesDocumentSupplements value,
-          $Res Function(_SalesDocumentSupplements) then) =
-      __$SalesDocumentSupplementsCopyWithImpl<$Res>;
+abstract class _$WriteOffSupplementsCopyWith<$Res>
+    implements $WriteOffSupplementsCopyWith<$Res> {
+  factory _$WriteOffSupplementsCopyWith(_WriteOffSupplements value,
+          $Res Function(_WriteOffSupplements) then) =
+      __$WriteOffSupplementsCopyWithImpl<$Res>;
   @override
   $Res call(
       {List<Document> documents,
       Document document,
       DateTime date,
       bool isDateAsTitle,
-      String salesId,
       String quantity,
-      String unitPrice,
+      String writeOffId,
+      WriteOffTypes type,
       Product product,
       PageActions action,
       Map<String, String?> errors});
@@ -185,16 +185,15 @@ abstract class _$SalesDocumentSupplementsCopyWith<$Res>
 }
 
 /// @nodoc
-class __$SalesDocumentSupplementsCopyWithImpl<$Res>
-    extends _$SalesDocumentSupplementsCopyWithImpl<$Res>
-    implements _$SalesDocumentSupplementsCopyWith<$Res> {
-  __$SalesDocumentSupplementsCopyWithImpl(_SalesDocumentSupplements _value,
-      $Res Function(_SalesDocumentSupplements) _then)
-      : super(_value, (v) => _then(v as _SalesDocumentSupplements));
+class __$WriteOffSupplementsCopyWithImpl<$Res>
+    extends _$WriteOffSupplementsCopyWithImpl<$Res>
+    implements _$WriteOffSupplementsCopyWith<$Res> {
+  __$WriteOffSupplementsCopyWithImpl(
+      _WriteOffSupplements _value, $Res Function(_WriteOffSupplements) _then)
+      : super(_value, (v) => _then(v as _WriteOffSupplements));
 
   @override
-  _SalesDocumentSupplements get _value =>
-      super._value as _SalesDocumentSupplements;
+  _WriteOffSupplements get _value => super._value as _WriteOffSupplements;
 
   @override
   $Res call({
@@ -202,14 +201,14 @@ class __$SalesDocumentSupplementsCopyWithImpl<$Res>
     Object? document = freezed,
     Object? date = freezed,
     Object? isDateAsTitle = freezed,
-    Object? salesId = freezed,
     Object? quantity = freezed,
-    Object? unitPrice = freezed,
+    Object? writeOffId = freezed,
+    Object? type = freezed,
     Object? product = freezed,
     Object? action = freezed,
     Object? errors = freezed,
   }) {
-    return _then(_SalesDocumentSupplements(
+    return _then(_WriteOffSupplements(
       documents: documents == freezed
           ? _value.documents
           : documents // ignore: cast_nullable_to_non_nullable
@@ -226,18 +225,18 @@ class __$SalesDocumentSupplementsCopyWithImpl<$Res>
           ? _value.isDateAsTitle
           : isDateAsTitle // ignore: cast_nullable_to_non_nullable
               as bool,
-      salesId: salesId == freezed
-          ? _value.salesId
-          : salesId // ignore: cast_nullable_to_non_nullable
-              as String,
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
               as String,
-      unitPrice: unitPrice == freezed
-          ? _value.unitPrice
-          : unitPrice // ignore: cast_nullable_to_non_nullable
+      writeOffId: writeOffId == freezed
+          ? _value.writeOffId
+          : writeOffId // ignore: cast_nullable_to_non_nullable
               as String,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as WriteOffTypes,
       product: product == freezed
           ? _value.product
           : product // ignore: cast_nullable_to_non_nullable
@@ -256,15 +255,15 @@ class __$SalesDocumentSupplementsCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_SalesDocumentSupplements extends _SalesDocumentSupplements {
-  const _$_SalesDocumentSupplements(
+class _$_WriteOffSupplements extends _WriteOffSupplements {
+  const _$_WriteOffSupplements(
       {this.documents = const [],
       required this.document,
       required this.date,
       this.isDateAsTitle = true,
-      this.salesId = '',
       this.quantity = '',
-      this.unitPrice = '',
+      this.writeOffId = '',
+      required this.type,
       required this.product,
       this.action = PageActions.viewing,
       this.errors = const {}})
@@ -281,14 +280,13 @@ class _$_SalesDocumentSupplements extends _SalesDocumentSupplements {
   @override
   final bool isDateAsTitle;
   @JsonKey()
-  @override //for editing sales
-  final String salesId;
-  @JsonKey()
-  @override
+  @override //for editing write-offs
   final String quantity;
   @JsonKey()
   @override
-  final String unitPrice;
+  final String writeOffId;
+  @override
+  final WriteOffTypes type;
   @override
   final Product product;
   @JsonKey()
@@ -300,22 +298,23 @@ class _$_SalesDocumentSupplements extends _SalesDocumentSupplements {
 
   @override
   String toString() {
-    return 'SalesDocumentSupplements(documents: $documents, document: $document, date: $date, isDateAsTitle: $isDateAsTitle, salesId: $salesId, quantity: $quantity, unitPrice: $unitPrice, product: $product, action: $action, errors: $errors)';
+    return 'WriteOffSupplements(documents: $documents, document: $document, date: $date, isDateAsTitle: $isDateAsTitle, quantity: $quantity, writeOffId: $writeOffId, type: $type, product: $product, action: $action, errors: $errors)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _SalesDocumentSupplements &&
+            other is _WriteOffSupplements &&
             const DeepCollectionEquality().equals(other.documents, documents) &&
             const DeepCollectionEquality().equals(other.document, document) &&
             const DeepCollectionEquality().equals(other.date, date) &&
             const DeepCollectionEquality()
                 .equals(other.isDateAsTitle, isDateAsTitle) &&
-            const DeepCollectionEquality().equals(other.salesId, salesId) &&
             const DeepCollectionEquality().equals(other.quantity, quantity) &&
-            const DeepCollectionEquality().equals(other.unitPrice, unitPrice) &&
+            const DeepCollectionEquality()
+                .equals(other.writeOffId, writeOffId) &&
+            const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.product, product) &&
             const DeepCollectionEquality().equals(other.action, action) &&
             const DeepCollectionEquality().equals(other.errors, errors));
@@ -328,33 +327,33 @@ class _$_SalesDocumentSupplements extends _SalesDocumentSupplements {
       const DeepCollectionEquality().hash(document),
       const DeepCollectionEquality().hash(date),
       const DeepCollectionEquality().hash(isDateAsTitle),
-      const DeepCollectionEquality().hash(salesId),
       const DeepCollectionEquality().hash(quantity),
-      const DeepCollectionEquality().hash(unitPrice),
+      const DeepCollectionEquality().hash(writeOffId),
+      const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(product),
       const DeepCollectionEquality().hash(action),
       const DeepCollectionEquality().hash(errors));
 
   @JsonKey(ignore: true)
   @override
-  _$SalesDocumentSupplementsCopyWith<_SalesDocumentSupplements> get copyWith =>
-      __$SalesDocumentSupplementsCopyWithImpl<_SalesDocumentSupplements>(
+  _$WriteOffSupplementsCopyWith<_WriteOffSupplements> get copyWith =>
+      __$WriteOffSupplementsCopyWithImpl<_WriteOffSupplements>(
           this, _$identity);
 }
 
-abstract class _SalesDocumentSupplements extends SalesDocumentSupplements {
-  const factory _SalesDocumentSupplements(
+abstract class _WriteOffSupplements extends WriteOffSupplements {
+  const factory _WriteOffSupplements(
       {List<Document> documents,
       required Document document,
       required DateTime date,
       bool isDateAsTitle,
-      String salesId,
       String quantity,
-      String unitPrice,
+      String writeOffId,
+      required WriteOffTypes type,
       required Product product,
       PageActions action,
-      Map<String, String?> errors}) = _$_SalesDocumentSupplements;
-  const _SalesDocumentSupplements._() : super._();
+      Map<String, String?> errors}) = _$_WriteOffSupplements;
+  const _WriteOffSupplements._() : super._();
 
   @override
   List<Document> get documents;
@@ -364,12 +363,12 @@ abstract class _SalesDocumentSupplements extends SalesDocumentSupplements {
   DateTime get date;
   @override
   bool get isDateAsTitle;
-  @override //for editing sales
-  String get salesId;
-  @override
+  @override //for editing write-offs
   String get quantity;
   @override
-  String get unitPrice;
+  String get writeOffId;
+  @override
+  WriteOffTypes get type;
   @override
   Product get product;
   @override //for both
@@ -378,6 +377,6 @@ abstract class _SalesDocumentSupplements extends SalesDocumentSupplements {
   Map<String, String?> get errors;
   @override
   @JsonKey(ignore: true)
-  _$SalesDocumentSupplementsCopyWith<_SalesDocumentSupplements> get copyWith =>
+  _$WriteOffSupplementsCopyWith<_WriteOffSupplements> get copyWith =>
       throw _privateConstructorUsedError;
 }

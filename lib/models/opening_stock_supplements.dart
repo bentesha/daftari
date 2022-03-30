@@ -1,6 +1,6 @@
 import '../source.dart';
 
-part 'opening_stock_supplements.freezed.dart';
+part 'freezed_models/opening_stock_supplements.freezed.dart';
 
 @freezed
 class OpeningStockSupplements with _$OpeningStockSupplements {

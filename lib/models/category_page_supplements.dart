@@ -1,6 +1,6 @@
 import '../source.dart';
 
-part 'category_page_supplements.freezed.dart';
+part 'freezed_models/category_page_supplements.freezed.dart';
 
 @freezed
 class CategoryPageSupplements with _$CategoryPageSupplements {

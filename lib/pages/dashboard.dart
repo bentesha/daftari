@@ -8,6 +8,12 @@ import '../widgets/charts/line_fl_charts.dart';
 import '../widgets/charts/line_syncfusion.dart';
 import '../widgets/charts/pie_charts_flutter.dart';
 import '../widgets/charts/pie_fl_chart.dart';
+import '../widgets/dashboard_widgets/expenses_card.dart';
+import '../widgets/dashboard_widgets/low_stock_products_card.dart';
+import '../widgets/dashboard_widgets/profit_loss_card.dart';
+import '../widgets/dashboard_widgets/quick_actions_card.dart';
+import '../widgets/dashboard_widgets/recent_sales_card.dart';
+import '../widgets/dashboard_widgets/revenue_card.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -39,24 +45,12 @@ class Dashboard extends StatelessWidget {
 
   _buildCharts() {
     return ListView(children: const [
-/*      LineChart(),
-      SizedBox(height: 50),
-      LineChart2(),
-      SizedBox(height: 50),*/
-      LineChart3(),
-      SizedBox(height: 50),
-/*      BarChart(),
-      SizedBox(height: 50),
-      BarChart2(),
-      SizedBox(height: 50),*/
-      BarChart3(),
-      SizedBox(height: 50),
- /*     PieChart(),
-      SizedBox(height: 50),
-      PieChart2(),
-      SizedBox(height: 50),*/
-      PieChart3(),
-      SizedBox(height: 50),
+      QuickActionsCard(),
+      RecentSalesCard(),
+      ProfitLossCard(),
+      RevenueCard(),
+      ExpensesCard(),
+      LowStockProductsCard()
     ]);
   }
 }

@@ -4,7 +4,8 @@ import 'data.dart';
 import 'package:intl/intl.dart';
 
 class PieChart3 extends StatelessWidget {
-  const PieChart3({Key? key}) : super(key: key);
+  final List<ItemData> pieChartData;
+  const PieChart3(this.pieChartData, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,41 +16,25 @@ class PieChart3 extends StatelessWidget {
           tooltipBehavior: TooltipBehavior(
               enable: true, color: Colors.white, textStyle: toolTipTextStyle),
           legend: Legend(
-              isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
-
-          //primaryXAxis: CategoryAxis(),
-          /* primaryXAxis: NumericAxis(
-              edgeLabelPlacement: EdgeLabelPlacement.shift,
-              //   numberFormat: NumberFormat.currency(decimalDigits: 0, symbol: ''),
-              labelStyle: textStyle),
-          primaryYAxis: NumericAxis(
-              labelStyle: textStyle,
-              desiredIntervals: 3,
-              numberFormat:
-                  NumberFormat.currency(decimalDigits: 0, symbol: '')),*/
+              position: LegendPosition.bottom,
+              isVisible: true,
+              height: '40%',
+              textStyle: textStyle,
+              overflowMode: LegendItemOverflowMode.wrap),
         ));
   }
-}
 
-final series = [
-/*  DoughnutSeries<SalesData, num>(
-    name: 'Sales',
-    dataSource: chartData,
-    explodeAll: true,
-    enableTooltip: true,
-    xValueMapper: (sales, _) => sales.date.year,
-    yValueMapper: (sales, _) => sales.value,
-    dataLabelMapper: (_, __) => '30%'
-  )*/
-  PieSeries<SalesData, String>(
-      name: 'Sales',
-      dataSource: chartData,
-      dataLabelSettings:
-          DataLabelSettings(isVisible: true, textStyle: textStyle),
-      xValueMapper: (sales, _) => sales.date.year.toString(),
-      yValueMapper: (sales, _) => sales.value,
-      dataLabelMapper: (sales, __) => sales.percent)
-];
+  get series => [
+        PieSeries<ItemData, String>(
+            name: 'Revenue',
+            dataSource: pieChartData,
+            dataLabelSettings:
+                DataLabelSettings(isVisible: true, textStyle: textStyle),
+            xValueMapper: (itemData, _) => itemData.item.name,
+            yValueMapper: (itemData, _) => itemData.value,
+            dataLabelMapper: (item, __) => item.percent)
+      ];
+}
 
 final toolTipTextStyle = TextStyle(
     fontSize: 14.dw, fontFamily: Constants.kFontFam2, color: AppColors.primary);

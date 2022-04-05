@@ -1,3 +1,4 @@
+import 'package:inventory_management/pages/breakdown_page.dart';
 import 'package:inventory_management/source.dart';
 
 import '../charts/bar_chart.dart';
@@ -31,7 +32,7 @@ class ExpensesCard extends StatelessWidget {
                   size: 15.dw,
                   color: AppColors.onBackground2),
               AppTextButton(
-                  onPressed: () {},
+                  onPressed: () => push(const BreakDownPage()),
                   text: 'View Breakdown',
                   height: 40.dh,
                   isFilled: false,

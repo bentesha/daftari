@@ -156,7 +156,7 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
           separatorBuilder: (_, __) => AppDivider.onDocumentPage(),
           itemBuilder: (_, i) {
             final expense = expenseList[i];
-            final category = bloc.getCategoryById(expense.categoryId);
+            final category = bloc.getCategoryById(expense.category.id);
             return ExpenseTile(expense,
                 category: category, documentPageAction: supp.action);
           },

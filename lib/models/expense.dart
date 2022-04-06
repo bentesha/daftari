@@ -1,33 +1,33 @@
 import '../source.dart';
 
 class Expense {
-  final String id, documentId, categoryId;
+  final String id, documentId;
+  final Category category;
   final double amount;
   final String? description;
 
-  Expense(
+  const Expense(
       {this.id = '',
       this.documentId = '',
       this.amount = 0.0,
       this.description,
-      this.categoryId = ''});
+      this.category = const Category()});
 
-  factory Expense.toServer(
-          {required String id,
-          required String categoryId,
-          required double amount,
-          String? description}) =>
-      Expense(
-          id: id,
-          categoryId: categoryId,
-          amount: amount,
-          description: description);
+   factory Expense.toServer(
+      {required String id,
+      required Category category,
+      required double amount,
+      String? description}) {
+    return Expense(
+        id: id, category: category, amount: amount, description: description);
+  }
 
   String get formattedAmount => Utils.convertToMoneyFormat(amount);
 
   factory Expense.fromJson(Map<String, dynamic> json) => Expense(
       id: json['id'],
-      categoryId: json['categoryId'],
+      category:
+          Category.fromJson(json['category'], type: CategoryTypes.expenses),
       documentId: json['documentId'],
       amount: (json['amount'] as num).toDouble(),
       description: json['description']);
@@ -42,7 +42,7 @@ class Expense {
     return {
       'amount': amount,
       'description': _description,
-      'categoryId': categoryId
+      'categoryId': category.id
     };
   }
 }

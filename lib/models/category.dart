@@ -29,7 +29,7 @@ class Category {
       this.name = '',
       this.type = CategoryTypes.expenses});
 
-  Category.expenses({required this.id, this.description, required this.name})
+  const Category.expenses({required this.id, this.description, required this.name})
       : type = CategoryTypes.expenses;
 
   Category.products({required this.id, this.description, required this.name})

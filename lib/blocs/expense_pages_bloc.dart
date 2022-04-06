@@ -120,7 +120,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
 
     final expense = Expense.toServer(
         id: Utils.getRandomId(),
-        categoryId: supp.category.id,
+        category: supp.category,
         amount: supp.parsedAmount,
         description: supp.description);
 
@@ -137,7 +137,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
 
     final expense = Expense.toServer(
         id: supp.expenseId,
-        categoryId: supp.category.id,
+        category: supp.category,
         amount: supp.parsedAmount,
         description: supp.description);
 
@@ -278,7 +278,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
 
     if (expense != null) {
       //is viewing / editing existing sales record
-      final category = categoriesService.getById(expense.categoryId)!;
+      final category = categoriesService.getById(expense.category.id)!;
       supp = supp.copyWith(
           category: category,
           expenseId: expense.id,

@@ -1,4 +1,3 @@
-import 'package:inventory_management/widgets/app_data_table.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../source.dart';
 
@@ -65,3 +64,35 @@ class DataSource extends DataGridSource {
         .toList();
   }
 }
+
+
+const labels = ['Amount', 'Category', 'Date'];
+
+class Expenses {
+  final String category, date;
+  final double amount;
+
+  const Expenses(
+      {required this.category, required this.amount, required this.date});
+}
+
+final data = <Expenses>[
+  const Expenses(category: 'Electricity', amount: 20000, date: '1/4/2022'),
+  const Expenses(category: 'Water', amount: 33008500, date: '2/4/2022'),
+  const Expenses(category: 'Salaries', amount: 343300, date: '1/4/2022'),
+  const Expenses(category: 'Equipments', amount: 78900, date: '3/4/2022'),
+  const Expenses(
+      category: 'Maintenance & Repair', amount: 55600, date: '4/4/2022'),
+  const Expenses(
+      category: 'Advertising and Marketing', amount: 334000, date: '4/4/2022'),
+  const Expenses(
+      category: 'Bank fees and Interest', amount: 435000, date: '5/4/2022'),
+  const Expenses(category: 'Commissions', amount: 55000, date: '5/4/2022'),
+  const Expenses(
+      category: 'Employee Benefits', amount: 435600, date: '5/4/2022'),
+  const Expenses(
+      category: 'Telephone and Internet', amount: 345700, date: '6/4/2022'),
+  const Expenses(category: 'Electricity', amount: 221800, date: '7/4/2022'),
+  const Expenses(
+      category: 'Business Insurance', amount: 45000, date: '16/4/2022'),
+];

@@ -1,5 +1,4 @@
 import '../source.dart';
-import '../widgets/app_data_table.dart';
 import '../widgets/breakdown_datatable.dart';
 
 class BreakDownPage extends StatefulWidget {
@@ -10,16 +9,12 @@ class BreakDownPage extends StatefulWidget {
 }
 
 class _BreakDownPageState extends State<BreakDownPage> {
- 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: AppText('Breakdown Page',
-              size: 18.dw, color: AppColors.onPrimary)),
-      body: const BreakDownDataTable()
-     
-    );
+        appBar: AppBar(
+            title: AppText('Breakdown Page',
+                size: 18.dw, color: AppColors.onPrimary)),
+        body: const BreakDownDataTable());
   }
 }

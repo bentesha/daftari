@@ -32,7 +32,7 @@ class ExpensesCard extends StatelessWidget {
                   size: 15.dw,
                   color: AppColors.onBackground2),
               AppTextButton(
-                  onPressed: () => push(const BreakDownPage()),
+                  onPressed: () => push( const BreakDownPage(false)),
                   text: 'View Breakdown',
                   height: 40.dh,
                   isFilled: false,

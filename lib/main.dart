@@ -1,6 +1,10 @@
 import 'app.dart';
 import 'source.dart';
 
+//todo implement price list
+//todo change view breakdowns - details & for both expenses and incomes
+//todo handle drawer navigation, especially when popped - page navigated from should be marked as active
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

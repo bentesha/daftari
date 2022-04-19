@@ -2,7 +2,9 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../source.dart';
 
 class BreakDownDataTable extends StatelessWidget {
-  const BreakDownDataTable({Key? key}) : super(key: key);
+  const BreakDownDataTable(this.isRevenueList, {Key? key}) : super(key: key);
+
+  final bool isRevenueList;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +67,6 @@ class DataSource extends DataGridSource {
   }
 }
 
-
 const labels = ['Amount', 'Category', 'Date'];
 
 class Expenses {
@@ -95,4 +96,19 @@ final data = <Expenses>[
   const Expenses(category: 'Electricity', amount: 221800, date: '7/4/2022'),
   const Expenses(
       category: 'Business Insurance', amount: 45000, date: '16/4/2022'),
+];
+
+final revenue = <Expenses>[
+  const Expenses(category: 'Water', amount: 20000, date: '1/4/2022'),
+  const Expenses(category: 'Breads', amount: 33008500, date: '2/4/2022'),
+  const Expenses(category: 'Detergents', amount: 343300, date: '1/4/2022'),
+  const Expenses(category: 'Soft Drinks', amount: 78900, date: '3/4/2022'),
+  const Expenses(category: 'Alcohol', amount: 55600, date: '4/4/2022'),
+  const Expenses(category: 'Stationaries', amount: 334000, date: '4/4/2022'),
+  const Expenses(category: 'Milk', amount: 435000, date: '5/4/2022'),
+  const Expenses(category: 'Rice', amount: 55000, date: '5/4/2022'),
+  const Expenses(category: 'Cooking Oil', amount: 435600, date: '5/4/2022'),
+  const Expenses(category: 'Pasta', amount: 345700, date: '6/4/2022'),
+  const Expenses(category: 'Eggs', amount: 221800, date: '7/4/2022'),
+  const Expenses(category: 'Sugar', amount: 45000, date: '16/4/2022'),
 ];

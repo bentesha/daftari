@@ -1,4 +1,5 @@
 import 'package:inventory_management/source.dart';
+import 'package:inventory_management/widgets/dashboard_widgets/price_list.dart';
 
 class QuickActionsCard extends StatelessWidget {
   const QuickActionsCard({Key? key}) : super(key: key);
@@ -22,7 +23,8 @@ class QuickActionsCard extends StatelessWidget {
             children: [
               _buildIcon(() {}, 'New Sales', Icons.sell),
               _buildIcon(() {}, 'New Expense', Icons.post_add),
-              _buildIcon(() {}, 'Price List', Icons.fact_check),
+              _buildIcon(() => push(const PriceList()), 'Price List',
+                  Icons.fact_check),
               _buildIcon(() {}, 'Reports', Icons.bar_chart)
             ],
           )

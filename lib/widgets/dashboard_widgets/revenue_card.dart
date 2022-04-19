@@ -1,5 +1,5 @@
 import 'package:inventory_management/source.dart';
-
+import 'package:inventory_management/pages/breakdown_page.dart';
 import '../charts/bar_chart.dart';
 import '../charts/data.dart';
 
@@ -32,7 +32,7 @@ class RevenueCard extends StatelessWidget {
                   size: 15.dw,
                   color: AppColors.onBackground2),
               AppTextButton(
-                  onPressed: () {},
+                    onPressed: () => push( const BreakDownPage(true)),
                   text: 'View Breakdown',
                   height: 40.dh,
                   isFilled: false,

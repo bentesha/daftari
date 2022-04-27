@@ -10,14 +10,14 @@ class BreakDownDataTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
         height: ScreenSizeConfig.getFullHeight,
-        child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: SfDataGrid(
-              columns: _columns,
-              source: DataSource(),
-              frozenColumnsCount: 1,
-              selectionMode: SelectionMode.singleDeselect,
-            )));
+        width: ScreenSizeConfig.getFullWidth,
+        child: SfDataGrid(
+          columns: _columns,
+          source: DataSource(isRevenueList),
+          frozenColumnsCount: 1,
+          defaultColumnWidth: ScreenSizeConfig.getFullWidth / 2,
+          selectionMode: SelectionMode.singleDeselect,
+        ));
   }
 
   List<GridColumn> get _columns => List.generate(labels.length, (index) {
@@ -26,7 +26,7 @@ class BreakDownDataTable extends StatelessWidget {
             columnName: label,
             columnWidthMode: ColumnWidthMode.auto,
             label: Container(
-              alignment: index == 0 ? Alignment.center : Alignment.centerLeft,
+              alignment: index == 0 ? Alignment.centerLeft : Alignment.center,
               padding: EdgeInsets.only(left: 10.dw),
               child: AppText(label,
                   style: const TextStyle(
@@ -36,15 +36,17 @@ class BreakDownDataTable extends StatelessWidget {
 }
 
 class DataSource extends DataGridSource {
+  final bool isRevenueList;
+  DataSource(this.isRevenueList);
+
   @override
-  List<DataGridRow> get rows => data
+  List<DataGridRow> get rows => (isRevenueList ? revenue : data)
       .map<DataGridRow>((expense) => DataGridRow(cells: [
+            DataGridCell<String>(
+                columnName: 'Category', value: expense.category),
             DataGridCell<String>(
                 columnName: 'Amount',
                 value: Utils.convertToMoneyFormat(expense.amount)),
-            DataGridCell<String>(
-                columnName: 'Category', value: expense.category),
-            DataGridCell<String>(columnName: 'Date', value: expense.date),
           ]))
       .toList();
 
@@ -67,7 +69,7 @@ class DataSource extends DataGridSource {
   }
 }
 
-const labels = ['Amount', 'Category', 'Date'];
+const labels = ['Category', 'Amount'];
 
 class Expenses {
   final String category, date;

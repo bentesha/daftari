@@ -11,12 +11,12 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
   final CategoriesService categoriesService;
 
   var _options = [];
-  var _categoryType = '';
+  var _categoryType = CategoryTypes.expenses;
 
   void init([CategoryTypes? categoryType]) async {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
-    if (categoryType != null) _categoryType = categoryType.name;
+    if (categoryType != null) _categoryType = categoryType;
     await _initServices();
     _options = _getOptions();
     final options = _options.whereType<T>().toList();
@@ -73,7 +73,7 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
   Future<void> _initServices() async {
     if (T == Product) await productsService.init();
     if (T == Category) {
-      if (_categoryType == CategoryTypes.products.string) {
+      if (_categoryType == CategoryTypes.products) {
         await categoriesService.init();
       }
     }

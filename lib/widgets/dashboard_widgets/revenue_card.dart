@@ -10,7 +10,7 @@ class RevenueCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(10.dw),
-      padding: EdgeInsets.all(10.dw),
+    padding: EdgeInsets.fromLTRB(10.dw, 10.dh, 10.dw, 15.dh),
       decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.all(Radius.circular(10.dw))),
@@ -23,23 +23,20 @@ class RevenueCard extends StatelessWidget {
           AppDivider(margin: EdgeInsets.only(top: 5.dh, bottom: 10.dh)),
           CustomBarChart(getRevenueItems(),
               valueColor: AppColors.primaryVariant),
-          AppDivider.withVerticalMargin(5.dh),
-          Row(
+           AppDivider(margin: EdgeInsets.only(top: 5.dh, bottom: 10.dh)),
+            Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AppText('Total: Tzs 300,000',
                   weight: FontWeight.bold,
                   size: 15.dw,
                   color: AppColors.onBackground2),
-              AppTextButton(
-                    onPressed: () => push( const BreakDownPage(true)),
-                  text: 'View Breakdown',
-                  height: 40.dh,
-                  isFilled: false,
-                  borderRadius: BorderRadius.all(Radius.circular(15.dw)),
-                  textStyle:
-                      TextStyle(color: AppColors.primary, fontSize: 14.dw),
-                  margin: EdgeInsets.only(left: 10.dw)),
+              AppButton(
+                  onPressed: () => push(const BreakDownPage(true)),
+                  child: AppText('View Breakdown',
+                      color: AppColors.primary, size: 15.dw),
+                  radius: 8.dw,
+                  highlightDetails: HighlightDetails(10.dw, 10.dh)),
             ],
           )
         ],

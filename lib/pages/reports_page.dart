@@ -5,9 +5,21 @@ class ReportsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PageAppBar(title: 'Reports'),
-      body: Center(child: AppText('REPORTS')),
+    return Scaffold(
+      appBar: const PageAppBar(title: 'Reports'),
+      body: Column(
+        children: const [AppText('Sales')],
+      ),
     );
   }
 }
+
+const labels = [
+  'Sales',
+  'Purchases',
+  'Expenses',
+  'Price List',
+  'Stock Write-Offs',
+  'Remaining Stock',
+  'Profit & Loss'
+];

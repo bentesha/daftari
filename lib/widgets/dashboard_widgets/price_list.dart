@@ -6,34 +6,44 @@ class PriceList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const AppText('Price List')),
+        appBar: AppBar(
+            title:
+                AppText('Price List', color: AppColors.onPrimary, size: 18.dw)),
         body: ListView(
+            padding: EdgeInsets.only(bottom: 20.dh),
             children: List.generate(categories.length, (index) {
-          return Container(
-            margin: EdgeInsets.only(bottom: 20.dh),
-            child: Column(
-              children: [
-                AppText(categories[index].toUpperCase(),
-                    weight: FontWeight.bold),
-                const AppDivider(),
-                Column(
-                  children: items[index]
-                      .map((e) => SizedBox(
-                            height: 45.dh,
-                            child: ListTile(
-                              title: AppText(e.name),
-                              trailing: AppText(
-                                  Utils.convertToMoneyFormat(e.amount),
-                                  weight: FontWeight.bold,
-                                  opacity: .7),
-                            ),
-                          ))
-                      .toList(),
-                )
-              ],
-            ),
-          );
-        })));
+              return Container(
+                margin: EdgeInsets.only(top: 20.dh),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.dw),
+                      child: AppText(categories[index].toUpperCase(),
+                          weight: FontWeight.bold),
+                    ),
+                    const AppDivider(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.dw),
+                      child: Column(
+                        children: items[index]
+                            .map((e) => SizedBox(
+                                  height: 45.dh,
+                                  child: ListTile(
+                                    title: AppText(e.name),
+                                    trailing: AppText(
+                                        Utils.convertToMoneyFormat(e.amount),
+                                        weight: FontWeight.bold,
+                                        opacity: .7),
+                                  ),
+                                ))
+                            .toList(),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            })));
   }
 }
 

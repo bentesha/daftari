@@ -14,6 +14,10 @@ class AppDivider extends StatelessWidget {
         color = AppColors.divider.withOpacity(.35),
         super(key: key);
 
+  const AppDivider.zeroMargin({Key? key, this.height, this.color, this.width})
+      : margin = EdgeInsets.zero,
+        super(key: key);
+
   final double? height, width;
   final EdgeInsets? margin;
   final Color? color;

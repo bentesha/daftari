@@ -24,7 +24,7 @@ class AppTheme {
                 color: AppColors.onSecondary,
                 fontSize: 18,
                 fontFamily: kFontFam,
-                fontWeight: FontWeight.w500)),
+                fontWeight: FontWeight.bold)),
         progressIndicatorTheme: const ProgressIndicatorThemeData(
             color: AppColors.primary, circularTrackColor: AppColors.onPrimary),
         checkboxTheme: CheckboxThemeData(

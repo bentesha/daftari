@@ -1,4 +1,5 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:inventory_management/widgets/app_datatable.dart';
 import 'package:inventory_management/widgets/breakdown_datatable.dart';
 import 'package:inventory_management/widgets/type_selector_dialog.dart';
 import '../source.dart';
@@ -26,7 +27,7 @@ class _ReportsPageState extends State<ReportsPage> {
         ),
         body: Column(
           children: const [
-            Expanded(child: BreakDownDataTable(true)),
+            Expanded(child: AppDataTable()),
           ],
         ));
   }

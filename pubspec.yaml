@@ -14,6 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
+  font_awesome_flutter: ^10.1.0
   freezed: ^1.1.1
   freezed_annotation: ^1.1.0
   hive: ^2.0.5
@@ -21,7 +22,6 @@ dependencies:
   intl: ^0.17.0
   path_provider: ^2.0.8
   provider: ^6.0.2
-#  syncfusion_flutter_charts: ^19.4.56
   syncfusion_flutter_datagrid: ^20.1.47
   uuid: ^3.0.5
 
@@ -46,6 +46,16 @@ flutter:
           weight: 500
         - asset: assets/fonts/Avenir/Heavy.ttf
           weight: 600
+
     - family: AndroidEuclid
       fonts:
         - asset: assets/fonts/AndroidEuclid/Medium.otf
+
+    - family: circular
+      fonts:
+        - asset: assets/fonts/Circular.otf
+          weight: 400
+        - asset: assets/fonts/Circular-Medium.otf
+          weight: 500
+        - asset: assets/fonts/Circular-Bold.otf
+          weight: 600

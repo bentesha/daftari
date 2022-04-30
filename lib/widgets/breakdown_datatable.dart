@@ -8,29 +8,33 @@ class BreakDownDataTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        height: ScreenSizeConfig.getFullHeight,
-        width: ScreenSizeConfig.getFullWidth,
-        child: SfDataGrid(
-          columns: _columns,
-          source: DataSource(isRevenueList),
-          frozenColumnsCount: 1,
-          defaultColumnWidth: ScreenSizeConfig.getFullWidth / 2,
-          selectionMode: SelectionMode.singleDeselect,
-        ));
+    return SfDataGrid(
+      columns: _columns,
+      source: DataSource(isRevenueList),
+      horizontalScrollPhysics: const NeverScrollableScrollPhysics(),
+      frozenColumnsCount: 1,
+      defaultColumnWidth: ScreenSizeConfig.getFullWidth / 2,
+      selectionMode: SelectionMode.singleDeselect,
+    );
   }
 
   List<GridColumn> get _columns => List.generate(labels.length, (index) {
         final label = labels[index];
         return GridColumn(
             columnName: label,
-            columnWidthMode: ColumnWidthMode.auto,
+            columnWidthMode: ColumnWidthMode.fill,
             label: Container(
-              alignment: index == 0 ? Alignment.centerLeft : Alignment.center,
-              padding: EdgeInsets.only(left: 10.dw),
-              child: AppText(label,
-                  style: const TextStyle(
-                      fontFamily: kFontFam2, fontWeight: FontWeight.bold)),
+              alignment:
+                  index == 0 ? Alignment.centerLeft : Alignment.centerRight,
+              decoration: const BoxDecoration(
+                  border: Border(bottom: BorderSide(width: 2))),
+              padding: EdgeInsets.only(left: 15.dw, right: 15.dw),
+              child: AppText(label.toUpperCase(),
+                  style: TextStyle(
+                      fontFamily: kFontFam,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16.dw,
+                      color: AppColors.onBackground)),
             ));
       });
 }
@@ -62,8 +66,7 @@ class DataSource extends DataGridSource {
             alignment: e.columnName == 'Amount'
                 ? Alignment.centerRight
                 : Alignment.centerLeft,
-            padding: EdgeInsets.only(
-                left: 10.dw, right: e.columnName == 'Amount' ? 10.dw : 0),
+            padding: EdgeInsets.only(left: 15.dw, right: 15.dw),
             child: AppText(e.value, size: 14.5.dw)))
         .toList();
   }
@@ -113,4 +116,55 @@ final revenue = <Expenses>[
   const Expenses(category: 'Pasta', amount: 345700, date: '6/4/2022'),
   const Expenses(category: 'Eggs', amount: 221800, date: '7/4/2022'),
   const Expenses(category: 'Sugar', amount: 45000, date: '16/4/2022'),
+];
+
+//dimensions
+final expenseCategories = [
+  'Electricity',
+  'Water',
+  'Salaries',
+  'Equipments',
+  'Maintenance & Repair',
+  'Advertising & Marketing',
+  'Bank fees & Internet',
+  'Commissions',
+  'Employee Benefits',
+  'Telephone & Internet',
+  'Business Insurance',
+  'Vacation'
+];
+
+final incomeCategories = [
+  'Water',
+  'Breads',
+  'Detergents',
+  'Soft Drinks',
+  'Alcohol',
+  'Stationaries',
+  'Milk',
+  'Rice',
+  'Cooking Oil',
+  'Pasta',
+  'Eggs',
+  'Sugar'
+];
+
+final date = [
+  '1/4/2022',
+  '2/4/202',
+  '3/4/2022',
+  '4/4/202',
+  '7/4/2022',
+  '8/4/202',
+  '9/4/2022',
+  '15/4/202',
+  '17/4/2022',
+  '20/4/202',
+  '25/4/2022',
+  '30/4/202'
+];
+
+final products = [
+  'Hill Water 1L',
+  'Kilimanjaro Water 1/2L.',
 ];

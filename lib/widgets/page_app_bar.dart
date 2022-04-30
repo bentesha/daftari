@@ -70,6 +70,7 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppIconButton(
         onPressed: callback ?? () {},
         icon: icon ?? Icons.done,
+        iconThemeData: IconThemeData(size: 20.dw),
         margin: EdgeInsets.only(right: 19.dw));
   }
 

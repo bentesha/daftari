@@ -17,7 +17,7 @@ class AppTextButton extends StatefulWidget {
       this.iconColor = AppColors.onPrimary,
       this.textColor = AppColors.onPrimary,
       required this.onPressed,
-      this.backgroundColor = AppColors.primary,
+      this.backgroundColor = AppColors.background,
       Key? key})
       : super(key: key);
 
@@ -108,7 +108,8 @@ class _AppTextButtonState extends State<AppTextButton>
 
   _text() {
     return AppText(widget.text ?? 'Click Me',
-        weight: widget.textStyle?.fontWeight ?? FontWeight.w500,
+        weight: widget.textStyle?.fontWeight ?? FontWeight.w400,
+        size: widget.textStyle?.fontSize ?? 15.dw,
         color: widget.textStyle?.color ?? widget.textColor);
   }
 

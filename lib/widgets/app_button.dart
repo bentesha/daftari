@@ -102,6 +102,6 @@ class HighlightDetails {
   const HighlightDetails(this.dx, this.dh);
 
   HighlightDetails.noExpansion()
-      : dx = 0,
-        dh = 0;
+      : dx = 20.dw,
+        dh = 10.dh;
 }

@@ -33,7 +33,7 @@ class AppTheme {
           backgroundColor: AppColors.onSecondary,
           elevation: 5,
         ),
-        iconTheme: const IconThemeData(color: AppColors.onPrimary, size: 30),
+        iconTheme: const IconThemeData(color: AppColors.onPrimary, size: 25),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: AppColors.primary,
           elevation: 2,

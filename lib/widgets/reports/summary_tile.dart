@@ -20,12 +20,12 @@ class SummaryTile extends StatelessWidget {
             ? MainAxisAlignment.center
             : MainAxisAlignment.spaceAround,
         children: [
-          title != null ? AppText(title!) : Container(),
+          title != null ? AppText(title!, color: AppColors.primary) : Container(),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AppText(name,
-                  color: AppColors.onBackground, weight: FontWeight.w500),
+                  color: AppColors.onBackground, weight: FontWeight.w400),
               AppText(Utils.convertToMoneyFormat(value),
                   color: AppColors.onBackground2, weight: FontWeight.w500)
             ],

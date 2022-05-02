@@ -7,12 +7,14 @@ class TypeSelectorDialog extends Dialog {
       {required this.onSelected,
       required this.currentType,
       required this.title,
+      required this.type,
       Key? key})
       : super(key: key);
 
   final ValueChanged<String> onSelected;
   final String currentType;
   final String title;
+  final Types type;
 
   @override
   Widget? get child {
@@ -29,12 +31,12 @@ class TypeSelectorDialog extends Dialog {
           padding: EdgeInsets.symmetric(horizontal: 10.dw, vertical: 10.dh),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: _getTypes(Types.reports)
+            children: _getTypes(type)
                 .map((e) => AppTextButton(
                       text: e,
                       onPressed: () {
                         pop();
-                        onSelected(e);
+                        if (type == Types.reports) onSelected(e);
                       },
                       textStyle: TextStyle(
                           color: currentType == e
@@ -62,16 +64,23 @@ class TypeSelectorDialog extends Dialog {
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.dw));
 }
 
-List<String> _getTypes(Types types) {
-  return reports;
+List<String> _getTypes(Types type) {
+  if (type == Types.reports) return reports;
+  return timeDimension;
 }
 
 const reports = [
   'Sales',
-  'Purchases',
   'Expenses',
   'Price List',
-  'Stock Write-Offs',
   'Remaining Stock',
-  'Profit & Loss'
+  'Profit & Loss',
+];
+
+const timeDimension = [
+  'Last 7 days',
+  'Last 15 days',
+  'Last 30 days',
+  'Last 3 months',
+  'Last 12 months'
 ];

@@ -1,7 +1,7 @@
 import 'common.dart';
 
 //groups:
-const expenses = <Group>[
+const expenseGroups = <Group>[
   Group('Electricity'),
   Group('Water'),
   Group('Salaries'),

@@ -36,18 +36,18 @@ const soda = <Data>[
 ];
 
 const voucher = <Data>[
-  Data('VODACOM 500/='),
-  Data('VODACOM 1000/='),
-  Data('VODACOM 2000/='),
-  Data('VODACOM 5000/='),
-  Data('AIRTEL 500/='),
-  Data('AIRTEL 1000/='),
-  Data('AIRTEL 2000/='),
-  Data('AIRTEL 5000/='),
-  Data('TIGO 500/='),
-  Data('TIGO 1000/='),
-  Data('HALOTEL 500/='),
-  Data('HALOTEL 1000/='),
+  Data('Vodacom 500/='),
+  Data('Vodacom 1000/='),
+  Data('Vodacom 2000/='),
+  Data('Vodacom 5000/='),
+  Data('Airtel 500/='),
+  Data('Airtel 1000/='),
+  Data('Airtel 2000/='),
+  Data('Airtel 5000/='),
+  Data('Tigo 500/='),
+  Data('Tigo 1000/='),
+  Data('Halotel 500/='),
+  Data('Halotel 1000/='),
 ];
 
 const milk = <Data>[

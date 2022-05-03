@@ -3,7 +3,7 @@ import '../source.dart';
 
 part 'freezed_models/sales.freezed.dart';
 
-part 'g_models/sales.g.dart';
+part 'freezed_models/sales.g.dart';
 
 @freezed
 class Sales with _$Sales {

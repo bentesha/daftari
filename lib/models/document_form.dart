@@ -2,7 +2,7 @@
 import '../source.dart';
 
 part 'freezed_models/document_form.freezed.dart';
-part 'g_models/document_form.g.dart';
+part 'freezed_models/document_form.g.dart';
 
 @freezed
 class DocumentForm with _$DocumentForm {

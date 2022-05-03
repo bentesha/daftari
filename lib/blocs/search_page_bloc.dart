@@ -69,7 +69,7 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
     emit(SearchPageState.content(supp));
   }
 
-  //TODO to this point these services are already initiated. This could be removed.
+  //* to this point these services are already initiated. This could be removed.
   Future<void> _initServices() async {
     if (T == Product) await productsService.init();
     if (T == Category) {

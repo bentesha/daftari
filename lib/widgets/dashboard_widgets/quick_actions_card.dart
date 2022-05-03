@@ -1,5 +1,4 @@
 import 'package:inventory_management/source.dart';
-import 'package:inventory_management/widgets/reports/price_list.dart';
 
 class QuickActionsCard extends StatelessWidget {
   const QuickActionsCard({Key? key}) : super(key: key);

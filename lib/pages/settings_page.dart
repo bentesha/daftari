@@ -34,9 +34,9 @@ class _SettingsPageState extends State<SettingsPage> {
       child: ListTile(
         title: Row(
           children: [
-            Icon(icon, color: AppColors.onBackground, size: 22.dw),
+            Icon(icon, color: AppColors.onBackground2, size: 22.dw),
             SizedBox(width: 15.dw),
-            AppText(title, weight: FontWeight.w500),
+            AppText(title, size: 16.dw),
           ],
         ),
         trailing: Icon(Icons.chevron_right, size: 22.dw),

@@ -4,10 +4,21 @@ import 'package:inventory_management/pages/settings_page.dart';
 import 'package:inventory_management/pages/write_offs_documents_page.dart';
 import '../source.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends StatefulWidget {
   const AppDrawer({Key? key}) : super(key: key);
 
+  @override
+  State<AppDrawer> createState() => _AppDrawerState();
+}
+
+class _AppDrawerState extends State<AppDrawer> {
   static final pageNotifier = ValueNotifier<Pages>(Pages.dashboard);
+
+  @override
+  void initState() {
+    pageNotifier.value = Pages.dashboard;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

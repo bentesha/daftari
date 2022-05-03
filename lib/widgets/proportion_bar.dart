@@ -55,7 +55,7 @@ class ProportionBar extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.fromLTRB(10.dw, 5.dh, 10.dw, 0),
+          padding: EdgeInsets.fromLTRB(10.dw, 10.dh, 10.dw, 0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -75,11 +75,11 @@ class ProportionBar extends StatelessWidget {
           isExpense ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         AppText(title, size: 14.dw),
+        SizedBox(height: 5.dh),
         AppText(formattedValue,
             size: 14.dw,
             weight: FontWeight.bold,
             color: AppColors.onBackground2),
-        //  AppText('${(percent * 100).toStringAsFixed(2)} %', size: 14.dw)
       ],
     );
   }

@@ -25,9 +25,7 @@ class BarRod extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 15.dh, horizontal: 5.dw),
       child: Column(
         children: [
-          AppText(data.toString() + '%',
-              style:
-                  TextStyle(fontSize: 14.dw, fontFamily: kFontFam2)),
+          AppText(data.toString() + '%', style: TextStyle(fontSize: 14.dw)),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [

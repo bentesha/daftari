@@ -35,6 +35,7 @@ class _SalesReportState extends State<SalesReport> {
         }
         final total =
             _data.fold<double>(0, (prev, current) => prev + current.total);
+        _data.sort((a, b) => b.total.compareTo(a.total));
         _sales.add(Group(group.title, data: _data, total: total));
       }
     }
@@ -102,7 +103,7 @@ class _SalesReportState extends State<SalesReport> {
                               height: 40.dh,
                               child: ListTile(
                                 tileColor: isLongPressed
-                                    ? AppColors.primary
+                                    ? AppColors.primaryVariant
                                     : isSelected
                                         ? AppColors.surface2
                                         : AppColors.onPrimary,
@@ -122,17 +123,13 @@ class _SalesReportState extends State<SalesReport> {
                                     color: isLongPressed
                                         ? AppColors.onPrimary
                                         : AppColors.onBackground,
-                                    weight: isLongPressed
-                                        ? FontWeight.bold
-                                        : FontWeight.normal),
+                                    weight: FontWeight.normal),
                                 trailing: AppText(
                                     Utils.convertToMoneyFormat(group.total),
                                     color: isLongPressed
                                         ? AppColors.onPrimary
                                         : AppColors.onBackground2,
-                                    weight: isLongPressed
-                                        ? FontWeight.bold
-                                        : FontWeight.w500),
+                                    weight: FontWeight.w500),
                               )),
                           isLongPressed && group.data != null
                               ? ListView.separated(

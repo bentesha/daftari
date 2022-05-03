@@ -37,6 +37,7 @@ class _ExpenseReportState extends State<ExpenseReport> {
         }
         final total =
             _data.fold<double>(0, (prev, current) => prev + current.total);
+        _data.sort((a, b) => b.total.compareTo(a.total));
         _expenses.add(Group(group.title, data: _data, total: total));
       }
     }

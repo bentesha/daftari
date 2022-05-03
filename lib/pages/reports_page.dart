@@ -1,7 +1,7 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:inventory_management/widgets/reports/expense_report.dart';
 import 'package:inventory_management/widgets/reports/price_list.dart';
+import 'package:inventory_management/widgets/reports/profit_loss_report.dart';
 import 'package:inventory_management/widgets/reports/remaining_stock_report.dart';
 import 'package:inventory_management/widgets/reports/sales_report.dart';
 import 'package:inventory_management/widgets/type_selector_dialog.dart';
@@ -30,7 +30,7 @@ class _ReportsPageState extends State<ReportsPage> {
     bool showFilter = reportType == 'Sales' || reportType == 'Expenses';
     return Scaffold(
         appBar: PageAppBar(
-          title: '$reportType Report',
+          title: _getTitle(),
           actionCallbacks: showFilter
               ? [
                   () => _showTypeSelectorDialog(Types.reports),
@@ -47,7 +47,9 @@ class _ReportsPageState extends State<ReportsPage> {
                 ? const PriceList()
                 : reportType == 'Remaining Stock'
                     ? const RemainingStockReport()
-                    : const ExpenseReport());
+                    : reportType == 'Profit & Loss'
+                        ? const ProfitLossReport()
+                        : const ExpenseReport());
   }
 
   _showTypeSelectorDialog(Types type) {
@@ -63,5 +65,13 @@ class _ReportsPageState extends State<ReportsPage> {
               type: type,
               title: type == Types.reports ? 'Reports' : 'Duration');
         });
+  }
+
+  String _getTitle() {
+    if (reportType == 'Sales') return 'Sales Report';
+    if (reportType == 'Price List') return 'Price List';
+    if (reportType == 'Remaining Stock') return 'Remaining Stock Report';
+    if (reportType == 'Expenses') return 'Expenses Report';
+    return 'Profit & Loss Report';
   }
 }

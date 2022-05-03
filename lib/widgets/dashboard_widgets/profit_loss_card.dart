@@ -1,5 +1,4 @@
 import 'package:inventory_management/source.dart';
-import 'package:inventory_management/widgets/proportion_bar.dart';
 
 class ProfitLossCard extends StatelessWidget {
   const ProfitLossCard({Key? key}) : super(key: key);
@@ -18,11 +17,24 @@ class ProfitLossCard extends StatelessWidget {
           AppText('Profit & Loss', size: 15.dw, weight: FontWeight.bold),
           AppText('March 2022', size: 14.dw, color: AppColors.onBackground2),
           AppDivider(margin: EdgeInsets.only(top: 5.dh, bottom: 20.dh)),
-          const ProportionBar(
-              title1: 'Net Profit',
-              title2: 'Expenses',
-              amount1: 300000,
-              amount2: 200000)
+          Center(
+            child: AppText(Utils.convertToMoneyFormat(3455700),
+                weight: FontWeight.bold, size: 24.dw),
+          ),
+          SizedBox(height: 10.dh),
+          const Center(
+            child: AppText('( Operating profit )'),
+          ),
+          AppDivider(margin: EdgeInsets.only(top: 10.dh, bottom: 5.dh)),
+          AppTextButton(
+            onPressed: () =>
+                push(const ReportsPage(reportType: 'Profit & Loss')),
+            text: 'View Report',
+            height: 40.dh,
+            isFilled: false,
+            borderRadius: BorderRadius.all(Radius.circular(15.dw)),
+            textStyle: TextStyle(color: AppColors.primary, fontSize: 15.dw),
+          )
         ],
       ),
     );

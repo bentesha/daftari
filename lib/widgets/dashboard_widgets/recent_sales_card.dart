@@ -32,7 +32,7 @@ class RecentSalesCard extends StatelessWidget {
             height: 40.dh,
             isFilled: false,
             borderRadius: BorderRadius.all(Radius.circular(15.dw)),
-            textStyle: TextStyle(color: AppColors.primary, fontSize: 14.dw),
+            textStyle: TextStyle(color: AppColors.primary, fontSize: 15.dw),
           )
         ],
       ),

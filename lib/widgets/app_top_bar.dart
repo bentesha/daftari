@@ -9,16 +9,14 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData(
-        iconTheme: const IconThemeData(color: AppColors.onPrimary),
-        appBarTheme: Theme.of(context)
-            .appBarTheme
-            .copyWith(titleTextStyle: TextStyle(fontSize: 18.dw)),
-      ),
-      child:
-          AppBar(elevation: 0, title: const Text('DAFTARI'), centerTitle: true),
-    );
+    return AppBar(
+        elevation: 0,
+        title: Padding(
+          padding: EdgeInsets.only(top: 5.dh),
+          child: AppText('DAFTARI',
+              weight: FontWeight.w500, color: AppColors.onPrimary, size: 20.dw),
+        ),
+        centerTitle: true);
   }
 
   static final _appBar = AppBar();

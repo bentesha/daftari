@@ -18,6 +18,10 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
     emit(SearchPageState.loading(supp));
     if (categoryType != null) _categoryType = categoryType;
     await _initServices();
+    if (state.maybeWhen(
+        failed: (_, error) => error != null, orElse: () => false)) {
+      return;
+    }
     _options = _getOptions();
     final options = _options.whereType<T>().toList();
     supp = supp.copyWith(options: options);
@@ -69,13 +73,16 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
     emit(SearchPageState.content(supp));
   }
 
-  //* to this point these services are already initiated. This could be removed.
   Future<void> _initServices() async {
-    if (T == Product) await productsService.init();
-    if (T == Category) {
-      if (_categoryType == CategoryTypes.products) {
-        await categoriesService.init();
+    try {
+      if (T == Product) await productsService.init();
+      if (T == Category) {
+        if (_categoryType == CategoryTypes.products) {
+          await categoriesService.init();
+        }
       }
+    } on ApiErrors catch (error) {
+      emit(SearchPageState.failed(state.supplements, error.message));
     }
   }
 

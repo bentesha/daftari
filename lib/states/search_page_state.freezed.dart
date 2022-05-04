@@ -35,6 +35,13 @@ class _$SearchPageStateTearOff {
       supplements,
     );
   }
+
+  _Failed<T> failed<T>(SearchPageSupplements<T> supplements, String? message) {
+    return _Failed<T>(
+      supplements,
+      message,
+    );
+  }
 }
 
 /// @nodoc
@@ -50,6 +57,9 @@ mixin _$SearchPageState<T> {
     required TResult Function(SearchPageSupplements<T> supplements) loading,
     required TResult Function(SearchPageSupplements<T> supplements) content,
     required TResult Function(SearchPageSupplements<T> supplements) success,
+    required TResult Function(
+            SearchPageSupplements<T> supplements, String? message)
+        failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -57,6 +67,8 @@ mixin _$SearchPageState<T> {
     TResult Function(SearchPageSupplements<T> supplements)? loading,
     TResult Function(SearchPageSupplements<T> supplements)? content,
     TResult Function(SearchPageSupplements<T> supplements)? success,
+    TResult Function(SearchPageSupplements<T> supplements, String? message)?
+        failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -64,6 +76,8 @@ mixin _$SearchPageState<T> {
     TResult Function(SearchPageSupplements<T> supplements)? loading,
     TResult Function(SearchPageSupplements<T> supplements)? content,
     TResult Function(SearchPageSupplements<T> supplements)? success,
+    TResult Function(SearchPageSupplements<T> supplements, String? message)?
+        failed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -72,6 +86,7 @@ mixin _$SearchPageState<T> {
     required TResult Function(_Loading<T> value) loading,
     required TResult Function(_Content<T> value) content,
     required TResult Function(_Success<T> value) success,
+    required TResult Function(_Failed<T> value) failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -79,6 +94,7 @@ mixin _$SearchPageState<T> {
     TResult Function(_Loading<T> value)? loading,
     TResult Function(_Content<T> value)? content,
     TResult Function(_Success<T> value)? success,
+    TResult Function(_Failed<T> value)? failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -86,6 +102,7 @@ mixin _$SearchPageState<T> {
     TResult Function(_Loading<T> value)? loading,
     TResult Function(_Content<T> value)? content,
     TResult Function(_Success<T> value)? success,
+    TResult Function(_Failed<T> value)? failed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -207,6 +224,9 @@ class _$_Loading<T> implements _Loading<T> {
     required TResult Function(SearchPageSupplements<T> supplements) loading,
     required TResult Function(SearchPageSupplements<T> supplements) content,
     required TResult Function(SearchPageSupplements<T> supplements) success,
+    required TResult Function(
+            SearchPageSupplements<T> supplements, String? message)
+        failed,
   }) {
     return loading(supplements);
   }
@@ -217,6 +237,8 @@ class _$_Loading<T> implements _Loading<T> {
     TResult Function(SearchPageSupplements<T> supplements)? loading,
     TResult Function(SearchPageSupplements<T> supplements)? content,
     TResult Function(SearchPageSupplements<T> supplements)? success,
+    TResult Function(SearchPageSupplements<T> supplements, String? message)?
+        failed,
   }) {
     return loading?.call(supplements);
   }
@@ -227,6 +249,8 @@ class _$_Loading<T> implements _Loading<T> {
     TResult Function(SearchPageSupplements<T> supplements)? loading,
     TResult Function(SearchPageSupplements<T> supplements)? content,
     TResult Function(SearchPageSupplements<T> supplements)? success,
+    TResult Function(SearchPageSupplements<T> supplements, String? message)?
+        failed,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -241,6 +265,7 @@ class _$_Loading<T> implements _Loading<T> {
     required TResult Function(_Loading<T> value) loading,
     required TResult Function(_Content<T> value) content,
     required TResult Function(_Success<T> value) success,
+    required TResult Function(_Failed<T> value) failed,
   }) {
     return loading(this);
   }
@@ -251,6 +276,7 @@ class _$_Loading<T> implements _Loading<T> {
     TResult Function(_Loading<T> value)? loading,
     TResult Function(_Content<T> value)? content,
     TResult Function(_Success<T> value)? success,
+    TResult Function(_Failed<T> value)? failed,
   }) {
     return loading?.call(this);
   }
@@ -261,6 +287,7 @@ class _$_Loading<T> implements _Loading<T> {
     TResult Function(_Loading<T> value)? loading,
     TResult Function(_Content<T> value)? content,
     TResult Function(_Success<T> value)? success,
+    TResult Function(_Failed<T> value)? failed,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -354,6 +381,9 @@ class _$_Content<T> implements _Content<T> {
     required TResult Function(SearchPageSupplements<T> supplements) loading,
     required TResult Function(SearchPageSupplements<T> supplements) content,
     required TResult Function(SearchPageSupplements<T> supplements) success,
+    required TResult Function(
+            SearchPageSupplements<T> supplements, String? message)
+        failed,
   }) {
     return content(supplements);
   }
@@ -364,6 +394,8 @@ class _$_Content<T> implements _Content<T> {
     TResult Function(SearchPageSupplements<T> supplements)? loading,
     TResult Function(SearchPageSupplements<T> supplements)? content,
     TResult Function(SearchPageSupplements<T> supplements)? success,
+    TResult Function(SearchPageSupplements<T> supplements, String? message)?
+        failed,
   }) {
     return content?.call(supplements);
   }
@@ -374,6 +406,8 @@ class _$_Content<T> implements _Content<T> {
     TResult Function(SearchPageSupplements<T> supplements)? loading,
     TResult Function(SearchPageSupplements<T> supplements)? content,
     TResult Function(SearchPageSupplements<T> supplements)? success,
+    TResult Function(SearchPageSupplements<T> supplements, String? message)?
+        failed,
     required TResult orElse(),
   }) {
     if (content != null) {
@@ -388,6 +422,7 @@ class _$_Content<T> implements _Content<T> {
     required TResult Function(_Loading<T> value) loading,
     required TResult Function(_Content<T> value) content,
     required TResult Function(_Success<T> value) success,
+    required TResult Function(_Failed<T> value) failed,
   }) {
     return content(this);
   }
@@ -398,6 +433,7 @@ class _$_Content<T> implements _Content<T> {
     TResult Function(_Loading<T> value)? loading,
     TResult Function(_Content<T> value)? content,
     TResult Function(_Success<T> value)? success,
+    TResult Function(_Failed<T> value)? failed,
   }) {
     return content?.call(this);
   }
@@ -408,6 +444,7 @@ class _$_Content<T> implements _Content<T> {
     TResult Function(_Loading<T> value)? loading,
     TResult Function(_Content<T> value)? content,
     TResult Function(_Success<T> value)? success,
+    TResult Function(_Failed<T> value)? failed,
     required TResult orElse(),
   }) {
     if (content != null) {
@@ -501,6 +538,9 @@ class _$_Success<T> implements _Success<T> {
     required TResult Function(SearchPageSupplements<T> supplements) loading,
     required TResult Function(SearchPageSupplements<T> supplements) content,
     required TResult Function(SearchPageSupplements<T> supplements) success,
+    required TResult Function(
+            SearchPageSupplements<T> supplements, String? message)
+        failed,
   }) {
     return success(supplements);
   }
@@ -511,6 +551,8 @@ class _$_Success<T> implements _Success<T> {
     TResult Function(SearchPageSupplements<T> supplements)? loading,
     TResult Function(SearchPageSupplements<T> supplements)? content,
     TResult Function(SearchPageSupplements<T> supplements)? success,
+    TResult Function(SearchPageSupplements<T> supplements, String? message)?
+        failed,
   }) {
     return success?.call(supplements);
   }
@@ -521,6 +563,8 @@ class _$_Success<T> implements _Success<T> {
     TResult Function(SearchPageSupplements<T> supplements)? loading,
     TResult Function(SearchPageSupplements<T> supplements)? content,
     TResult Function(SearchPageSupplements<T> supplements)? success,
+    TResult Function(SearchPageSupplements<T> supplements, String? message)?
+        failed,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -535,6 +579,7 @@ class _$_Success<T> implements _Success<T> {
     required TResult Function(_Loading<T> value) loading,
     required TResult Function(_Content<T> value) content,
     required TResult Function(_Success<T> value) success,
+    required TResult Function(_Failed<T> value) failed,
   }) {
     return success(this);
   }
@@ -545,6 +590,7 @@ class _$_Success<T> implements _Success<T> {
     TResult Function(_Loading<T> value)? loading,
     TResult Function(_Content<T> value)? content,
     TResult Function(_Success<T> value)? success,
+    TResult Function(_Failed<T> value)? failed,
   }) {
     return success?.call(this);
   }
@@ -555,6 +601,7 @@ class _$_Success<T> implements _Success<T> {
     TResult Function(_Loading<T> value)? loading,
     TResult Function(_Content<T> value)? content,
     TResult Function(_Success<T> value)? success,
+    TResult Function(_Failed<T> value)? failed,
     required TResult orElse(),
   }) {
     if (success != null) {
@@ -572,5 +619,173 @@ abstract class _Success<T> implements SearchPageState<T> {
   @override
   @JsonKey(ignore: true)
   _$SuccessCopyWith<T, _Success<T>> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$FailedCopyWith<T, $Res>
+    implements $SearchPageStateCopyWith<T, $Res> {
+  factory _$FailedCopyWith(_Failed<T> value, $Res Function(_Failed<T>) then) =
+      __$FailedCopyWithImpl<T, $Res>;
+  @override
+  $Res call({SearchPageSupplements<T> supplements, String? message});
+
+  @override
+  $SearchPageSupplementsCopyWith<T, $Res> get supplements;
+}
+
+/// @nodoc
+class __$FailedCopyWithImpl<T, $Res>
+    extends _$SearchPageStateCopyWithImpl<T, $Res>
+    implements _$FailedCopyWith<T, $Res> {
+  __$FailedCopyWithImpl(_Failed<T> _value, $Res Function(_Failed<T>) _then)
+      : super(_value, (v) => _then(v as _Failed<T>));
+
+  @override
+  _Failed<T> get _value => super._value as _Failed<T>;
+
+  @override
+  $Res call({
+    Object? supplements = freezed,
+    Object? message = freezed,
+  }) {
+    return _then(_Failed<T>(
+      supplements == freezed
+          ? _value.supplements
+          : supplements // ignore: cast_nullable_to_non_nullable
+              as SearchPageSupplements<T>,
+      message == freezed
+          ? _value.message
+          : message // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$_Failed<T> implements _Failed<T> {
+  const _$_Failed(this.supplements, this.message);
+
+  @override
+  final SearchPageSupplements<T> supplements;
+  @override
+  final String? message;
+
+  @override
+  String toString() {
+    return 'SearchPageState<$T>.failed(supplements: $supplements, message: $message)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _Failed<T> &&
+            const DeepCollectionEquality()
+                .equals(other.supplements, supplements) &&
+            const DeepCollectionEquality().equals(other.message, message));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(supplements),
+      const DeepCollectionEquality().hash(message));
+
+  @JsonKey(ignore: true)
+  @override
+  _$FailedCopyWith<T, _Failed<T>> get copyWith =>
+      __$FailedCopyWithImpl<T, _Failed<T>>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(SearchPageSupplements<T> supplements) loading,
+    required TResult Function(SearchPageSupplements<T> supplements) content,
+    required TResult Function(SearchPageSupplements<T> supplements) success,
+    required TResult Function(
+            SearchPageSupplements<T> supplements, String? message)
+        failed,
+  }) {
+    return failed(supplements, message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult Function(SearchPageSupplements<T> supplements)? loading,
+    TResult Function(SearchPageSupplements<T> supplements)? content,
+    TResult Function(SearchPageSupplements<T> supplements)? success,
+    TResult Function(SearchPageSupplements<T> supplements, String? message)?
+        failed,
+  }) {
+    return failed?.call(supplements, message);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(SearchPageSupplements<T> supplements)? loading,
+    TResult Function(SearchPageSupplements<T> supplements)? content,
+    TResult Function(SearchPageSupplements<T> supplements)? success,
+    TResult Function(SearchPageSupplements<T> supplements, String? message)?
+        failed,
+    required TResult orElse(),
+  }) {
+    if (failed != null) {
+      return failed(supplements, message);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Loading<T> value) loading,
+    required TResult Function(_Content<T> value) content,
+    required TResult Function(_Success<T> value) success,
+    required TResult Function(_Failed<T> value) failed,
+  }) {
+    return failed(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult Function(_Loading<T> value)? loading,
+    TResult Function(_Content<T> value)? content,
+    TResult Function(_Success<T> value)? success,
+    TResult Function(_Failed<T> value)? failed,
+  }) {
+    return failed?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Loading<T> value)? loading,
+    TResult Function(_Content<T> value)? content,
+    TResult Function(_Success<T> value)? success,
+    TResult Function(_Failed<T> value)? failed,
+    required TResult orElse(),
+  }) {
+    if (failed != null) {
+      return failed(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Failed<T> implements SearchPageState<T> {
+  const factory _Failed(SearchPageSupplements<T> supplements, String? message) =
+      _$_Failed<T>;
+
+  @override
+  SearchPageSupplements<T> get supplements;
+  String? get message;
+  @override
+  @JsonKey(ignore: true)
+  _$FailedCopyWith<T, _Failed<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

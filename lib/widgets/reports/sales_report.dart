@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:inventory_management/models/query_options.dart';
 import 'package:inventory_management/source.dart';
 import 'package:inventory_management/widgets/datatable_data/common.dart';
 import 'package:inventory_management/widgets/datatable_data/sales.dart';

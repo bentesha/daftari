@@ -1,8 +1,10 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:inventory_management/models/query_options.dart';
 import 'package:inventory_management/widgets/reports/expense_report.dart';
 import 'package:inventory_management/widgets/reports/price_list.dart';
 import 'package:inventory_management/widgets/reports/profit_loss_report.dart';
 import 'package:inventory_management/widgets/reports/remaining_stock_report.dart';
+import 'package:inventory_management/widgets/reports/sales_filter.dart';
 import 'package:inventory_management/widgets/reports/sales_report.dart';
 import 'package:inventory_management/widgets/type_selector_dialog.dart';
 import '../source.dart';
@@ -18,6 +20,7 @@ class ReportsPage extends StatefulWidget {
 
 class _ReportsPageState extends State<ReportsPage> {
   late String reportType;
+  var queryOptions = QueryOptions('');
 
   @override
   void initState() {
@@ -34,7 +37,13 @@ class _ReportsPageState extends State<ReportsPage> {
           actionCallbacks: showFilter
               ? [
                   () => _showTypeSelectorDialog(Types.reports),
-                  () => _showTypeSelectorDialog(Types.dimensions)
+                  () async {
+                    final options = await SalesFilterDialog.navigateTo(
+                        context, queryOptions);
+                    setState(() {
+                      queryOptions = options ?? QueryOptions('');
+                    });
+                  }
                 ]
               : [() => _showTypeSelectorDialog(Types.reports)],
           actionIcons: showFilter

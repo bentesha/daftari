@@ -5,6 +5,12 @@ class ItemsSearchPage<T> extends StatefulWidget {
 
   final CategoryTypes? categoryType;
 
+  static Future<dynamic> navigateTo<T>(BuildContext context,
+      [CategoryTypes? categoryType]) {
+    return Navigator.of(context).push(MaterialPageRoute<dynamic>(
+        builder: (context) => ItemsSearchPage<T>(categoryType: categoryType)));
+  }
+
   @override
   State<ItemsSearchPage<T>> createState() => _ItemsSearchPageState();
 }
@@ -25,19 +31,14 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SearchPageBloc<T>, SearchPageState<T>>(
+    return BlocBuilder<SearchPageBloc<T>, SearchPageState<T>>(
         bloc: bloc,
-        listener: (_, state) {
-          final isSuccessful =
-              state.maybeWhen(success: (_) => true, orElse: () => false);
-
-          if (isSuccessful) pop();
-        },
         builder: (_, state) {
           return state.when(
             loading: _buildLoading,
             content: _buildContent,
             success: _buildContent,
+            failed: _buildError,
           );
         });
   }
@@ -49,6 +50,25 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
     return Scaffold(
       appBar: _buildAppBar(supp),
       body: _buildItems(supp),
+    );
+  }
+
+  Widget _buildError(SearchPageSupplements supp, String? message) {
+    return Scaffold(
+      body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AppText(message ?? 'An error happened'),
+          AppTextButton(
+            onPressed: () => bloc.init(widget.categoryType),
+            text: 'Try Again',
+            height: 40.dh,
+            backgroundColor: AppColors.primary,
+            margin: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 10.dh),
+          )
+        ],
+      )),
     );
   }
 
@@ -100,7 +120,10 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
 
   Widget _buildItemTile(var item) {
     return AppTextButton(
-      onPressed: () => bloc.updateId(item.id),
+      onPressed: () {
+        bloc.updateId(item.id);
+        Navigator.pop(context, item);
+      },
       child: ListTile(title: AppText(item.name, weight: FontWeight.w500)),
       isFilled: false,
       padding: EdgeInsets.symmetric(horizontal: 19.dw),

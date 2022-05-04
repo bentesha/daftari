@@ -7,6 +7,7 @@ class SearchPageState<T> with _$SearchPageState<T> {
   const factory SearchPageState.loading(SearchPageSupplements<T> supplements) = _Loading;
   const factory SearchPageState.content(SearchPageSupplements<T> supplements) = _Content;
   const factory SearchPageState.success(SearchPageSupplements<T> supplements) = _Success;
+  const factory SearchPageState.failed(SearchPageSupplements<T> supplements, String? message) = _Failed;
 
    factory SearchPageState.initial() => SearchPageState.content(SearchPageSupplements.empty());
 }

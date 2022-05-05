@@ -22,12 +22,12 @@ class SalesFilterDialog extends StatefulWidget {
 }
 
 class _SalesFilterDialogState extends State<SalesFilterDialog> {
-  final dayField = 'dayfield',
-      monthField = 'monthField',
-      quarterField = 'quarterField',
-      yearField = 'yearField',
-      itemField = 'itemField',
-      categoryField = 'categoryField';
+  final dayOption = 'dayOption',
+      monthOption = 'monthOption',
+      quarterOption = 'quarterOption',
+      yearOption = 'yearOption',
+      itemOption = 'itemOption',
+      categoryOption = 'categoryOption';
 
   late final QueryOptions options;
 
@@ -65,12 +65,12 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
               label: 'GROUP BY',
               value: options.sortBy,
               options: [
-                OptionItem(value: dayField, label: 'Day'),
-                OptionItem(value: monthField, label: 'Month'),
-                OptionItem(value: quarterField, label: 'Quarter'),
-                OptionItem(value: yearField, label: 'Year'),
-                OptionItem(value: itemField, label: 'Item'),
-                OptionItem(value: categoryField, label: 'Category'),
+                OptionItem(value: dayOption, label: 'Day'),
+                OptionItem(value: monthOption, label: 'Month'),
+                OptionItem(value: quarterOption, label: 'Quarter'),
+                OptionItem(value: yearOption, label: 'Year'),
+                OptionItem(value: itemOption, label: 'Item'),
+                OptionItem(value: categoryOption, label: 'Category'),
               ],
               onSelected: (value) => setState(() {
                 options.sortBy = value;
@@ -92,15 +92,13 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
             FormCellDivider(),
             DateRangePickerFormCell(
                 label: 'DATE RANGE',
-                value: options.getDateRange,
+                value: (options['date_range'] as DateRangeFilter).value,
                 clearable: true,
                 onChanged: (value) {
-                  setState(() {
-                    options.addFilter(
-                        DateRangeFilter('date_range')..value = value);
-                  });
+                  options
+                      .addFilter(DateRangeFilter('date_range')..value = value);
+                  setState(() {});
                 }),
-            FormCellDivider(subDivider: true),
             FormCellDivider(subDivider: true),
             ValueSelector(
                 title: 'CATEGORY',
@@ -109,9 +107,10 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                       context, CategoryTypes.products) as Category?;
                   options.addFilter(
                       StringFilter('category')..value = category?.name);
+                  setState(() {});
                 },
                 error: null,
-                value: options.getCategory,
+                value: (options['category'] as CategoryFilter).value?.name,
                 isEditable: true),
             ValueSelector(
                 title: 'PRODUCT',
@@ -121,8 +120,9 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                           as Product?;
                   options.addFilter(
                       StringFilter('product')..value = product?.name);
+                  setState(() {});
                 },
-                value: options.getProduct,
+                value: (options['product'] as ProductFilter).value?.name,
                 error: null,
                 isEditable: true),
           ],

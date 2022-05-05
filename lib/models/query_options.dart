@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/models/find_options.dart';
+import 'package:inventory_management/widgets/reports/price_list.dart';
+
+import 'category.dart';
 
 class QueryOptions {
   QueryOptions(String defaultSortField,
@@ -12,27 +15,6 @@ class QueryOptions {
   final _filters = <QueryFilter>[];
 
   int get count => _filters.where((filter) => filter.hasValue).length;
-
-  DateTimeRange? get getDateRange {
-    final index =
-        _filters.indexWhere((filter) => filter.fieldName == 'date_range');
-    if (index == -1) return null;
-    return _filters[index].value;
-  }
-
-  String? get getCategory {
-    final index =
-        _filters.indexWhere((filter) => filter.fieldName == 'category');
-    if (index == -1) return null;
-    return _filters[index].value;
-  }
-
-  String? get getProduct {
-    final index =
-        _filters.indexWhere((filter) => filter.fieldName == 'product');
-    if (index == -1) return null;
-    return _filters[index].value;
-  }
 
   addFilter(QueryFilter filter) {
     _filters.add(filter);
@@ -100,4 +82,18 @@ class StringFilter extends QueryFilter<String> {
 
   @override
   StringFilter copy() => StringFilter(fieldName)..value = value;
+}
+
+class CategoryFilter extends QueryFilter<Category> {
+  CategoryFilter(String fieldName) : super(fieldName);
+
+  @override
+  CategoryFilter copy() => CategoryFilter(fieldName)..value = value;
+}
+
+class ProductFilter extends QueryFilter<Product> {
+  ProductFilter(String fieldName) : super(fieldName);
+
+  @override
+  ProductFilter copy() => ProductFilter(fieldName)..value = value;
 }

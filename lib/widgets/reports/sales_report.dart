@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:inventory_management/models/query_options.dart';
 import 'package:inventory_management/source.dart';
 import 'package:inventory_management/widgets/datatable_data/common.dart';
 import 'package:inventory_management/widgets/datatable_data/sales.dart';
@@ -16,7 +15,6 @@ class SalesReport extends StatefulWidget {
 class _SalesReportState extends State<SalesReport> {
   final isSummaryVisibleNotifier = ValueNotifier<bool>(true);
   final selectedGroupNotifier = ValueNotifier<String>('');
-  final longPressedGroupNotifier = ValueNotifier<String>('');
   late List<Group> sales;
   late Group topSpendingGroup;
   late double allGroupsTotal;
@@ -90,77 +88,33 @@ class _SalesReportState extends State<SalesReport> {
         itemBuilder: (_, index) {
           final group = sales[index];
           return ValueListenableBuilder(
-              valueListenable: longPressedGroupNotifier,
-              builder: (_, longPressedGroup, __) {
-                final isLongPressed = longPressedGroup == group.title;
-                return ValueListenableBuilder(
-                    valueListenable: selectedGroupNotifier,
-                    builder: (_, selectedGroup, __) {
-                      final isSelected = selectedGroup == group.title;
-                      return Column(
-                        children: [
-                          SizedBox(
-                              height: 40.dh,
-                              child: ListTile(
-                                tileColor: isLongPressed
-                                    ? AppColors.primaryVariant
-                                    : isSelected
-                                        ? AppColors.surface2
-                                        : AppColors.onPrimary,
-                                onTap: () {
-                                  selectedGroupNotifier.value =
-                                      isSelected ? '' : group.title;
-                                  longPressedGroupNotifier.value = '';
-                                },
-                                onLongPress: () {
-                                  longPressedGroupNotifier.value =
-                                      isLongPressed ? '' : group.title;
-                                  selectedGroupNotifier.value = '';
-                                },
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 15.dw),
-                                title: AppText(group.title,
-                                    color: isLongPressed
-                                        ? AppColors.onPrimary
-                                        : AppColors.onBackground,
-                                    weight: FontWeight.normal),
-                                trailing: AppText(
-                                    Utils.convertToMoneyFormat(group.total),
-                                    color: isLongPressed
-                                        ? AppColors.onPrimary
-                                        : AppColors.onBackground2,
-                                    weight: FontWeight.w500),
-                              )),
-                          isLongPressed && group.data != null
-                              ? ListView.separated(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  separatorBuilder: (_, __) =>
-                                      AppDivider.zeroMargin(
-                                          color: AppColors.divider.shade300),
-                                  itemCount: group.data!.length,
-                                  itemBuilder: (_, index) {
-                                    final data = group.data![index];
-                                    return SizedBox(
-                                      height: 40.dh,
-                                      child: ListTile(
-                                        tileColor: AppColors.surface2,
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 20.dw),
-                                        title: AppText(data.title, size: 14.dw),
-                                        trailing: AppText(
-                                            Utils.convertToMoneyFormat(
-                                                data.total),
-                                            color: AppColors.onBackground2,
-                                            weight: FontWeight.w500),
-                                      ),
-                                    );
-                                  },
-                                )
-                              : Container()
-                        ],
-                      );
-                    });
+              valueListenable: selectedGroupNotifier,
+              builder: (_, selectedGroup, __) {
+                final isSelected = selectedGroup == group.title;
+                return Column(
+                  children: [
+                    SizedBox(
+                        height: 40.dh,
+                        child: ListTile(
+                          tileColor: isSelected
+                              ? AppColors.surface2
+                              : AppColors.onPrimary,
+                          onTap: () {
+                            selectedGroupNotifier.value =
+                                isSelected ? '' : group.title;
+                          },
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 15.dw),
+                          title: AppText(group.title,
+                              color: AppColors.onBackground,
+                              weight: FontWeight.normal),
+                          trailing: AppText(
+                              Utils.convertToMoneyFormat(group.total),
+                              color: AppColors.onBackground2,
+                              weight: FontWeight.w500),
+                        )),
+                  ],
+                );
               });
         },
       ),

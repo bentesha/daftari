@@ -1,183 +1,60 @@
-import 'dart:math';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:inventory_management/blocs/report_page_bloc.dart';
+import 'package:inventory_management/models/query_options.dart';
 import 'package:inventory_management/source.dart';
-import 'package:inventory_management/widgets/datatable_data/common.dart';
-import 'package:inventory_management/widgets/datatable_data/sales.dart';
+import 'package:inventory_management/widgets/report_title.dart';
 import 'package:inventory_management/widgets/reports/summary_tile.dart';
 
-class SalesReport extends StatefulWidget {
-  const SalesReport({Key? key}) : super(key: key);
+class Report extends StatefulWidget {
+  const Report(this.queryOptions, {required this.data, Key? key})
+      : super(key: key);
+
+  final QueryOptions queryOptions;
+  final ReportData data;
 
   @override
-  State<SalesReport> createState() => _SalesReportState();
+  State<Report> createState() => _ReportState();
 }
 
-class _SalesReportState extends State<SalesReport> {
-  final isSummaryVisibleNotifier = ValueNotifier<bool>(true);
-  final selectedGroupNotifier = ValueNotifier<String>('');
-  late List<Group> sales;
-  late Group topSpendingGroup;
-  late double allGroupsTotal;
-
-  @override
-  void initState() {
-    final random = Random();
-    final _sales = <Group>[];
-    for (var group in groups) {
-      if (group.data == null) {
-        _sales.add(group.copyWithTotal(random.nextDouble() * 1243500));
-      } else {
-        final _data = <Data>[];
-        for (var data in group.data!) {
-          _data.add(data.copyWithTotal(random.nextDouble() * 556700));
-        }
-        final total =
-            _data.fold<double>(0, (prev, current) => prev + current.total);
-        _data.sort((a, b) => b.total.compareTo(a.total));
-        _sales.add(Group(group.title, data: _data, total: total));
-      }
-    }
-    _sales.sort((a, b) => b.total.compareTo(a.total));
-    sales = _sales;
-    topSpendingGroup = _sales[0];
-    allGroupsTotal =
-        _sales.fold<double>(0, (prev, current) => prev + current.total);
-    super.initState();
-  }
+class _ReportState extends State<Report> {
+  final selectedItemNotifier = ValueNotifier<String>('');
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildSummary(),
-        _buildTitles(),
+        ReportTitle(title1: widget.queryOptions.groupBy, title2: 'amount'),
         _buildDataList(),
       ],
     );
   }
 
-  _buildTitles() {
-    return Container(
-      color: AppColors.surface,
-      height: 50.dh,
-      child: Row(
-        children: [
-          Expanded(
-              child: Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: 15.dw),
-                  child: AppText('CATEGORY',
-                      size: 16.dw, weight: FontWeight.bold))),
-          Expanded(
-              child: Container(
-                  alignment: Alignment.centerRight,
-                  padding: EdgeInsets.only(right: 15.dw),
-                  child:
-                      AppText('AMOUNT', size: 16.dw, weight: FontWeight.bold))),
-        ],
-      ),
-    );
-  }
-
   _buildDataList() {
+    final items = widget.data.items;
     return Expanded(
       child: ListView.separated(
-        itemCount: sales.length,
+        itemCount: items.length,
         separatorBuilder: (_, __) => AppDivider(
             margin: EdgeInsets.zero, color: AppColors.divider.shade300),
         itemBuilder: (_, index) {
-          final group = sales[index];
+          final amount = widget.data.amounts[index];
+          final item = items[index];
           return ValueListenableBuilder(
-              valueListenable: selectedGroupNotifier,
+              valueListenable: selectedItemNotifier,
               builder: (_, selectedGroup, __) {
-                final isSelected = selectedGroup == group.title;
-                return Column(
-                  children: [
-                    SizedBox(
-                        height: 40.dh,
-                        child: ListTile(
-                          tileColor: isSelected
-                              ? AppColors.surface2
-                              : AppColors.onPrimary,
-                          onTap: () {
-                            selectedGroupNotifier.value =
-                                isSelected ? '' : group.title;
-                          },
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 15.dw),
-                          title: AppText(group.title,
-                              color: AppColors.onBackground,
-                              weight: FontWeight.normal),
-                          trailing: AppText(
-                              Utils.convertToMoneyFormat(group.total),
-                              color: AppColors.onBackground2,
-                              weight: FontWeight.w500),
-                        )),
-                  ],
+                final isSelected = selectedGroup == item;
+                return GestureDetector(
+                  onTap: () =>
+                      selectedItemNotifier.value = isSelected ? '' : item,
+                  child: ReportTile(
+                    name: item,
+                    value: amount,
+                    tileColor:
+                        isSelected ? AppColors.surface2 : AppColors.onPrimary,
+                  ),
                 );
               });
         },
       ),
     );
-  }
-
-  _buildSummary() {
-    return ValueListenableBuilder<bool>(
-        valueListenable: isSummaryVisibleNotifier,
-        builder: (_, isSummaryVisible, __) {
-          return Container(
-            color: Colors.white,
-            child: Column(
-              children: [
-                Container(
-                    height: 50.dh,
-                    color: AppColors.surface,
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.symmetric(horizontal: 15.dw),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AppText('SUMMARY',
-                            size: 16.dw, weight: FontWeight.bold),
-                        AppIconButton(
-                          onPressed: () {
-                            isSummaryVisibleNotifier.value =
-                                !isSummaryVisibleNotifier.value;
-                          },
-                          icon:
-                              isSummaryVisible ? EvaIcons.minus : EvaIcons.plus,
-                          iconThemeData: const IconThemeData(
-                              color: AppColors.onBackground),
-                        )
-                      ],
-                    )),
-                isSummaryVisible
-                    ? Column(
-                        children: [
-                          SummaryTile(
-                              title: 'Top selling category',
-                              name: topSpendingGroup.title,
-                              value: topSpendingGroup.total),
-                          AppDivider(
-                              margin: EdgeInsets.zero,
-                              color: AppColors.divider.shade300),
-                          const SummaryTile(
-                              title: 'Top selling item',
-                              name: 'Pepsi 1.0L',
-                              value: 923500),
-                          AppDivider(
-                              margin: EdgeInsets.zero,
-                              color: AppColors.divider.shade300),
-                          SummaryTile(
-                              title: 'Total Sales',
-                              name: '345 sales',
-                              value: allGroupsTotal),
-                        ],
-                      )
-                    : const AppDivider.zeroMargin()
-              ],
-            ),
-          );
-        });
   }
 }

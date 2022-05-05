@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FormCellDivider extends StatelessWidget {
-  FormCellDivider({this.subDivider = false});
+  const FormCellDivider({Key? key, this.subDivider = false}) : super(key: key);
 
   final bool subDivider;
 

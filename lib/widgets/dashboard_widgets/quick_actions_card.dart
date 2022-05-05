@@ -1,4 +1,5 @@
 import 'package:inventory_management/source.dart';
+import 'package:inventory_management/utils/extensions.dart/report_type.dart';
 
 class QuickActionsCard extends StatelessWidget {
   const QuickActionsCard({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class QuickActionsCard extends StatelessWidget {
               _buildIcon(() => push(const ExpensePage(PageActions.adding)),
                   'New Expense', Icons.post_add),
               _buildIcon(
-                  () => push(const ReportsPage(reportType: 'Price List')),
+                  () => push(const ReportsPage(reportType: ReportType.priceList)),
                   'Price List',
                   Icons.fact_check),
               _buildIcon(

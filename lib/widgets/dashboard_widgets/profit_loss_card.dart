@@ -1,4 +1,5 @@
 import 'package:inventory_management/source.dart';
+import 'package:inventory_management/utils/extensions.dart/report_type.dart';
 
 class ProfitLossCard extends StatelessWidget {
   const ProfitLossCard({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class ProfitLossCard extends StatelessWidget {
           AppDivider(margin: EdgeInsets.only(top: 10.dh, bottom: 5.dh)),
           AppTextButton(
             onPressed: () =>
-                push(const ReportsPage(reportType: 'Profit & Loss')),
+                push(const ReportsPage(reportType:  ReportType.profitLoss)),
             text: 'View Report',
             height: 40.dh,
             isFilled: false,

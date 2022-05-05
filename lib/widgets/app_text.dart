@@ -20,15 +20,18 @@ class AppText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(data,
-        textAlign: alignment ?? TextAlign.start,
-        style: style ??
-            TextStyle(
-              fontFamily: kFontFam,
-              fontWeight: weight ?? FontWeight.w400,
-              fontSize: size ?? 15.dw,
-              color:
-                  (color ?? AppColors.onBackground).withOpacity(opacity ?? 1),
-            ));
+    return Padding(
+      padding: EdgeInsets.only(top: 5.dh),
+      child: Text(data,
+          textAlign: alignment ?? TextAlign.start,
+          style: style ??
+              TextStyle(
+                fontFamily: kFontFam,
+                fontWeight: weight ?? FontWeight.w400,
+                fontSize: size ?? 15.dw,
+                color:
+                    (color ?? AppColors.onBackground).withOpacity(opacity ?? 1),
+              )),
+    );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FormCellError extends StatelessWidget {
-  FormCellError(this.errorText);
+  const FormCellError(this.errorText, {Key? key}) : super(key: key);
 
   final String? errorText;
 

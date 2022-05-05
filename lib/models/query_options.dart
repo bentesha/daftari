@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/models/find_options.dart';
-import 'package:inventory_management/widgets/reports/price_list.dart';
-
 import 'category.dart';
+import 'product.dart';
 
 class QueryOptions {
-  QueryOptions(String defaultSortField,
-      {this.sortDirection = SortDirection.ascending})
-      : sortBy = defaultSortField;
+  QueryOptions(String defaultGroupByOption,
+      {this.sortDirection = SortDirection.descending})
+      : groupBy = defaultGroupByOption;
 
   SortDirection sortDirection;
-  String sortBy;
+  String groupBy;
 
   final _filters = <QueryFilter>[];
 
   int get count => _filters.where((filter) => filter.hasValue).length;
 
   addFilter(QueryFilter filter) {
+    if (filter.value == null) {
+      removeFilter(filter.fieldName);
+      return;
+    }
     _filters.add(filter);
   }
 
-  bool removeFilter(QueryFilter filter) {
-    return _filters.remove(filter);
+  void removeFilter(String fieldName) {
+    _filters.removeWhere((filter) => filter.fieldName == fieldName);
   }
 
   void clearAll<TFilter extends QueryFilter>() {
@@ -38,17 +41,12 @@ class QueryOptions {
   }
 
   QueryOptions copy() {
-    final options = QueryOptions(sortBy);
+    final options = QueryOptions(groupBy);
     options.sortDirection = sortDirection;
     for (var filter in _filters) {
       options._filters.add(filter.copy());
     }
     return options;
-  }
-
-  String getOrderByClause() {
-    final sortDir = sortDirection == SortDirection.ascending ? 'ASC' : 'DESC';
-    return '$sortBy $sortDir';
   }
 }
 

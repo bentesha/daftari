@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
 class FormCellText extends StatelessWidget {
-
-  FormCellText({
-    this.valueText,
-    required this.hintText
-  });
+  const FormCellText({Key? key, this.valueText, required this.hintText})
+      : super(key: key);
 
   final String hintText;
   final String? valueText;

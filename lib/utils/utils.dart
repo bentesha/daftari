@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
@@ -18,5 +20,14 @@ class Utils {
 
   static String dateRangeToString(DateTimeRange range) {
     return '${dateToString(range.start)} - ${dateToString(range.end)}';
+  }
+
+  static List<double> getRandomAmounts() {
+    final amounts = <double>[];
+    final random = Random();
+    for (int index = 0; index < 11; index++) {
+      amounts.add(random.nextDouble() * 1234500);
+    }
+    return amounts;
   }
 }

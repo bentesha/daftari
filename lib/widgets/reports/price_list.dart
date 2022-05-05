@@ -1,3 +1,5 @@
+import 'package:inventory_management/widgets/report_title.dart';
+
 import '../../source.dart';
 
 class PriceList extends StatelessWidget {
@@ -7,7 +9,7 @@ class PriceList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildTitles(),
+        const ReportTitle(title1: 'item', title2: 'price'),
         Expanded(
           child: ListView(
               padding: EdgeInsets.only(bottom: 20.dh),
@@ -51,60 +53,37 @@ class PriceList extends StatelessWidget {
   }
 }
 
-_buildTitles() {
-  return Container(
-    color: AppColors.surface,
-    height: 50.dh,
-    child: Row(
-      children: [
-        Expanded(
-            child: Container(
-                alignment: Alignment.centerLeft,
-                padding: EdgeInsets.only(left: 15.dw),
-                child:
-                    AppText('PRODUCT', size: 16.dw, weight: FontWeight.bold))),
-        Expanded(
-            child: Container(
-                alignment: Alignment.centerRight,
-                padding: EdgeInsets.only(right: 15.dw),
-                child: AppText('PRICE',
-                    size: 16.dw, weight: FontWeight.bold))),
-      ],
-    ),
-  );
-}
-
 final categories = ['Grains & Breads', 'Water', 'Dairy & Eggs', 'Oil & Fat'];
 
 final items = [
   [
-    const Product('Spaghetti', 20000),
-    const Product('Noodles', 20000),
-    const Product('White Bread', 1500),
-    const Product('Wheat Bread', 2000),
-    const Product('All Purpose Floor', 2000),
-    const Product('Rice', 2300),
+    const Item('Spaghetti', 20000),
+    const Item('Noodles', 20000),
+    const Item('White Bread', 1500),
+    const Item('Wheat Bread', 2000),
+    const Item('All Purpose Floor', 2000),
+    const Item('Rice', 2300),
   ],
   [
-    const Product('Kilimanjaro', 1400),
-    const Product('Uhai', 600),
-    const Product('Hill Water', 500),
-    const Product('Masafi', 500),
+    const Item('Kilimanjaro', 1400),
+    const Item('Uhai', 600),
+    const Item('Hill Water', 500),
+    const Item('Masafi', 500),
   ],
   [
-    const Product('Milk', 2000),
-    const Product('Eggs', 24500),
-    const Product('Cheese', 1500),
-    const Product('Yogurt', 2000),
+    const Item('Milk', 2000),
+    const Item('Eggs', 24500),
+    const Item('Cheese', 1500),
+    const Item('Yogurt', 2000),
   ],
   [
-    const Product('Cooking Oil', 8000),
-    const Product('Butter', 3500),
+    const Item('Cooking Oil', 8000),
+    const Item('Butter', 3500),
   ],
 ];
 
-class Product {
+class Item {
   final String name;
   final double amount;
-  const Product(this.name, this.amount);
+  const Item(this.name, this.amount);
 }

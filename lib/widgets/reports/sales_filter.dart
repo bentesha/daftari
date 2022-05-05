@@ -5,6 +5,7 @@ import 'package:inventory_management/source.dart';
 import 'package:inventory_management/widgets/choice_chip.dart';
 import 'package:inventory_management/widgets/date_range_picker_form_cell.dart';
 import 'package:inventory_management/widgets/form_cell_divider.dart';
+import 'package:inventory_management/widgets/form_cell_item_picker.dart';
 
 class SalesFilterDialog extends StatefulWidget {
   const SalesFilterDialog(this.queryOptions, {Key? key}) : super(key: key);
@@ -22,12 +23,12 @@ class SalesFilterDialog extends StatefulWidget {
 }
 
 class _SalesFilterDialogState extends State<SalesFilterDialog> {
-  final dayOption = 'dayOption',
-      monthOption = 'monthOption',
-      quarterOption = 'quarterOption',
-      yearOption = 'yearOption',
-      itemOption = 'itemOption',
-      categoryOption = 'categoryOption';
+  final dayOption = 'day',
+      monthOption = 'month',
+      quarterOption = 'quarter',
+      yearOption = 'year',
+      itemOption = 'item',
+      categoryOption = 'category';
 
   late final QueryOptions options;
 
@@ -51,19 +52,21 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
         appBar: AppBar(
             leading: IconButton(
                 onPressed: _handleClose, icon: const Icon(Icons.close)),
-            title: const Text('Sort & Filter'),
+            title: AppText('Sort & Filter',
+                color: AppColors.onPrimary,
+                weight: FontWeight.bold,
+                size: 20.dw),
             actions: [
               TextButton(
-                onPressed: _handelApply,
-                child:
-                    const Text('APPLY', style: TextStyle(color: Colors.white)),
-              )
+                  onPressed: _handelApply,
+                  child:
+                      AppText('APPLY', color: AppColors.onPrimary, size: 16.dw))
             ]),
         body: ListView(
           children: [
             ChoiceChipFormCell<String>(
               label: 'GROUP BY',
-              value: options.sortBy,
+              value: options.groupBy,
               options: [
                 OptionItem(value: dayOption, label: 'Day'),
                 OptionItem(value: monthOption, label: 'Month'),
@@ -73,10 +76,10 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                 OptionItem(value: categoryOption, label: 'Category'),
               ],
               onSelected: (value) => setState(() {
-                options.sortBy = value;
+                options.groupBy = value;
               }),
             ),
-            FormCellDivider(subDivider: true),
+            const FormCellDivider(subDivider: true),
             ChoiceChipFormCell<SortDirection>(
                 label: 'SORT DIRECTION',
                 value: options.sortDirection,
@@ -89,42 +92,49 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                 onSelected: (value) => setState(() {
                       options.sortDirection = value;
                     })),
-            FormCellDivider(),
+            const FormCellDivider(),
             DateRangePickerFormCell(
                 label: 'DATE RANGE',
-                value: (options['date_range'] as DateRangeFilter).value,
+                value: (options['date_range'] as DateRangeFilter?)?.value,
                 clearable: true,
                 onChanged: (value) {
                   options
                       .addFilter(DateRangeFilter('date_range')..value = value);
                   setState(() {});
                 }),
-            FormCellDivider(subDivider: true),
-            ValueSelector(
-                title: 'CATEGORY',
+            const FormCellDivider(subDivider: true),
+            FormCellItemPicker(
+                label: 'CATEGORY',
+                valueText:
+                    (options['category'] as CategoryFilter?)?.value?.name,
+                clearable: true,
                 onPressed: () async {
                   final category = await ItemsSearchPage.navigateTo<Category>(
                       context, CategoryTypes.products) as Category?;
-                  options.addFilter(
-                      StringFilter('category')..value = category?.name);
+                  options
+                      .addFilter(CategoryFilter('category')..value = category);
                   setState(() {});
                 },
-                error: null,
-                value: (options['category'] as CategoryFilter).value?.name,
-                isEditable: true),
-            ValueSelector(
-                title: 'PRODUCT',
+                onClear: () {
+                  options.removeFilter('category');
+                  setState(() {});
+                }),
+            const FormCellDivider(subDivider: true),
+            FormCellItemPicker(
+                label: 'PRODUCT',
+                valueText: (options['product'] as ProductFilter?)?.value?.name,
+                clearable: true,
                 onPressed: () async {
                   final product =
                       await ItemsSearchPage.navigateTo<Product>(context)
                           as Product?;
-                  options.addFilter(
-                      StringFilter('product')..value = product?.name);
+                  options.addFilter(ProductFilter('product')..value = product);
                   setState(() {});
                 },
-                value: (options['product'] as ProductFilter).value?.name,
-                error: null,
-                isEditable: true),
+                onClear: () {
+                  options.removeFilter('product');
+                  setState(() {});
+                }),
           ],
         ));
   }

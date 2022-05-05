@@ -1,4 +1,5 @@
 import 'package:inventory_management/source.dart';
+import 'package:inventory_management/utils/extensions.dart/report_type.dart';
 
 class LowStockProductsCard extends StatelessWidget {
   const LowStockProductsCard({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class LowStockProductsCard extends StatelessWidget {
           ),
           AppDivider.withVerticalMargin(5.dh),
           AppTextButton(
-              onPressed: () => push(const ReportsPage(reportType: 'Remaining Stock')),
+              onPressed: () => push(const ReportsPage(reportType:  ReportType.remainingStock)),
               text: 'View All',
               height: 40.dh,
               isFilled: false,

@@ -22,7 +22,7 @@ class BarRod extends StatelessWidget {
 
     return Container(
       width: 50.dw,
-      margin: EdgeInsets.symmetric(vertical: 15.dh, horizontal: 5.dw),
+      margin: EdgeInsets.symmetric(vertical: 13.dh, horizontal: 5.dw),
       child: Column(
         children: [
           AppText(data.toString() + '%', style: TextStyle(fontSize: 14.dw)),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class FormSection extends StatelessWidget {
-  FormSection({required this.label});
+  const FormSection({Key? key, required this.label}) : super(key: key);
   final String label;
 
   @override
   build(context) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Text(label),
         decoration: BoxDecoration(
             color: Colors.grey.shade200,

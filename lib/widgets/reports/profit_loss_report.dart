@@ -1,4 +1,5 @@
 import 'package:inventory_management/source.dart';
+import 'package:inventory_management/widgets/report_title.dart';
 
 class ProfitLossReport extends StatelessWidget {
   const ProfitLossReport({Key? key}) : super(key: key);
@@ -7,7 +8,7 @@ class ProfitLossReport extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildTitles(),
+       const ReportTitle(title1: 'component', title2: 'amount'),
         _buildValue('Revenue', 341500600),
         _buildValue('Cost of Goods Sold', 388900),
         const AppDivider.zeroMargin(color: AppColors.onBackground2),
@@ -44,27 +45,5 @@ class ProfitLossReport extends StatelessWidget {
     );
   }
 
-  _buildTitles() {
-    return Container(
-      color: AppColors.surface,
-      height: 50.dh,
-      child: Row(
-        children: [
-          Expanded(
-              child: Container(
-                  alignment: Alignment.centerLeft,
-                  padding: EdgeInsets.only(left: 15.dw),
-                  child: AppText('COMPONENT',
-                      size: 16.dw, weight: FontWeight.bold))),
-          Expanded(
-              child: Container(
-                  alignment: Alignment.centerRight,
-                  padding: EdgeInsets.only(right: 15.dw),
-                  child:
-                      AppText('AMOUNT', size: 16.dw, weight: FontWeight.bold))),
-        ],
-      ),
-    );
-  }
 
 }

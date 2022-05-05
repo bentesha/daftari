@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
+import 'package:inventory_management/source.dart';
 
 class FormCellSelectorIcon extends StatelessWidget {
-  FormCellSelectorIcon({required this.onPressed});
+  const FormCellSelectorIcon({Key? key, required this.onPressed}) : super(key: key);
 
   final VoidCallback onPressed;
 
   @override
-  build(context) => SizedBox(
+  Widget build(context) => SizedBox(
       height: 24,
       width: 24,
       child: IconButton(
           onPressed: onPressed,
-          icon: Icon(Icons.chevron_right),
+          icon: const Icon(Icons.chevron_right, color: AppColors.onBackground),
           padding: EdgeInsets.zero));
 }

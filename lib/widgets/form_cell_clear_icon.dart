@@ -8,7 +8,7 @@ class FormCellClearIcon extends StatelessWidget {
   final VoidCallback onPressed;
 
   @override
-  build(context) => SizedBox(
+  Widget build(context) => SizedBox(
       height: 24,
       width: 24,
       child: IconButton(

@@ -1,20 +1,19 @@
 import 'package:inventory_management/source.dart';
+import 'package:inventory_management/utils/extensions.dart/report_type.dart';
 
 enum Types { reports, dimensions }
 
-class TypeSelectorDialog extends Dialog {
+class TypeSelectorDialog<T> extends Dialog {
   const TypeSelectorDialog(
       {required this.onSelected,
       required this.currentType,
       required this.title,
-      required this.type,
       Key? key})
       : super(key: key);
 
-  final ValueChanged<String> onSelected;
-  final String currentType;
+  final ValueChanged onSelected;
+  final T currentType;
   final String title;
-  final Types type;
 
   @override
   Widget? get child {
@@ -30,29 +29,29 @@ class TypeSelectorDialog extends Dialog {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.dw, vertical: 10.dh),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: _getTypes(type)
-                .map((e) => AppTextButton(
-                      text: e,
-                      onPressed: () {
-                        pop();
-                        if (type == Types.reports) onSelected(e);
-                      },
-                      textStyle: TextStyle(
-                          color: currentType == e
-                              ? AppColors.onPrimary
-                              : AppColors.onBackground2,
-                          fontSize: 14.dw),
-                      backgroundColor: currentType == e
-                          ? AppColors.primary
-                          : AppColors.background,
-                      borderRadius: BorderRadius.circular(20.dw),
-                      height: 40.dh,
-                    ))
-                .toList(),
-          ),
+              mainAxisSize: MainAxisSize.min,
+              children: ReportType.values
+                  .map((reportType) => _buildReportType(reportType))
+                  .toList()),
         ),
       ],
+    );
+  }
+
+  Widget _buildReportType(ReportType reportType) {
+    final isSelected = reportType == currentType;
+    return AppTextButton(
+      text: reportType.string,
+      onPressed: () {
+        pop();
+        if (T == ReportType) onSelected(reportType);
+      },
+      textStyle: TextStyle(
+          color: isSelected ? AppColors.onPrimary : AppColors.onBackground2,
+          fontSize: 14.dw),
+      backgroundColor: isSelected ? AppColors.primary : AppColors.background,
+      borderRadius: BorderRadius.circular(20.dw),
+      height: 40.dh,
     );
   }
 
@@ -63,24 +62,3 @@ class TypeSelectorDialog extends Dialog {
   ShapeBorder? get shape =>
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.dw));
 }
-
-List<String> _getTypes(Types type) {
-  if (type == Types.reports) return reports;
-  return timeDimension;
-}
-
-const reports = [
-  'Sales',
-  'Expenses',
-  'Price List',
-  'Remaining Stock',
-  'Profit & Loss',
-];
-
-const timeDimension = [
-  'Last 7 days',
-  'Last 15 days',
-  'Last 30 days',
-  'Last 3 months',
-  'Last 12 months'
-];

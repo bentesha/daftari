@@ -51,11 +51,8 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Padding(
-        padding: EdgeInsets.only(top: 5.dh),
-        child: AppText(title,
-            size: 22.dw, style: Theme.of(context).appBarTheme.titleTextStyle!),
-      ),
+      title: AppText(title,
+          size: 22.dw, style: Theme.of(context).appBarTheme.titleTextStyle!),
       actions: _buildActions(),
     );
   }

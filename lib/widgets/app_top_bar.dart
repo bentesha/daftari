@@ -11,11 +11,8 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
         elevation: 0,
-        title: Padding(
-          padding: EdgeInsets.only(top: 5.dh),
-          child: AppText('DAFTARI',
-              weight: FontWeight.w500, color: AppColors.onPrimary, size: 20.dw),
-        ),
+        title: AppText('DAFTARI',
+            weight: FontWeight.w500, color: AppColors.onPrimary, size: 20.dw),
         centerTitle: true);
   }
 

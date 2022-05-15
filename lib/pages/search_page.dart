@@ -200,7 +200,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
       if (widget.documentType == DocumentType.sales) {
         nextPage = const DocumentSalesPage(fromQuickActions: true);
       } else {
-        nextPage = const DocumentExpensesPage();
+        nextPage = const DocumentExpensesPage(fromQuickActions: true);
       }
     }
     push(nextPage);

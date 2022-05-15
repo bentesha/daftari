@@ -64,8 +64,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
 
     form = document.form.copyWith(
         date: now.millisecondsSinceEpoch.toString(),
-        title:
-            supp.isDateAsTitle ? DateFormatter.convertToDMY(now) : form.title);
+        title: supp.isDateAsTitle ? Utils.dateToString(now) : form.title);
     final writeOffList = writeOffsService.getTemporaryList;
     document = Document.writeOffs(form, supp.type, writeOffList);
 
@@ -86,8 +85,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
 
     var document = supp.document;
     if (supp.isDateAsTitle) {
-      final form =
-          document.form.copyWith(title: DateFormatter.convertToDMY(supp.date));
+      final form = document.form.copyWith(title: Utils.dateToString(supp.date));
       document = document.copyWith(form: form);
     }
 
@@ -269,7 +267,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
   }
 
   bool _checkIfDateIsUsedAsTitle(String title, DateTime date) {
-    final dateFromTitle = DateFormatter.convertToDMY(date);
+    final dateFromTitle = Utils.dateToString(date);
     return title == dateFromTitle;
   }
 

@@ -48,8 +48,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
 
     form = document.form.copyWith(
         date: now.millisecondsSinceEpoch.toString(),
-        title:
-            supp.isDateAsTitle ? DateFormatter.convertToDMY(now) : form.title);
+        title: supp.isDateAsTitle ? Utils.dateToString(now) : form.title);
     final expenseList = expensesService.getTemporaryList;
     document = Document.expenses(form, expenseList);
 
@@ -82,8 +81,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
       document = Document.expenses(document.form, expensesList);
     }
     if (supp.isDateAsTitle) {
-      final form =
-          document.form.copyWith(title: DateFormatter.convertToDMY(supp.date));
+      final form = document.form.copyWith(title: Utils.dateToString(supp.date));
       document = document.copyWith(form: form);
     }
 
@@ -265,7 +263,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
   }
 
   bool _checkIfDateIsUsedAsTitle(String title, DateTime date) {
-    final dateFromTitle = DateFormatter.convertToDMY(date);
+    final dateFromTitle = Utils.dateToString(date);
     return title == dateFromTitle;
   }
 

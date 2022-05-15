@@ -1,5 +1,5 @@
 import '../source.dart';
-import '../utils/error_handler_mixin.dart';
+import '../errors/error_handler_mixin.dart';
 import '../utils/extensions.dart/document_type.dart';
 import 'package:inventory_management/utils/http_utils.dart' as http;
 
@@ -51,7 +51,6 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
     }
   }
 
-  // todo get category details from put response
   Future<void> editDocument(Document document) async {
     final id = document.form.id;
     try {
@@ -88,6 +87,7 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
       ..clear()
       ..addAll(documentItemList);
   }
+
 
   ///used mainly by the search bloc to update the current selected category or
   ///product. So that listeners can get it just by calling [salesService.getCurrent]

@@ -48,8 +48,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
 
     form = document.form.copyWith(
         date: now.millisecondsSinceEpoch.toString(),
-        title:
-            supp.isDateAsTitle ? DateFormatter.convertToDMY(now) : form.title);
+        title: supp.isDateAsTitle ? Utils.dateToString(now) : form.title);
     final salesList = salesService.getTemporaryList;
     document = Document.sales(form, salesList);
 
@@ -83,8 +82,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     }
 
     if (supp.isDateAsTitle) {
-      final form =
-          document.form.copyWith(title: DateFormatter.convertToDMY(supp.date));
+      final form = document.form.copyWith(title: Utils.dateToString(supp.date));
       document = document.copyWith(form: form);
     }
 
@@ -271,7 +269,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
   }
 
   bool _checkIfDateIsUsedAsTitle(String title, DateTime date) {
-    final dateFromTitle = DateFormatter.convertToDMY(date);
+    final dateFromTitle = Utils.dateToString(date);
     return title == dateFromTitle;
   }
 

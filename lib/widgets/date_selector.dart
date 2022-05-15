@@ -16,7 +16,7 @@ class DateSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formattedDate = DateFormatter.convertToDMY(date);
+    final formattedDate = Utils.dateToString(date);
 
     _showDatePicker() async {
       final selectedDate = await showDatePicker(

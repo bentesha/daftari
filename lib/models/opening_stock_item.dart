@@ -41,7 +41,7 @@ class OpeningStockItem {
     };
   }
 
-  String get formattedDate => DateFormatter.convertToDMY(DateTime.parse(date));
+  String get formattedDate => Utils.dateToString(DateTime.parse(date));
 
   String get formattedUnitValue => Utils.convertToMoneyFormat(unitValue);
 

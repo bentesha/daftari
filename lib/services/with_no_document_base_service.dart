@@ -1,4 +1,4 @@
-import '../utils/error_handler_mixin.dart';
+import '../errors/error_handler_mixin.dart';
 import '../source.dart';
 import 'package:inventory_management/utils/http_utils.dart' as http;
 

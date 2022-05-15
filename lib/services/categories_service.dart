@@ -1,4 +1,4 @@
-import 'package:inventory_management/utils/error_handler_mixin.dart';
+import 'package:inventory_management/errors/error_handler_mixin.dart';
 import '../source.dart';
 import 'with_no_document_base_service.dart';
 import 'package:inventory_management/utils/http_utils.dart' as http;
@@ -11,10 +11,7 @@ class CategoriesService extends WithNoDocumentBaseService<Category>
 
   static bool get _isExpenses => _categoryType == CategoryTypes.expenses;
 
-  static initType(CategoryTypes type) {
-    _categoryType = type;
-    log('Type: $type');
-  }
+  static initType(CategoryTypes type) => _categoryType = type;
 
   ///Gets all categories from the server
   Future<void> init() async => await getAll();

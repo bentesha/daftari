@@ -76,7 +76,7 @@ class ProductPagesBloc extends Cubit<ProductPageState> {
         final product = productsService.getCurrent;
 
         final openingStockItem = OpeningStockItem(
-            date: DateFormatter.convertToDMY(DateTime.now()),
+            date: Utils.dateToString(DateTime.now()),
             productId: product.id,
             unitValue: supp.parsedUnitValue,
             description: supp.description,

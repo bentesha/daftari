@@ -23,7 +23,7 @@ class OpeningStockSupplements with _$OpeningStockSupplements {
   OpeningStockItem get getOpeningStockItem {
     return OpeningStockItem(
         id: openingStockItemId,
-        date: DateFormatter.convertToDMY(DateTime.now()),
+        date: Utils.dateToString(DateTime.now()),
         unitValue: double.parse(unitValue),
         quantity: double.parse(quantity),
         description: description,

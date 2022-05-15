@@ -76,7 +76,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
           document.maybeWhen(expenses: (_, list) => list, orElse: () => []));
       expensesList.add(Expense.toServer(
           id: Utils.getRandomId(),
-          category: supp.category,
+          categoryId: supp.category.id,
           amount: supp.parsedAmount,
           description: supp.description));
       document = Document.expenses(document.form, expensesList);
@@ -115,7 +115,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
 
     final expense = Expense.toServer(
         id: Utils.getRandomId(),
-        category: supp.category,
+        categoryId: supp.category.id,
         amount: supp.parsedAmount,
         description: supp.description);
 
@@ -132,7 +132,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
 
     final expense = Expense.toServer(
         id: supp.expenseId,
-        category: supp.category,
+        categoryId: supp.category.id,
         amount: supp.parsedAmount,
         description: supp.description);
 
@@ -278,7 +278,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
 
     if (expense != null) {
       //is viewing / editing existing sales record
-      final category = categoriesService.getById(expense.category.id)!;
+      final category = categoriesService.getById(expense.categoryId)!;
       supp = supp.copyWith(
           category: category,
           expenseId: expense.id,

@@ -27,6 +27,7 @@ List<T> _initTemporaryList<T>(Document document) {
 }
 
 Document _getDocumentFromJson<T>(var jsonDocument) {
+  log(jsonDocument.toString());
   final details = jsonDocument['details'] as List;
   final itemList =
       details.map((e) => _getItemFromJson<T>(e)).whereType<T>().toList();

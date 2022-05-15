@@ -57,12 +57,6 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
     try {
       final result =
           await http.put(url, id, jsonItem: document.toJson(documentType));
-
-      late categories;
-      for (var expense in items) {
-        
-      }
-
       final _document = _getDocumentFromJson<T>(result);
       final index = _documents.indexWhere((d) => d.form.id == id);
       _documents[index] = _document;

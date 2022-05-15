@@ -26,26 +26,37 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _handlePop,
-      child: BlocConsumer<SalesPagesBloc, SalesDocumentsPageState>(
-          bloc: bloc,
-          listener: (_, state) {
-            final isSuccessful =
-                state.maybeWhen(success: (_) => true, orElse: () => false);
+      child: Scaffold(
+        body: BlocConsumer<SalesPagesBloc, SalesDocumentsPageState>(
+            bloc: bloc,
+            listener: (_, state) {
+              final isSuccessful =
+                  state.maybeWhen(success: (_) => true, orElse: () => false);
 
-            if (isSuccessful) pop();
+              if (isSuccessful) {
+                final message =
+                    widget.fromQuickActions || state.supplements.action.isAdding
+                        ? 'Sales document was added successfully'
+                        : state.supplements.action.isEditing
+                            ? 'Sales document was editted successfully'
+                            : 'Sales document was deleted successfully';
+                showSnackBar(message, context: _, isError: false);
+                pop();
+              }
 
-            final error = state.maybeWhen(
-                failed: (_, e, showOnPage) => showOnPage ? null : e,
-                orElse: () => null);
-            if (error != null) showSnackBar(error, context: context);
-          },
-          builder: (_, state) {
-            return state.when(
-                loading: _buildLoading,
-                content: _buildContent,
-                success: _buildContent,
-                failed: _buildFailed);
-          }),
+              final error = state.maybeWhen(
+                  failed: (_, e, showOnPage) => showOnPage ? null : e,
+                  orElse: () => null);
+              if (error != null) showSnackBar(error, context: _);
+            },
+            builder: (_, state) {
+              return state.when(
+                  loading: _buildLoading,
+                  content: _buildContent,
+                  success: _buildContent,
+                  failed: _buildFailed);
+            }),
+      ),
     );
   }
 
@@ -85,7 +96,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
         action: action,
         updateActionCallback: () => bloc.updateAction(PageActions.editing),
         deleteDocumentCallback: bloc.deleteDocument,
-        saveDocumentCallback: bloc.saveDocument,
+        saveDocumentCallback: () => bloc.saveDocument(widget.fromQuickActions),
         editDocumentCallback: bloc.editDocument);
   }
 

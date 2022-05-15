@@ -31,7 +31,7 @@ class _ProductPageState extends State<ProductPage> {
           final error = state.maybeWhen(
               failed: (_, e, showOnPage) => showOnPage ? null : e,
               orElse: () => null);
-          if (error != null) showSnackBar(error, scaffoldKey: _scaffoldKey);
+          if (error != null) showSnackBar(error, key: _scaffoldKey);
         },
         builder: (_, state) {
           return state.when(

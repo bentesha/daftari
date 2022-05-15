@@ -33,14 +33,12 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     _initSalesPage(page, sales, action);
   }
 
-  void saveDocument() async {
+  void saveDocument([bool fromQuickActions = false]) async {
     _validate();
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
-
-    emit(SalesDocumentsPageState.loading(supp));
 
     var document = supp.document;
     var form = document.form;
@@ -49,8 +47,29 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     form = document.form.copyWith(
         date: now.millisecondsSinceEpoch.toString(),
         title: supp.isDateAsTitle ? Utils.dateToString(now) : form.title);
+
+    // save temporarily if coming from quick actions
+    if (fromQuickActions) {
+      final temporaryDocument = Document.sales(form, []);
+      salesService.saveTemporaryDocument(temporaryDocument);
+      emit(SalesDocumentsPageState.success(supp));
+      return;
+    }
+
+    // save to the server otherwise
+    emit(SalesDocumentsPageState.loading(supp));
+
     final salesList = salesService.getTemporaryList;
     document = Document.sales(form, salesList);
+
+    // checking if empty
+    final documentList =
+        document.maybeWhen(sales: (_, list) => list, orElse: () => []);
+    if (documentList.isEmpty) {
+      emit(SalesDocumentsPageState.failed(supp,
+          message: 'Document can\'t be empty'));
+      return;
+    }
 
     try {
       await salesService.addDocument(document);
@@ -70,24 +89,31 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     emit(SalesDocumentsPageState.loading(supp));
 
     var document = supp.document;
-    if (fromQuickActions) {
-      final salesList = List<Sales>.from(
-          document.maybeWhen(sales: (_, list) => list, orElse: () => []));
-      salesList.add(Sales.toServer(
-          id: Utils.getRandomId(),
-          productId: supp.product.id,
-          unitPrice: supp.parsedUnitPrice,
-          quantity: supp.parsedQuantity));
-      document = Document.sales(document.form, salesList);
-    }
-
     if (supp.isDateAsTitle) {
       final form = document.form.copyWith(title: Utils.dateToString(supp.date));
       document = document.copyWith(form: form);
     }
+    if (fromQuickActions) {
+      final form = salesService.getCurrent.form;
+      final sales = Sales.toServer(
+          id: Utils.getRandomId(),
+          productId: supp.product.id,
+          unitPrice: supp.parsedUnitPrice,
+          quantity: supp.parsedQuantity);
+      document = Document.sales(form, [sales]);
+    }
+
+    // checking if empty
+    final documentList =
+        document.maybeWhen(sales: (_, list) => list, orElse: () => []);
+    if (documentList.isEmpty) {
+      emit(SalesDocumentsPageState.failed(supp,
+          message: 'Document can\'t be empty'));
+      return;
+    }
 
     try {
-      await salesService.editDocument(document);
+      await salesService.editDocument(document, fromQuickActions);
       emit(SalesDocumentsPageState.success(supp));
     } catch (e) {
       _handleError(e);
@@ -194,6 +220,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     if (fromQuickActions) {
       errors['document'] = InputValidation.validateText(form.title, 'Document');
     }
+
     //validating sales details
     if (!isValidatingDocumentDetails || fromQuickActions) {
       errors['product'] =
@@ -202,6 +229,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
       errors['quantity'] =
           InputValidation.validateNumber(supp.quantity, 'Quantity');
     }
+
     supp = supp.copyWith(errors: errors);
     emit(SalesDocumentsPageState.content(supp));
   }

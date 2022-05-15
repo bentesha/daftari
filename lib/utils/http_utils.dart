@@ -23,6 +23,8 @@ Future<dynamic> put(String url, String itemId, {required var jsonItem}) async {
           body: json.encode(jsonItem), headers: headers)
       .timeout(timeLimit);
 
+  log(response.body.toString());
+
   return json.decode(response.body);
 }
 

@@ -15,6 +15,7 @@ class ExpensePage extends StatefulWidget {
 
 class _ExpensePageState extends State<ExpensePage> {
   var bloc = ExpensesPagesBloc.empty();
+  late ExpensesService expensesService;
 
   @override
   void initState() {
@@ -24,25 +25,27 @@ class _ExpensePageState extends State<ExpensePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ExpensesPagesBloc, ExpensePagesState>(
-        bloc: bloc,
-        listener: (_, state) {
-          final isSuccessful =
-              state.maybeWhen(success: (_) => true, orElse: () => false);
-          if (isSuccessful) pop();
+    return Scaffold(
+      body: BlocConsumer<ExpensesPagesBloc, ExpensePagesState>(
+          bloc: bloc,
+          listener: (_, state) {
+            final isSuccessful =
+                state.maybeWhen(success: (_) => true, orElse: () => false);
+            if (isSuccessful) pop();
 
-          final error = state.maybeWhen(
-              failed: (_, e, showOnPage) => showOnPage ? null : e,
-              orElse: () => null);
-          if (error != null) showSnackBar(error, context: context);
-        },
-        builder: (_, state) {
-          return state.when(
-              loading: _buildLoading,
-              content: _buildContent,
-              success: _buildContent,
-              failed: _buildFailed);
-        });
+            final error = state.maybeWhen(
+                failed: (_, e, showOnPage) => showOnPage ? null : e,
+                orElse: () => null);
+            if (error != null) showSnackBar(error, context: _);
+          },
+          builder: (_, state) {
+            return state.when(
+                loading: _buildLoading,
+                content: _buildContent,
+                success: _buildContent,
+                failed: _buildFailed);
+          }),
+    );
   }
 
   Widget _buildLoading(ExpenseSupplements supp) =>
@@ -137,7 +140,7 @@ class _ExpensePageState extends State<ExpensePage> {
   _initBloc([bool isFirstTimeInit = true]) {
     if (isFirstTimeInit) {
       final categoriesService = getService<CategoriesService>(context);
-      final expensesService = getService<ExpensesService>(context);
+      expensesService = getService<ExpensesService>(context);
       bloc = ExpensesPagesBloc(expensesService, categoriesService);
     }
     final action = widget.documentPageAction == PageActions.editing

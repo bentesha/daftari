@@ -33,14 +33,12 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     _initExpensePage(page, expense, action);
   }
 
-  void saveDocument() async {
+  void saveDocument([bool fromQuickActions = false]) async {
     _validate();
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
-
-    emit(ExpensePagesState.loading(supp));
 
     var document = supp.document;
     var form = document.form;
@@ -49,8 +47,29 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     form = document.form.copyWith(
         date: now.millisecondsSinceEpoch.toString(),
         title: supp.isDateAsTitle ? Utils.dateToString(now) : form.title);
+
+    // save temporarily if coming from quick actions
+    if (fromQuickActions) {
+      form = form.copyWith(id: Utils.getRandomId());
+      final temporaryDocument = Document.expenses(form, []);
+      expensesService.saveTemporaryDocument(temporaryDocument);
+      emit(ExpensePagesState.success(supp));
+      return;
+    }
+
+    // save to the server otherwise
+    emit(ExpensePagesState.loading(supp));
+
     final expenseList = expensesService.getTemporaryList;
     document = Document.expenses(form, expenseList);
+
+    // checking if empty
+    final documentList =
+        document.maybeWhen(expenses: (_, list) => list, orElse: () => []);
+    if (documentList.isEmpty) {
+      emit(ExpensePagesState.failed(supp, message: 'Document can\'t be empty'));
+      return;
+    }
 
     try {
       await expensesService.addDocument(document);
@@ -70,23 +89,30 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     emit(ExpensePagesState.loading(supp));
 
     var document = supp.document;
-    if (fromQuickActions) {
-      final expensesList = List<Expense>.from(
-          document.maybeWhen(expenses: (_, list) => list, orElse: () => []));
-      expensesList.add(Expense.toServer(
-          id: Utils.getRandomId(),
-          categoryId: supp.category.id,
-          amount: supp.parsedAmount,
-          description: supp.description));
-      document = Document.expenses(document.form, expensesList);
-    }
     if (supp.isDateAsTitle) {
       final form = document.form.copyWith(title: Utils.dateToString(supp.date));
       document = document.copyWith(form: form);
     }
+    if (fromQuickActions) {
+      final form = expensesService.getCurrent.form;
+      final expense = Expense.toServer(
+          id: Utils.getRandomId(),
+          categoryId: supp.category.id,
+          amount: supp.parsedAmount,
+          description: supp.description);
+      document = Document.expenses(form, [expense]);
+    }
+
+    // checking if empty
+    final documentList =
+        document.maybeWhen(expenses: (_, list) => list, orElse: () => []);
+    if (documentList.isEmpty) {
+      emit(ExpensePagesState.failed(supp, message: 'Document can\'t be empty'));
+      return;
+    }
 
     try {
-      await expensesService.editDocument(document);
+      await expensesService.editDocument(document, fromQuickActions);
       emit(ExpensePagesState.success(supp));
     } catch (e) {
       _handleError(e);

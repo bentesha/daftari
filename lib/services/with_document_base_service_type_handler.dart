@@ -1,6 +1,6 @@
 part of 'with_document_base_service.dart';
 
-List<T> _initTemporaryList<T>(Document document) {
+List<T> getItemListFrom<T>(Document document) {
   late final List itemList;
 
   switch (T) {

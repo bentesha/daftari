@@ -1,3 +1,5 @@
+import 'package:inventory_management/widgets/charts/data.dart';
+
 import '../source.dart';
 import '../errors/error_handler_mixin.dart';
 import '../utils/extensions.dart/document_type.dart';
@@ -11,14 +13,16 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
   WithDocumentBaseService({required this.url, required this.documentType});
 
   var _hasChanges = false;
-  final _temporaryList = [];
+  final _temporaryItemList = [];
   final _documents = <Document>[];
+
   var _current = Document.empty();
+  final _temporaryDocs = <Document>[];
 
-  List<Document> get getList => _documents;
   Document get getCurrent => _current;
-
-  List<T> get getTemporaryList => _temporaryList.whereType<T>().toList();
+  List<Document> get getList => _documents;
+  List<Document> get getTemporaryDocList => _temporaryDocs;
+  List<T> get getTemporaryList => _temporaryItemList.whereType<T>().toList();
 
   bool get hasChanges => _hasChanges;
 
@@ -51,11 +55,27 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
     }
   }
 
-  Future<void> editDocument(Document document) async {
-    final id = document.form.id;
+  Future<void> editDocument(Document document,
+      [bool isFromQuickActions = false]) async {
+    var doc = document;
+    final id = doc.form.id;
     try {
+      log(_isEditingFromQuickActions.toString());
+      if (isFromQuickActions && !_isEditingFromQuickActions) {
+        final _document = document.copyWith(form: _current.form);
+        await addDocument(_document);
+        return;
+      }
+      if (isFromQuickActions && _isEditingFromQuickActions) {
+        final itemList = getItemListFrom<T>(doc);
+        final index = _documents.indexWhere((e) => e.form.id == doc.form.id);
+        if (index == -1) throw 'not found, handle this';
+        final anotherList = getItemListFrom<T>(_documents[index]);
+        final list = [...itemList, ...anotherList];
+        doc = _getSpecificTypeDocument<T>(doc.form.toJson(), list);
+      }
       final result =
-          await http.put(url, id, jsonItem: document.toJson(documentType));
+          await http.put(url, id, jsonItem: doc.toJson(documentType));
       final _document = _getDocumentFromJson<T>(result);
       final index = _documents.indexWhere((d) => d.form.id == id);
       _documents[index] = _document;
@@ -65,6 +85,28 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
       throw getError(e);
     }
   }
+
+  bool get _isEditingFromQuickActions {
+    final index =
+        _documents.indexWhere((doc) => doc.form.id == _current.form.id);
+    return index != -1;
+  }
+
+  /// saved locally here, but not in the server. Added when the document is
+  /// from the search-page
+  void saveTemporaryDocument(Document document) {
+    _current = document;
+    _temporaryDocs.add(_current);
+    notifyListeners();
+  }
+
+  /// removing the temporary document, called when the search page is popped
+  void disposeTemporaryDocument() {
+    _temporaryDocs.clear();
+    notifyListeners();
+  }
+
+  void updateCurrent(Document document) => _current = document;
 
   Future<void> deleteDocument(String id) async {
     try {
@@ -77,50 +119,40 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
     }
   }
 
-  ///initializes the temporary list to store user edits, because they won't
-  ///be directly sent to the server. When the user commits the changes, this list
-  ///is used to create a document that will be sent to the server.
-  ///If user discards changes, his data on the server is not messed up with.
+  /// initializes the temporary list to store user edits, because they won't
+  /// be directly sent to the server. When the user commits the changes, this list
+  /// is used to create a document that will be sent to the server.
+  /// If user discards changes, his data on the server is not messed up with.
   void initDocument(Document document) {
-    final documentItemList = _initTemporaryList<T>(document);
-    _temporaryList
+    final documentItemList = getItemListFrom<T>(document);
+    _temporaryItemList
       ..clear()
       ..addAll(documentItemList);
   }
 
-
-  ///used mainly by the search bloc to update the current selected category or
-  ///product. So that listeners can get it just by calling [salesService.getCurrent]
-  ///or [expensesService.getCurrent]
-  void updateCurrent(String id) {
-    final index = _documents.indexWhere((e) => e.form.id == id);
-    final document = _documents[index];
-    _current = document;
-    notifyListeners();
-  }
-
   addItemTemporarily(var item) {
-    _temporaryList.add(item);
+    _temporaryItemList.add(item);
     _hasChanges = true;
     notifyListeners();
   }
 
   editTemporaryItem(var item) {
-    final index = _temporaryList.indexWhere((s) => s.id == item.id);
-    _temporaryList[index] = item;
+    final index = _temporaryItemList.indexWhere((s) => s.id == item.id);
+    _temporaryItemList[index] = item;
     _hasChanges = true;
     notifyListeners();
   }
 
   deleteTemporaryItem(String id) {
-    final index = _temporaryList.indexWhere((s) => s.id == id);
-    _temporaryList.removeAt(index);
+    final index = _temporaryItemList.indexWhere((s) => s.id == id);
+    _temporaryItemList.removeAt(index);
     _hasChanges = true;
     notifyListeners();
   }
 
   clearTemporaryList() {
-    _temporaryList.clear();
+    _temporaryDocs.clear();
+    _temporaryItemList.clear();
     _hasChanges = false;
   }
 

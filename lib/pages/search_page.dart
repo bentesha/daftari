@@ -23,12 +23,15 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
   final controller = TextEditingController();
   final focusNode = FocusNode();
 
+  late SalesService salesService;
+  late ExpensesService expensesService;
+
   @override
   void initState() {
     final productsService = getService<ProductsService>(context);
     final categoriesService = getService<CategoriesService>(context);
-    final salesService = getService<SalesService>(context);
-    final expensesService = getService<ExpensesService>(context);
+    salesService = getService<SalesService>(context);
+    expensesService = getService<ExpensesService>(context);
     bloc = SearchPageBloc<T>(
         productsService, categoriesService, salesService, expensesService);
     bloc.init(widget.categoryType, widget.documentType);
@@ -53,10 +56,19 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
       const AppLoadingIndicator.withScaffold();
 
   Widget _buildContent(SearchPageSupplements supp) {
-    return Scaffold(
-      appBar: _buildAppBar(supp),
-      body: _buildItems(supp),
+    return WillPopScope(
+      onWillPop: _handleWillPop,
+      child: Scaffold(
+        appBar: _buildAppBar(supp),
+        body: _buildItems(supp),
+      ),
     );
+  }
+
+  Future<bool> _handleWillPop() async {
+    salesService.disposeTemporaryDocument();
+    expensesService.disposeTemporaryDocument();
+    return true;
   }
 
   Widget _buildFailed(SearchPageSupplements supp, String? message) {
@@ -127,14 +139,8 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
   Widget _buildItemTile(var item) {
     return AppTextButton(
       onPressed: () {
-        if (T == Document) {
-          final document = item as Document;
-          bloc.updateId(document.form.id);
-        } else {
-          bloc.updateId(item.id);
-        }
+        bloc.updateCurrent(item);
         Navigator.pop(context, item);
-        log('done');
       },
       child: ListTile(title: AppText(_getName(item), weight: FontWeight.w500)),
       isFilled: false,

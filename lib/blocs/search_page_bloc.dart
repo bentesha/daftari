@@ -55,15 +55,15 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
     emit(SearchPageState.content(supp));
   }
 
-  void updateId(String id) {
+  void updateCurrent(var item) {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
-    if (T == Product) productsService.updateCurrent(id);
-    if (T == Category) categoriesService.updateCurrent(id);
+    if (T == Product) productsService.updateCurrent(item.id);
+    if (T == Category) categoriesService.updateCurrent(item.id);
     if (T == Document) {
-      if (_documentType == DocumentType.sales) salesService.updateCurrent(id);
+      if (_documentType == DocumentType.sales) salesService.updateCurrent(item);
       if (_documentType == DocumentType.expenses) {
-        expensesService.updateCurrent(id);
+        expensesService.updateCurrent(item);
       }
     }
     emit(SearchPageState.success(supp));
@@ -94,6 +94,10 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
         ? salesService.getList
         : expensesService.getList;
     final options = documents.whereType<T>().toList();
+    final tempOptions = type.isSales
+        ? salesService.getTemporaryDocList
+        : expensesService.getTemporaryDocList;
+    options.addAll(tempOptions.whereType<T>());
     supp = supp.copyWith(options: options);
     emit(SearchPageState.content(supp));
   }

@@ -1,18 +1,9 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class Utils {
-  static const _uuid = Uuid();
-
-  static getRandomId() => _uuid.v4();
-
-  static String convertToMoneyFormat(double number) {
-    return NumberFormat.currency(symbol: '').format(number);
-  }
-
   static String dateToString(DateTime date) {
     final formatter = DateFormat('dd MMM yyyy');
     return formatter.format(date);
@@ -30,4 +21,11 @@ class Utils {
     }
     return amounts;
   }
+
+  static String convertToMoneyFormat(double amount) {
+    final formatter = NumberFormat.currency(symbol: '');
+    return formatter.format(amount);
+  }
+
+  static String getRandomId() => const Uuid().v4();
 }

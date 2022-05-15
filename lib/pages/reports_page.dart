@@ -1,5 +1,7 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:inventory_management/blocs/query_options.dart';
 import 'package:inventory_management/blocs/report_page_bloc.dart';
+import 'package:inventory_management/models/find_options.dart';
 import 'package:inventory_management/models/query_options.dart';
 import 'package:inventory_management/utils/extensions.dart/report_type.dart';
 import 'package:inventory_management/widgets/reports/price_list.dart';
@@ -23,74 +25,79 @@ class ReportsPage extends StatefulWidget {
 class _ReportsPageState extends State<ReportsPage> {
   late ReportType reportType;
   late ReportPageBloc bloc;
-  var queryOptions = QueryOptions('category');
 
   @override
   void initState() {
     reportType = widget.reportType;
     bloc = ReportPageBloc();
-    bloc.init(queryOptions, reportType);
+    final queryFilters = BlocProvider.of<QueryFilters>(context, listen: false);
+    _init(queryFilters);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: PageAppBar(
-          title: reportType.reportName,
-          actionCallbacks: reportType.hasFilters
-              ? [
-                  () => _showTypeSelectorDialog(Types.reports),
-                  () async {
-                    final options = await SalesFilterDialog.navigateTo(
-                        context, queryOptions);
-                    //null means page is popped by the cancel button on the
-                    //right top side of the app-bar
-                    if (options != null) {
-                      queryOptions = options;
-                      bloc.refresh(queryOptions, reportType);
-                      setState(() {});
-                    }
-                  }
-                ]
-              : [() => _showTypeSelectorDialog(Types.reports)],
-          actionIcons: reportType.hasFilters
-              ? const [EvaIcons.swapOutline, EvaIcons.funnelOutline]
-              : const [EvaIcons.swapOutline],
-        ),
-        body: reportType.isPriceList
-            ? const PriceList()
-            : reportType.isRemainingStock
-                ? const RemainingStockReport()
-                : reportType.isProfitLoss
-                    ? const ProfitLossReport()
-                    : _buildReport());
+    return BlocBuilder<ReportPageBloc, ReportData>(
+        bloc: bloc,
+        builder: (_, data) {
+          final type = data.reportType;
+          return Scaffold(
+              appBar: _buildAppBar(type),
+              body: type.isSales || type.isPurchases || type.isExpenses
+                  ? Report(data: data)
+                  : type.isPriceList
+                      ? const PriceList()
+                      : type.isRemainingStock
+                          ? const RemainingStockReport()
+                          : type.isProfitLoss
+                              ? const ProfitLossReport()
+                              : Container());
+        });
+  }
+
+  _buildAppBar(ReportType type) {
+    return PageAppBar(
+      title: type.reportName,
+      actionCallbacks: type.hasFilters
+          ? [() => _showTypeSelectorDialog(Types.reports), () => _showFilters()]
+          : [() => _showTypeSelectorDialog(Types.reports)],
+      actionIcons: type.hasFilters
+          ? const [EvaIcons.swapOutline, EvaIcons.funnelOutline]
+          : const [EvaIcons.swapOutline],
+    );
   }
 
   _showTypeSelectorDialog(Types type) {
+    final filters = BlocProvider.of<QueryFilters>(context);
     showDialog(
         context: context,
         builder: (_) {
           return TypeSelectorDialog<ReportType>(
               onSelected: (selected) {
                 reportType = selected;
-                bloc.refresh(queryOptions, reportType);
-                setState(() {});
+                _refresh(filters);
               },
               currentType: reportType,
               title: 'Reports');
         });
   }
 
-  _buildReport() {
-    return BlocBuilder<ReportPageBloc, ReportData>(
-        bloc: bloc,
-        builder: (_, data) {
-          return reportType.isSales ||
-                  reportType.isPurchases ||
-                  reportType.isExpenses
-              ? Report(queryOptions, data: data)
-              : Container();
-        });
+  _init(QueryFilters filters) {
+    final groupBy = (filters['groupBy'] as QueryFilter<GroupBy>).value;
+    final sortDir =
+        (filters['sortDirection'] as QueryFilter<SortDirection>).value;
+    bloc.init(groupBy, sortDir, reportType);
   }
+
+  _showFilters() async {
+    final filters = BlocProvider.of<QueryFilters>(context);
+    final hasAddedFilters = await SalesFilterDialog.navigateTo(context);
+    //null means page is popped by the cancel button on the
+    //right top side of the app-bar
+    if (hasAddedFilters != null && hasAddedFilters) {
+      _refresh(filters);
+    }
+  }
+
+  _refresh(QueryFilters filters) => _init(filters);
 }

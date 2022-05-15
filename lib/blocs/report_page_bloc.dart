@@ -1,5 +1,5 @@
+import 'package:inventory_management/blocs/query_options.dart';
 import 'package:inventory_management/models/find_options.dart';
-import 'package:inventory_management/models/query_options.dart';
 import 'package:inventory_management/source.dart';
 import 'package:inventory_management/utils/extensions.dart/report_type.dart';
 import 'package:inventory_management/widgets/reports/data.dart';
@@ -7,47 +7,51 @@ import 'package:inventory_management/widgets/reports/data.dart';
 class ReportPageBloc extends Cubit<ReportData> {
   ReportPageBloc() : super(ReportData.empty());
 
-  void init(QueryOptions options, ReportType report) {
+  void init(GroupBy groupBy, SortDirection sortDirection, ReportType type) {
     late final List<String> items;
-    switch (options.groupBy) {
-      case 'day':
+    switch (groupBy) {
+      case GroupBy.day:
         items = days;
         break;
-      case 'month':
+      case GroupBy.month:
         items = months;
         break;
-      case 'quarter':
+      case GroupBy.quarter:
         items = quarters;
         break;
-      case 'year':
+      case GroupBy.year:
         items = years;
         break;
-      case 'item':
+      case GroupBy.item:
         items = products;
         break;
-      case 'category':
-        items = report.isExpenses ? expenseCategories : productCategories;
+      case GroupBy.category:
+        items = type.isExpenses ? expenseCategories : productCategories;
         break;
     }
     final amounts = Utils.getRandomAmounts();
-    if (options.sortDirection == SortDirection.ascending) {
+    if (sortDirection == SortDirection.ascending) {
       amounts.sort((a, b) => a.compareTo(b));
     } else {
       amounts.sort((a, b) => b.compareTo(a));
     }
-    emit(ReportData(items, amounts));
+    emit(ReportData(type, items, amounts));
   }
 
-  void refresh(QueryOptions options, ReportType report) =>
-      init(options, report);
+  void refresh(
+      GroupBy groupBy, SortDirection sortDirection, ReportType report) {
+    init(groupBy, sortDirection, report);
+  }
 }
 
 class ReportData {
+  final ReportType reportType;
   final List<String> items;
   final List<double> amounts;
-  const ReportData(this.items, this.amounts);
+  const ReportData(this.reportType, this.items, this.amounts);
 
   ReportData.empty()
       : items = [],
+        reportType = ReportType.sales,
         amounts = [];
 }

@@ -1,9 +1,6 @@
 import 'app.dart';
+import 'blocs/query_options.dart';
 import 'source.dart';
-
-//todo implement price list
-//todo change view breakdowns - details & for both expenses and incomes
-//todo handle drawer navigation, especially when popped - page navigated from should be marked as active
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +15,8 @@ void main() async {
       _createProvider<ExpensesService>(ExpensesService()),
       _createProvider<OpeningStockItemsService>(OpeningStockItemsService()),
     ],
-    child: const MyApp(),
+    child:
+        BlocProvider(create: (context) => QueryFilters(), child: const MyApp()),
   );
 
   runApp(myApp);

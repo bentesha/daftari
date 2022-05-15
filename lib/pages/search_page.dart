@@ -5,9 +5,9 @@ class ItemsSearchPage<T> extends StatefulWidget {
 
   final CategoryTypes? categoryType;
 
-  static Future<dynamic> navigateTo<T>(BuildContext context,
+  static Future<T?> navigateTo<T>(BuildContext context,
       [CategoryTypes? categoryType]) {
-    return Navigator.of(context).push(MaterialPageRoute<dynamic>(
+    return Navigator.of(context).push(MaterialPageRoute<T>(
         builder: (context) => ItemsSearchPage<T>(categoryType: categoryType)));
   }
 
@@ -24,7 +24,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
   void initState() {
     final productsService = getService<ProductsService>(context);
     final categoriesService = getService<CategoriesService>(context);
-    bloc = SearchPageBloc(productsService, categoriesService);
+    bloc = SearchPageBloc<T>(productsService, categoriesService);
     bloc.init(widget.categoryType);
     super.initState();
   }

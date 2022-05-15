@@ -67,8 +67,7 @@ class _SalesPageState extends State<SalesPage> {
           value: supp.product.name,
           error: supp.errors['product'],
           isEditable: !action.isViewing,
-          onPressed: () => push(const ItemsSearchPage<Product>(
-              categoryType: CategoryTypes.products)),
+          onPressed: () => push(const ItemsSearchPage<Product>()),
         ),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
         AppTextField(

@@ -27,7 +27,8 @@ class LowStockProductsCard extends StatelessWidget {
           ),
           AppDivider.withVerticalMargin(5.dh),
           AppTextButton(
-              onPressed: () => push(const ReportsPage(reportType:  ReportType.remainingStock)),
+              onPressed: () => push(
+                  const ReportsPage(reportType: ReportType.remainingStock)),
               text: 'View All',
               height: 40.dh,
               isFilled: false,

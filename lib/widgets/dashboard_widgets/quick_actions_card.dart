@@ -26,7 +26,8 @@ class QuickActionsCard extends StatelessWidget {
               _buildIcon(() => push(const ExpensePage(PageActions.adding)),
                   'New Expense', Icons.post_add),
               _buildIcon(
-                  () => push(const ReportsPage(reportType: ReportType.priceList)),
+                  () =>
+                      push(const ReportsPage(reportType: ReportType.priceList)),
                   'Price List',
                   Icons.fact_check),
               _buildIcon(

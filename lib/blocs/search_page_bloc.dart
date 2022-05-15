@@ -18,10 +18,10 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
     emit(SearchPageState.loading(supp));
     if (categoryType != null) _categoryType = categoryType;
     await _initServices();
-    if (state.maybeWhen(
-        failed: (_, error) => error != null, orElse: () => false)) {
-      return;
-    }
+
+    final hasFailed = state.maybeWhen(
+        failed: (_, error) => error != null, orElse: () => false);
+    if (hasFailed) return;
     _options = _getOptions();
     final options = _options.whereType<T>().toList();
     supp = supp.copyWith(options: options);

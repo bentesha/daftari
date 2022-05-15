@@ -31,7 +31,8 @@ class ExpensesCard extends StatelessWidget {
                   size: 15.dw,
                   color: AppColors.onBackground2),
               AppButton(
-                  onPressed: () => push(const ReportsPage(reportType: ReportType.expenses)),
+                  onPressed: () =>
+                      push(const ReportsPage(reportType: ReportType.expenses)),
                   child: AppText('View Breakdown',
                       color: AppColors.primary, size: 15.dw),
                   radius: 8.dw,

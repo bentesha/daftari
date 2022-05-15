@@ -1,5 +1,5 @@
 import 'app.dart';
-import 'blocs/query_options.dart';
+import 'blocs/query_filters_bloc.dart';
 import 'source.dart';
 
 void main() async {

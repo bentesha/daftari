@@ -1,5 +1,5 @@
 export 'product_page_bloc.dart';
-export 'sales_documents_pages_bloc.dart';
+export 'sales_pages_bloc.dart';
 export 'categories_page_bloc.dart';
 export 'search_page_bloc.dart';
 export 'expense_pages_bloc.dart';

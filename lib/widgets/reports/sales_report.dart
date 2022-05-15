@@ -1,4 +1,4 @@
-import 'package:inventory_management/blocs/query_options.dart';
+import 'package:inventory_management/blocs/query_filters_bloc.dart';
 import 'package:inventory_management/blocs/report_page_bloc.dart';
 import 'package:inventory_management/models/query_options.dart';
 import 'package:inventory_management/source.dart';

@@ -1,10 +1,12 @@
 import '../source.dart';
 
 class ExpensePage extends StatefulWidget {
-  const ExpensePage(this.documentPageAction, {this.expense, Key? key})
+  const ExpensePage(this.documentPageAction,
+      {this.expense, this.fromQuickActions = false, Key? key})
       : super(key: key);
 
   final Expense? expense;
+  final bool fromQuickActions;
   final PageActions documentPageAction;
 
   @override
@@ -62,6 +64,19 @@ class _ExpensePageState extends State<ExpensePage> {
 
     return Column(
       children: [
+        if (widget.fromQuickActions)
+          ValueSelector(
+            title: 'Document',
+            value: supp.document.form.title,
+            error: supp.errors['document'],
+            isEditable: true,
+            onPressed: () async {
+              final document = await ItemsSearchPage.navigateTo<Document>(
+                  context,
+                  documentType: DocumentType.expenses);
+              bloc.updateDocument(document);
+            },
+          ),
         ValueSelector(
           title: 'Category',
           value: supp.category.name,
@@ -82,9 +97,9 @@ class _ExpensePageState extends State<ExpensePage> {
             isEnabled: !action.isViewing),
         AppTextField(
             text: supp.description,
-            onChanged: bloc.updateAmount,
+            onChanged: bloc.updateDescription,
             hintText: '',
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.name,
             label: 'Description',
             maxLines: 3,
             error: supp.errors['description'],
@@ -113,7 +128,9 @@ class _ExpensePageState extends State<ExpensePage> {
         wasViewingDocument: wasViewingDocument,
         updateActionCallback: updateActionCallback,
         deleteModelCallback: bloc.deleteExpense,
-        saveModelCallback: bloc.addExpense,
+        saveModelCallback: widget.fromQuickActions
+            ? () => bloc.editDocument(true)
+            : bloc.addExpense,
         editModelCallback: bloc.editExpense);
   }
 

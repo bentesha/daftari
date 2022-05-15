@@ -53,9 +53,9 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
   }
 
   Future<void> edit(var item, [String? url]) async {
+    final putURL = url ?? _url;
     try {
-      final response =
-          await http.put(url ?? _url, item.id, jsonItem: item.toJson());
+      final response = await http.put(putURL, item.id, jsonItem: item.toJson());
       final index = _list.indexWhere((e) => e.id == item.id);
       final body = json.decode(response.body);
       _list[index] = _getValueFromJson(body, url);

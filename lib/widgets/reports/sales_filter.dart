@@ -1,4 +1,4 @@
-import 'package:inventory_management/blocs/query_options.dart';
+import 'package:inventory_management/blocs/query_filters_bloc.dart';
 import 'package:inventory_management/models/find_options.dart';
 import 'package:inventory_management/models/option_item.dart';
 import 'package:inventory_management/models/query_options.dart';
@@ -98,7 +98,7 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                   clearable: true,
                   onPressed: () async {
                     final category = await ItemsSearchPage.navigateTo<Category>(
-                        context, CategoryTypes.products);
+                        context,categoryType: CategoryTypes.products);
                     options.addFilter<Category>('category', category);
                   },
                   onClear: () => options.removeFilter('category')),

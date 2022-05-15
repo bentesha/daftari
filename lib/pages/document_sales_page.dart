@@ -2,9 +2,12 @@ import '../source.dart';
 import '../widgets/bottom_total_amount_tile.dart';
 
 class DocumentSalesPage extends StatefulWidget {
-  const DocumentSalesPage([this.document, Key? key]) : super(key: key);
+  const DocumentSalesPage(
+      {this.document, this.fromQuickActions = false, Key? key})
+      : super(key: key);
 
   final Document? document;
+  final bool fromQuickActions;
 
   @override
   State<DocumentSalesPage> createState() => _DocumentSalesPageState();
@@ -60,9 +63,14 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
     return Scaffold(
         appBar: _buildAppBar(supp),
         body: _buildGroupDetails(supp),
-        floatingActionButton: _buildActionButton(supp),
-        bottomNavigationBar: _buildBottomNavBar(supp));
+        floatingActionButton:
+            widget.fromQuickActions ? _emptyWidget() : _buildActionButton(supp),
+        bottomNavigationBar: widget.fromQuickActions
+            ? _emptyWidget()
+            : _buildBottomNavBar(supp));
   }
+
+  Widget _emptyWidget() => const SizedBox(height: .004, width: .0004);
 
   _buildAppBar(SalesDocumentSupplements supp) {
     final action = supp.action;
@@ -96,7 +104,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
             : Container(),
         const AppDivider(margin: EdgeInsets.zero),
         _buildGroupTitle(supp),
-        _buildItems(supp)
+        widget.fromQuickActions ? _emptyWidget() : _buildItems(supp)
       ],
     );
   }

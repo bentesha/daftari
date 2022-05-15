@@ -1,14 +1,17 @@
 import '../source.dart';
 
 class ItemsSearchPage<T> extends StatefulWidget {
-  const ItemsSearchPage({this.categoryType, Key? key}) : super(key: key);
+  const ItemsSearchPage({this.categoryType, this.documentType, Key? key})
+      : super(key: key);
 
   final CategoryTypes? categoryType;
+  final DocumentType? documentType;
 
   static Future<T?> navigateTo<T>(BuildContext context,
-      [CategoryTypes? categoryType]) {
+      {CategoryTypes? categoryType, DocumentType? documentType}) {
     return Navigator.of(context).push(MaterialPageRoute<T>(
-        builder: (context) => ItemsSearchPage<T>(categoryType: categoryType)));
+        builder: (context) => ItemsSearchPage<T>(
+            categoryType: categoryType, documentType: documentType)));
   }
 
   @override
@@ -24,8 +27,11 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
   void initState() {
     final productsService = getService<ProductsService>(context);
     final categoriesService = getService<CategoriesService>(context);
-    bloc = SearchPageBloc<T>(productsService, categoriesService);
-    bloc.init(widget.categoryType);
+    final salesService = getService<SalesService>(context);
+    final expensesService = getService<ExpensesService>(context);
+    bloc = SearchPageBloc<T>(
+        productsService, categoriesService, salesService, expensesService);
+    bloc.init(widget.categoryType, widget.documentType);
     super.initState();
   }
 
@@ -38,7 +44,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
             loading: _buildLoading,
             content: _buildContent,
             success: _buildContent,
-            failed: _buildError,
+            failed: _buildFailed,
           );
         });
   }
@@ -53,7 +59,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
     );
   }
 
-  Widget _buildError(SearchPageSupplements supp, String? message) {
+  Widget _buildFailed(SearchPageSupplements supp, String? message) {
     return Scaffold(
       body: Center(
           child: Column(
@@ -121,13 +127,26 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
   Widget _buildItemTile(var item) {
     return AppTextButton(
       onPressed: () {
-        bloc.updateId(item.id);
+        if (T == Document) {
+          final document = item as Document;
+          bloc.updateId(document.form.id);
+        } else {
+          bloc.updateId(item.id);
+        }
         Navigator.pop(context, item);
+        log('done');
       },
-      child: ListTile(title: AppText(item.name, weight: FontWeight.w500)),
+      child: ListTile(title: AppText(_getName(item), weight: FontWeight.w500)),
       isFilled: false,
       padding: EdgeInsets.symmetric(horizontal: 19.dw),
     );
+  }
+
+  String _getName(var item) {
+    if (T == Document) {
+      return (item as Document).form.title;
+    }
+    return item.name;
   }
 
   _buildTextField(SearchPageSupplements supp) {
@@ -177,6 +196,13 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
       nextPage = CategoryEditPage(categoryType: widget.categoryType);
     }
     if (T == Product) nextPage = const ProductPage();
+    if (T == Document) {
+      if (widget.documentType == DocumentType.sales) {
+        nextPage = const DocumentSalesPage(fromQuickActions: true);
+      } else {
+        nextPage = const DocumentExpensesPage();
+      }
+    }
     push(nextPage);
   }
 }

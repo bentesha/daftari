@@ -1,10 +1,12 @@
 import '../source.dart';
 
 class SalesPage extends StatefulWidget {
-  const SalesPage(this.documentPageAction, {this.sales, Key? key})
+  const SalesPage(this.documentPageAction,
+      {this.sales, this.fromQuickActions = false, Key? key})
       : super(key: key);
 
   final Sales? sales;
+  final bool fromQuickActions;
   final PageActions documentPageAction;
 
   @override
@@ -62,6 +64,19 @@ class _SalesPageState extends State<SalesPage> {
 
     return Column(
       children: [
+        if (widget.fromQuickActions)
+          ValueSelector(
+            title: 'Document',
+            value: supp.document.form.title,
+            error: supp.errors['document'],
+            isEditable: true,
+            onPressed: () async {
+              final document = await ItemsSearchPage.navigateTo<Document>(
+                  context,
+                  documentType: DocumentType.sales);
+              bloc.updateDocument(document);
+            },
+          ),
         ValueSelector(
           title: 'Product',
           value: supp.product.name,
@@ -111,7 +126,9 @@ class _SalesPageState extends State<SalesPage> {
         wasViewingDocument: wasViewingDocument,
         updateActionCallback: updateActionCallback,
         deleteModelCallback: bloc.deleteSales,
-        saveModelCallback: bloc.addSales,
+        saveModelCallback: widget.fromQuickActions
+            ? () => bloc.editDocument(true)
+            : bloc.addSales,
         editModelCallback: bloc.editSales);
   }
 

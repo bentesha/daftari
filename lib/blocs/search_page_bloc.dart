@@ -1,22 +1,30 @@
 import '../source.dart';
 
 class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
-  SearchPageBloc(this.productsService, this.categoriesService)
+  SearchPageBloc(this.productsService, this.categoriesService,
+      this.salesService, this.expensesService)
       : super(SearchPageState<T>.initial()) {
     productsService.addListener(_handleItemUpdates);
     categoriesService.addListener(_handleCategoryUpdates);
+    salesService.addListener(() => handleDocumentUpdates(DocumentType.sales));
+    expensesService
+        .addListener(() => handleDocumentUpdates(DocumentType.expenses));
   }
 
   final ProductsService productsService;
   final CategoriesService categoriesService;
+  final SalesService salesService;
+  final ExpensesService expensesService;
 
   var _options = [];
   var _categoryType = CategoryTypes.expenses;
+  var _documentType = DocumentType.sales;
 
-  void init([CategoryTypes? categoryType]) async {
+  void init([CategoryTypes? categoryType, DocumentType? documentType]) async {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));
     if (categoryType != null) _categoryType = categoryType;
+    if (documentType != null) _documentType = documentType;
     await _initServices();
 
     final hasFailed = state.maybeWhen(
@@ -52,6 +60,12 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
     emit(SearchPageState.loading(supp));
     if (T == Product) productsService.updateCurrent(id);
     if (T == Category) categoriesService.updateCurrent(id);
+    if (T == Document) {
+      if (_documentType == DocumentType.sales) salesService.updateCurrent(id);
+      if (_documentType == DocumentType.expenses) {
+        expensesService.updateCurrent(id);
+      }
+    }
     emit(SearchPageState.success(supp));
   }
 
@@ -73,9 +87,26 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
     emit(SearchPageState.content(supp));
   }
 
+  void handleDocumentUpdates(DocumentType type) {
+    var supp = state.supplements;
+    emit(SearchPageState.loading(supp));
+    var documents = type == DocumentType.sales
+        ? salesService.getList
+        : expensesService.getList;
+    final options = documents.whereType<T>().toList();
+    supp = supp.copyWith(options: options);
+    emit(SearchPageState.content(supp));
+  }
+
   Future<void> _initServices() async {
     try {
       if (T == Product) await productsService.init();
+      if (T == Document) {
+        if (_documentType == DocumentType.sales) await salesService.init();
+        if (_documentType == DocumentType.expenses) {
+          await expensesService.init();
+        }
+      }
       if (T == Category) {
         if (_categoryType == CategoryTypes.products) {
           await categoriesService.init();
@@ -88,6 +119,12 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
 
   List _getOptions() {
     if (T == Product) return productsService.getList;
+    if (T == Document) {
+      if (_documentType == DocumentType.sales) return salesService.getList;
+      if (_documentType == DocumentType.expenses) {
+        return expensesService.getList;
+      }
+    }
     if (T == Category) {
       final categories = categoriesService.getList;
       return categories.where((e) => e.type == _categoryType).toList();

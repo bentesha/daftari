@@ -13,7 +13,7 @@ class Expense {
       this.description,
       this.category = const Category()});
 
-   factory Expense.toServer(
+  factory Expense.toServer(
       {required String id,
       required Category category,
       required double amount,
@@ -24,13 +24,15 @@ class Expense {
 
   String get formattedAmount => Utils.convertToMoneyFormat(amount);
 
-  factory Expense.fromJson(Map<String, dynamic> json) => Expense(
-      id: json['id'],
-      category:
-          Category.fromJson(json['category'], type: CategoryTypes.expenses),
-      documentId: json['documentId'],
-      amount: (json['amount'] as num).toDouble(),
-      description: json['description']);
+  factory Expense.fromJson(Map<String, dynamic> json) {
+    return Expense(
+        id: json['id'],
+        category:
+            Category.fromJson(json['category'], type: CategoryTypes.expenses),
+        documentId: json['documentId'],
+        amount: (json['amount'] as num).toDouble(),
+        description: json['description']);
+  }
 
   Map<String, dynamic> convertToJson() {
     String? _description;
@@ -44,5 +46,10 @@ class Expense {
       'description': _description,
       'categoryId': category.id
     };
+  }
+
+  @override
+  String toString() {
+    return 'Expense: category: ${category.name}, id: $id';
   }
 }

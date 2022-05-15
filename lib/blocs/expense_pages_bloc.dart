@@ -33,23 +33,6 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     _initExpensePage(page, expense, action);
   }
 
-  void updateAmount(String amount) => _updateAttributes(amount: amount);
-
-  void updateNotes(String description) =>
-      _updateAttributes(description: description);
-
-  void updateDocumentDescription(String description) =>
-      _updateAttributes(documentDescription: description);
-
-  void updateDate(DateTime date) => _updateAttributes(date: date);
-
-  void updateTitle(String title) => _updateAttributes(title: title);
-
-  void updateAction(PageActions action) => _updateAttributes(action: action);
-
-  void updateDateAsTitle(bool? isDateAsTitle) =>
-      _updateAttributes(isDateAsTitle: isDateAsTitle);
-
   void saveDocument() async {
     _validate();
 
@@ -78,14 +61,26 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     }
   }
 
-  void editDocument() async {
-    _validate();
+  void editDocument([bool fromQuickActions = false]) async {
+    _validate(true, fromQuickActions);
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
+    emit(ExpensePagesState.loading(supp));
+
     var document = supp.document;
+    if (fromQuickActions) {
+      final expensesList = List<Expense>.from(
+          document.maybeWhen(expenses: (_, list) => list, orElse: () => []));
+      expensesList.add(Expense.toServer(
+          id: Utils.getRandomId(),
+          category: supp.category,
+          amount: supp.parsedAmount,
+          description: supp.description));
+      document = Document.expenses(document.form, expensesList);
+    }
     if (supp.isDateAsTitle) {
       final form =
           document.form.copyWith(title: DateFormatter.convertToDMY(supp.date));
@@ -157,6 +152,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
       bool? isDateAsTitle,
       String? description,
       String? amount,
+      Document? document,
       PageActions? action,
       String? documentDescription}) {
     var supp = state.supplements;
@@ -167,7 +163,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
         title: title ?? form.title,
         description: documentDescription ?? form.description);
     supp = supp.copyWith(
-        document: supp.document.copyWith(form: form),
+        document: document ?? supp.document.copyWith(form: form),
         amount: amount ?? supp.amount,
         description: description ?? supp.description,
         date: date ?? supp.date,
@@ -185,7 +181,9 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
 
   _validateSalesDetails() => _validate(false);
 
-  _validate([bool isValidatingDocumentDetails = true]) {
+  _validate(
+      [bool isValidatingDocumentDetails = true,
+      bool fromQuickActions = false]) {
     var supp = state.supplements;
     emit(ExpensePagesState.loading(supp));
 
@@ -194,8 +192,11 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     if (isValidatingDocumentDetails && (!supp.isDateAsTitle)) {
       errors['title'] = InputValidation.validateText(form.title, 'Title');
     }
+    if (fromQuickActions) {
+      errors['document'] = InputValidation.validateText(form.title, 'Document');
+    }
     //validating expense details
-    if (!isValidatingDocumentDetails) {
+    if (!isValidatingDocumentDetails || fromQuickActions) {
       errors['category'] =
           InputValidation.validateText(supp.category.id, 'Category');
       errors['amount'] = InputValidation.validateNumber(supp.amount, 'Amount');
@@ -237,7 +238,6 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     if (page != Pages.expenses_documents_page) return;
     var supp = state.supplements;
     final documents = expensesService.getList;
-    log(documents.toString());
     supp = supp.copyWith(documents: documents);
     emit(ExpensePagesState.content(supp));
   }
@@ -300,6 +300,29 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     }
     return isSuccessful;
   }
+
+  void updateAmount(String amount) => _updateAttributes(amount: amount);
+
+  void updateNotes(String description) =>
+      _updateAttributes(description: description);
+
+  void updateDescription(String description) =>
+      _updateAttributes(description: description);
+
+  void updateDocumentDescription(String description) =>
+      _updateAttributes(documentDescription: description);
+
+  void updateDate(DateTime date) => _updateAttributes(date: date);
+
+  void updateTitle(String title) => _updateAttributes(title: title);
+
+  void updateAction(PageActions action) => _updateAttributes(action: action);
+
+  void updateDateAsTitle(bool? isDateAsTitle) =>
+      _updateAttributes(isDateAsTitle: isDateAsTitle);
+
+  void updateDocument(Document? document) =>
+      _updateAttributes(document: document);
 
   void _handleError(var error) {
     final message = getErrorMessage(error);

@@ -34,16 +34,16 @@ Document _getDocumentFromJson<T>(var jsonDocument) {
   return _getSpecificTypeDocument<T>(jsonDocument, itemList);
 }
 
-dynamic _getItemFromJson<T>(var json) {
+dynamic _getItemFromJson<T>(var jsonItem) {
   switch (T) {
     case Sales:
-      return Sales.fromJson(json);
+      return Sales.fromJson(jsonItem);
     case Purchase:
-      return Purchase.fromJson(json);
+      return Purchase.fromJson(jsonItem);
     case Expense:
-      return Expense.fromJson(json);
+      return Expense.fromJson(jsonItem);
     case WriteOff:
-      return WriteOff.fromJson(json);
+      return WriteOff.fromJson(jsonItem);
   }
 }
 

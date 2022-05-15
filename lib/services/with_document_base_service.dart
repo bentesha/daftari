@@ -1,5 +1,6 @@
 import '../source.dart';
 import '../utils/error_handler_mixin.dart';
+import '../utils/extensions.dart/document_type.dart';
 import 'package:inventory_management/utils/http_utils.dart' as http;
 
 part 'with_document_base_service_type_handler.dart';
@@ -12,18 +13,21 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
   var _hasChanges = false;
   final _temporaryList = [];
   final _documents = <Document>[];
+  var _current = Document.empty();
 
   List<Document> get getList => _documents;
+  Document get getCurrent => _current;
 
   List<T> get getTemporaryList => _temporaryList.whereType<T>().toList();
 
   bool get hasChanges => _hasChanges;
 
-  ///Gets all documents from the server
+  /// Gets all documents from the server
   Future<void> init() async {
+    final getURL = _getGetURL();
     if (_documents.isNotEmpty) return;
     try {
-      final results = await http.get(url) as List;
+      final results = await http.get(getURL) as List;
       if (results.isEmpty) return;
 
       final documentList =
@@ -47,13 +51,20 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
     }
   }
 
+  // todo get category details from put response
   Future<void> editDocument(Document document) async {
+    final id = document.form.id;
     try {
-      final documentId = document.form.id;
-      final result = await http.put(url, documentId,
-          jsonItem: document.toJson(documentType));
+      final result =
+          await http.put(url, id, jsonItem: document.toJson(documentType));
+
+      late categories;
+      for (var expense in items) {
+        
+      }
+
       final _document = _getDocumentFromJson<T>(result);
-      final index = _documents.indexWhere((d) => d.form.id == documentId);
+      final index = _documents.indexWhere((d) => d.form.id == id);
       _documents[index] = _document;
       clearTemporaryList();
       notifyListeners();
@@ -84,6 +95,16 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
       ..addAll(documentItemList);
   }
 
+  ///used mainly by the search bloc to update the current selected category or
+  ///product. So that listeners can get it just by calling [salesService.getCurrent]
+  ///or [expensesService.getCurrent]
+  void updateCurrent(String id) {
+    final index = _documents.indexWhere((e) => e.form.id == id);
+    final document = _documents[index];
+    _current = document;
+    notifyListeners();
+  }
+
   addItemTemporarily(var item) {
     _temporaryList.add(item);
     _hasChanges = true;
@@ -107,5 +128,11 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
   clearTemporaryList() {
     _temporaryList.clear();
     _hasChanges = false;
+  }
+
+  String _getGetURL() {
+    const params = 'eager=details.category';
+    if (documentType.isExpenses) return '${root}expense?$params';
+    return url;
   }
 }

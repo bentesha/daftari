@@ -33,23 +33,6 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     _initSalesPage(page, sales, action);
   }
 
-  void updateAmount(String unitPrice) =>
-      _updateAttributes(unitPrice: unitPrice);
-
-  void updateNotes(String description) =>
-      _updateAttributes(description: description);
-
-  void updateQuantity(String quantity) => _updateAttributes(quantity: quantity);
-
-  void updateDate(DateTime date) => _updateAttributes(date: date);
-
-  void updateTitle(String title) => _updateAttributes(title: title);
-
-  void updateAction(PageActions action) => _updateAttributes(action: action);
-
-  void updateDateAsTitle(bool? isDateAsTitle) =>
-      _updateAttributes(isDateAsTitle: isDateAsTitle);
-
   void saveDocument() async {
     _validate();
 
@@ -78,14 +61,27 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     }
   }
 
-  void editDocument() async {
-    _validate();
+  void editDocument([bool fromQuickActions = false]) async {
+    _validate(true, fromQuickActions);
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
 
+    emit(SalesDocumentsPageState.loading(supp));
+
     var document = supp.document;
+    if (fromQuickActions) {
+      final salesList = List<Sales>.from(
+          document.maybeWhen(sales: (_, list) => list, orElse: () => []));
+      salesList.add(Sales.toServer(
+          id: Utils.getRandomId(),
+          productId: supp.product.id,
+          unitPrice: supp.parsedUnitPrice,
+          quantity: supp.parsedQuantity));
+      document = Document.sales(document.form, salesList);
+    }
+
     if (supp.isDateAsTitle) {
       final form =
           document.form.copyWith(title: DateFormatter.convertToDMY(supp.date));
@@ -157,6 +153,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
       bool? isDateAsTitle,
       String? quantity,
       String? unitPrice,
+      Document? document,
       PageActions? action,
       String? description}) {
     var supp = state.supplements;
@@ -167,7 +164,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
         title: title ?? form.title,
         description: description ?? form.description);
     supp = supp.copyWith(
-        document: supp.document.copyWith(form: form),
+        document: document ?? supp.document.copyWith(form: form),
         quantity: quantity ?? supp.quantity,
         unitPrice: unitPrice ?? supp.unitPrice,
         date: date ?? supp.date,
@@ -185,7 +182,9 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
 
   _validateSalesDetails() => _validate(false);
 
-  _validate([bool isValidatingDocumentDetails = true]) {
+  _validate(
+      [bool isValidatingDocumentDetails = true,
+      bool fromQuickActions = false]) {
     var supp = state.supplements;
     emit(SalesDocumentsPageState.loading(supp));
 
@@ -194,8 +193,11 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     if (isValidatingDocumentDetails && (!supp.isDateAsTitle)) {
       errors['title'] = InputValidation.validateText(form.title, 'Title');
     }
+    if (fromQuickActions) {
+      errors['document'] = InputValidation.validateText(form.title, 'Document');
+    }
     //validating sales details
-    if (!isValidatingDocumentDetails) {
+    if (!isValidatingDocumentDetails || fromQuickActions) {
       errors['product'] =
           InputValidation.validateText(supp.product.id, 'Product');
       errors['price'] = InputValidation.validateNumber(supp.unitPrice, 'Price');
@@ -277,11 +279,11 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     if (page != Pages.sales_page) return;
     var supp = state.supplements;
 
-    //action can't be null on the sales edit page.
+    // action can't be null on the sales edit page.
     supp = supp.copyWith(action: action!);
 
     if (sales != null) {
-      //is viewing / editing existing sales record
+      // is viewing / editing existing sales record
       final product = productsService.getById(sales.productId)!;
       supp = supp.copyWith(
           salesId: sales.id,
@@ -304,6 +306,26 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     }
     return isSuccessful;
   }
+
+  void updateAmount(String unitPrice) =>
+      _updateAttributes(unitPrice: unitPrice);
+
+  void updateNotes(String description) =>
+      _updateAttributes(description: description);
+
+  void updateQuantity(String quantity) => _updateAttributes(quantity: quantity);
+
+  void updateDate(DateTime date) => _updateAttributes(date: date);
+
+  void updateTitle(String title) => _updateAttributes(title: title);
+
+  void updateAction(PageActions action) => _updateAttributes(action: action);
+
+  void updateDateAsTitle(bool? isDateAsTitle) =>
+      _updateAttributes(isDateAsTitle: isDateAsTitle);
+
+  void updateDocument(Document? document) =>
+      _updateAttributes(document: document);
 
   void _handleError(var error) {
     final message = getErrorMessage(error);

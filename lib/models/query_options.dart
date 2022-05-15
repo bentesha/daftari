@@ -1,4 +1,4 @@
-import 'package:inventory_management/blocs/query_options.dart';
+import 'package:inventory_management/blocs/query_filters_bloc.dart';
 import 'package:inventory_management/source.dart';
 import 'find_options.dart';
 

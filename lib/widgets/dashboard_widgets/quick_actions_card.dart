@@ -21,10 +21,16 @@ class QuickActionsCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildIcon(() => push(const SalesPage(PageActions.adding)),
-                  'New Sales', Icons.sell),
-              _buildIcon(() => push(const ExpensePage(PageActions.adding)),
-                  'New Expense', Icons.post_add),
+              _buildIcon(
+                  () => push(const SalesPage(PageActions.adding,
+                      fromQuickActions: true)),
+                  'New Sales',
+                  Icons.sell),
+              _buildIcon(
+                  () => push(const ExpensePage(PageActions.adding,
+                      fromQuickActions: true)),
+                  'New Expense',
+                  Icons.post_add),
               _buildIcon(
                   () =>
                       push(const ReportsPage(reportType: ReportType.priceList)),

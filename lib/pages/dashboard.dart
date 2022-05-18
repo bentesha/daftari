@@ -23,7 +23,7 @@ class Dashboard extends StatelessWidget {
     final isScaffoldStateNull = _scaffoldKey.currentState == null;
     _openDrawer() {
       if (isScaffoldStateNull) {
-        WidgetsBinding.instance!.addPostFrameCallback((_) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
           _scaffoldKey.currentState!.openDrawer();
         });
       } else {

@@ -16,7 +16,7 @@ void showSnackBar(String message,
   if (context != null) _showSnackBarCallback(context, message, isError);
   if (key != null) {
     if (key.currentState == null) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         _showSnackBarCallback(key.currentContext!, message, isError);
       });
     } else {

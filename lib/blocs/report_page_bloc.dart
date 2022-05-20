@@ -1,7 +1,6 @@
 import 'package:inventory_management/blocs/query_filters_bloc.dart';
 import 'package:inventory_management/models/find_options.dart';
 import 'package:inventory_management/source.dart';
-import 'package:inventory_management/utils/extensions.dart/report_type.dart';
 import 'package:inventory_management/widgets/reports/data.dart';
 
 class ReportPageBloc extends Cubit<ReportData> {

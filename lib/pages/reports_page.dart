@@ -3,7 +3,6 @@ import 'package:inventory_management/blocs/query_filters_bloc.dart';
 import 'package:inventory_management/blocs/report_page_bloc.dart';
 import 'package:inventory_management/models/find_options.dart';
 import 'package:inventory_management/models/query_options.dart';
-import 'package:inventory_management/utils/extensions.dart/report_type.dart';
 import 'package:inventory_management/widgets/reports/price_list.dart';
 import 'package:inventory_management/widgets/reports/profit_loss_report.dart';
 import 'package:inventory_management/widgets/reports/remaining_stock_report.dart';

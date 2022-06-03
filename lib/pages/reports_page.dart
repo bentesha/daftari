@@ -55,14 +55,33 @@ class _ReportsPageState extends State<ReportsPage> {
   }
 
   _buildAppBar(ReportType type) {
-    return PageAppBar(
-      title: type.reportName,
-      actionCallbacks: type.hasFilters
-          ? [() => _showTypeSelectorDialog(Types.reports), () => _showFilters()]
-          : [() => _showTypeSelectorDialog(Types.reports)],
-      actionIcons: type.hasFilters
-          ? const [EvaIcons.swapOutline, EvaIcons.funnelOutline]
-          : const [EvaIcons.swapOutline],
+    return AppBar(
+      title: Row(
+        children: [
+          AppMaterialButton(
+            onPressed: () => _showTypeSelectorDialog(Types.reports),
+            backgroundColor: AppColors.highlight.withOpacity(.05),
+            padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 5),
+            borderRadius: BorderRadius.circular(15),
+            child: Row(
+              children: [
+                AppText(type.reportName,
+                    color: AppColors.onPrimary, size: 16.dw),
+                const SizedBox(width: 8),
+                Icon(Icons.expand_more, size: 20.dw)
+              ],
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        if (type.hasFilters)
+          AppIconButton(
+              onPressed: _showFilters,
+              icon: EvaIcons.swapOutline,
+              iconThemeData: IconThemeData(size: 20.dw),
+              margin: EdgeInsets.only(right: 19.dw)),
+      ],
     );
   }
 

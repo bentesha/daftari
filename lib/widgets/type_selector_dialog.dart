@@ -1,7 +1,7 @@
 import 'package:inventory_management/source.dart';
-import 'package:inventory_management/utils/extensions.dart/report_type.dart';
+import 'package:inventory_management/utils/extensions.dart/write_off_type.dart';
 
-enum Types { reports, dimensions }
+enum Types { reports, writeOffs }
 
 class TypeSelectorDialog<T> extends Dialog {
   const TypeSelectorDialog(
@@ -11,7 +11,7 @@ class TypeSelectorDialog<T> extends Dialog {
       Key? key})
       : super(key: key);
 
-  final ValueChanged onSelected;
+  final ValueChanged<T> onSelected;
   final T currentType;
   final String title;
 
@@ -30,21 +30,26 @@ class TypeSelectorDialog<T> extends Dialog {
           padding: EdgeInsets.symmetric(horizontal: 10.dw, vertical: 10.dh),
           child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: ReportType.values
-                  .map((reportType) => _buildReportType(reportType))
-                  .toList()),
+              children:
+                  (T == ReportType ? ReportType.values : WriteOffTypes.values)
+                      .map((item) => _buildItem(item))
+                      .toList()),
         ),
       ],
     );
   }
 
-  Widget _buildReportType(ReportType reportType) {
-    final isSelected = reportType == currentType;
+  Widget _buildItem(var item) {
+    final isSelected = item == currentType;
     return AppTextButton(
-      text: reportType.string,
+      text: item is ReportType
+          ? item.string
+          : item is WriteOffTypes
+              ? item.string
+              : '',
       onPressed: () {
         pop();
-        if (T == ReportType) onSelected(reportType);
+        onSelected(item);
       },
       textStyle: TextStyle(
           color: isSelected ? AppColors.onPrimary : AppColors.onBackground2,

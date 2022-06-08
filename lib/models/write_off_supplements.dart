@@ -1,4 +1,5 @@
 import '../source.dart';
+import '../utils/extensions.dart/write_off_type.dart';
 
 part 'freezed_models/write_off_supplements.freezed.dart';
 

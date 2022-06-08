@@ -2,6 +2,8 @@ import '../source.dart';
 import '../errors/error_handler_mixin.dart';
 import 'package:inventory_management/utils/http_utils.dart' as http;
 
+import '../utils/extensions.dart/write_off_type.dart';
+
 part 'with_document_base_service_type_handler.dart';
 
 class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
@@ -93,14 +95,16 @@ class WithDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
   /// from the search-page
   void saveTemporaryDocument(Document document) {
     _current = document;
-    _temporaryDocs.add(_current);
+    _temporaryDocs
+      ..clear()
+      ..add(_current);
     notifyListeners();
   }
 
   /// removing the temporary document, called when the search page is popped
   void disposeTemporaryDocument() {
     _temporaryDocs.clear();
-    notifyListeners();
+    // notifyListeners();
   }
 
   void updateCurrent(Document document) => _current = document;

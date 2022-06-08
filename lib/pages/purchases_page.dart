@@ -1,4 +1,5 @@
 import '../source.dart';
+import '../widgets/form_cell_item_picker.dart';
 
 class PurchasesPage extends StatefulWidget {
   const PurchasesPage(this.documentPageAction, {this.purchase, Key? key})
@@ -62,11 +63,11 @@ class _PurchasesPageState extends State<PurchasesPage> {
 
     return Column(
       children: [
-        ValueSelector(
-          title: 'Product',
-          value: supp.product.name,
-          error: supp.errors['product'],
-          isEditable: !action.isViewing,
+        FormCellItemPicker(
+          label: 'Product',
+          valueText: supp.product.name,
+          errorText: supp.errors['product'],
+          editable: !action.isViewing,
           onPressed: () => push(const ItemsSearchPage<Product>(
               categoryType: CategoryTypes.products)),
         ),

@@ -1,6 +1,9 @@
-import '../widgets/type_selector.dart';
+import 'package:inventory_management/widgets/type_selector_dialog.dart';
+
+import '../widgets/form_cell_item_picker.dart';
 import '../source.dart';
 import '../widgets/bottom_total_amount_tile.dart';
+import '../utils/extensions.dart/write_off_type.dart';
 
 class DocumentWriteOffsPage extends StatefulWidget {
   const DocumentWriteOffsPage([this.document, Key? key]) : super(key: key);
@@ -93,12 +96,12 @@ class _DocumentWriteOffsPageState extends State<DocumentWriteOffsPage> {
                 date: supp.date,
                 isEditable: false)
             : Container(),
-        TypeSelector(
-            onTypeSelected: bloc.updateType,
-            selectedType: supp.type,
-            title: 'Type',
-            error: supp.errors['type'],
-            isEditable: action.isAdding),
+        FormCellItemPicker(
+            onPressed: () => _openTypesDialog(supp.type),
+            valueText: supp.type.string,
+            label: 'Type',
+            errorText: supp.errors['type'],
+            editable: action.isAdding),
         const AppDivider(margin: EdgeInsets.zero),
         _buildGroupTitle(supp),
         _buildItems(supp)
@@ -218,4 +221,16 @@ class _DocumentWriteOffsPageState extends State<DocumentWriteOffsPage> {
 
   static const emptyExpensesMessage =
       'No write-offs have been added in this document yet.';
+
+  void _openTypesDialog(WriteOffTypes currentType) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return TypeSelectorDialog<WriteOffTypes>(
+            onSelected: bloc.updateType,
+            currentType: currentType,
+            title: 'CHOOSE WRITE-OFF TYPE',
+          );
+        });
+  }
 }

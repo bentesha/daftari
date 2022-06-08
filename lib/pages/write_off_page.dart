@@ -1,4 +1,5 @@
 import '../source.dart';
+import '../widgets/form_cell_item_picker.dart';
 
 class WriteOffPage extends StatefulWidget {
   const WriteOffPage(this.documentPageAction, {this.writeOff, Key? key})
@@ -62,11 +63,11 @@ class _WriteOffPageState extends State<WriteOffPage> {
 
     return Column(
       children: [
-        ValueSelector(
-          title: 'Product',
-          value: supp.product.name,
-          error: supp.errors['product'],
-          isEditable: !action.isViewing,
+        FormCellItemPicker(
+          label: 'Product',
+          valueText: supp.product.name,
+          errorText: supp.errors['product'],
+          editable: !action.isViewing,
           onPressed: () => push(const ItemsSearchPage<Product>()),
         ),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),

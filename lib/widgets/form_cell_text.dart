@@ -10,7 +10,7 @@ class FormCellText extends StatelessWidget {
   @override
   build(context) {
     final textTheme = Theme.of(context).textTheme;
-    return valueText != null
+    return valueText != null && valueText!.isNotEmpty
         ? Text(valueText!, style: textTheme.bodyText1)
         : Text(hintText,
             style: textTheme.bodyText2

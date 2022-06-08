@@ -1,4 +1,5 @@
 import '../source.dart';
+import '../utils/extensions.dart/write_off_type.dart';
 
 class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
   WriteOffPagesBloc(this.writeOffsService, this.productsService)

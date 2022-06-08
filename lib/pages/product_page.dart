@@ -1,3 +1,5 @@
+import 'package:inventory_management/widgets/form_cell_item_picker.dart';
+
 import '../source.dart';
 
 class ProductPage extends StatefulWidget {
@@ -95,11 +97,11 @@ class _ProductPageState extends State<ProductPage> {
                 child: const AppText('PRODUCT DETAILS',
                     weight: FontWeight.bold, opacity: .7))
             : Container(),
-        ValueSelector(
-          title: 'Category',
-          value: bloc.getSelectedCategory?.name,
-          error: supp.errors['category'],
-          isEditable: !action.isViewing,
+        FormCellItemPicker(
+          label: 'Category',
+          valueText: bloc.getSelectedCategory?.name,
+          errorText: supp.errors['category'],
+          editable: !action.isViewing,
           onPressed: () => push(const ItemsSearchPage<Category>(
               categoryType: CategoryTypes.products)),
         ),

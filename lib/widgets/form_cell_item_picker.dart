@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'form_cell.dart';
 import 'form_cell_clear_icon.dart';
 import 'form_cell_error.dart';
@@ -9,27 +8,31 @@ import 'form_cell_text.dart';
 
 class FormCellItemPicker extends StatelessWidget {
   const FormCellItemPicker(
-      {Key? key, required this.label,
+      {Key? key,
+      required this.label,
       required this.valueText,
       this.clearable = false,
       this.hintText,
       this.errorText,
+      this.editable = true,
       required this.onPressed,
-      required this.onClear}) : super(key: key);
+      this.onClear})
+      : super(key: key);
 
   final String label;
   final String? valueText;
   final VoidCallback onPressed;
-  final VoidCallback onClear;
+  final VoidCallback? onClear;
   final String? hintText;
   final String? errorText;
   final bool clearable;
+  final bool editable;
 
   @override
   Widget build(context) {
     final bool showClearButton = clearable && valueText != null;
     return FormCell(
-        onTap: onPressed,
+        onTap: editable ? onPressed : () {},
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -44,9 +47,9 @@ class FormCellItemPicker extends StatelessWidget {
                       hintText: hintText ?? 'Tap to select'),
                 ),
                 const SizedBox(width: 16),
-                if (!showClearButton)
+                if (!showClearButton && editable)
                   FormCellSelectorIcon(onPressed: onPressed),
-                if (showClearButton) FormCellClearIcon(onPressed: onClear)
+                if (showClearButton) FormCellClearIcon(onPressed: onClear!)
               ],
             ),
             FormCellError(errorText)

@@ -11,6 +11,11 @@ class AppTheme {
           selectionColor: AppColors.primary,
           selectionHandleColor: AppColors.primary,
         ),
+        textTheme: const TextTheme(
+            overline: TextStyle(
+                color: AppColors.onBackground,
+                fontSize: 18,
+                fontFamily: kFontFam)),
         appBarTheme: const AppBarTheme(
             backgroundColor: AppColors.primary,
             elevation: 0,

@@ -3,22 +3,6 @@ import 'package:inventory_management/models/source.dart';
 part 'freezed_models/write_off.freezed.dart';
 part 'freezed_models/write_off.g.dart';
 
-enum WriteOffTypes { stolen, damaged, expired, other }
-
-extension WriteOffTypesString on WriteOffTypes {
-  String get string {
-    switch (this) {
-      case WriteOffTypes.stolen:
-        return 'Stolen';
-      case WriteOffTypes.damaged:
-        return 'Damaged';
-      case WriteOffTypes.expired:
-        return 'Expired';
-      case WriteOffTypes.other:
-        return 'Other';
-    }
-  }
-}
 
 @freezed
 class WriteOff with _$WriteOff {

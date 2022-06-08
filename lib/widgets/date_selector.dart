@@ -1,3 +1,5 @@
+import 'package:inventory_management/widgets/form_cell_label.dart';
+
 import '../source.dart';
 
 class DateSelector extends StatelessWidget {
@@ -36,7 +38,7 @@ class DateSelector extends StatelessWidget {
           isFilled: false,
           padding: EdgeInsets.symmetric(horizontal: 19.dw),
           child: ListTile(
-            title: AppText(title.toUpperCase(), opacity: .7),
+            title: /* AppText(title.toUpperCase(), opacity: .7) */  FormCellLabel(title),
             subtitle: Padding(
               padding: EdgeInsets.only(top: 5.dh),
               child: AppText(formattedDate, weight: FontWeight.w500),

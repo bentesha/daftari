@@ -1,3 +1,4 @@
+import 'package:inventory_management/widgets/form_cell_item_picker.dart';
 import '../source.dart';
 
 class ExpensePage extends StatefulWidget {
@@ -68,11 +69,10 @@ class _ExpensePageState extends State<ExpensePage> {
     return Column(
       children: [
         if (widget.fromQuickActions)
-          ValueSelector(
-            title: 'Document',
-            value: supp.document.form.title,
-            error: supp.errors['document'],
-            isEditable: true,
+          FormCellItemPicker(
+            label: 'Document',
+            valueText: supp.document.form.title,
+            errorText: supp.errors['document'],
             onPressed: () async {
               final document = await ItemsSearchPage.navigateTo<Document>(
                   context,
@@ -80,11 +80,11 @@ class _ExpensePageState extends State<ExpensePage> {
               bloc.updateDocument(document);
             },
           ),
-        ValueSelector(
-          title: 'Category',
-          value: supp.category.name,
-          error: supp.errors['category'],
-          isEditable: !action.isViewing,
+        FormCellItemPicker(
+          label: 'Category',
+          valueText: supp.category.name,
+          errorText: supp.errors['category'],
+          editable: !action.isViewing,
           onPressed: () => push(const ItemsSearchPage<Category>(
               categoryType: CategoryTypes.expenses)),
         ),

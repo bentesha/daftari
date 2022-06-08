@@ -1,4 +1,5 @@
 import '../source.dart';
+import '../widgets/form_cell_item_picker.dart';
 
 class SalesPage extends StatefulWidget {
   const SalesPage(this.documentPageAction,
@@ -65,11 +66,10 @@ class _SalesPageState extends State<SalesPage> {
     return Column(
       children: [
         if (widget.fromQuickActions)
-          ValueSelector(
-            title: 'Document',
-            value: supp.document.form.title,
-            error: supp.errors['document'],
-            isEditable: true,
+          FormCellItemPicker(
+            label: 'Document',
+            valueText: supp.document.form.title,
+            errorText: supp.errors['document'],
             onPressed: () async {
               final document = await ItemsSearchPage.navigateTo<Document>(
                   context,
@@ -77,11 +77,11 @@ class _SalesPageState extends State<SalesPage> {
               bloc.updateDocument(document);
             },
           ),
-        ValueSelector(
-          title: 'Product',
-          value: supp.product.name,
-          error: supp.errors['product'],
-          isEditable: !action.isViewing,
+        FormCellItemPicker(
+          label: 'Product',
+          valueText: supp.product.name,
+          errorText: supp.errors['product'],
+          editable: !action.isViewing,
           onPressed: () => push(const ItemsSearchPage<Product>()),
         ),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),

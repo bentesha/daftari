@@ -11,6 +11,8 @@ class CategoriesService extends WithNoDocumentBaseService<Category>
 
   static bool get _isExpenses => _categoryType == CategoryTypes.expenses;
 
+  CategoryTypes get getCurrentType => _categoryType;
+
   static initType(CategoryTypes type) => _categoryType = type;
 
   ///Gets all categories from the server
@@ -55,14 +57,14 @@ class CategoriesService extends WithNoDocumentBaseService<Category>
   Future<void> edit(var item, [String? url]) async {
     final url = root +
         (_isExpenses ? expenseCategoryEndpoint : productCategoryEndpoint);
-    await edit(item, url);
+    await super.edit(item, url);
   }
 
   @override
   Future<void> delete(String id, [String? url]) async {
     final url = root +
         (_isExpenses ? expenseCategoryEndpoint : productCategoryEndpoint);
-    await delete(id, url);
+    await super.delete(id, url);
   }
 
   List<Category> _getCategoriesFrom(List result, CategoryTypes categoryType) {

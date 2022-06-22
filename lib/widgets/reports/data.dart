@@ -1,3 +1,5 @@
+import '../../blocs/report/models/annotation.dart';
+
 const days = <String>[
   '1 Jan 2022',
   '2 Jan 2022',

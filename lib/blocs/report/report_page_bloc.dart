@@ -1,16 +1,32 @@
-import 'package:inventory_management/blocs/query_filters_bloc.dart';
-import 'package:inventory_management/models/find_options.dart';
 import 'package:inventory_management/source.dart';
 import 'package:inventory_management/widgets/reports/data.dart';
+import '../../repository/reports/reports_repository.dart';
+import '../filter/query_filters_bloc.dart';
+import '../filter/query_options.dart';
+import 'models/report_data.dart';
 
 class ReportPageBloc extends Cubit<ReportData> {
-  ReportPageBloc() : super(ReportData.empty());
+  final QueryFiltersBloc queryFiltersBloc;
+  ReportPageBloc(this.queryFiltersBloc) : super(ReportData.empty());
 
-  void init(GroupBy groupBy, SortDirection sortDirection, ReportType type) {
+  final _repository = ReportsRepository();
+
+  void init(
+      GroupBy groupBy, SortDirection sortDirection, ReportType type) async {
+    if (type == ReportType.sales) {
+      final query = queryFiltersBloc.getQuery();
+      final reportData = await _repository.getSalesReportData(groupBy, query);
+      emit(reportData);
+      return;
+    }
+
     late final List<String> items;
     switch (groupBy) {
       case GroupBy.day:
         items = days;
+        break;
+      case GroupBy.product:
+        items = products;
         break;
       case GroupBy.month:
         items = months;
@@ -20,9 +36,6 @@ class ReportPageBloc extends Cubit<ReportData> {
         break;
       case GroupBy.year:
         items = years;
-        break;
-      case GroupBy.item:
-        items = products;
         break;
       case GroupBy.category:
         items = type.isExpenses ? expenseCategories : productCategories;
@@ -34,23 +47,12 @@ class ReportPageBloc extends Cubit<ReportData> {
     } else {
       amounts.sort((a, b) => b.compareTo(a));
     }
-    emit(ReportData(type, items, amounts));
+    emit(ReportData.withoutAnnotations(
+        reportType: type, items: items, amounts: amounts));
   }
 
   void refresh(
       GroupBy groupBy, SortDirection sortDirection, ReportType report) {
     init(groupBy, sortDirection, report);
   }
-}
-
-class ReportData {
-  final ReportType reportType;
-  final List<String> items;
-  final List<double> amounts;
-  const ReportData(this.reportType, this.items, this.amounts);
-
-  ReportData.empty()
-      : items = [],
-        reportType = ReportType.sales,
-        amounts = [];
 }

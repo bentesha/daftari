@@ -1,7 +1,6 @@
-import 'package:inventory_management/blocs/query_filters_bloc.dart';
-import 'package:inventory_management/models/find_options.dart';
+import 'package:inventory_management/blocs/filter/query_filters_bloc.dart';
 import 'package:inventory_management/models/option_item.dart';
-import 'package:inventory_management/models/query_options.dart';
+import 'package:inventory_management/blocs/filter/query_options.dart';
 import 'package:inventory_management/source.dart';
 import 'package:inventory_management/widgets/choice_chip.dart';
 import 'package:inventory_management/widgets/date_range_picker_form_cell.dart';
@@ -22,11 +21,11 @@ class SalesFilterDialog extends StatefulWidget {
 }
 
 class _SalesFilterDialogState extends State<SalesFilterDialog> {
-  late final QueryFilters options;
+  late final QueryFiltersBloc options;
 
   @override
   void initState() {
-    options = BlocProvider.of<QueryFilters>(context, listen: false);
+    options = BlocProvider.of<QueryFiltersBloc>(context, listen: false);
     super.initState();
   }
 
@@ -40,7 +39,7 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
 
   @override
   Widget build(context) {
-    return BlocBuilder<QueryFilters, List<QueryFilter>>(
+    return BlocBuilder<QueryFiltersBloc, List<QueryFilter>>(
         builder: (context, filters) {
       return Scaffold(
           appBar: AppBar(
@@ -66,7 +65,7 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                     OptionItem(value: GroupBy.month, label: 'Month'),
                     OptionItem(value: GroupBy.quarter, label: 'Quarter'),
                     OptionItem(value: GroupBy.year, label: 'Year'),
-                    OptionItem(value: GroupBy.item, label: 'Item'),
+                    OptionItem(value: GroupBy.product, label: 'Product'),
                     OptionItem(value: GroupBy.category, label: 'Category'),
                   ],
                   onSelected: (value) =>

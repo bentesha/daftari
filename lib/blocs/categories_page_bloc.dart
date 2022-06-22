@@ -83,9 +83,9 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
   _handleCategoryUpdates() {
     var supp = state.supplements;
     emit(CategoryPagesState.loading(supp));
-    final currentType = supp.category.type;
-    final categories =
-        categoriesService.getList.where((e) => e.type == currentType).toList();
+    final categories = categoriesService.getList
+        .where((e) => e.type == categoriesService.getCurrentType)
+        .toList();
     supp = supp.copyWith(categoryList: categories);
     emit(CategoryPagesState.content(supp));
   }

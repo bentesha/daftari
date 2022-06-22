@@ -1,14 +1,14 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:inventory_management/blocs/query_filters_bloc.dart';
-import 'package:inventory_management/blocs/report_page_bloc.dart';
-import 'package:inventory_management/models/find_options.dart';
-import 'package:inventory_management/models/query_options.dart';
+import 'package:inventory_management/blocs/filter/query_filters_bloc.dart';
+import 'package:inventory_management/blocs/report/report_page_bloc.dart';
+import 'package:inventory_management/blocs/filter/query_options.dart';
 import 'package:inventory_management/widgets/reports/price_list.dart';
 import 'package:inventory_management/widgets/reports/profit_loss_report.dart';
 import 'package:inventory_management/widgets/reports/remaining_stock_report.dart';
 import 'package:inventory_management/widgets/reports/sales_filter.dart';
 import 'package:inventory_management/widgets/reports/sales_report.dart';
 import 'package:inventory_management/widgets/type_selector_dialog.dart';
+import '../blocs/report/models/report_data.dart';
 import '../source.dart';
 
 class ReportsPage extends StatefulWidget {

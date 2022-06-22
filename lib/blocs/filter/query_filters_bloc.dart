@@ -1,21 +1,18 @@
 import 'package:bloc/bloc.dart';
-import 'package:inventory_management/models/find_options.dart';
-import '../models/query_options.dart';
+import 'query_options.dart';
 
-enum GroupBy { day, month, quarter, year, item, category }
-
-class QueryFilters extends Cubit<List<QueryFilter>> {
+class QueryFiltersBloc extends Cubit<List<QueryFilter>> {
   static const initialState = [
-    QueryFilter<GroupBy>('groupBy', GroupBy.category),
+    QueryFilter<GroupBy>('groupBy', GroupBy.product),
     QueryFilter<SortDirection>('sortDirection', SortDirection.descending)
   ];
-  QueryFilters() : super(initialState);
+  QueryFiltersBloc() : super(initialState);
 
-  //state operations
+  // cubit operations
 
   addFilter<T>(String fieldName, T? value) {
     final filters = List<QueryFilter>.from(state);
-    //checking if field exists
+    // checking if field exists
     final index = filters.indexWhere((filter) => filter.fieldName == fieldName);
     if (value == null) {
       if (index != -1) filters.removeAt(index);
@@ -35,13 +32,26 @@ class QueryFilters extends Cubit<List<QueryFilter>> {
 
   void clearAll() => emit(initialState);
 
-  //getting values
-
+  // getting values from state
+  /// Gets a specific [QueryFilter] from a list of filters available. It returns null if
+  /// [fieldName] did not match a field name of any available filters.
   QueryFilter? operator [](String fieldName) {
     if (state.every((filter) => filter.fieldName != fieldName)) {
       return null;
     }
     final filter = state.firstWhere((filter) => filter.fieldName == fieldName);
     return filter;
+  }
+
+  /// Converts a list of filters to a query that can be used while sending requests to the
+  /// server.
+  String getQuery() {
+    var query = '';
+    for (var i = 0; i < state.length; i++) {
+      final filter = state[i];
+      query = query + filter.inURLQueryFormat;
+      if (i != state.length - 1) query = query + '&';
+    }
+    return query;
   }
 }

@@ -20,7 +20,7 @@ class Product {
         name: json['name'],
         unit: json['unit'],
         unitPrice: (json['unitPrice'] as num).toDouble(),
-        categoryId: json['categoryId'],
+        categoryId: json['categoryId'] ?? '',
         code: json['code'],
       );
 
@@ -47,6 +47,7 @@ class Product {
       String? categoryId,
       double? unitPrice}) {
     return Product(
+        id: id,
         code: code ?? this.code,
         name: name ?? this.name,
         unit: unit ?? this.unit,

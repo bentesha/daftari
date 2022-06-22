@@ -57,8 +57,7 @@ class WithNoDocumentBaseService<T> extends ChangeNotifier with ErrorHandler {
     try {
       final response = await http.put(putURL, item.id, jsonItem: item.toJson());
       final index = _list.indexWhere((e) => e.id == item.id);
-      final body = json.decode(response.body);
-      _list[index] = _getValueFromJson(body, url);
+      _list[index] = _getValueFromJson(response, url);
       notifyListeners();
     } catch (e) {
       throw getError(e);

@@ -127,9 +127,9 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
   }
 
   _buildEmptyItemState(List<T> options, String query) {
-    dynamic categoryType = widget.categoryType;
+    final categoryType = widget.categoryType;
     final type = T == Category
-        ? '${categoryType.string.toLowerCase()} category'
+        ? '${categoryType!.string.toLowerCase()} category'
         : 'product';
     final message = options.isEmpty && query.isEmpty
         ? 'No $type has been recorded yet. Create one by clicking on the add button on the page top bar'

@@ -1,9 +1,10 @@
-import 'package:inventory_management/blocs/query_filters_bloc.dart';
-import 'package:inventory_management/blocs/report_page_bloc.dart';
-import 'package:inventory_management/models/query_options.dart';
+import 'package:inventory_management/blocs/filter/query_filters_bloc.dart';
+import 'package:inventory_management/blocs/filter/query_options.dart';
 import 'package:inventory_management/source.dart';
 import 'package:inventory_management/widgets/report_title.dart';
 import 'package:inventory_management/widgets/reports/summary_tile.dart';
+
+import '../../blocs/report/models/report_data.dart';
 
 class Report extends StatefulWidget {
   const Report({required this.data, Key? key}) : super(key: key);
@@ -17,11 +18,11 @@ class Report extends StatefulWidget {
 class _ReportState extends State<Report> {
   final selectedItemNotifier = ValueNotifier<String>('');
 
-  late final QueryFilters queryFilters;
+  late final QueryFiltersBloc queryFilters;
 
   @override
   void initState() {
-    queryFilters = BlocProvider.of<QueryFilters>(context, listen: false);
+    queryFilters = BlocProvider.of<QueryFiltersBloc>(context, listen: false);
     super.initState();
   }
 

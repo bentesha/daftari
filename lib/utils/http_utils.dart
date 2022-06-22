@@ -7,7 +7,7 @@ const headers = {
 };
 const timeLimit = Duration(seconds: 5);
 
-Future<dynamic> get(String url) async {
+Future<Map<String, dynamic>> get(String url) async {
   final response = await http.get(Uri.parse(url)).timeout(timeLimit);
   return json.decode(response.body);
 }
@@ -22,8 +22,6 @@ Future<dynamic> put(String url, String itemId, {required var jsonItem}) async {
       .put(Uri.parse('$url/$itemId'),
           body: json.encode(jsonItem), headers: headers)
       .timeout(timeLimit);
-
-  log(response.body.toString());
 
   return json.decode(response.body);
 }

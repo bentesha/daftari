@@ -1,10 +1,3 @@
-//did not use freezed because I needed custom toJson methods, and overriding
-//toJson method is not supported yet. I had 2 options: create custom to and from
-//json methods with different names like getFromJson and createToJson, because
-//writing custom methods with these names (to- & from-Json) freezed detects that
-//and creates the classes itself and it becomes controversial.
-//Second option is to writing the boilerplate yourself.
-
 enum CategoryTypes { products, expenses }
 
 extension CategoryTypesString on CategoryTypes {

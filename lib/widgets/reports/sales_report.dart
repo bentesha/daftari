@@ -31,8 +31,8 @@ class _ReportState extends State<Report> {
     return Column(
       children: [
         ReportTitle(
-            title1: (queryFilters['groupBy'] as QueryFilter<GroupBy>).value.name,
-            title2: 'amount'),
+            title1: widget.data.dimension.shortTitle,
+            title2: widget.data.measure.shortTitle),
         _buildDataList(),
       ],
     );
@@ -40,6 +40,13 @@ class _ReportState extends State<Report> {
 
   _buildDataList() {
     final items = widget.data.items;
+    if (items.isEmpty) {
+      return const Center(
+          child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Text('No Data'),
+      ));
+    }
     return Expanded(
       child: ListView.separated(
         itemCount: items.length,

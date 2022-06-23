@@ -7,7 +7,7 @@ const headers = {
 };
 const timeLimit = Duration(seconds: 5);
 
-Future<Map<String, dynamic>> get(String url) async {
+Future get(String url) async {
   final response = await http.get(Uri.parse(url)).timeout(timeLimit);
   return json.decode(response.body);
 }

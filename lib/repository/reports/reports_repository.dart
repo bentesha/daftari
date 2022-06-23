@@ -1,15 +1,14 @@
 import 'package:inventory_management/blocs/report/models/annotation.dart';
 import 'package:inventory_management/blocs/report/models/report_data.dart';
 import 'package:inventory_management/repository/reports/recent_sales.dart';
+import 'package:inventory_management/source.dart';
 import 'package:inventory_management/utils/http_utils.dart' as http;
-import 'package:inventory_management/utils/source.dart';
 import '../../blocs/filter/query_options.dart';
-import '../../secret.dart';
 import 'reports_repository_mixin.dart';
 
 class ReportsRepository with ReportsRepositoryMixin {
   Future<List<RecentSales>> getRecentSales() async {
-    const url = root + '/report/sales';
+    const url = root + 'report/sales';
     final result = await http.get(url);
     var data = List<Map<String, dynamic>>.from(result['data']);
     if (data.length > 5) {
@@ -19,27 +18,33 @@ class ReportsRepository with ReportsRepositoryMixin {
   }
 
   Future<ReportData> getSalesReportData(GroupBy groupBy, String query) async {
-    final url = root + '/report/sales?$query';
-    final result = await http.get(url);
-    final data = List<Map<String, dynamic>>.from(result['data']);
+    try {
+      log(query);
+      final url = root + 'report/sales?$query';
+      final result = await http.get(url);
+      final data = List<Map<String, dynamic>>.from(result['data']);
 
-    final items = getItems(groupBy, data);
-    final amounts =
-        data.map((e) => (e['SalesDetail.total'] as num).toDouble()).toList();
-    final measureMap = Map<String, dynamic>.from(
-        result['annotations']['measures']['SalesDetail.total']);
-    final measure = Annotation.fromMap(measureMap);
-    final dimension = getDimension(
-        groupBy,
-        groupBy.isTimeDimension
-            ? result['annotations']['timeDimensions']
-            : result['annotations']['dimensions']);
+      final items = getItems(groupBy, data);
+      final amounts =
+          data.map((e) => (e['SalesDetail.total'] as num).toDouble()).toList();
+      final measureMap = Map<String, dynamic>.from(
+          result['annotations']['measures']['SalesDetail.total']);
+      final measure = Annotation.fromMap(measureMap);
+      final dimension = getDimension(
+          groupBy,
+          groupBy.isTimeDimension
+              ? result['annotations']['timeDimensions']
+              : result['annotations']['dimensions']);
 
-    return ReportData(
-        reportType: ReportType.sales,
-        items: items,
-        amounts: amounts,
-        measure: measure,
-        dimension: dimension);
+      return ReportData(
+          reportType: ReportType.sales,
+          items: items,
+          amounts: amounts,
+          measure: measure,
+          dimension: dimension);
+    } catch (error) {
+      final message = getErrorMessage(error);
+      throw message;
+    }
   }
 }

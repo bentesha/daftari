@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:inventory_management/source.dart';
 import '../../blocs/filter/query_options.dart';
 import '../../blocs/report/models/annotation.dart';
@@ -13,25 +14,27 @@ class ReportsRepositoryMixin {
     if (groupBy == GroupBy.day) {
       return data.map((e) {
         final date = e['SalesDocument.date.day'] as String;
-        return FormatUtils.getCorrectFormat(date);
+        return FormatUtils.formatWithCustomFormatter(
+            date, DateFormat('yyyy-MM-dd'));
       }).toList();
     }
     if (groupBy == GroupBy.month) {
       return data.map((e) {
         final date = e['SalesDocument.date.month'] as String;
-        return FormatUtils.getCorrectFormat(date);
+        return FormatUtils.formatWithCustomFormatter(
+            date, DateFormat('MMMM, yyyy'));
       }).toList();
     }
     if (groupBy == GroupBy.quarter) {
       return data.map((e) {
         final date = e['SalesDocument.date.quarter'] as String;
-        return FormatUtils.getCorrectFormat(date);
+        return FormatUtils.formatToQuarters(date);
       }).toList();
     }
     if (groupBy == GroupBy.year) {
       return data.map((e) {
         final date = e['SalesDocument.date.year'] as String;
-        return FormatUtils.getCorrectFormat(date);
+        return FormatUtils.formatWithCustomFormatter(date, DateFormat('yyyy'));
       }).toList();
     }
     return [];
@@ -62,6 +65,6 @@ class ReportsRepositoryMixin {
         throw 'Unknown groupBy';
     }
 
-    return dimensionMap[dimensionKey];
+    return Annotation.fromMap(dimensionMap[dimensionKey]);
   }
 }

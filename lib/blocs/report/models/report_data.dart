@@ -21,14 +21,14 @@ class ReportData {
         reportType: reportType,
         items: items,
         amounts: amounts,
-        measure: Annotation.empty(),
-        dimension: Annotation.empty());
+        measure: const Annotation.empty(),
+        dimension: const Annotation.empty());
   }
 
-  ReportData.empty()
-      : items = [],
+  const ReportData.empty()
+      : items = const [],
         reportType = ReportType.sales,
-        measure = Annotation.empty(),
-        dimension = Annotation.empty(),
-        amounts = [];
+        measure = const Annotation.empty(),
+        dimension = const Annotation.empty(),
+        amounts = const [];
 }

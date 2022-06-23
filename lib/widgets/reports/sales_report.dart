@@ -28,11 +28,13 @@ class _ReportState extends State<Report> {
 
   @override
   Widget build(BuildContext context) {
+    final dimensionTitle = widget.data.dimension.shortTitle;
+    final measureTitle = widget.data.measure.shortTitle;
     return Column(
       children: [
         ReportTitle(
-            title1: widget.data.dimension.shortTitle,
-            title2: widget.data.measure.shortTitle),
+            title1: dimensionTitle.isEmpty ? 'Item' : dimensionTitle,
+            title2: measureTitle.isEmpty ? 'amount' : measureTitle),
         _buildDataList(),
       ],
     );

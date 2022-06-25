@@ -1,7 +1,8 @@
 import 'package:inventory_management/blocs/report/models/report_page_state.dart';
 import 'package:inventory_management/source.dart';
 import 'package:inventory_management/widgets/reports/data.dart';
-import '../../repository/reports/reports_repository.dart';
+import '../../repository/reports/purchases/purchases_repository.dart';
+import '../../repository/reports/sales/sales_repository.dart';
 import '../filter/query_filters_bloc.dart';
 import '../filter/query_options.dart';
 import 'models/report_data.dart';
@@ -11,16 +12,32 @@ class ReportPageBloc extends Cubit<ReportPageState> {
   ReportPageBloc(this.queryFiltersBloc)
       : super(const ReportPageState.initial());
 
-  final _repository = ReportsRepository();
+  final _salesRepository = SalesRepository();
+  final _purchasesRepository = PurchasesRepository();
 
   void init(
       GroupBy groupBy, SortDirection sortDirection, ReportType type) async {
     emit(state.copyWith(isLoading: true, error: null));
 
-    if (type == ReportType.sales) {
+    // random amounts for categories with no apis impl.
+    final amounts = Utils.getRandomAmounts();
+
+    if (type.hasFilters) {
       final query = queryFiltersBloc.getQuery();
       try {
-        final reportData = await _repository.getSalesReportData(groupBy, query);
+        late final ReportData reportData;
+        if (type.isSales) {
+          reportData =
+              await _salesRepository.getSalesReportData(groupBy, query);
+        }
+        if (type.isPurchases) {
+          reportData =
+              await _purchasesRepository.getPurchasesReportData(groupBy, query);
+        }
+        if (type.isExpenses) {
+          reportData = ReportData.withoutAnnotations(
+              reportType: type, items: expenseCategories, amounts: amounts);
+        }
         emit(state.copyWith(data: reportData, isLoading: false));
       } catch (error) {
         emit(state.copyWith(isLoading: false, error: '$error'));
@@ -46,10 +63,10 @@ class ReportPageBloc extends Cubit<ReportPageState> {
         items = years;
         break;
       case GroupBy.category:
-        items = type.isExpenses ? expenseCategories : productCategories;
+        items = productCategories;
         break;
     }
-    final amounts = Utils.getRandomAmounts();
+
     if (sortDirection == SortDirection.ascending) {
       amounts.sort((a, b) => a.compareTo(b));
     } else {

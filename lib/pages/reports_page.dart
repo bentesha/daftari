@@ -141,8 +141,8 @@ class _ReportsPageState extends State<ReportsPage> {
   _showFilters() async {
     final filters = BlocProvider.of<QueryFiltersBloc>(context);
     final hasAddedFilters = await SalesFilterDialog.navigateTo(context);
-    //null means page is popped by the cancel button on the
-    //right top side of the app-bar
+    // null means page is popped by the cancel button on the
+    // right top side of the app-bar
     if (hasAddedFilters != null && hasAddedFilters) {
       _refresh(filters);
     }

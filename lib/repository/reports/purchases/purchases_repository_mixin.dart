@@ -1,9 +1,10 @@
 import 'package:intl/intl.dart';
 import 'package:inventory_management/source.dart';
-import '../../blocs/filter/query_options.dart';
-import '../../blocs/report/models/annotation.dart';
 
-class ReportsRepositoryMixin {
+import '../../../blocs/filter/query_options.dart';
+import '../../../blocs/report/models/annotation.dart';
+
+class PurchasesRepositoryMixin {
   List<String> getItems(GroupBy groupBy, List<Map<String, dynamic>> data) {
     if (groupBy == GroupBy.product) {
       return data.map((e) => (e['Product.name']) as String).toList();
@@ -13,27 +14,27 @@ class ReportsRepositoryMixin {
     }
     if (groupBy == GroupBy.day) {
       return data.map((e) {
-        final date = e['SalesDocument.date.day'] as String;
+        final date = e['PurchasesDocument.date.day'] as String;
         return FormatUtils.formatWithCustomFormatter(
             date, DateFormat('yyyy-MM-dd'));
       }).toList();
     }
     if (groupBy == GroupBy.month) {
       return data.map((e) {
-        final date = e['SalesDocument.date.month'] as String;
+        final date = e['PurchasesDocument.date.month'] as String;
         return FormatUtils.formatWithCustomFormatter(
             date, DateFormat('MMMM, yyyy'));
       }).toList();
     }
     if (groupBy == GroupBy.quarter) {
       return data.map((e) {
-        final date = e['SalesDocument.date.quarter'] as String;
+        final date = e['PurchasesDocument.date.quarter'] as String;
         return FormatUtils.formatToQuarters(date);
       }).toList();
     }
     if (groupBy == GroupBy.year) {
       return data.map((e) {
-        final date = e['SalesDocument.date.year'] as String;
+        final date = e['PurchasesDocument.date.year'] as String;
         return FormatUtils.formatWithCustomFormatter(date, DateFormat('yyyy'));
       }).toList();
     }
@@ -50,16 +51,16 @@ class ReportsRepositoryMixin {
         dimensionKey = 'Product.name';
         break;
       case GroupBy.day:
-        dimensionKey = 'SalesDocument.date.day';
+        dimensionKey = 'PurchasesDocument.date.day';
         break;
       case GroupBy.month:
-        dimensionKey = 'SalesDocument.date.month';
+        dimensionKey = 'PurchasesDocument.date.month';
         break;
       case GroupBy.quarter:
-        dimensionKey = 'SalesDocument.date.quarter';
+        dimensionKey = 'PurchasesDocument.date.quarter';
         break;
       case GroupBy.year:
-        dimensionKey = 'SalesDocument.date.year';
+        dimensionKey = 'PurchasesDocument.date.year';
         break;
       default:
         throw 'Unknown groupBy';

@@ -127,13 +127,4 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
           ));
     });
   }
-
-  String _getDimensionSortDir() {
-    final filtersBloc = BlocProvider.of<QueryFiltersBloc>(context);
-    final groupBy = (filtersBloc['groupBy'] as GroupByFilter).value;
-    if (groupBy.isTimeDimension) return 'Sort by date';
-    if (groupBy == GroupBy.category) return 'Sort by category name';
-    if (groupBy == GroupBy.product) return 'Sort by product name';
-    throw 'Unknown groupBy';
-  }
 }

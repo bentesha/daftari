@@ -9,6 +9,8 @@ extension SortDirectionExtension on SortDirection {
   }
 }
 
+enum SortBy { dimension, metric }
+
 enum GroupBy { day, month, quarter, year, category, product }
 
 extension GroupByExtension on GroupBy {
@@ -21,6 +23,7 @@ extension GroupByExtension on GroupBy {
 }
 
 typedef SortDirFilter = QueryFilter<SortDirection>;
+typedef SortByFilter = QueryFilter<SortBy>;
 typedef GroupByFilter = QueryFilter<GroupBy>;
 typedef CategoryFilter = QueryFilter<Category>;
 typedef ProductFilter = QueryFilter<Product>;
@@ -37,6 +40,9 @@ class QueryFilter<T> {
       case SortDirection:
         final sortDirection = (value as SortDirection).queryName;
         return 'sortDir=$sortDirection';
+      case SortBy:
+        final sortBy = (value as SortBy).name;
+        return 'sortBy=$sortBy';
       case GroupBy:
         final groupBy = (value as GroupBy).name;
         return 'groupBy=$groupBy';

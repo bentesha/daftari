@@ -4,7 +4,8 @@ import 'query_options.dart';
 class QueryFiltersBloc extends Cubit<List<QueryFilter>> {
   static const initialState = [
     QueryFilter<GroupBy>('groupBy', GroupBy.product),
-    QueryFilter<SortDirection>('sortDirection', SortDirection.descending)
+    QueryFilter<SortDirection>('sortDirection', SortDirection.descending),
+    QueryFilter<SortBy>('sortBy', SortBy.dimension)
   ];
   QueryFiltersBloc() : super(initialState);
 

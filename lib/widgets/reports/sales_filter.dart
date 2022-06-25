@@ -71,6 +71,16 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                   onSelected: (value) =>
                       options.addFilter<GroupBy>('groupBy', value)),
               const FormCellDivider(subDivider: true),
+              ChoiceChipFormCell<SortBy>(
+                  label: 'SORT BY',
+                  value: (options['sortBy'] as SortByFilter).value,
+                  options: const [
+                    OptionItem(label: 'Dimension', value: SortBy.dimension),
+                    OptionItem(label: 'Metric', value: SortBy.metric)
+                  ],
+                  onSelected: (value) =>
+                      options.addFilter<SortBy>('sortBy', value)),
+              const FormCellDivider(subDivider: true),
               ChoiceChipFormCell<SortDirection>(
                   label: 'SORT DIRECTION',
                   value: (options['sortDirection'] as SortDirFilter).value,
@@ -97,7 +107,8 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                   clearable: true,
                   onPressed: () async {
                     final category = await ItemsSearchPage.navigateTo<Category>(
-                        context,categoryType: CategoryTypes.products);
+                        context,
+                        categoryType: CategoryTypes.products);
                     options.addFilter<Category>('category', category);
                   },
                   onClear: () => options.removeFilter('category')),
@@ -115,5 +126,14 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
             ],
           ));
     });
+  }
+
+  String _getDimensionSortDir() {
+    final filtersBloc = BlocProvider.of<QueryFiltersBloc>(context);
+    final groupBy = (filtersBloc['groupBy'] as GroupByFilter).value;
+    if (groupBy.isTimeDimension) return 'Sort by date';
+    if (groupBy == GroupBy.category) return 'Sort by category name';
+    if (groupBy == GroupBy.product) return 'Sort by product name';
+    throw 'Unknown groupBy';
   }
 }

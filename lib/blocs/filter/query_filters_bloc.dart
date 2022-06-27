@@ -56,3 +56,4 @@ class QueryFiltersBloc extends Cubit<List<QueryFilter>> {
     return query;
   }
 }
+ 

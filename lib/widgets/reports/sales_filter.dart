@@ -74,9 +74,9 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
               ChoiceChipFormCell<SortBy>(
                   label: 'SORT BY',
                   value: (options['sortBy'] as SortByFilter).value,
-                  options: const [
-                    OptionItem(label: 'Dimension', value: SortBy.dimension),
-                    OptionItem(label: 'Metric', value: SortBy.metric)
+                  options: [
+                    OptionItem(label: _getDimension(), value: SortBy.dimension),
+                    const OptionItem(label: "Revenue", value: SortBy.metric)
                   ],
                   onSelected: (value) =>
                       options.addFilter<SortBy>('sortBy', value)),
@@ -126,5 +126,21 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
             ],
           ));
     });
+  }
+
+  String _getDimension() {
+    final filtersBloc = BlocProvider.of<QueryFiltersBloc>(context);
+    final groupBy = (filtersBloc['groupBy'] as GroupByFilter).value;
+    switch (groupBy) {
+      case GroupBy.category:
+        return 'Category';
+      case GroupBy.product:
+        return 'Product';
+      case GroupBy.day:
+      case GroupBy.month:
+      case GroupBy.quarter:
+      case GroupBy.year:
+        return 'Date';
+    }
   }
 }

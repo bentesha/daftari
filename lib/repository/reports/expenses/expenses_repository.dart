@@ -1,10 +1,9 @@
 import 'package:inventory_management/blocs/report/models/annotation.dart';
 import 'package:inventory_management/blocs/report/models/report_data.dart';
-import 'package:inventory_management/repository/reports/recent_sales.dart';
 import 'package:inventory_management/source.dart';
 import 'package:inventory_management/utils/http_utils.dart' as http;
 import '../../../blocs/filter/query_options.dart';
-import '../purchases/purchases_repository_mixin.dart';
+import 'expenses_repository_mixin.dart';
 
 class ExpensesRepository with ExpensesRepositoryMixin {
   Future<ReportData> getExpensesReportData(GroupBy groupBy, String query) async {

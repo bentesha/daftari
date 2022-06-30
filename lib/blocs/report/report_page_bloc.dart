@@ -14,6 +14,7 @@ class ReportPageBloc extends Cubit<ReportPageState> {
 
   final _salesRepository = SalesRepository();
   final _purchasesRepository = PurchasesRepository();
+  final _expensesRepository = ExpensesRepository();
 
   void init(
       GroupBy groupBy, SortDirection sortDirection, ReportType type) async {
@@ -35,8 +36,8 @@ class ReportPageBloc extends Cubit<ReportPageState> {
               await _purchasesRepository.getPurchasesReportData(groupBy, query);
         }
         if (type.isExpenses) {
-          reportData = ReportData.withoutAnnotations(
-              reportType: type, items: expenseCategories, amounts: amounts);
+               reportData =
+              await _expensesRepository.getExpensesReportData(groupBy, query);
         }
         emit(state.copyWith(data: reportData, isLoading: false));
       } catch (error) {

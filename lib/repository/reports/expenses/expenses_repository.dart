@@ -6,20 +6,20 @@ import 'package:inventory_management/utils/http_utils.dart' as http;
 import '../../../blocs/filter/query_options.dart';
 import '../purchases/purchases_repository_mixin.dart';
 
-class PurchasesRepository with PurchasesRepositoryMixin {
-  Future<ReportData> getPurchasesReportData(GroupBy groupBy, String query) async {
+class ExpensesRepository with ExpensesRepositoryMixin {
+  Future<ReportData> getExpensesReportData(GroupBy groupBy, String query) async {
     try {
       log(query);
-      final url = root + 'report/purchases?$query';
+      final url = root + 'report/expenses?$query';
       final result = await http.get(url);
       final data = List<Map<String, dynamic>>.from(result['data']);
 
       final items = getItems(groupBy, data);
       final amounts = data
-          .map((e) => (e['PurchasesDetails.total'] as num).toDouble())
+          .map((e) => (e['ExpensesDetails.total'] as num).toDouble())
           .toList();
       final measureMap = Map<String, dynamic>.from(
-          result['annotations']['measures']['PurchasesDetails.total']);
+          result['annotations']['measures']['ExpensesDetails.total']);
       final measure = Annotation.fromMap(measureMap);
       final dimension = getDimension(
           groupBy,
@@ -28,7 +28,7 @@ class PurchasesRepository with PurchasesRepositoryMixin {
               : result['annotations']['dimensions']);
 
       return ReportData(
-          reportType: ReportType.purchases,
+          reportType: ReportType.expenses,
           items: items,
           amounts: amounts,
           measure: measure,

@@ -71,13 +71,18 @@ class _ReportsPageState extends State<ReportsPage> {
           }
 
           final type = state.data.reportType;
+          final sortBy = (BlocProvider.of<QueryFiltersBloc>(context)['sortBy']
+                  as SortByFilter)
+              .value;
           return Scaffold(
               appBar: _buildAppBar(type),
-              body: type.hasFilters || type.isPriceList
-                  ? Report(data: state.data)
-                  : type.isProfitLoss
-                      ? const ProfitLossReport()
-                      : Container());
+              body: type.isRemainingStock && sortBy == SortBy.category
+                  ? RemainingStockReport(state.groupedReportData!)
+                  : type.hasFilters || type.isPriceList
+                      ? Report(data: state.data)
+                      : type.isProfitLoss
+                          ? const ProfitLossReport()
+                          : Container());
         });
   }
 

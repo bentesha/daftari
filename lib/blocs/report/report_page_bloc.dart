@@ -1,11 +1,12 @@
+import 'package:inventory_management/blocs/report/models/grouped_report_data.dart';
 import 'package:inventory_management/blocs/report/models/report_page_state.dart';
 import 'package:inventory_management/source.dart';
 import 'package:inventory_management/widgets/reports/data.dart';
 import '../../repository/reports/expenses/expenses_repository.dart';
-import '../../repository/reports/inventory/stock_repository.dart';
 import '../../repository/reports/price_list_repository.dart';
 import '../../repository/reports/purchases/purchases_repository.dart';
 import '../../repository/reports/sales/sales_repository.dart';
+import '../../repository/reports/stocks/stock_repository.dart';
 import '../filter/query_filters_bloc.dart';
 import '../filter/query_options.dart';
 import 'models/report_data.dart';
@@ -26,7 +27,9 @@ class ReportPageBloc extends Cubit<ReportPageState> {
     emit(state.copyWith(isLoading: true, error: null));
 
     try {
-      late final ReportData reportData;
+       ReportData? reportData;
+      GroupedReportData? groupedReportData;
+
       if (type.isPriceList) {
         reportData = await _priceListRepository.getPriceList();
         emit(state.copyWith(data: reportData, isLoading: false));
@@ -49,10 +52,20 @@ class ReportPageBloc extends Cubit<ReportPageState> {
               await _expensesRepository.getExpensesReportData(groupBy!, query);
         }
         if (type.isRemainingStock) {
-          reportData = await _stocksRepository.getStocksStatus(query);
+          final currentSortBy =
+              (queryFiltersBloc['sortBy'] as SortByFilter).value;
+          if (currentSortBy == SortBy.category) {
+            groupedReportData =
+                await _stocksRepository.getGroupedStocksStatus(query);
+          } else {
+            reportData = await _stocksRepository.getStocksStatus(query);
+          }
         }
 
-        emit(state.copyWith(data: reportData, isLoading: false));
+        emit(state.copyWith(
+            data: reportData,
+            groupedData: groupedReportData,
+            isLoading: false));
         return;
       }
 

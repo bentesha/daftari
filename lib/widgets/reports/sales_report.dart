@@ -30,6 +30,14 @@ class _ReportState extends State<Report> {
   Widget build(BuildContext context) {
     final dimensionTitle = widget.data.dimension.shortTitle;
     final measureTitle = widget.data.measure.shortTitle;
+
+    if (widget.data.items.isEmpty) {
+      return const Center(
+          child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Text('No Data'),
+      ));
+    }
     return Column(
       children: [
         ReportTitle(

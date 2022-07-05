@@ -9,7 +9,7 @@ class ReportTile extends StatelessWidget {
       : super(key: key);
 
   final String name;
-  final double value;
+  final num value;
   final Color tileColor;
 
   @override

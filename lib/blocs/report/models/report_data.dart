@@ -4,7 +4,7 @@ import 'annotation.dart';
 class ReportData {
   final ReportType reportType;
   final List<String> items;
-  final List<double> amounts;
+  final List<num> amounts;
   final Annotation measure, dimension;
   const ReportData(
       {required this.reportType,

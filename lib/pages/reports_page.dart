@@ -73,15 +73,11 @@ class _ReportsPageState extends State<ReportsPage> {
           final type = state.data.reportType;
           return Scaffold(
               appBar: _buildAppBar(type),
-              body: type.isSales || type.isPurchases || type.isExpenses
+              body: type.hasFilters || type.isPriceList
                   ? Report(data: state.data)
-                  : type.isPriceList
-                      ? const PriceList()
-                      : type.isRemainingStock
-                          ? const RemainingStockReport()
-                          : type.isProfitLoss
-                              ? const ProfitLossReport()
-                              : Container());
+                  : type.isProfitLoss
+                      ? const ProfitLossReport()
+                      : Container());
         });
   }
 
@@ -108,7 +104,7 @@ class _ReportsPageState extends State<ReportsPage> {
       actions: [
         if (type.hasFilters)
           AppIconButton(
-              onPressed: _showFilters,
+              onPressed: () => _showFilters(type),
               icon: EvaIcons.swapOutline,
               iconThemeData: IconThemeData(size: 20.dw),
               margin: EdgeInsets.only(right: 19.dw)),
@@ -124,6 +120,7 @@ class _ReportsPageState extends State<ReportsPage> {
           return TypeSelectorDialog<ReportType>(
               onSelected: (selected) {
                 reportType = selected;
+                filters.refresh(selected);
                 _refresh(filters);
               },
               currentType: reportType,
@@ -132,15 +129,16 @@ class _ReportsPageState extends State<ReportsPage> {
   }
 
   _init(QueryFiltersBloc filters) {
-    final groupBy = (filters['groupBy'] as QueryFilter<GroupBy>).value;
+    final groupBy = (filters['groupBy'] as QueryFilter<GroupBy?>?)?.value;
     final sortDir =
         (filters['sortDirection'] as QueryFilter<SortDirection>).value;
-    bloc.init(groupBy, sortDir, reportType);
+    bloc.init(sortDir, reportType, groupBy);
   }
 
-  _showFilters() async {
+  _showFilters(ReportType reportType) async {
     final filters = BlocProvider.of<QueryFiltersBloc>(context);
-    final hasAddedFilters = await SalesFilterDialog.navigateTo(context);
+    final hasAddedFilters =
+        await SalesFilterDialog.navigateTo(context, reportType);
     // null means page is popped by the cancel button on the
     // right top side of the app-bar
     if (hasAddedFilters != null && hasAddedFilters) {

@@ -8,12 +8,13 @@ import 'package:inventory_management/widgets/form_cell_divider.dart';
 import 'package:inventory_management/widgets/form_cell_item_picker.dart';
 
 class SalesFilterDialog extends StatefulWidget {
-  const SalesFilterDialog({Key? key}) : super(key: key);
+  final ReportType reportType;
+  const SalesFilterDialog(this.reportType, {Key? key}) : super(key: key);
 
   ///returns true if the filters were edited.
-  static Future<bool?> navigateTo(BuildContext context) {
-    return Navigator.of(context).push(MaterialPageRoute<bool>(
-        builder: (context) => const SalesFilterDialog()));
+  static Future<bool?> navigateTo(BuildContext context, ReportType type) {
+    return Navigator.of(context).push(
+        MaterialPageRoute<bool>(builder: (context) => SalesFilterDialog(type)));
   }
 
   @override
@@ -57,29 +58,46 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
               ]),
           body: ListView(
             children: [
-              ChoiceChipFormCell<GroupBy>(
-                  label: 'GROUP BY',
-                  value: (options['groupBy'] as GroupByFilter).value,
-                  options: const [
-                    OptionItem(value: GroupBy.day, label: 'Day'),
-                    OptionItem(value: GroupBy.month, label: 'Month'),
-                    OptionItem(value: GroupBy.quarter, label: 'Quarter'),
-                    OptionItem(value: GroupBy.year, label: 'Year'),
-                    OptionItem(value: GroupBy.product, label: 'Product'),
-                    OptionItem(value: GroupBy.category, label: 'Category'),
-                  ],
-                  onSelected: (value) =>
-                      options.addFilter<GroupBy>('groupBy', value)),
+              if (widget.reportType != ReportType.remainingStock)
+                ChoiceChipFormCell<GroupBy>(
+                    label: 'GROUP BY',
+                    value: (options['groupBy'] as GroupByFilter).value,
+                    options: [
+                      const OptionItem(value: GroupBy.day, label: 'Day'),
+                      const OptionItem(value: GroupBy.month, label: 'Month'),
+                      const OptionItem(
+                          value: GroupBy.quarter, label: 'Quarter'),
+                      const OptionItem(value: GroupBy.year, label: 'Year'),
+                      if (widget.reportType != ReportType.expenses)
+                        const OptionItem(
+                            value: GroupBy.product, label: 'Product'),
+                      const OptionItem(
+                          value: GroupBy.category, label: 'Category'),
+                    ],
+                    onSelected: (value) =>
+                        options.addFilter<GroupBy>('groupBy', value)),
               const FormCellDivider(subDivider: true),
-              ChoiceChipFormCell<SortBy>(
-                  label: 'SORT BY',
-                  value: (options['sortBy'] as SortByFilter).value,
-                  options: [
-                    OptionItem(label: _getDimension(), value: SortBy.dimension),
-                    const OptionItem(label: "Revenue", value: SortBy.metric)
-                  ],
-                  onSelected: (value) =>
-                      options.addFilter<SortBy>('sortBy', value)),
+              if (widget.reportType == ReportType.remainingStock)
+                ChoiceChipFormCell<SortBy>(
+                    label: 'SORT BY',
+                    value: (options['sortBy'] as SortByFilter).value,
+                    options: const [
+                      OptionItem(label: 'Product', value: SortBy.product),
+                      OptionItem(label: "Category", value: SortBy.category)
+                    ],
+                    onSelected: (value) =>
+                        options.addFilter<SortBy>('sortBy', value)),
+              if (widget.reportType != ReportType.remainingStock)
+                ChoiceChipFormCell<SortBy>(
+                    label: 'SORT BY',
+                    value: (options['sortBy'] as SortByFilter).value,
+                    options: [
+                      OptionItem(
+                          label: _getDimension(), value: SortBy.dimension),
+                      const OptionItem(label: "Revenue", value: SortBy.metric)
+                    ],
+                    onSelected: (value) =>
+                        options.addFilter<SortBy>('sortBy', value)),
               const FormCellDivider(subDivider: true),
               ChoiceChipFormCell<SortDirection>(
                   label: 'SORT DIRECTION',
@@ -113,16 +131,18 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                   },
                   onClear: () => options.removeFilter('category')),
               const FormCellDivider(subDivider: true),
-              FormCellItemPicker(
-                  label: 'PRODUCT',
-                  valueText: (options['product'] as ProductFilter?)?.value.name,
-                  clearable: true,
-                  onPressed: () async {
-                    final product =
-                        await ItemsSearchPage.navigateTo<Product>(context);
-                    options.addFilter<Product>('product', product);
-                  },
-                  onClear: () => options.removeFilter('product')),
+              if (widget.reportType != ReportType.expenses)
+                FormCellItemPicker(
+                    label: 'PRODUCT',
+                    valueText:
+                        (options['product'] as ProductFilter?)?.value.name,
+                    clearable: true,
+                    onPressed: () async {
+                      final product =
+                          await ItemsSearchPage.navigateTo<Product>(context);
+                      options.addFilter<Product>('product', product);
+                    },
+                    onClear: () => options.removeFilter('product')),
             ],
           ));
     });

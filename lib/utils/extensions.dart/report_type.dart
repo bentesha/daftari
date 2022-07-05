@@ -53,5 +53,5 @@ extension ReportTypeExtension on ReportType {
   bool get isRemainingStock => this == ReportType.remainingStock;
   bool get isProfitLoss => this == ReportType.profitLoss;
 
-  bool get hasFilters => isExpenses || isSales || isPurchases;
+  bool get hasFilters => isExpenses || isSales || isPurchases || isRemainingStock;
 }

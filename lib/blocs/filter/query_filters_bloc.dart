@@ -1,15 +1,30 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
+import '../../utils/extensions.dart/report_type.dart';
 import 'query_options.dart';
 
 class QueryFiltersBloc extends Cubit<List<QueryFilter>> {
-  static const initialState = [
-    QueryFilter<GroupBy>('groupBy', GroupBy.product),
-    QueryFilter<SortDirection>('sortDirection', SortDirection.descending),
-    QueryFilter<SortBy>('sortBy', SortBy.dimension)
-  ];
   QueryFiltersBloc() : super(initialState);
 
+  /// here to keep the bloc updated of the current [ReportType], so that it does not have
+  /// to refresh the filters if the report type has not been changed;
+  var _reportType = ReportType.sales;
+
   // cubit operations
+  /// called when the [ReportType] is changed to reconfigure default states.
+  refresh(ReportType type) {
+    log('passed type: $type');
+    if (_reportType == type) return;
+    _reportType = type;
+    if (type.isExpenses) {
+      emit(defaultExpensesState);
+    } else if (type.isRemainingStock) {
+      emit(defaultStocksState);
+    } else {
+      emit(initialState);
+    }
+  }
 
   addFilter<T>(String fieldName, T? value) {
     final filters = List<QueryFilter>.from(state);
@@ -55,5 +70,19 @@ class QueryFiltersBloc extends Cubit<List<QueryFilter>> {
     }
     return query;
   }
+
+  static const initialState = [
+    QueryFilter<GroupBy>('groupBy', GroupBy.product),
+    QueryFilter<SortDirection>('sortDirection', SortDirection.descending),
+    QueryFilter<SortBy>('sortBy', SortBy.dimension)
+  ];
+  static const defaultExpensesState = [
+    QueryFilter<GroupBy>('groupBy', GroupBy.category),
+    QueryFilter<SortDirection>('sortDirection', SortDirection.descending),
+    QueryFilter<SortBy>('sortBy', SortBy.dimension)
+  ];
+  static const defaultStocksState = [
+    QueryFilter<SortDirection>('sortDirection', SortDirection.descending),
+    QueryFilter<SortBy>('sortBy', SortBy.product)
+  ];
 }
- 

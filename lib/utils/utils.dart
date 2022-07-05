@@ -22,7 +22,7 @@ class Utils {
     return amounts;
   }
 
-  static String convertToMoneyFormat(double amount) {
+  static String convertToMoneyFormat(num amount) {
     final formatter = NumberFormat.currency(symbol: '');
     return formatter.format(amount);
   }

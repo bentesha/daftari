@@ -1,13 +1,13 @@
+import 'package:inventory_management/models/breakdown_data.dart';
 import 'package:inventory_management/source.dart';
 
 import 'bar_rod.dart';
-import 'data.dart';
 
 class CustomBarChart extends StatelessWidget {
   const CustomBarChart(this.itemData, {required this.valueColor, Key? key})
       : super(key: key);
 
-  final List<ItemData> itemData;
+  final List<BreakdownData> itemData;
   final Color valueColor;
 
   @override
@@ -18,10 +18,10 @@ class CustomBarChart extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           children: itemData
               .map((e) => BarRod(
-                  valueColor: /* const Color(0xff6E71D8)*/ valueColor,
+                  valueColor: valueColor,
                   lineColor: AppColors.onBackground2,
-                  value: e.doublePercent,
-                  title: e.item.name))
+                  value: e.percent,
+                  title: e.name))
               .toList()),
     );
   }

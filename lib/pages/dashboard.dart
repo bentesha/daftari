@@ -1,14 +1,30 @@
+import 'package:inventory_management/blocs/dashboard/dashboard_bloc.dart';
+import 'package:inventory_management/blocs/dashboard/dashboard_state.dart';
+
 import '../source.dart';
-import '../widgets/dashboard_widgets/expenses_card.dart';
 import '../widgets/dashboard_widgets/low_stock_products_card.dart';
 import '../widgets/dashboard_widgets/profit_loss_card.dart';
 import '../widgets/dashboard_widgets/quick_actions_card.dart';
 import '../widgets/dashboard_widgets/recent_sales_card.dart';
 import '../widgets/dashboard_widgets/revenue_card.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
-  static final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  late final DashBoardBloc bloc;
+
+  @override
+  void initState() {
+    bloc = DashBoardBloc();
+    bloc.getData();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +51,41 @@ class Dashboard extends StatelessWidget {
   }
 
   _buildCharts() {
-    return ListView(children: const [
-      QuickActionsCard(),
-      RecentSalesCard(),
-      ProfitLossCard(),
-      RevenueCard(),
-      ExpensesCard(),
-      LowStockProductsCard()
-    ]);
+    return BlocBuilder<DashBoardBloc, DashBoardState>(
+        bloc: bloc,
+        builder: (_, state) {
+          return state.isLoading
+              ? const CircularProgressIndicator()
+              : state.hasError
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(state.error!),
+                          const SizedBox(height: 20),
+                          AppTextButton(
+                              onPressed: bloc.getData, text: 'Try Again')
+                        ],
+                      ),
+                    )
+                  : ListView(children: [
+                      const QuickActionsCard(),
+                      const RecentSalesCard(),
+                      const ProfitLossCard(),
+                      BreakdownDataCard(
+                        state.revenueBreakdownData,
+                        title: 'Revenue',
+                        onViewBreakdownCallback: () =>
+                            push(const ReportsPage()),
+                      ),
+                      BreakdownDataCard(
+                        state.expensesBreakdownData,
+                        title: 'Expenses',
+                        onViewBreakdownCallback: () => push(
+                            const ReportsPage(reportType: ReportType.expenses)),
+                      ),
+                      const LowStockProductsCard()
+                    ]);
+        });
   }
 }

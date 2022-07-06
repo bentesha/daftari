@@ -9,6 +9,11 @@ class Utils {
     return formatter.format(date);
   }
 
+  static String convertDateToISOFormat(DateTime date) {
+    final formatter = DateFormat('yyyy-MM-dd');
+    return formatter.format(date);
+  }
+
   static String dateRangeToString(DateTimeRange range) {
     return '${dateToString(range.start)} - ${dateToString(range.end)}';
   }

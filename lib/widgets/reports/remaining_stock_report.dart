@@ -59,38 +59,3 @@ class RemainingStockReport extends StatelessWidget {
     );
   }
 }
-
-final categories = ['Grains & Breads', 'Water', 'Dairy & Eggs', 'Oil & Fat'];
-
-final stockItems = [
-  [
-    const Item('Spaghetti', 2),
-    const Item('Noodles', 4),
-    const Item('White Bread', 20),
-    const Item('Wheat Bread', 1),
-    const Item('All Purpose Floor', 34),
-    const Item('Rice', 12),
-  ],
-  [
-    const Item('Kilimanjaro', 34),
-    const Item('Uhai', 24),
-    const Item('Hill Water', 12),
-    const Item('Masafi', 500),
-  ],
-  [
-    const Item('Milk', 11),
-    const Item('Eggs', 12),
-    const Item('Cheese', 12),
-    const Item('Yogurt', 45),
-  ],
-  [
-    const Item('Cooking Oil', 12),
-    const Item('Butter', 15),
-  ],
-];
-
-class Item {
-  final String name;
-  final int amount;
-  const Item(this.name, this.amount);
-}

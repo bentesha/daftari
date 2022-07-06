@@ -10,6 +10,7 @@ import 'package:inventory_management/widgets/reports/sales_filter.dart';
 import 'package:inventory_management/widgets/reports/sales_report.dart';
 import 'package:inventory_management/widgets/type_selector_dialog.dart';
 import '../source.dart';
+import '../widgets/reports/grouped_data_report.dart';
 
 class ReportsPage extends StatefulWidget {
   const ReportsPage({Key? key, this.reportType = ReportType.sales})
@@ -30,6 +31,8 @@ class _ReportsPageState extends State<ReportsPage> {
     reportType = widget.reportType;
     final queryFiltersBloc =
         BlocProvider.of<QueryFiltersBloc>(context, listen: false);
+    // refreshing when coming from a different page
+    queryFiltersBloc.refresh(widget.reportType);
     bloc = ReportPageBloc(queryFiltersBloc);
     _init(queryFiltersBloc);
     super.initState();
@@ -74,10 +77,11 @@ class _ReportsPageState extends State<ReportsPage> {
           final sortBy = (BlocProvider.of<QueryFiltersBloc>(context)['sortBy']
                   as SortByFilter)
               .value;
+
           return Scaffold(
               appBar: _buildAppBar(type),
               body: type.isRemainingStock && sortBy == SortBy.category
-                  ? RemainingStockReport(state.groupedReportData!)
+                  ? GroupedDataReport(state.groupedReportData!)
                   : type.hasFilters || type.isPriceList
                       ? Report(data: state.data)
                       : type.isProfitLoss
@@ -125,6 +129,7 @@ class _ReportsPageState extends State<ReportsPage> {
           return TypeSelectorDialog<ReportType>(
               onSelected: (selected) {
                 reportType = selected;
+                // refreshing when coming report type is changed
                 filters.refresh(selected);
                 _refresh(filters);
               },
@@ -146,9 +151,7 @@ class _ReportsPageState extends State<ReportsPage> {
         await SalesFilterDialog.navigateTo(context, reportType);
     // null means page is popped by the cancel button on the
     // right top side of the app-bar
-    if (hasAddedFilters != null && hasAddedFilters) {
-      _refresh(filters);
-    }
+    if (hasAddedFilters != null && hasAddedFilters) _refresh(filters);
   }
 
   _refresh(QueryFiltersBloc filters) => _init(filters);

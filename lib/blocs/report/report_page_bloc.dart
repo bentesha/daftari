@@ -27,7 +27,7 @@ class ReportPageBloc extends Cubit<ReportPageState> {
     emit(state.copyWith(isLoading: true, error: null));
 
     try {
-       ReportData? reportData;
+      ReportData? reportData;
       GroupedReportData? groupedReportData;
 
       if (type.isPriceList) {

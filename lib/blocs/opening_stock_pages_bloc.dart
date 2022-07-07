@@ -48,7 +48,7 @@ class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState> {
     try {
       await openingStockItemsService.add(supp.getOpeningStockItem);
       emit(OpeningStockPagesState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -64,7 +64,7 @@ class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState> {
     try {
       await openingStockItemsService.edit(supp.getOpeningStockItem);
       emit(OpeningStockPagesState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -76,7 +76,7 @@ class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState> {
     try {
       await openingStockItemsService.delete(supp.openingStockItemId);
       emit(OpeningStockPagesState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -171,8 +171,8 @@ class OpeningStockPagesBloc extends Cubit<OpeningStockPagesState> {
     return isSuccessful;
   }
 
-  void _handleError(var error) {
-    final message = getErrorMessage(error);
-    emit(OpeningStockPagesState.failed(state.supplements, message: message));
+  void _handleError(ApiErrors error) {
+    emit(OpeningStockPagesState.failed(state.supplements,
+        message: error.message));
   }
 }

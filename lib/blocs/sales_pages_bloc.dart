@@ -74,7 +74,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     try {
       await salesService.addDocument(document);
       emit(SalesDocumentsPageState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -115,7 +115,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     try {
       await salesService.editDocument(document, fromQuickActions);
       emit(SalesDocumentsPageState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -126,7 +126,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     try {
       await salesService.deleteDocument(supp.document.form.id);
       emit(SalesDocumentsPageState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -353,8 +353,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
   void updateDocument(Document? document) =>
       _updateAttributes(document: document);
 
-  void _handleError(var error) {
-    final message = getErrorMessage(error);
-    emit(SalesDocumentsPageState.failed(state.supplements, message: message));
+  void _handleError(ApiErrors error) {
+    emit(SalesDocumentsPageState.failed(state.supplements, message: error.message));
   }
 }

@@ -72,7 +72,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
     try {
       await writeOffsService.addDocument(document);
       emit(WriteOffPagesState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -93,7 +93,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
     try {
       await writeOffsService.editDocument(document);
       emit(WriteOffPagesState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -104,7 +104,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
     try {
       await writeOffsService.deleteDocument(supp.document.form.id);
       emit(WriteOffPagesState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -304,8 +304,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
     return isSuccessful;
   }
 
-  void _handleError(var error) {
-    final message = getErrorMessage(error);
-    emit(WriteOffPagesState.failed(state.supplements, message: message));
+  void _handleError(ApiErrors error) {
+    emit(WriteOffPagesState.failed(state.supplements, message: error.message));
   }
 }

@@ -29,7 +29,4 @@ void _showSnackBarCallback(
         BuildContext context, String message, bool isError) =>
     ScaffoldMessenger.of(context).showSnackBar(AppSnackBar(message, isError));
 
-String getErrorMessage(var error) {
-  if (error is ApiErrors) return error.message;
-  return ApiErrors.unknown().message;
-}
+

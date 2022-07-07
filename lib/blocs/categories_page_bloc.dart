@@ -44,7 +44,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
     try {
       await categoriesService.delete(supp.category.id);
       emit(CategoryPagesState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -62,7 +62,7 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
       if (isSaving) await categoriesService.add(supp.category);
       if (!isSaving) await categoriesService.edit(supp.category);
       emit(CategoryPagesState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -152,15 +152,13 @@ class CategoryPageBloc extends Cubit<CategoryPagesState> {
       await productsService.init();
       isSuccessful = true;
     } on ApiErrors catch (e) {
-      final message = getErrorMessage(e);
       emit(CategoryPagesState.failed(state.supplements,
-          message: message, showOnPage: true));
+          message: e.message, showOnPage: true));
     }
     return isSuccessful;
   }
 
-  void _handleError(var error) {
-    final message = getErrorMessage(error);
-    emit(CategoryPagesState.failed(state.supplements, message: message));
+  void _handleError(ApiErrors error) {
+    emit(CategoryPagesState.failed(state.supplements, message: error.message));
   }
 }

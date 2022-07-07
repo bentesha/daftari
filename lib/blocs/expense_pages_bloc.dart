@@ -74,7 +74,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     try {
       await expensesService.addDocument(document);
       emit(ExpensePagesState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -114,7 +114,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     try {
       await expensesService.editDocument(document, fromQuickActions);
       emit(ExpensePagesState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -125,7 +125,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     try {
       await expensesService.deleteDocument(supp.document.form.id);
       emit(ExpensePagesState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -348,8 +348,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
   void updateDocument(Document? document) =>
       _updateAttributes(document: document);
 
-  void _handleError(var error) {
-    final message = getErrorMessage(error);
-    emit(ExpensePagesState.failed(state.supplements, message: message));
+  void _handleError(ApiErrors error) {
+    emit(ExpensePagesState.failed(state.supplements, message: error.message));
   }
 }

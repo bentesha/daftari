@@ -5,12 +5,12 @@ import 'package:inventory_management/blocs/report/models/report_data.dart';
 import 'package:inventory_management/repository/reports/stocks/stock_repository_mixin.dart';
 import 'package:inventory_management/utils/http_utils.dart' as http;
 import '../../../blocs/report/models/annotation.dart';
+import '../../../errors/error_handler_mixin.dart';
 import '../../../secret.dart';
 import '../../../utils/extensions.dart/report_type.dart';
-import '../../../utils/global_functions.dart';
 import 'stock_repository_mixin.dart';
 
-class StocksRepository with StocksRepositoryMixin {
+class StocksRepository with StocksRepositoryMixin, ErrorHandler  {
   Future<ReportData> getStocksStatus(String query) async {
     try {
       log(query);
@@ -38,7 +38,7 @@ class StocksRepository with StocksRepositoryMixin {
       );
     } catch (error) {
       log('$error');
-      final message = getErrorMessage(error);
+      final message = getError(error);
       throw message;
     }
   }
@@ -53,7 +53,6 @@ class StocksRepository with StocksRepositoryMixin {
       if (data.isEmpty) return const GroupedReportData.empty();
 
       final groupNames = data.map((e) => e['Category.name']).toSet().toList();
-      log('$groupNames');
       final groups = <Group>[];
       for (var groupName in groupNames) {
         final items = <String>[];
@@ -79,7 +78,7 @@ class StocksRepository with StocksRepositoryMixin {
       );
     } catch (error) {
       log('$error');
-      final message = getErrorMessage(error);
+      final message = getError(error);
       throw message;
     }
   }

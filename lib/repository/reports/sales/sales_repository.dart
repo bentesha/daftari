@@ -3,11 +3,12 @@ import 'package:inventory_management/blocs/report/models/report_data.dart';
 import 'package:inventory_management/source.dart';
 import 'package:inventory_management/utils/http_utils.dart' as http;
 import '../../../blocs/filter/query_options.dart';
+import '../../../errors/error_handler_mixin.dart';
 import '../../../models/breakdown_data.dart';
 import '../../../models/recent_sales.dart';
 import 'sales_repository_mixin.dart';
 
-class SalesRepository with SalesRepositoryMixin {
+class SalesRepository with SalesRepositoryMixin, ErrorHandler  {
   Future<List<RecentSale>> getRecentSales() async {
     const url = root + 'sales?eager=[details.product]';
 
@@ -20,7 +21,7 @@ class SalesRepository with SalesRepositoryMixin {
 
       for (Map<String, dynamic> document in salesDocuments) {
         if (recentSales.length == 4) break;
-        final details = List<Map<String, dynamic>>.from(document['sales']);
+        final details = List<Map<String, dynamic>>.from(document['details']);
         for (var sale in details) {
           recentSales.add(RecentSale.fromMap(sale));
         }
@@ -28,7 +29,7 @@ class SalesRepository with SalesRepositoryMixin {
       return recentSales;
     } catch (error) {
       log('$error');
-      final message = getErrorMessage(error);
+      final message = getError(error);
       throw message;
     }
   }
@@ -56,7 +57,7 @@ class SalesRepository with SalesRepositoryMixin {
       }).toList();
     } catch (error) {
       log('$error');
-      final message = getErrorMessage(error);
+      final message = getError(error);
       throw message;
     }
   }
@@ -87,7 +88,7 @@ class SalesRepository with SalesRepositoryMixin {
           measure: measure,
           dimension: dimension);
     } catch (error) {
-      final message = getErrorMessage(error);
+      final message = getError(error);
       throw message;
     }
   }

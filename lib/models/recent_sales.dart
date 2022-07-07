@@ -10,9 +10,10 @@ class RecentSale {
 
   factory RecentSale.fromMap(Map<String, dynamic> rawMap) {
     return RecentSale(
-        productName: rawMap['product']['name'],
-        total: rawMap['total'],
-        quantity: rawMap['quantity'],
-        unitPrice: rawMap['product']['unitPrice']);
+      productName: rawMap['product']['name'],
+      total: (rawMap['total'] as num).toDouble(),
+      quantity: (rawMap['quantity'] as num).toDouble(),
+      unitPrice: (rawMap['product']['unitPrice'] as num).toDouble(),
+    );
   }
 }

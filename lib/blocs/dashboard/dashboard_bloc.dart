@@ -13,7 +13,7 @@ class DashBoardBloc extends Cubit<DashBoardState> {
   final _productsRepository = ProductsRepository();
   final _expensesRepository = ExpensesRepository();
 
-  void getData() async {
+  Future<void> getData() async {
     emit(state.copyWith(isLoading: true));
     try {
       final products = await _productsRepository.getProductsByStockQuantity();

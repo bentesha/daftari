@@ -84,7 +84,7 @@ class ProductPagesBloc extends Cubit<ProductPageState> {
         await openingStockItemsService.add(openingStockItem);
       }
       emit(ProductPageState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -100,7 +100,7 @@ class ProductPagesBloc extends Cubit<ProductPageState> {
     try {
       await productsService.edit(supp.getProduct);
       emit(ProductPageState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -112,7 +112,7 @@ class ProductPagesBloc extends Cubit<ProductPageState> {
     try {
       await productsService.delete(supp.product.id);
       emit(ProductPageState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -195,8 +195,7 @@ class ProductPagesBloc extends Cubit<ProductPageState> {
     return isSuccessful;
   }
 
-  void _handleError(var error) {
-    final message = getErrorMessage(error);
-    emit(ProductPageState.failed(state.supplements, message: message));
+  void _handleError(ApiErrors error) {
+    emit(ProductPageState.failed(state.supplements, message: error.message));
   }
 }

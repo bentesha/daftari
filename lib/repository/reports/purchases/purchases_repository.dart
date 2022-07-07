@@ -1,11 +1,12 @@
 import 'package:inventory_management/blocs/report/models/annotation.dart';
 import 'package:inventory_management/blocs/report/models/report_data.dart';
+import 'package:inventory_management/errors/error_handler_mixin.dart';
 import 'package:inventory_management/source.dart';
 import 'package:inventory_management/utils/http_utils.dart' as http;
 import '../../../blocs/filter/query_options.dart';
 import '../purchases/purchases_repository_mixin.dart';
 
-class PurchasesRepository with PurchasesRepositoryMixin {
+class PurchasesRepository with PurchasesRepositoryMixin, ErrorHandler {
   Future<ReportData> getPurchasesReportData(
       GroupBy groupBy, String query) async {
     try {
@@ -37,7 +38,7 @@ class PurchasesRepository with PurchasesRepositoryMixin {
           dimension: dimension);
     } catch (error) {
       log('$error');
-      final message = getErrorMessage(error);
+      final message = getError(error);
       throw message;
     }
   }

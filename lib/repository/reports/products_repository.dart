@@ -1,11 +1,11 @@
 import 'dart:developer';
 
 import 'package:inventory_management/utils/http_utils.dart' as http;
+import '../../errors/error_handler_mixin.dart';
 import '../../models/product.dart';
 import '../../secret.dart';
-import '../../utils/global_functions.dart';
 
-class ProductsRepository {
+class ProductsRepository with ErrorHandler {
   /// Gets 5 products with the lowest stock quantity to show on the dashboard.
   Future<List<Product>> getProductsByStockQuantity() async {
     const url = root + 'product';
@@ -19,10 +19,11 @@ class ProductsRepository {
         if (products.length == 5) break;
         products.add(Product.fromJson(product));
       }
+      products.sort((a, b) => b.stockQuantity.compareTo(a.stockQuantity));
       return products;
     } catch (error) {
       log('$error');
-      final message = getErrorMessage(error);
+      final message = getError(error);
       throw message;
     }
   }

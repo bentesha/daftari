@@ -72,7 +72,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     try {
       await purchasesService.addDocument(document);
       emit(PurchasesPagesState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -93,7 +93,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     try {
       await purchasesService.editDocument(document);
       emit(PurchasesPagesState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -104,7 +104,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     try {
       await purchasesService.deleteDocument(supp.document.form.id);
       emit(PurchasesPagesState.success(supp));
-    } catch (e) {
+    } on ApiErrors catch (e) {
       _handleError(e);
     }
   }
@@ -306,8 +306,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     return isSuccessful;
   }
 
-  void _handleError(var error) {
-    final message = getErrorMessage(error);
-    emit(PurchasesPagesState.failed(state.supplements, message: message));
+  void _handleError(ApiErrors error) {
+    emit(PurchasesPagesState.failed(state.supplements, message: error.message));
   }
 }

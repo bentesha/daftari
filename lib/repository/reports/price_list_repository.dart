@@ -1,10 +1,11 @@
 import 'package:inventory_management/blocs/report/models/annotation.dart';
 import 'package:inventory_management/blocs/report/models/report_data.dart';
 
+import '../../errors/error_handler_mixin.dart';
 import '../../source.dart';
 import 'package:inventory_management/utils/http_utils.dart' as http;
 
-class PriceListReository {
+class PriceListReository with  ErrorHandler  {
   Future<ReportData> getPriceList() async {
     try {
       const url = root + 'product';
@@ -25,7 +26,7 @@ class PriceListReository {
           dimension: dimension);
     } catch (error) {
       log('$error');
-      final message = getErrorMessage(error);
+      final message = getError(error);
       throw message;
     }
   }

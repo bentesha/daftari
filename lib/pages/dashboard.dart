@@ -55,7 +55,7 @@ class _DashboardState extends State<Dashboard> {
         bloc: bloc,
         builder: (_, state) {
           return state.isLoading
-              ? const CircularProgressIndicator()
+              ? const Center(child: CircularProgressIndicator())
               : state.hasError
                   ? Center(
                       child: Column(
@@ -64,28 +64,37 @@ class _DashboardState extends State<Dashboard> {
                           Text(state.error!),
                           const SizedBox(height: 20),
                           AppTextButton(
-                              onPressed: bloc.getData, text: 'Try Again')
+                              backgroundColor: AppColors.primary,
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 20),
+                              height: 50,
+                              onPressed: bloc.getData,
+                              text: 'Try Again')
                         ],
                       ),
                     )
-                  : ListView(children: [
-                      const QuickActionsCard(),
-                      RecentSalesCard(state.recentSales),
-                      const ProfitLossCard(),
-                      BreakdownDataCard(
-                        state.revenueBreakdownData,
-                        title: 'Revenue',
-                        onViewBreakdownCallback: () =>
-                            push(const ReportsPage()),
-                      ),
-                      BreakdownDataCard(
-                        state.expensesBreakdownData,
-                        title: 'Expenses',
-                        onViewBreakdownCallback: () => push(
-                            const ReportsPage(reportType: ReportType.expenses)),
-                      ),
-                      LowStockProductsCard(state.products)
-                    ]);
+                  : RefreshIndicator(
+                      onRefresh: bloc.getData,
+                      color: AppColors.primary,
+                      child: ListView(children: [
+                        const QuickActionsCard(),
+                        RecentSalesCard(state.recentSales),
+                        const ProfitLossCard(),
+                        BreakdownDataCard(
+                          state.revenueBreakdownData,
+                          title: 'Revenue',
+                          onViewBreakdownCallback: () =>
+                              push(const ReportsPage()),
+                        ),
+                        BreakdownDataCard(
+                          state.expensesBreakdownData,
+                          title: 'Expenses',
+                          onViewBreakdownCallback: () => push(const ReportsPage(
+                              reportType: ReportType.expenses)),
+                        ),
+                        LowStockProductsCard(state.products)
+                      ]),
+                    );
         });
   }
 }

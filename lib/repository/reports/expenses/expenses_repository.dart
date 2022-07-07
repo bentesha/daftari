@@ -3,10 +3,11 @@ import 'package:inventory_management/blocs/report/models/report_data.dart';
 import 'package:inventory_management/source.dart';
 import 'package:inventory_management/utils/http_utils.dart' as http;
 import '../../../blocs/filter/query_options.dart';
+import '../../../errors/error_handler_mixin.dart';
 import '../../../models/breakdown_data.dart';
 import 'expenses_repository_mixin.dart';
 
-class ExpensesRepository with ExpensesRepositoryMixin {
+class ExpensesRepository with ExpensesRepositoryMixin, ErrorHandler  {
   Future<List<BreakdownData>> getExpensesBreakdown() async {
     final now = DateTime.now();
     final prevMonth = DateTime(now.year, now.month - 1, now.day);
@@ -28,7 +29,7 @@ class ExpensesRepository with ExpensesRepositoryMixin {
       }).toList();
     } catch (error) {
       log('$error');
-      final message = getErrorMessage(error);
+      final message = getError(error);
       throw message;
     }
   }
@@ -64,7 +65,7 @@ class ExpensesRepository with ExpensesRepositoryMixin {
           dimension: dimension);
     } catch (error) {
       log('$error');
-      final message = getErrorMessage(error);
+      final message = getError(error);
       throw message;
     }
   }

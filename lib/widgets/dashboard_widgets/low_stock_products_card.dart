@@ -1,8 +1,8 @@
 import 'package:inventory_management/source.dart';
-import 'package:inventory_management/utils/extensions.dart/report_type.dart';
 
 class LowStockProductsCard extends StatelessWidget {
-  const LowStockProductsCard({Key? key}) : super(key: key);
+  final List<Product> products;
+  const LowStockProductsCard(this.products, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +18,8 @@ class LowStockProductsCard extends StatelessWidget {
           AppText('Low Stock Products', size: 15.dw, weight: FontWeight.bold),
           AppDivider(margin: EdgeInsets.only(top: 5.dh, bottom: 10.dh)),
           Column(
-            children: [
-              _buildProductDetails('Hill Water', 5),
-              _buildProductDetails('Loft Breads', 3),
-              _buildProductDetails('Staplers', 12),
-              _buildProductDetails('Uhai Water Packs', 7)
-            ],
-          ),
+              children: List.generate(products.length,
+                  (index) => _buildProductDetails(products[index]))),
           AppDivider.withVerticalMargin(5.dh),
           AppTextButton(
               onPressed: () => push(
@@ -39,10 +34,10 @@ class LowStockProductsCard extends StatelessWidget {
     );
   }
 
-  _buildProductDetails(String product, int remaining) {
+  _buildProductDetails(Product product) {
     return ListTile(
-        title: AppText(product, size: 15.dw),
-        trailing: AppText('$remaining items',
+        title: AppText(product.name, size: 15.dw),
+        trailing: AppText('${product.stockQuantity} items',
             size: 14.dw,
             weight: FontWeight.bold,
             color: AppColors.onBackground2));

@@ -70,7 +70,7 @@ class _DashboardState extends State<Dashboard> {
                     )
                   : ListView(children: [
                       const QuickActionsCard(),
-                      const RecentSalesCard(),
+                      RecentSalesCard(state.recentSales),
                       const ProfitLossCard(),
                       BreakdownDataCard(
                         state.revenueBreakdownData,
@@ -84,7 +84,7 @@ class _DashboardState extends State<Dashboard> {
                         onViewBreakdownCallback: () => push(
                             const ReportsPage(reportType: ReportType.expenses)),
                       ),
-                      const LowStockProductsCard()
+                      LowStockProductsCard(state.products)
                     ]);
         });
   }

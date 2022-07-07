@@ -1,7 +1,10 @@
 import 'package:inventory_management/source.dart';
 
+import '../../models/recent_sales.dart';
+
 class RecentSalesCard extends StatelessWidget {
-  const RecentSalesCard({Key? key}) : super(key: key);
+  final List<RecentSale> recentSales;
+  const RecentSalesCard(this.recentSales, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +20,8 @@ class RecentSalesCard extends StatelessWidget {
           AppText('Recent Sales', size: 15.dw, weight: FontWeight.bold),
           AppDivider(margin: EdgeInsets.only(top: 5.dh, bottom: 10.dh)),
           Column(
-            children: [
-              _buildProductDetails('Hill Water', '9:30 AM', 3000),
-              _buildProductDetails('Loft Breads', '8:45 AM', 4500),
-              _buildProductDetails('Staplers', '7: 21 AM', 4800),
-              _buildProductDetails(
-                  'Uhai Water Packs', 'Yesterday, 11:49 PM', 21000)
-            ],
-          ),
+              children: List.generate(recentSales.length,
+                  (index) => _buildProductDetails(recentSales[index]))),
           AppDivider.withVerticalMargin(5.dh),
           AppTextButton(
             onPressed: () => push(const SalesDocumentsPage()),
@@ -39,11 +36,10 @@ class RecentSalesCard extends StatelessWidget {
     );
   }
 
-  _buildProductDetails(String product, String date, double price) {
-    final formatted = Utils.convertToMoneyFormat(price);
+  _buildProductDetails(RecentSale sale) {
+    final formatted = Utils.convertToMoneyFormat(sale.total);
     return ListTile(
-        title: AppText(product, size: 15.dw),
-        subtitle: AppText(date, size: 13.dw, color: AppColors.onBackground2),
+        title: AppText(sale.productName, size: 15.dw),
         trailing: AppText(formatted,
             size: 14.dw,
             weight: FontWeight.bold,

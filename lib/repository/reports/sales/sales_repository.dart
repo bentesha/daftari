@@ -4,9 +4,36 @@ import 'package:inventory_management/source.dart';
 import 'package:inventory_management/utils/http_utils.dart' as http;
 import '../../../blocs/filter/query_options.dart';
 import '../../../models/breakdown_data.dart';
+import '../../../models/recent_sales.dart';
 import 'sales_repository_mixin.dart';
 
 class SalesRepository with SalesRepositoryMixin {
+  Future<List<RecentSale>> getRecentSales() async {
+    const url = root + 'sales?eager=[details.product]';
+
+    try {
+      final result = await http.get(url);
+      var salesDocuments = List<Map<String, dynamic>>.from(result);
+      if (salesDocuments.isEmpty) return [];
+
+      final recentSales = <RecentSale>[];
+
+      for (Map<String, dynamic> document in salesDocuments) {
+        if (recentSales.length == 4) break;
+        final details = List<Map<String, dynamic>>.from(document['sales']);
+        for (var sale in details) {
+          recentSales.add(RecentSale.fromMap(sale));
+        }
+      }
+      return recentSales;
+    } catch (error) {
+      log('$error');
+      final message = getErrorMessage(error);
+      throw message;
+    }
+  }
+
+  /// Gets a list of information necessary for drawing a revenue chart.
   Future<List<BreakdownData>> getSalesBreakdown() async {
     final now = DateTime.now();
     final prevMonth = DateTime(now.year, now.month - 1, now.day);

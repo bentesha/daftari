@@ -2,7 +2,7 @@ import '../source.dart';
 
 class Product {
   final String id, name, unit, categoryId;
-  final double unitPrice;
+  final double unitPrice, stockQuantity, stockValue;
   final String? code;
 
   const Product(
@@ -10,6 +10,8 @@ class Product {
       this.name = '',
       this.unit = '',
       this.unitPrice = 0.0,
+      this.stockQuantity = 0.0,
+      this.stockValue = 0.0,
       this.categoryId = '',
       this.code});
 
@@ -20,6 +22,8 @@ class Product {
         name: json['name'],
         unit: json['unit'],
         unitPrice: (json['unitPrice'] as num).toDouble(),
+        stockQuantity: (json['stockQuantity'] as num).toDouble(),
+        stockValue: (json['stockValue'] as num).toDouble(),
         categoryId: json['categoryId'] ?? '',
         code: json['code'],
       );

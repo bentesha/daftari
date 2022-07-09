@@ -6,11 +6,16 @@ import 'package:inventory_management/repository/reports/stocks/stock_repository_
 import 'package:inventory_management/utils/http_utils.dart' as http;
 import '../../../blocs/report/models/annotation.dart';
 import '../../../errors/error_handler_mixin.dart';
+import '../../../models/product.dart';
 import '../../../secret.dart';
 import '../../../utils/extensions.dart/report_type.dart';
 import 'stock_repository_mixin.dart';
 
-class StocksRepository with StocksRepositoryMixin, ErrorHandler  {
+class StocksRepository with StocksRepositoryMixin, ErrorHandler {
+  Future<Product?> getInventoryMovementSummary() async {
+    return null;
+  }
+
   Future<ReportData> getStocksStatus(String query) async {
     try {
       log(query);

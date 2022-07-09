@@ -8,7 +8,7 @@ import '../../../models/breakdown_data.dart';
 import '../../../models/recent_sales.dart';
 import 'sales_repository_mixin.dart';
 
-class SalesRepository with SalesRepositoryMixin, ErrorHandler  {
+class SalesRepository with SalesRepositoryMixin, ErrorHandler {
   Future<List<RecentSale>> getRecentSales() async {
     const url = root + 'sales?eager=[details.product]';
 
@@ -20,9 +20,10 @@ class SalesRepository with SalesRepositoryMixin, ErrorHandler  {
       final recentSales = <RecentSale>[];
 
       for (Map<String, dynamic> document in salesDocuments) {
-        if (recentSales.length == 4) break;
+        if (recentSales.length == 5) break;
         final details = List<Map<String, dynamic>>.from(document['details']);
         for (var sale in details) {
+          if (recentSales.length == 5) break;
           recentSales.add(RecentSale.fromMap(sale));
         }
       }

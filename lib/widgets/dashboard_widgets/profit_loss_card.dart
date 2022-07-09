@@ -1,5 +1,4 @@
 import 'package:inventory_management/source.dart';
-import 'package:inventory_management/utils/extensions.dart/report_type.dart';
 
 class ProfitLossCard extends StatelessWidget {
   const ProfitLossCard({Key? key}) : super(key: key);

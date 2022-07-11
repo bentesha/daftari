@@ -42,6 +42,9 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
   Widget build(context) {
     return BlocBuilder<QueryFiltersBloc, List<QueryFilter>>(
         builder: (context, filters) {
+      final groupByFilter =
+          (context.watch<QueryFiltersBloc>()['groupBy'] as GroupByFilter?);
+      final hasGroupBy = groupByFilter != null;
       return Scaffold(
           appBar: AppBar(
               leading: IconButton(
@@ -54,14 +57,15 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                 TextButton(
                     onPressed: _handelApply,
                     child: AppText('APPLY',
-                        color: AppColors.onPrimary, size: 16.dw))
+                        color: AppColors.onPrimary, size: 16.dw)),
+                const SizedBox(width: 10)
               ]),
           body: ListView(
             children: [
               if (widget.reportType != ReportType.remainingStock)
-                ChoiceChipFormCell<GroupBy>(
+                ChoiceChipFormCell<GroupBy?>(
                     label: 'GROUP BY',
-                    value: (options['groupBy'] as GroupByFilter).value,
+                    value: (options['groupBy'] as GroupByFilter?)?.value,
                     options: [
                       const OptionItem(value: GroupBy.day, label: 'Day'),
                       const OptionItem(value: GroupBy.month, label: 'Month'),
@@ -76,8 +80,19 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                     ],
                     onSelected: (value) =>
                         options.addFilter<GroupBy>('groupBy', value)),
+              if (widget.reportType == ReportType.inventoryMovement &&
+                  hasGroupBy)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: TextButton(
+                        onPressed: () => options.removeFilter('groupBy'),
+                        child: const Text('Remove groupBy Filter')),
+                  ),
+                ),
               const FormCellDivider(subDivider: true),
-              if (widget.reportType == ReportType.remainingStock)
+              if (widget.reportType == ReportType.remainingStock && hasGroupBy)
                 ChoiceChipFormCell<SortBy>(
                     label: 'SORT BY',
                     value: (options['sortBy'] as SortByFilter).value,
@@ -87,29 +102,30 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                     ],
                     onSelected: (value) =>
                         options.addFilter<SortBy>('sortBy', value)),
-              if (widget.reportType != ReportType.remainingStock)
+              if (widget.reportType != ReportType.remainingStock && hasGroupBy)
                 ChoiceChipFormCell<SortBy>(
                     label: 'SORT BY',
                     value: (options['sortBy'] as SortByFilter).value,
                     options: [
                       OptionItem(
                           label: _getDimension(), value: SortBy.dimension),
-                      const OptionItem(label: "Revenue", value: SortBy.metric)
+                      OptionItem(label: getMetric(), value: SortBy.metric)
                     ],
                     onSelected: (value) =>
                         options.addFilter<SortBy>('sortBy', value)),
               const FormCellDivider(subDivider: true),
-              ChoiceChipFormCell<SortDirection>(
-                  label: 'SORT DIRECTION',
-                  value: (options['sortDirection'] as SortDirFilter).value,
-                  options: const [
-                    OptionItem(
-                        label: 'Ascending', value: SortDirection.ascending),
-                    OptionItem(
-                        label: 'Descending', value: SortDirection.descending)
-                  ],
-                  onSelected: (value) =>
-                      options.addFilter<SortDirection>('sortDirection', value)),
+              if (hasGroupBy)
+                ChoiceChipFormCell<SortDirection>(
+                    label: 'SORT DIRECTION',
+                    value: (options['sortDirection'] as SortDirFilter).value,
+                    options: const [
+                      OptionItem(
+                          label: 'Ascending', value: SortDirection.ascending),
+                      OptionItem(
+                          label: 'Descending', value: SortDirection.descending)
+                    ],
+                    onSelected: (value) => options.addFilter<SortDirection>(
+                        'sortDirection', value)),
               const FormCellDivider(),
               DateRangePickerFormCell(
                   label: 'DATE RANGE',
@@ -162,5 +178,9 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
       case GroupBy.year:
         return 'Date';
     }
+  }
+
+  String getMetric() {
+    return widget.reportType.isInventoryMovement ? "Total" : "Revenue";
   }
 }

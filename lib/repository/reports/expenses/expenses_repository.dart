@@ -58,7 +58,6 @@ class ExpensesRepository with ExpensesRepositoryMixin, ErrorHandler  {
               : result['annotations']['dimensions']);
 
       return ReportData(
-          reportType: ReportType.expenses,
           items: items,
           amounts: amounts,
           measure: measure,

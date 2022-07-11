@@ -1,4 +1,3 @@
-import 'package:inventory_management/blocs/stocks/inventory_movement_bloc.dart';
 import 'package:provider/single_child_widget.dart';
 
 import 'app.dart';
@@ -22,7 +21,6 @@ void main() async {
 
 final blocProviders = <BlocProvider>[
   BlocProvider<QueryFiltersBloc>(create: (_) => QueryFiltersBloc()),
-  BlocProvider<InventoryMovementBloc>(create: (_) => InventoryMovementBloc()),
 ];
 
 final serviceProviders = <SingleChildWidget>[

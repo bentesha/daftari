@@ -31,7 +31,6 @@ class PurchasesRepository with PurchasesRepositoryMixin, ErrorHandler {
               : result['annotations']['dimensions']);
 
       return ReportData(
-          reportType: ReportType.purchases,
           items: items,
           amounts: amounts,
           measure: measure,

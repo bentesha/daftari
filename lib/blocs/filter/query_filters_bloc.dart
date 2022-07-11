@@ -21,6 +21,8 @@ class QueryFiltersBloc extends Cubit<List<QueryFilter>> {
       emit(defaultExpensesState);
     } else if (type.isRemainingStock) {
       emit(defaultStocksState);
+    } else if (type.isInventoryMovement) {
+      emit(defaultInventoryMvtState);
     } else {
       emit(initialState);
     }
@@ -84,5 +86,9 @@ class QueryFiltersBloc extends Cubit<List<QueryFilter>> {
   static const defaultStocksState = [
     QueryFilter<SortDirection>('sortDirection', SortDirection.descending),
     QueryFilter<SortBy>('sortBy', SortBy.product)
+  ];
+  static const defaultInventoryMvtState = [
+    QueryFilter<SortDirection>('sortDirection', SortDirection.descending),
+    QueryFilter<SortBy>('sortBy', SortBy.metric)
   ];
 }

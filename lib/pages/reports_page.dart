@@ -3,7 +3,7 @@ import 'package:inventory_management/blocs/filter/query_filters_bloc.dart';
 import 'package:inventory_management/blocs/report/models/report_page_state.dart';
 import 'package:inventory_management/blocs/report/report_page_bloc.dart';
 import 'package:inventory_management/blocs/filter/query_options.dart';
-import 'package:inventory_management/pages/inventory_movement_page.dart';
+import 'package:inventory_management/widgets/reports/inventory_movement_report.dart';
 import 'package:inventory_management/widgets/reports/profit_loss_report.dart';
 import 'package:inventory_management/widgets/reports/sales_filter.dart';
 import 'package:inventory_management/widgets/reports/sales_report.dart';
@@ -33,7 +33,7 @@ class _ReportsPageState extends State<ReportsPage> {
     // refreshing when coming from a different page
     queryFiltersBloc.refresh(widget.reportType);
     bloc = ReportPageBloc(queryFiltersBloc);
-    _init(queryFiltersBloc);
+    bloc.init(reportType);
     super.initState();
   }
 
@@ -59,9 +59,7 @@ class _ReportsPageState extends State<ReportsPage> {
                       ),
                       const SizedBox(height: 10),
                       AppTextButton(
-                          onPressed: () {
-                            _init(BlocProvider.of<QueryFiltersBloc>(context));
-                          },
+                          onPressed: () => _refresh(state.type),
                           backgroundColor: AppColors.primary,
                           height: 50,
                           text: 'Retry')
@@ -72,22 +70,19 @@ class _ReportsPageState extends State<ReportsPage> {
             );
           }
 
-          final type = state.data.reportType;
-          final sortBy = (BlocProvider.of<QueryFiltersBloc>(context)['sortBy']
-                  as SortByFilter)
-              .value;
+          final type = state.type;
 
           return Scaffold(
               appBar: _buildAppBar(type),
-              body: type.isRemainingStock && sortBy == SortBy.category
+              body: state.hasGroupedReportData
                   ? GroupedDataReport(state.groupedReportData!)
-                  : type.hasFilters || type.isPriceList
-                      ? Report(data: state.data)
+                  : type.isInventoryMovement
+                      ? InventoryMovementReport(
+                          state.inventoryMovements, state.data,
+                          onTappedToSelect: () => _showFilters(type))
                       : type.isProfitLoss
                           ? const ProfitLossReport()
-                          : type.isInventoryMovement
-                              ? const InventoryMovementPage()
-                              : Container());
+                          : Report(data: state.data!));
         });
   }
 
@@ -132,18 +127,11 @@ class _ReportsPageState extends State<ReportsPage> {
                 reportType = selected;
                 // refreshing when coming report type is changed
                 filters.refresh(selected);
-                _refresh(filters);
+                _refresh(selected);
               },
               currentType: reportType,
               title: 'Reports');
         });
-  }
-
-  _init(QueryFiltersBloc filters) {
-    final groupBy = (filters['groupBy'] as QueryFilter<GroupBy?>?)?.value;
-    final sortDir =
-        (filters['sortDirection'] as QueryFilter<SortDirection>).value;
-    bloc.init(sortDir, reportType, groupBy);
   }
 
   _showFilters(ReportType reportType) async {
@@ -152,8 +140,8 @@ class _ReportsPageState extends State<ReportsPage> {
         await SalesFilterDialog.navigateTo(context, reportType);
     // null means page is popped by the cancel button on the
     // right top side of the app-bar
-    if (hasAddedFilters != null && hasAddedFilters) _refresh(filters);
+    if (hasAddedFilters != null && hasAddedFilters) _refresh(reportType);
   }
 
-  _refresh(QueryFiltersBloc filters) => _init(filters);
+  _refresh(ReportType reportType) => bloc.init(reportType);
 }

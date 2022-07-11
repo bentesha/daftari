@@ -19,7 +19,6 @@ class PriceListReository with  ErrorHandler  {
       const dimension = Annotation('Product', 'Product', 'string');
 
       return ReportData(
-          reportType: ReportType.priceList,
           items: items,
           amounts: amounts,
           measure: measure,

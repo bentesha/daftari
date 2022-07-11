@@ -1,5 +1,7 @@
+import 'package:dartz/dartz.dart';
 import 'package:inventory_management/blocs/report/models/grouped_report_data.dart';
 import 'package:inventory_management/blocs/report/models/report_page_state.dart';
+import 'package:inventory_management/models/inventory_movement.dart';
 import 'package:inventory_management/source.dart';
 import '../../repository/reports/expenses/expenses_repository.dart';
 import '../../repository/reports/price_list_repository.dart';
@@ -12,8 +14,7 @@ import 'models/report_data.dart';
 
 class ReportPageBloc extends Cubit<ReportPageState> {
   final QueryFiltersBloc queryFiltersBloc;
-  ReportPageBloc(this.queryFiltersBloc)
-      : super(const ReportPageState.initial());
+  ReportPageBloc(this.queryFiltersBloc) : super(const ReportPageState());
 
   final _salesRepository = SalesRepository();
   final _purchasesRepository = PurchasesRepository();
@@ -21,19 +22,29 @@ class ReportPageBloc extends Cubit<ReportPageState> {
   final _priceListRepository = PriceListReository();
   final _stocksRepository = StocksRepository();
 
-  void init(SortDirection sortDirection, ReportType type,
-      [GroupBy? groupBy]) async {
-    if (type.hasItsOwnImpl) {
+  void init(ReportType type) async {
+    final groupBy = (queryFiltersBloc['groupBy'] as GroupByFilter?)?.value;
+    if (type.isProfitLoss) {
       final reportData = ReportData.withoutAnnotations(
           reportType: type, amounts: [], items: []);
-      emit(state.copyWith(data: reportData));
+      emit(state.copyWith(data: reportData, type: type));
       return;
     }
-    emit(state.copyWith(isLoading: true, error: null));
+
+    if (type.isInventoryMovement) {
+      final product = (queryFiltersBloc['product'] as ProductFilter?)?.value;
+      if (product == null) {
+        emit(ReportPageState(type: type));
+        return;
+      }
+    }
+
+    emit(state.copyWith(isLoading: true, error: null, type: type));
 
     try {
       ReportData? reportData;
       GroupedReportData? groupedReportData;
+      List<InventoryMovement>? inventoryMovements;
 
       if (type.isPriceList) {
         reportData = await _priceListRepository.getPriceList();
@@ -66,19 +77,26 @@ class ReportPageBloc extends Cubit<ReportPageState> {
             reportData = await _stocksRepository.getStocksStatus(query);
           }
         }
+        if (type.isInventoryMovement) {
+          final result =
+              await _stocksRepository.getInventoryMovements(query, groupBy);
+          if (result.isLeft()) {
+            reportData = result.fold((data) => data, (r) => null);
+          } else {
+            inventoryMovements = result.fold((_) => null, (data) => data);
+          }
+        }
 
-        emit(state.copyWith(
+        emit(ReportPageState(
+            type: type,
             data: reportData,
-            groupedData: groupedReportData,
-            isLoading: false));
+            groupedReportData: groupedReportData,
+            inventoryMovements: inventoryMovements));
       }
     } catch (error) {
       emit(state.copyWith(isLoading: false, error: '$error'));
     }
   }
 
-  void refresh(
-      GroupBy groupBy, SortDirection sortDirection, ReportType report) {
-    init(sortDirection, report, groupBy);
-  }
+  void refresh(ReportType report) => init(report);
 }

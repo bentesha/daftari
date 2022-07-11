@@ -1,6 +1,5 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:inventory_management/blocs/stocks/inventory_movement_bloc.dart';
-import 'package:inventory_management/pages/inventory_movement_page.dart';
+import 'package:inventory_management/blocs/filter/query_filters_bloc.dart';
 
 import '../../source.dart';
 
@@ -35,8 +34,8 @@ class InventoryMovementCard extends StatelessWidget {
                         title: Text(products[index].name),
                         onTap: () {
                           context
-                              .read<InventoryMovementBloc>()
-                              .addProduct(products[index]);
+                              .read<QueryFiltersBloc>()
+                              .addFilter<Product>('product', products[index]);
                           push(const ReportsPage(
                               reportType: ReportType.inventoryMovement));
                         },
@@ -45,8 +44,10 @@ class InventoryMovementCard extends StatelessWidget {
             ),
           AppDivider.withVerticalMargin(5.dh),
           AppTextButton(
-              onPressed: () => push(
-                  const ReportsPage(reportType: ReportType.inventoryMovement)),
+              onPressed: () {
+                push(const ReportsPage(
+                    reportType: ReportType.inventoryMovement));
+              },
               text: 'View All',
               height: 40.dh,
               isFilled: false,

@@ -2,13 +2,11 @@ import '../../../utils/extensions.dart/report_type.dart';
 import 'annotation.dart';
 
 class ReportData {
-  final ReportType reportType;
   final List<String> items;
   final List<num> amounts;
   final Annotation measure, dimension;
   const ReportData(
-      {required this.reportType,
-      required this.items,
+      {required this.items,
       required this.amounts,
       required this.measure,
       required this.dimension});
@@ -18,7 +16,6 @@ class ReportData {
       required List<String> items,
       required List<double> amounts}) {
     return ReportData(
-        reportType: reportType,
         items: items,
         amounts: amounts,
         measure: const Annotation.empty(),
@@ -27,7 +24,6 @@ class ReportData {
 
   const ReportData.empty()
       : items = const [],
-        reportType = ReportType.sales,
         measure = const Annotation.empty(),
         dimension = const Annotation.empty(),
         amounts = const [];

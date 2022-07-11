@@ -15,8 +15,9 @@ import '../../../utils/extensions.dart/report_type.dart';
 import 'stock_repository_mixin.dart';
 
 class StocksRepository with StocksRepositoryMixin, ErrorHandler {
-  Future<Either<ReportData, List<InventoryMovement>>>
-      getInventoryMovementByProductID(String query, GroupBy groupBy) async {
+  Future<Either<ReportData, List<InventoryMovement>>> getInventoryMovements(
+      String query, GroupBy? groupBy) async {
+    log(query);
     try {
       final url = root + 'report/inventory-movement?$query';
       final result = await http.get(url);
@@ -24,7 +25,7 @@ class StocksRepository with StocksRepositoryMixin, ErrorHandler {
 
       if (data.isEmpty) return const Right([]);
 
-      if (groupBy == GroupBy.product) {
+      if (groupBy == null) {
         final inventoryMovements =
             data.map((e) => InventoryMovement.fromMap(e)).toList();
         return Right(inventoryMovements);
@@ -43,7 +44,6 @@ class StocksRepository with StocksRepositoryMixin, ErrorHandler {
                 : result['annotations']['dimensions']);
 
         final reportData = ReportData(
-          reportType: ReportType.inventoryMovement,
           items: items,
           amounts: amounts,
           measure: measure,
@@ -99,7 +99,6 @@ class StocksRepository with StocksRepositoryMixin, ErrorHandler {
           result['annotations']['dimensions']['Product.name']);
 
       return ReportData(
-        reportType: ReportType.remainingStock,
         items: items,
         amounts: amounts,
         measure: Annotation.fromMap(measureMap),

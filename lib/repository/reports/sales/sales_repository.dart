@@ -83,7 +83,6 @@ class SalesRepository with SalesRepositoryMixin, ErrorHandler {
               : result['annotations']['dimensions']);
 
       return ReportData(
-          reportType: ReportType.sales,
           items: items,
           amounts: amounts,
           measure: measure,

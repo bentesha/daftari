@@ -1,71 +1,47 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:inventory_management/blocs/stocks/inventory_movement_bloc.dart';
-import 'package:inventory_management/blocs/stocks/inventory_movement_state.dart';
+import 'package:inventory_management/blocs/filter/query_filters_bloc.dart';
 import 'package:inventory_management/source.dart';
+import 'package:inventory_management/widgets/reports/sales_report.dart';
 
-import '../models/inventory_movement.dart';
+import '../../blocs/filter/query_options.dart';
+import '../../blocs/report/models/report_data.dart';
+import '../../models/inventory_movement.dart';
 
-class InventoryMovementPage extends StatefulWidget {
-  final Product? product;
-  const InventoryMovementPage([this.product, Key? key]) : super(key: key);
+class InventoryMovementReport extends StatefulWidget {
+  final List<InventoryMovement>? inventoryMovements;
+  final ReportData? reportData;
+  final VoidCallback onTappedToSelect;
+  const InventoryMovementReport(this.inventoryMovements, this.reportData,
+      {required this.onTappedToSelect, Key? key})
+      : super(key: key);
 
   @override
-  State<InventoryMovementPage> createState() => _InventoryMovementPageState();
+  State<InventoryMovementReport> createState() => _InventoryMovementPageState();
 }
 
-class _InventoryMovementPageState extends State<InventoryMovementPage> {
-  late InventoryMovementBloc bloc;
-
-  @override
-  void initState() {
-    bloc = BlocProvider.of<InventoryMovementBloc>(context, listen: false);
-    super.initState();
-  }
-
+class _InventoryMovementPageState extends State<InventoryMovementReport> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         _buildHeader(),
-        Expanded(
-          child: BlocBuilder<InventoryMovementBloc, InventoryMovementState>(
-              builder: (_, state) {
-            return state.isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : state.hasError
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(state.error!, textAlign: TextAlign.center),
-                            const SizedBox(height: 20),
-                            AppTextButton(
-                                backgroundColor: AppColors.primary,
-                                height: 50,
-                                onPressed: bloc.getInventoryMovementByProduct,
-                                text: 'Try Again')
-                          ],
-                        ),
-                      )
-                    : state.hasNoData
-                        ? const Center(
-                            child: Text("No movements for this item"))
-                        : Column(
-                            children: [
-                              _buildTableHeader(),
-                              const AppDivider.zeroMargin(color: Colors.black),
-                              _buildTable(state.inventoryMovements),
-                            ],
-                          );
-          }),
-        )
+        if (widget.inventoryMovements != null)
+          Expanded(
+              child: Column(
+            children: [
+              _buildTableHeader(),
+              const AppDivider.zeroMargin(color: Colors.black),
+              _buildTable(widget.inventoryMovements!)
+            ],
+          )),
+        if (widget.reportData != null)
+          Expanded(child: Report(data: widget.reportData!))
       ],
     );
   }
 
   _buildHeader() {
-    final product = context.watch<InventoryMovementBloc>().state.product;
+    final product =
+        (context.watch<QueryFiltersBloc>()['product'] as ProductFilter?)?.value;
     return Container(
         height: 50,
         decoration: const BoxDecoration(
@@ -73,7 +49,7 @@ class _InventoryMovementPageState extends State<InventoryMovementPage> {
                 Border(bottom: BorderSide(width: .5, color: Colors.black54))),
         child: ListTile(
           title: product == null
-              ? const Text("Tap to select product")
+              ? const Text("Tap to select product.")
               : RichText(
                   text: TextSpan(
                       text: 'Product: ',
@@ -88,12 +64,7 @@ class _InventoryMovementPageState extends State<InventoryMovementPage> {
                           style: const TextStyle(fontWeight: FontWeight.normal))
                     ])),
           contentPadding: const EdgeInsets.symmetric(horizontal: 15),
-          trailing: const Icon(EvaIcons.search),
-          onTap: () async {
-            final product = await ItemsSearchPage.navigateTo<Product>(context,
-                showAddIcon: false);
-            if (product != null) bloc.addProduct(product);
-          },
+          onTap: product == null ? widget.onTappedToSelect : null,
         ));
   }
 

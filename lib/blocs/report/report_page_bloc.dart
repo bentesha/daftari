@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:inventory_management/blocs/report/models/grouped_report_data.dart';
 import 'package:inventory_management/blocs/report/models/report_page_state.dart';
 import 'package:inventory_management/models/inventory_movement.dart';
@@ -8,6 +7,7 @@ import '../../repository/reports/price_list_repository.dart';
 import '../../repository/reports/purchases/purchases_repository.dart';
 import '../../repository/reports/sales/sales_repository.dart';
 import '../../repository/reports/stocks/stock_repository.dart';
+import '../../repository/reports/write_off/write_off_repository.dart';
 import '../filter/query_filters_bloc.dart';
 import '../filter/query_options.dart';
 import 'models/report_data.dart';
@@ -21,6 +21,7 @@ class ReportPageBloc extends Cubit<ReportPageState> {
   final _expensesRepository = ExpensesRepository();
   final _priceListRepository = PriceListReository();
   final _stocksRepository = StocksRepository();
+  final _writeOffrepository = WriteOffRepository();
 
   void init(ReportType type) async {
     final groupBy = (queryFiltersBloc['groupBy'] as GroupByFilter?)?.value;
@@ -85,6 +86,10 @@ class ReportPageBloc extends Cubit<ReportPageState> {
           } else {
             inventoryMovements = result.fold((_) => null, (data) => data);
           }
+        }
+        if (type.isWriteOff) {
+          reportData =
+              await _writeOffrepository.geWriteOffsReportData(groupBy!, query);
         }
 
         emit(ReportPageState(

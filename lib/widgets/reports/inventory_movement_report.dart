@@ -26,15 +26,20 @@ class _InventoryMovementPageState extends State<InventoryMovementReport> {
         _buildHeader(),
         if (widget.inventoryMovements != null)
           Expanded(
-              child: Column(
-            children: [
-              _buildTableHeader(),
-              const AppDivider.zeroMargin(color: Colors.black),
-              _buildTable(widget.inventoryMovements!)
-            ],
-          )),
+              child: widget.inventoryMovements!.isEmpty
+                  ? const Center(child: Text("No Data"))
+                  : Column(
+                      children: [
+                        _buildTableHeader(),
+                        const AppDivider.zeroMargin(color: Colors.black),
+                        _buildTable(widget.inventoryMovements!)
+                      ],
+                    )),
         if (widget.reportData != null)
-          Expanded(child: Report(data: widget.reportData!))
+          Expanded(
+              child: widget.reportData!.items.isEmpty
+                  ? const Center(child: Text("No Data"))
+                  : Report(data: widget.reportData!))
       ],
     );
   }

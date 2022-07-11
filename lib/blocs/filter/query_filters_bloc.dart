@@ -22,7 +22,9 @@ class QueryFiltersBloc extends Cubit<List<QueryFilter>> {
     } else if (type.isRemainingStock) {
       emit(defaultStocksState);
     } else if (type.isInventoryMovement) {
-      emit(defaultInventoryMvtState);
+      emit([]);
+    } else if (type.isWriteOff) {
+      emit(defaultWriteOffState);
     } else {
       emit(initialState);
     }
@@ -87,8 +89,9 @@ class QueryFiltersBloc extends Cubit<List<QueryFilter>> {
     QueryFilter<SortDirection>('sortDirection', SortDirection.descending),
     QueryFilter<SortBy>('sortBy', SortBy.product)
   ];
-  static const defaultInventoryMvtState = [
+  static const defaultWriteOffState = [
+    QueryFilter<GroupBy>('groupBy', GroupBy.category),
     QueryFilter<SortDirection>('sortDirection', SortDirection.descending),
-    QueryFilter<SortBy>('sortBy', SortBy.metric)
+    QueryFilter<SortBy>('sortBy', SortBy.dimension)
   ];
 }

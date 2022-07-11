@@ -72,11 +72,15 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                       const OptionItem(
                           value: GroupBy.quarter, label: 'Quarter'),
                       const OptionItem(value: GroupBy.year, label: 'Year'),
-                      if (widget.reportType != ReportType.expenses)
+                      if (!widget.reportType.isExpenses &&
+                          !widget.reportType.isWriteOff)
                         const OptionItem(
                             value: GroupBy.product, label: 'Product'),
                       const OptionItem(
                           value: GroupBy.category, label: 'Category'),
+                      if (widget.reportType.isWriteOff)
+                        const OptionItem(
+                            value: GroupBy.type, label: 'Type'),
                     ],
                     onSelected: (value) =>
                         options.addFilter<GroupBy>('groupBy', value)),
@@ -177,10 +181,17 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
       case GroupBy.quarter:
       case GroupBy.year:
         return 'Date';
+      case GroupBy.type:
+        return "Type";
     }
   }
 
   String getMetric() {
-    return widget.reportType.isInventoryMovement ? "Total" : "Revenue";
+    final type = widget.reportType;
+    return type.isInventoryMovement
+        ? "Total"
+        : type.isWriteOff
+            ? "Total Cost"
+            : "Revenue";
   }
 }

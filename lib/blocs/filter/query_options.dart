@@ -13,7 +13,17 @@ extension SortDirectionExtension on SortDirection {
 /// reports. [SortBy.product] and [SortBy.category] are ony used to sort stocks.
 enum SortBy { dimension, metric, product, category }
 
-enum GroupBy { day, month, quarter, year, category, product }
+enum GroupBy {
+  day,
+  month,
+  quarter,
+  year,
+  category,
+  product,
+
+  /// currently for write-offs only
+  type
+}
 
 extension GroupByExtension on GroupBy {
   bool get isTimeDimension {

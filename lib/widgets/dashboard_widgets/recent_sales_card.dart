@@ -39,7 +39,7 @@ class RecentSalesCard extends StatelessWidget {
   _buildProductDetails(RecentSale sale) {
     final formatted = Utils.convertToMoneyFormat(sale.total);
     return ListTile(
-        title: AppText(sale.productName, size: 15.dw),
+        title: Text(sale.productName),
         trailing: AppText(formatted,
             size: 14.dw,
             weight: FontWeight.bold,

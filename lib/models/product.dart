@@ -28,6 +28,15 @@ class Product {
         code: json['code'],
       );
 
+  factory Product.fromInventoryMovementJson(Map<String, dynamic> json) =>
+      Product(
+        id: json['Product.id'],
+        name: json['Product.name'],
+        unit: json['Product.unit'],
+        stockQuantity: (json['InventoryMovement.quantity'] as num).toDouble(),
+        stockValue: (json['InventoryMovement.totalValue'] as num).toDouble(),
+      );
+
   Map<String, dynamic> toJson() {
     String? _code;
     if (code != null) {

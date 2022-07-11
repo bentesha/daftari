@@ -1,18 +1,24 @@
 import '../source.dart';
-import '../utils/extensions.dart/write_off_type.dart';
 
 class ItemsSearchPage<T> extends StatefulWidget {
-  const ItemsSearchPage({this.categoryType, this.documentType, Key? key})
+  const ItemsSearchPage(
+      {this.categoryType, this.documentType, this.showAddIcon = true, Key? key})
       : super(key: key);
 
   final CategoryTypes? categoryType;
   final DocumentType? documentType;
+  final bool showAddIcon;
 
   static Future<T?> navigateTo<T>(BuildContext context,
-      {CategoryTypes? categoryType, DocumentType? documentType}) {
+      {CategoryTypes? categoryType,
+      DocumentType? documentType,
+      bool showAddIcon = true}) {
     return Navigator.of(context).push(MaterialPageRoute<T>(
         builder: (context) => ItemsSearchPage<T>(
-            categoryType: categoryType, documentType: documentType)));
+              categoryType: categoryType,
+              documentType: documentType,
+              showAddIcon: showAddIcon,
+            )));
   }
 
   @override
@@ -102,7 +108,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
                 ? () => focusNode.requestFocus()
                 : bloc.clearQuery,
             iconThemeData: iconThemeData.copyWith(size: 24.dw)),
-        T == CategoryTypes || T == WriteOffTypes
+        !widget.showAddIcon
             ? SizedBox(width: 15.dw)
             : AppIconButton(
                 onPressed: _navigateToSpecificTypeWidget,

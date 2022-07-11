@@ -1,19 +1,83 @@
 import 'dart:developer';
 
+import 'package:dartz/dartz.dart';
 import 'package:inventory_management/blocs/report/models/grouped_report_data.dart';
 import 'package:inventory_management/blocs/report/models/report_data.dart';
 import 'package:inventory_management/repository/reports/stocks/stock_repository_mixin.dart';
 import 'package:inventory_management/utils/http_utils.dart' as http;
+import '../../../blocs/filter/query_options.dart';
 import '../../../blocs/report/models/annotation.dart';
 import '../../../errors/error_handler_mixin.dart';
+import '../../../models/inventory_movement.dart';
 import '../../../models/product.dart';
 import '../../../secret.dart';
 import '../../../utils/extensions.dart/report_type.dart';
 import 'stock_repository_mixin.dart';
 
 class StocksRepository with StocksRepositoryMixin, ErrorHandler {
-  Future<Product?> getInventoryMovementSummary() async {
-    return null;
+  Future<Either<ReportData, List<InventoryMovement>>>
+      getInventoryMovementByProductID(String query, GroupBy groupBy) async {
+    try {
+      final url = root + 'report/inventory-movement?$query';
+      final result = await http.get(url);
+      final data = List<Map<String, dynamic>>.from(result['data']);
+
+      if (data.isEmpty) return const Right([]);
+
+      if (groupBy == GroupBy.product) {
+        final inventoryMovements =
+            data.map((e) => InventoryMovement.fromMap(e)).toList();
+        return Right(inventoryMovements);
+      } else {
+        final items = getItems(groupBy, data);
+        final amounts = data
+            .map((e) => (e['InventoryMovement.totalValue'] as num).toInt())
+            .toList();
+        final measureMap = Map<String, dynamic>.from(
+            result['annotations']['measures']['InventoryMovement.totalValue']);
+        final measure = Annotation.fromMap(measureMap);
+        final dimension = getDimension(
+            groupBy,
+            groupBy.isTimeDimension
+                ? result['annotations']['timeDimensions']
+                : result['annotations']['dimensions']);
+
+        final reportData = ReportData(
+          reportType: ReportType.inventoryMovement,
+          items: items,
+          amounts: amounts,
+          measure: measure,
+          dimension: dimension,
+        );
+        return Left(reportData);
+      }
+    } catch (error) {
+      log('$error');
+      final message = getError(error);
+      throw message;
+    }
+  }
+
+  Future<List<Product>> getInventoryMovementSummary([int? limit]) async {
+    try {
+      const url = root + 'report/inventory-movement?groupBy=product';
+      final result = await http.get(url);
+      final data = List<Map<String, dynamic>>.from(result['data']);
+
+      if (data.isEmpty) return [];
+
+      final products = <Product>[];
+      for (var product in data) {
+        if (limit != null) if (products.length == limit) break;
+        products.add(Product.fromInventoryMovementJson(product));
+      }
+
+      return products;
+    } catch (error) {
+      log('$error');
+      final message = getError(error);
+      throw message;
+    }
   }
 
   Future<ReportData> getStocksStatus(String query) async {

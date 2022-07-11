@@ -20,6 +20,7 @@ class SearchPageBloc<T> extends Cubit<SearchPageState<T>> {
   var _categoryType = CategoryTypes.expenses;
   var _documentType = DocumentType.sales;
 
+  /// uses specific item services to initiate options
   void init([CategoryTypes? categoryType, DocumentType? documentType]) async {
     var supp = state.supplements;
     emit(SearchPageState.loading(supp));

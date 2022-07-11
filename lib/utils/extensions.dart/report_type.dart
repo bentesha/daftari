@@ -4,7 +4,8 @@ enum ReportType {
   expenses,
   priceList,
   remainingStock,
-  profitLoss
+  profitLoss,
+  inventoryMovement
 }
 
 extension ReportTypeExtension on ReportType {
@@ -22,6 +23,8 @@ extension ReportTypeExtension on ReportType {
         return 'Remaining Stock Report';
       case ReportType.profitLoss:
         return 'Profit & Loss Report';
+      case ReportType.inventoryMovement:
+        return 'Inventory Movement Report';
       default:
     }
     throw '$this is not be defined';
@@ -41,6 +44,8 @@ extension ReportTypeExtension on ReportType {
         return 'Remaining Stock';
       case ReportType.profitLoss:
         return 'Profit & Loss';
+      case ReportType.inventoryMovement:
+        return 'Inventory Movement';
       default:
     }
     throw '$this is not be defined';
@@ -52,6 +57,14 @@ extension ReportTypeExtension on ReportType {
   bool get isPriceList => this == ReportType.priceList;
   bool get isRemainingStock => this == ReportType.remainingStock;
   bool get isProfitLoss => this == ReportType.profitLoss;
+  bool get isInventoryMovement => this == ReportType.inventoryMovement;
 
-  bool get hasFilters => isExpenses || isSales || isPurchases || isRemainingStock;
+  bool get hasFilters =>
+      isExpenses ||
+      isSales ||
+      isPurchases ||
+      isRemainingStock ||
+      isInventoryMovement;
+
+  bool get hasItsOwnImpl => isProfitLoss || isInventoryMovement;
 }

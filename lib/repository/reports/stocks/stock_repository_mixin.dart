@@ -14,27 +14,27 @@ class StocksRepositoryMixin {
     }
     if (groupBy == GroupBy.day) {
       return data.map((e) {
-        final date = e['PurchasesDocument.date.day'] as String;
+        final date = e['InventoryMovement.date.day'] as String;
         return FormatUtils.formatWithCustomFormatter(
             date, DateFormat('yyyy-MM-dd'));
       }).toList();
     }
     if (groupBy == GroupBy.month) {
       return data.map((e) {
-        final date = e['PurchasesDocument.date.month'] as String;
+        final date = e['InventoryMovement.date.month'] as String;
         return FormatUtils.formatWithCustomFormatter(
             date, DateFormat('MMMM, yyyy'));
       }).toList();
     }
     if (groupBy == GroupBy.quarter) {
       return data.map((e) {
-        final date = e['PurchasesDocument.date.quarter'] as String;
+        final date = e['InventoryMovement.date.quarter'] as String;
         return FormatUtils.formatToQuarters(date);
       }).toList();
     }
     if (groupBy == GroupBy.year) {
       return data.map((e) {
-        final date = e['PurchasesDocument.date.year'] as String;
+        final date = e['InventoryMovement.date.year'] as String;
         return FormatUtils.formatWithCustomFormatter(date, DateFormat('yyyy'));
       }).toList();
     }
@@ -51,16 +51,16 @@ class StocksRepositoryMixin {
         dimensionKey = 'Product.name';
         break;
       case GroupBy.day:
-        dimensionKey = 'PurchasesDocument.date.day';
+        dimensionKey = 'InventoryMovement.date.day';
         break;
       case GroupBy.month:
-        dimensionKey = 'PurchasesDocument.date.month';
+        dimensionKey = 'InventoryMovement.date.month';
         break;
       case GroupBy.quarter:
-        dimensionKey = 'PurchasesDocument.date.quarter';
+        dimensionKey = 'InventoryMovement.date.quarter';
         break;
       case GroupBy.year:
-        dimensionKey = 'PurchasesDocument.date.year';
+        dimensionKey = 'InventoryMovement.date.year';
         break;
       default:
         throw 'Unknown groupBy';

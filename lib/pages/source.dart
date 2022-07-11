@@ -20,7 +20,6 @@ export 'purchases_documents_page.dart';
 export 'document_expenses_page.dart';
 
 export 'package:flutter_bloc/flutter_bloc.dart';
-export 'package:provider/provider.dart';
 
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';

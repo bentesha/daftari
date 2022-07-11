@@ -36,7 +36,7 @@ class LowStockProductsCard extends StatelessWidget {
 
   _buildProductDetails(Product product) {
     return ListTile(
-        title: AppText(product.name, size: 15.dw),
+        title: Text(product.name),
         trailing: AppText('${product.stockQuantity}',
             size: 14.dw,
             weight: FontWeight.bold,

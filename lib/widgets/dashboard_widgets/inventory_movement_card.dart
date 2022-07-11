@@ -1,8 +1,12 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:inventory_management/blocs/stocks/inventory_movement_bloc.dart';
+import 'package:inventory_management/pages/inventory_movement_page.dart';
+
 import '../../source.dart';
 
 class InventoryMovementCard extends StatelessWidget {
   final List<Product> products;
-  const InventoryMovementCard({required this.products, super.key});
+  const InventoryMovementCard(this.products, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +28,30 @@ class InventoryMovementCard extends StatelessWidget {
               child: Center(child: Text('No data')),
             ),
           if (products.isNotEmpty)
-            ListView.builder(itemBuilder: (_, index) {
-              return ListTile(
-                title: Text(products[index].name),
-                trailing: const Icon(Icons.arrow_right),
-              );
-            })
+            Column(
+              children: List.generate(
+                  products.length,
+                  (index) => ListTile(
+                        title: Text(products[index].name),
+                        onTap: () {
+                          context
+                              .read<InventoryMovementBloc>()
+                              .addProduct(products[index]);
+                          push(const ReportsPage(
+                              reportType: ReportType.inventoryMovement));
+                        },
+                        trailing: const Icon(EvaIcons.arrowForwardOutline),
+                      )),
+            ),
+          AppDivider.withVerticalMargin(5.dh),
+          AppTextButton(
+              onPressed: () => push(
+                  const ReportsPage(reportType: ReportType.inventoryMovement)),
+              text: 'View All',
+              height: 40.dh,
+              isFilled: false,
+              borderRadius: BorderRadius.all(Radius.circular(15.dw)),
+              textStyle: TextStyle(color: AppColors.primary, fontSize: 15.dw))
         ],
       ),
     );

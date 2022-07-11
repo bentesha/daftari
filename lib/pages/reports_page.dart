@@ -3,6 +3,7 @@ import 'package:inventory_management/blocs/filter/query_filters_bloc.dart';
 import 'package:inventory_management/blocs/report/models/report_page_state.dart';
 import 'package:inventory_management/blocs/report/report_page_bloc.dart';
 import 'package:inventory_management/blocs/filter/query_options.dart';
+import 'package:inventory_management/pages/inventory_movement_page.dart';
 import 'package:inventory_management/widgets/reports/profit_loss_report.dart';
 import 'package:inventory_management/widgets/reports/sales_filter.dart';
 import 'package:inventory_management/widgets/reports/sales_report.dart';
@@ -84,7 +85,9 @@ class _ReportsPageState extends State<ReportsPage> {
                       ? Report(data: state.data)
                       : type.isProfitLoss
                           ? const ProfitLossReport()
-                          : Container());
+                          : type.isInventoryMovement
+                              ? const InventoryMovementPage()
+                              : Container());
         });
   }
 

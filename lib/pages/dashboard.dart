@@ -2,6 +2,7 @@ import 'package:inventory_management/blocs/dashboard/dashboard_bloc.dart';
 import 'package:inventory_management/blocs/dashboard/dashboard_state.dart';
 
 import '../source.dart';
+import '../widgets/dashboard_widgets/inventory_movement_card.dart';
 import '../widgets/dashboard_widgets/low_stock_products_card.dart';
 import '../widgets/dashboard_widgets/profit_loss_card.dart';
 import '../widgets/dashboard_widgets/quick_actions_card.dart';
@@ -58,19 +59,20 @@ class _DashboardState extends State<Dashboard> {
               ? const Center(child: CircularProgressIndicator())
               : state.hasError
                   ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(state.error!),
-                          const SizedBox(height: 20),
-                          AppTextButton(
-                              backgroundColor: AppColors.primary,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              height: 50,
-                              onPressed: bloc.getData,
-                              text: 'Try Again')
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(state.error!, textAlign: TextAlign.center),
+                            const SizedBox(height: 20),
+                            AppTextButton(
+                                backgroundColor: AppColors.primary,
+                                height: 50,
+                                onPressed: bloc.getData,
+                                text: 'Try Again')
+                          ],
+                        ),
                       ),
                     )
                   : RefreshIndicator(
@@ -92,7 +94,8 @@ class _DashboardState extends State<Dashboard> {
                           onViewBreakdownCallback: () => push(const ReportsPage(
                               reportType: ReportType.expenses)),
                         ),
-                        LowStockProductsCard(state.products)
+                        LowStockProductsCard(state.products),
+                        InventoryMovementCard(state.productsInventorySummary)
                       ]),
                     );
         });

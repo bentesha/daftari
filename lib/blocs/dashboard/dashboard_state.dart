@@ -6,13 +6,14 @@ import '../../models/product.dart';
 class DashBoardState {
   final List<BreakdownData> revenueBreakdownData, expensesBreakdownData;
   final List<RecentSale> recentSales;
-  final List<Product> products;
+  final List<Product> products, productsInventorySummary;
   final bool isLoading;
   final String? error;
   const DashBoardState(
       {this.revenueBreakdownData = const [],
       this.expensesBreakdownData = const [],
       this.recentSales = const [],
+      this.productsInventorySummary = const [],
       this.products = const [],
       this.isLoading = false,
       this.error});
@@ -21,6 +22,7 @@ class DashBoardState {
     return DashBoardState(
       revenueBreakdownData: revenueBreakdownData,
       expensesBreakdownData: expensesBreakdownData,
+      productsInventorySummary: productsInventorySummary,
       isLoading: isLoading ?? this.isLoading,
       recentSales: recentSales,
       products: products,

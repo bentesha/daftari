@@ -1,3 +1,4 @@
+import 'package:inventory_management/blocs/dashboard/dashboard_bloc.dart';
 import 'package:inventory_management/source.dart';
 import 'package:inventory_management/widgets/report_title.dart';
 
@@ -6,19 +7,17 @@ class ProfitLossReport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final profitData = BlocProvider.of<DashBoardBloc>(context).state.profitData;
     return Column(
       children: [
         const ReportTitle(title1: 'component', title2: 'amount'),
-        _buildValue('Revenue', 341500600),
-        _buildValue('Cost of Goods Sold', 388900, isOutflow: true),
-        const AppDivider.zeroMargin(color: AppColors.onBackground2),
-        _buildValue('GROSS PROFIT', 1554700, isTotal: true),
-        _buildValue('Operating Expenses', 508800, isOutflow: true),
-        const AppDivider.zeroMargin(color: AppColors.onBackground2),
-        _buildValue('OPERATING PROFIT', 1045500, isTotal: true),
-        _buildValue('Interest & Tax', 45000, isOutflow: true),
+        _buildValue('Total Gross Margin', profitData.totalGrossMargin),
+        _buildValue('Total Expenses', profitData.totalExpenses, isOutflow: true),
+        _buildValue(
+            'Total Stock Write-off costs', profitData.totalStockWriteOffs,
+            isOutflow: true),
         const AppDivider.zeroMargin(color: AppColors.onBackground2, height: 2),
-        _buildValue('NET PROFIT', 1004000, isTotal: true),
+        _buildValue('NET PROFIT', profitData.getProfit, isTotal: true),
       ],
     );
   }

@@ -2,11 +2,13 @@ import 'package:inventory_management/models/breakdown_data.dart';
 import 'package:inventory_management/models/recent_sales.dart';
 
 import '../../models/product.dart';
+import '../../models/profit_data.dart';
 
 class DashBoardState {
   final List<BreakdownData> revenueBreakdownData, expensesBreakdownData;
   final List<RecentSale> recentSales;
   final List<Product> products, productsInventorySummary;
+  final ProfitData profitData;
   final bool isLoading;
   final String? error;
   const DashBoardState(
@@ -16,6 +18,7 @@ class DashBoardState {
       this.productsInventorySummary = const [],
       this.products = const [],
       this.isLoading = false,
+      this.profitData = const ProfitData(),
       this.error});
 
   DashBoardState copyWith({String? error, bool? isLoading}) {
@@ -25,6 +28,7 @@ class DashBoardState {
       productsInventorySummary: productsInventorySummary,
       isLoading: isLoading ?? this.isLoading,
       recentSales: recentSales,
+      profitData: profitData,
       products: products,
       error: error,
     );

@@ -22,7 +22,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
-    bloc = DashBoardBloc();
+    bloc = BlocProvider.of<DashBoardBloc>(context, listen: false);
     bloc.getData();
     super.initState();
   }
@@ -81,7 +81,7 @@ class _DashboardState extends State<Dashboard> {
                       child: ListView(children: [
                         const QuickActionsCard(),
                         RecentSalesCard(state.recentSales),
-                        const ProfitLossCard(),
+                        ProfitLossCard(state.profitData),
                         BreakdownDataCard(
                           state.revenueBreakdownData,
                           title: 'Revenue',

@@ -5,6 +5,7 @@ import 'package:inventory_management/source.dart';
 
 import '../../repository/reports/expenses/expenses_repository.dart';
 import '../../repository/reports/products_repository.dart';
+import '../../repository/reports/profit_loss_repository.dart';
 import '../../repository/reports/stocks/stock_repository.dart';
 
 class DashBoardBloc extends Cubit<DashBoardState> {
@@ -14,6 +15,7 @@ class DashBoardBloc extends Cubit<DashBoardState> {
   final _productsRepository = ProductsRepository();
   final _expensesRepository = ExpensesRepository();
   final _stocksRepository = StocksRepository();
+  final _profitLossRepository = ProfitLossRepository();
 
   Future<void> getData() async {
     emit(state.copyWith(isLoading: true));
@@ -24,7 +26,9 @@ class DashBoardBloc extends Cubit<DashBoardState> {
       final monthlyExpenses = await _expensesRepository.getExpensesBreakdown();
       final productsInventorySummary =
           await _stocksRepository.getInventoryMovementSummary();
+      final profitData = await _profitLossRepository.getProfitData();
       emit(DashBoardState(
+        profitData: profitData,
           products: products,
           recentSales: recentSales,
           revenueBreakdownData: monthlySales,

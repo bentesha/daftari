@@ -2,7 +2,6 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:inventory_management/blocs/filter/query_filters_bloc.dart';
 import 'package:inventory_management/blocs/report/models/report_page_state.dart';
 import 'package:inventory_management/blocs/report/report_page_bloc.dart';
-import 'package:inventory_management/blocs/filter/query_options.dart';
 import 'package:inventory_management/widgets/reports/inventory_movement_report.dart';
 import 'package:inventory_management/widgets/reports/profit_loss_report.dart';
 import 'package:inventory_management/widgets/reports/sales_filter.dart';
@@ -81,7 +80,7 @@ class _ReportsPageState extends State<ReportsPage> {
                           state.inventoryMovements, state.data,
                           onTappedToSelect: () => _showFilters(type))
                       : type.isProfitLoss
-                          ? const ProfitLossReport()
+                          ?  const ProfitLossReport()
                           : Report(data: state.data!));
         });
   }
@@ -135,7 +134,6 @@ class _ReportsPageState extends State<ReportsPage> {
   }
 
   _showFilters(ReportType reportType) async {
-    final filters = BlocProvider.of<QueryFiltersBloc>(context);
     final hasAddedFilters =
         await SalesFilterDialog.navigateTo(context, reportType);
     // null means page is popped by the cancel button on the

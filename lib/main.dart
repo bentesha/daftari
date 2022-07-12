@@ -1,3 +1,4 @@
+import 'package:inventory_management/blocs/dashboard/dashboard_bloc.dart';
 import 'package:provider/single_child_widget.dart';
 
 import 'app.dart';
@@ -21,6 +22,7 @@ void main() async {
 
 final blocProviders = <BlocProvider>[
   BlocProvider<QueryFiltersBloc>(create: (_) => QueryFiltersBloc()),
+  BlocProvider<DashBoardBloc>(create: (_) => DashBoardBloc()),
 ];
 
 final serviceProviders = <SingleChildWidget>[

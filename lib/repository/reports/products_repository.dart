@@ -19,7 +19,7 @@ class ProductsRepository with ErrorHandler {
         if (products.length == 5) break;
         products.add(Product.fromJson(product));
       }
-      products.sort((a, b) => b.stockQuantity.compareTo(a.stockQuantity));
+      products.sort((a, b) => a.stockQuantity.compareTo(b.stockQuantity));
       return products;
     } catch (error) {
       log('$error');

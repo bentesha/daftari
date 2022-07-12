@@ -79,8 +79,7 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                       const OptionItem(
                           value: GroupBy.category, label: 'Category'),
                       if (widget.reportType.isWriteOff)
-                        const OptionItem(
-                            value: GroupBy.type, label: 'Type'),
+                        const OptionItem(value: GroupBy.type, label: 'Type'),
                     ],
                     onSelected: (value) =>
                         options.addFilter<GroupBy>('groupBy', value)),
@@ -107,9 +106,9 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                     onSelected: (value) =>
                         options.addFilter<SortBy>('sortBy', value)),
               if (widget.reportType != ReportType.remainingStock && hasGroupBy)
-                ChoiceChipFormCell<SortBy>(
+                ChoiceChipFormCell<SortBy?>(
                     label: 'SORT BY',
-                    value: (options['sortBy'] as SortByFilter).value,
+                    value: (options['sortBy'] as SortByFilter?)?.value,
                     options: [
                       OptionItem(
                           label: _getDimension(), value: SortBy.dimension),
@@ -119,9 +118,9 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                         options.addFilter<SortBy>('sortBy', value)),
               const FormCellDivider(subDivider: true),
               if (hasGroupBy)
-                ChoiceChipFormCell<SortDirection>(
+                ChoiceChipFormCell<SortDirection?>(
                     label: 'SORT DIRECTION',
-                    value: (options['sortDirection'] as SortDirFilter).value,
+                    value: (options['sortDirection'] as SortDirFilter?)?.value,
                     options: const [
                       OptionItem(
                           label: 'Ascending', value: SortDirection.ascending),

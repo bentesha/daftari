@@ -71,7 +71,6 @@ class StocksRepository with StocksRepositoryMixin, ErrorHandler {
         if (limit != null) if (products.length == limit) break;
         products.add(Product.fromInventoryMovementJson(product));
       }
-
       return products;
     } catch (error) {
       log('$error');

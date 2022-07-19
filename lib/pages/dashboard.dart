@@ -86,12 +86,12 @@ class _DashboardState extends State<Dashboard> {
                           state.revenueBreakdownData,
                           title: 'Revenue',
                           onViewBreakdownCallback: () =>
-                              push(const ReportsPage()),
+                              push(const ReportPage()),
                         ),
                         BreakdownDataCard(
                           state.expensesBreakdownData,
                           title: 'Expenses',
-                          onViewBreakdownCallback: () => push(const ReportsPage(
+                          onViewBreakdownCallback: () => push(const ReportPage(
                               reportType: ReportType.expenses)),
                         ),
                         LowStockProductsCard(state.products),

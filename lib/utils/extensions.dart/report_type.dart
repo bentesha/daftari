@@ -50,7 +50,7 @@ extension ReportTypeExtension on ReportType {
       case ReportType.inventoryMovement:
         return 'Inventory Movement';
       case ReportType.writeOff:
-        return 'Write-Off';
+        return 'Stock Write-Off';
       default:
     }
     throw '$this is not be defined';

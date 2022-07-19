@@ -9,7 +9,7 @@ export 'document_purchases_page.dart';
 export 'products_page.dart';
 export 'search_page.dart';
 export 'dashboard.dart';
-export 'reports_page.dart';
+export 'report_page.dart';
 export 'expense_page.dart';
 export 'expenses_documents_page.dart';
 export 'document_write_offs_page.dart';

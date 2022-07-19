@@ -2,6 +2,7 @@
 
 import 'package:inventory_management/pages/settings_page.dart';
 import 'package:inventory_management/pages/write_offs_documents_page.dart';
+import '../pages/reports_page.dart';
 import '../source.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -131,7 +132,7 @@ class _AppDrawerState extends State<AppDrawer> {
         nextPage = const PurchasesDocumentsPage();
         break;
       case Pages.reports_page:
-        nextPage = const ReportsPage();
+        nextPage = const ReportsSelectorPage();
         break;
       case Pages.expenses_documents_page:
         nextPage = const ExpensesDocumentsPage();

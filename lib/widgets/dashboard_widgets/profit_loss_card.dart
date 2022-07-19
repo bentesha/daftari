@@ -33,7 +33,7 @@ class ProfitLossCard extends StatelessWidget {
           AppDivider(margin: EdgeInsets.only(top: 10.dh, bottom: 5.dh)),
           AppTextButton(
             onPressed: () =>
-                push(const ReportsPage(reportType: ReportType.profitLoss)),
+                push(const ReportPage(reportType: ReportType.profitLoss)),
             text: 'View Report',
             height: 40.dh,
             isFilled: false,

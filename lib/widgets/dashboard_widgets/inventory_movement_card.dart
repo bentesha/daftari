@@ -36,7 +36,7 @@ class InventoryMovementCard extends StatelessWidget {
                           context
                               .read<QueryFiltersBloc>()
                               .addFilter<Product>('product', products[index]);
-                          push(const ReportsPage(
+                          push(const ReportPage(
                               reportType: ReportType.inventoryMovement));
                         },
                         trailing: const Icon(EvaIcons.arrowForwardOutline),
@@ -45,7 +45,7 @@ class InventoryMovementCard extends StatelessWidget {
           AppDivider.withVerticalMargin(5.dh),
           AppTextButton(
               onPressed: () {
-                push(const ReportsPage(
+                push(const ReportPage(
                     reportType: ReportType.inventoryMovement));
               },
               text: 'View All',

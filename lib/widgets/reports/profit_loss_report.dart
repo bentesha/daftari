@@ -11,10 +11,14 @@ class ProfitLossReport extends StatelessWidget {
     return Column(
       children: [
         const ReportTitle(title1: 'component', title2: 'amount'),
-        _buildValue('Total Gross Margin', profitData.totalGrossMargin),
-        _buildValue('Total Expenses', profitData.totalExpenses, isOutflow: true),
-        _buildValue(
-            'Total Stock Write-off costs', profitData.totalStockWriteOffs,
+        _buildValue('Sales', profitData.sales),
+        _buildValue('Cost of Goods Sold', profitData.costOfSales,
+            isOutflow: true),
+        const AppDivider.zeroMargin(
+            color: AppColors.onBackground2, height: 1.5),
+        _buildValue('Gross Profit', profitData.grossProfit),
+        _buildValue('Less Expenses', profitData.expenses, isOutflow: true),
+        _buildValue('Less Stock Write-off costs', profitData.stockWriteOffs,
             isOutflow: true),
         const AppDivider.zeroMargin(color: AppColors.onBackground2, height: 2),
         _buildValue('NET PROFIT', profitData.getProfit, isTotal: true),

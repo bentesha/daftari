@@ -8,15 +8,19 @@ import '../../secret.dart';
 class ProfitLossRepository with ErrorHandler {
   Future<ProfitData> getProfitData() async {
     try {
-      // working for Total Gross Margin:
+      // working for Total Sales and Total Cost of Sales:
       const salesReportUrl = '${root}report/sales';
       final salesResults = await http.get(salesReportUrl);
       final productSales =
           List<Map<String, dynamic>>.from(salesResults['data']);
-      final totalGrossMargin = productSales.fold<double>(
+      final totalSales = productSales.fold<double>(
           0.0,
           (prev, current) =>
-              prev + (current['SalesDetail.grossMargin'] as num).toDouble());
+              prev + (current['SalesDetail.total'] as num).toDouble());
+      final totalCostOfSales = productSales.fold<double>(
+          0.0,
+          (prev, current) =>
+              prev + (current['SalesDetail.totalCost'] as num).toDouble());
 
       // working for Total Expenses:
       const expensesReportUrl = '${root}report/expense';
@@ -39,9 +43,10 @@ class ProfitLossRepository with ErrorHandler {
               (current['StockWriteoffDetail.totalCost'] as num).toDouble());
 
       return ProfitData(
-          totalExpenses: totalExpenses,
-          totalGrossMargin: totalGrossMargin,
-          totalStockWriteOffs: totalWriteOffCosts);
+          expenses: totalExpenses,
+          costOfSales: totalCostOfSales,
+          sales: totalSales,
+          stockWriteOffs: totalWriteOffCosts);
     } catch (error) {
       log("$error");
       final message = getError(error);

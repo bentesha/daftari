@@ -4,7 +4,7 @@ import 'package:inventory_management/blocs/report/models/report_page_state.dart'
 import 'package:inventory_management/blocs/report/report_page_bloc.dart';
 import 'package:inventory_management/widgets/reports/inventory_movement_report.dart';
 import 'package:inventory_management/widgets/reports/profit_loss_report.dart';
-import 'package:inventory_management/widgets/reports/sales_filter.dart';
+import 'package:inventory_management/widgets/reports/filter_page.dart';
 import 'package:inventory_management/widgets/reports/sales_report.dart';
 import '../source.dart';
 import '../widgets/reports/grouped_data_report.dart';
@@ -100,7 +100,7 @@ class _ReportsPageState extends State<ReportPage> {
 
   _showFilters(ReportType reportType) async {
     final hasAddedFilters =
-        await SalesFilterDialog.navigateTo(context, reportType);
+        await FilterPage.navigateTo(context, reportType);
     // null means page is popped by the cancel button on the
     // right top side of the app-bar
     if (hasAddedFilters != null && hasAddedFilters) _refresh(reportType);

@@ -7,21 +7,21 @@ import 'package:inventory_management/widgets/date_range_picker_form_cell.dart';
 import 'package:inventory_management/widgets/form_cell_divider.dart';
 import 'package:inventory_management/widgets/form_cell_item_picker.dart';
 
-class SalesFilterDialog extends StatefulWidget {
+class FilterPage extends StatefulWidget {
   final ReportType reportType;
-  const SalesFilterDialog(this.reportType, {Key? key}) : super(key: key);
+  const FilterPage(this.reportType, {Key? key}) : super(key: key);
 
   ///returns true if the filters were edited.
   static Future<bool?> navigateTo(BuildContext context, ReportType type) {
     return Navigator.of(context).push(
-        MaterialPageRoute<bool>(builder: (context) => SalesFilterDialog(type)));
+        MaterialPageRoute<bool>(builder: (context) => FilterPage(type)));
   }
 
   @override
   createState() => _SalesFilterDialogState();
 }
 
-class _SalesFilterDialogState extends State<SalesFilterDialog> {
+class _SalesFilterDialogState extends State<FilterPage> {
   late final QueryFiltersBloc options;
 
   @override
@@ -95,7 +95,7 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                   ),
                 ),
               const FormCellDivider(subDivider: true),
-              if (widget.reportType == ReportType.remainingStock && hasGroupBy)
+              if (widget.reportType == ReportType.remainingStock)
                 ChoiceChipFormCell<SortBy>(
                     label: 'SORT BY',
                     value: (options['sortBy'] as SortByFilter).value,
@@ -105,19 +105,20 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
                     ],
                     onSelected: (value) =>
                         options.addFilter<SortBy>('sortBy', value)),
-              if (widget.reportType != ReportType.remainingStock && hasGroupBy)
+              if (!widget.reportType.isRemainingStock &&
+                  _getDimension() != null)
                 ChoiceChipFormCell<SortBy?>(
                     label: 'SORT BY',
                     value: (options['sortBy'] as SortByFilter?)?.value,
                     options: [
                       OptionItem(
-                          label: _getDimension(), value: SortBy.dimension),
+                          label: _getDimension()!, value: SortBy.dimension),
                       OptionItem(label: getMetric(), value: SortBy.metric)
                     ],
                     onSelected: (value) =>
                         options.addFilter<SortBy>('sortBy', value)),
               const FormCellDivider(subDivider: true),
-              if (hasGroupBy)
+              if (_getDimension() != null)
                 ChoiceChipFormCell<SortDirection?>(
                     label: 'SORT DIRECTION',
                     value: (options['sortDirection'] as SortDirFilter?)?.value,
@@ -167,9 +168,13 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
     });
   }
 
-  String _getDimension() {
+  /// This function will return a dimension name related to a group-by filter selected.
+  /// If no group-by is selected, it will return null.
+  /// The dimension is shown in the sortBy filter, if the dimension is null then there
+  /// is no point of showing the sortBy filter as well as sortDirection filter.
+  String? _getDimension() {
     final filtersBloc = BlocProvider.of<QueryFiltersBloc>(context);
-    final groupBy = (filtersBloc['groupBy'] as GroupByFilter).value;
+    final groupBy = (filtersBloc['groupBy'] as GroupByFilter?)?.value;
     switch (groupBy) {
       case GroupBy.category:
         return 'Category';
@@ -182,6 +187,8 @@ class _SalesFilterDialogState extends State<SalesFilterDialog> {
         return 'Date';
       case GroupBy.type:
         return "Type";
+      case null:
+        return null;
     }
   }
 

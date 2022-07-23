@@ -2,8 +2,8 @@ import '../source.dart';
 
 class AppTextField extends StatefulWidget {
   const AppTextField(
-      {required this.error,
-      required this.text,
+      {this.error,
+      this.text,
       required this.onChanged,
       this.maxLines = 1,
       required this.hintText,

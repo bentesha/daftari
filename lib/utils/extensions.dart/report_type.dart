@@ -1,8 +1,8 @@
 enum ReportType {
+   priceList,
   sales,
   purchases,
   expenses,
-  priceList,
   remainingStock,
   profitLoss,
   writeOff,
@@ -21,7 +21,7 @@ extension ReportTypeExtension on ReportType {
       case ReportType.priceList:
         return 'Price List';
       case ReportType.remainingStock:
-        return 'Remaining Stock Report';
+        return 'Stock Status Report';
       case ReportType.profitLoss:
         return 'Profit & Loss Report';
       case ReportType.inventoryMovement:
@@ -44,7 +44,7 @@ extension ReportTypeExtension on ReportType {
       case ReportType.priceList:
         return 'Price List';
       case ReportType.remainingStock:
-        return 'Remaining Stock';
+        return 'Stock Status';
       case ReportType.profitLoss:
         return 'Profit & Loss';
       case ReportType.inventoryMovement:

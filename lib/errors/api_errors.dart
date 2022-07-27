@@ -16,7 +16,5 @@ class ApiErrors {
       const ApiErrors._('An unknown error happened. Please try again later');
 
   @override
-  String toString(){
-    return 'API ERROR: $message';
-  }
+  String toString() => message;
 }

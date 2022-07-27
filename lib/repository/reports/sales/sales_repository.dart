@@ -108,4 +108,35 @@ class SalesRepository with SalesRepositoryMixin, ErrorHandler {
       throw message;
     }
   }
+
+  Future<List<Document>> getTodaySalesDocuments() async {
+    final now = DateTime.now();
+    final date = DateFormat("yyyy-MM-dd").format(now);
+    try {
+      final url = root +
+          'sales/detail?&date:gt=$date&eager=[document, product]&orderByDesc=document.date';
+      final result = await http.get(url);
+      log("$result");
+
+      final data = List<Map<String, dynamic>>.from(result);
+      if (data.isEmpty) return [];
+      final jsonDocuments = data.groupListsBy<String>((m) => m["documentId"]);
+
+      final documents = <Document>[];
+      for (var documentId in jsonDocuments.keys) {
+        final jsonDocument = jsonDocuments[documentId]!;
+        final sales = <Sales>[];
+        late DocumentForm form;
+        for (var e in jsonDocument) {
+          form = DocumentForm.fromJson(e["document"]);
+          sales.add(Sales.fromJson(e));
+        }
+        documents.add(Document.sales(form, sales));
+      }
+      return documents;
+    } catch (error) {
+      final message = getError(error);
+      throw message;
+    }
+  }
 }

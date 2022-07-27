@@ -19,9 +19,10 @@ class _SalesDocumentsPageState extends State<SalesDocumentsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const PageAppBar(title: 'Sales'),
-        body: _buildBody(),
-        floatingActionButton: _buildFloatingButton());
+      appBar: const PageAppBar(title: 'Sales'),
+      body: _buildBody(),
+      floatingActionButton: _buildFloatingButton(),
+    );
   }
 
   Widget _buildBody() {

@@ -113,24 +113,20 @@ class SalesRepository with SalesRepositoryMixin, ErrorHandler {
     final now = DateTime.now();
     final date = DateFormat("yyyy-MM-dd").format(now);
     try {
-      final url = root +
-          'sales/detail?&date:gt=$date&eager=[document, product]&orderByDesc=document.date';
+      final url = root + 'sales?&date:gt=$date';
       final result = await http.get(url);
       log("$result");
 
       final data = List<Map<String, dynamic>>.from(result);
       if (data.isEmpty) return [];
-      final jsonDocuments = data.groupListsBy<String>((m) => m["documentId"]);
+      // final jsonDocuments = data.groupListsBy<String>((m) => m["documentId"]);
 
       final documents = <Document>[];
-      for (var documentId in jsonDocuments.keys) {
-        final jsonDocument = jsonDocuments[documentId]!;
-        final sales = <Sales>[];
-        late DocumentForm form;
-        for (var e in jsonDocument) {
-          form = DocumentForm.fromJson(e["document"]);
-          sales.add(Sales.fromJson(e));
-        }
+      for (var document in data) {
+        final sales = (document["details"] as List)
+            .map((e) => Sales.fromJson(e))
+            .toList();
+        final form = DocumentForm.fromJson(document);
         documents.add(Document.sales(form, sales));
       }
       return documents;

@@ -1,5 +1,4 @@
 import 'package:inventory_management/blocs/dashboard/dashboard_bloc.dart';
-import 'package:inventory_management/repository/reports/sales/sales_repository.dart';
 
 import '../source.dart';
 import 'today_documents_page.dart';
@@ -41,10 +40,19 @@ class _SalesLandingPageState extends State<SalesLandingPage> {
             alignment: WrapAlignment.spaceBetween,
             runSpacing: 20.dw,
             children: [
-              _buildTile(Icons.arrow_forward, "View All"),
-              _buildTile(Icons.sell, "Add New Sales"),
-              _buildTile(Icons.qr_code, "Add New Product"),
-              _buildTile(Icons.bar_chart, "Sales Report"),
+              _buildTile(Icons.arrow_forward, "View All", () {
+                push(const SalesDocumentsPage());
+              }),
+              _buildTile(Icons.sell, "Add New Sales", () {
+                push(const SalesPage(PageActions.adding,
+                    fromQuickActions: true));
+              }),
+              _buildTile(Icons.qr_code, "Add New Product", () {
+                push(const ProductPage());
+              }),
+              _buildTile(Icons.bar_chart, "Sales Report", () {
+                push(const ReportPage());
+              }),
             ],
           )
         ],
@@ -87,14 +95,14 @@ class _SalesLandingPageState extends State<SalesLandingPage> {
     );
   }
 
-  _buildTile(IconData icon, String label) {
+  _buildTile(IconData icon, String label, VoidCallback onPressed) {
     return AppTextButton(
       width: 180.dw,
       height: 140.dw,
       alignment: Alignment.centerLeft,
       backgroundColor: AppColors.onPrimary,
       borderRadius: BorderRadius.all(Radius.circular(10.dw)),
-      onPressed: () {},
+      onPressed: onPressed,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

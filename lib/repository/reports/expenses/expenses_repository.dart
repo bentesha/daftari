@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:inventory_management/blocs/report/models/annotation.dart';
 import 'package:inventory_management/blocs/report/models/report_data.dart';
 import 'package:inventory_management/source.dart';
@@ -7,7 +8,7 @@ import '../../../errors/error_handler_mixin.dart';
 import '../../../models/breakdown_data.dart';
 import 'expenses_repository_mixin.dart';
 
-class ExpensesRepository with ExpensesRepositoryMixin, ErrorHandler  {
+class ExpensesRepository with ExpensesRepositoryMixin, ErrorHandler {
   Future<List<BreakdownData>> getExpensesBreakdown() async {
     final now = DateTime.now();
     final prevMonth = DateTime(now.year, now.month - 1, now.day);
@@ -64,6 +65,21 @@ class ExpensesRepository with ExpensesRepositoryMixin, ErrorHandler  {
           dimension: dimension);
     } catch (error) {
       log('$error');
+      final message = getError(error);
+      throw message;
+    }
+  }
+
+  Future<double> getTodayExpensesTotal() async {
+    final now = DateTime.now();
+    final date = DateFormat("yyyy-MM-dd").format(now);
+    try {
+      final url = root + 'expense?date:gt=$date';
+      final result = await http.get(url);
+      final data = List<Map<String, dynamic>>.from(result);
+      final total = data.fold<num>(0, (prev, e) => prev + (e["total"] as num));
+      return total.toDouble();
+    } catch (error) {
       final message = getError(error);
       throw message;
     }

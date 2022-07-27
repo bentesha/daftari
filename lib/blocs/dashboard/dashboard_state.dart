@@ -1,5 +1,6 @@
 import 'package:inventory_management/models/breakdown_data.dart';
 import 'package:inventory_management/models/recent_sales.dart';
+import 'package:inventory_management/models/today_statistics.dart';
 
 import '../../models/product.dart';
 import '../../models/profit_data.dart';
@@ -8,6 +9,7 @@ class DashBoardState {
   final List<BreakdownData> revenueBreakdownData, expensesBreakdownData;
   final List<RecentSale> recentSales;
   final List<Product> products, productsInventorySummary;
+  final TodayStatistics todayStats;
   final ProfitData profitData;
   final bool isLoading;
   final String? error;
@@ -18,6 +20,7 @@ class DashBoardState {
       this.productsInventorySummary = const [],
       this.products = const [],
       this.isLoading = false,
+      this.todayStats = const TodayStatistics(),
       this.profitData = const ProfitData(),
       this.error});
 

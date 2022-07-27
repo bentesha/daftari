@@ -1,5 +1,7 @@
 import 'package:inventory_management/blocs/dashboard/dashboard_bloc.dart';
 import 'package:inventory_management/blocs/dashboard/dashboard_state.dart';
+import 'package:inventory_management/models/today_statistics.dart';
+import 'package:inventory_management/widgets/dashboard_widgets/today_stats_card.dart';
 
 import '../source.dart';
 import '../widgets/dashboard_widgets/inventory_movement_card.dart';
@@ -80,6 +82,7 @@ class _DashboardState extends State<Dashboard> {
                       color: AppColors.primary,
                       child: ListView(children: [
                         const QuickActionsCard(),
+                        TodayStatsCard(state.todayStats),
                         RecentSalesCard(state.recentSales),
                         ProfitLossCard(state.profitData),
                         BreakdownDataCard(

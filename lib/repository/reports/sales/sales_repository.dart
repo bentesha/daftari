@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:inventory_management/blocs/report/models/annotation.dart';
 import 'package:inventory_management/blocs/report/models/report_data.dart';
 import 'package:inventory_management/source.dart';
@@ -87,6 +88,21 @@ class SalesRepository with SalesRepositoryMixin, ErrorHandler {
           amounts: amounts,
           measure: measure,
           dimension: dimension);
+    } catch (error) {
+      final message = getError(error);
+      throw message;
+    }
+  }
+
+  Future<double> getTodaySalesTotal() async {
+    final now = DateTime.now();
+    final date = DateFormat("yyyy-MM-dd").format(now);
+    try {
+      final url = root + 'sales?date:gt=$date';
+      final result = await http.get(url);
+      final data = List<Map<String, dynamic>>.from(result);
+      final total = data.fold<num>(0, (prev, e) => prev + (e["total"] as num));
+      return total.toDouble();
     } catch (error) {
       final message = getError(error);
       throw message;

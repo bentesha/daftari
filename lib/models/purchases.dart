@@ -31,7 +31,9 @@ class Purchase with _$Purchase {
           quantity: quantity,
           id: id);
 
-  String get formattedTotal => Utils.convertToMoneyFormat(quantity * unitPrice);
+  String get formattedTotal => Utils.convertToMoneyFormat(calcTotal);
+
+  double get calcTotal => quantity * unitPrice;
 
   factory Purchase.fromJson(Map<String, dynamic> json) =>
       _$PurchaseFromJson(json);

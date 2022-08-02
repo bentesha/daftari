@@ -44,10 +44,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     var form = document.form;
     final now = DateTime.now();
 
-    form = document.form.copyWith(
-        date: now.millisecondsSinceEpoch.toString(),
-        title: supp.isDateAsTitle ? Utils.dateToString(now) : form.title);
-
+    form = document.form.copyWith(date: now.millisecondsSinceEpoch.toString());
     // save temporarily if coming from quick actions
     if (fromQuickActions) {
       form = form.copyWith(id: Utils.getRandomId());
@@ -89,10 +86,6 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     emit(ExpensePagesState.loading(supp));
 
     var document = supp.document;
-    if (supp.isDateAsTitle) {
-      final form = document.form.copyWith(title: Utils.dateToString(supp.date));
-      document = document.copyWith(form: form);
-    }
     if (fromQuickActions) {
       final form = expensesService.getCurrent.form;
       final expense = Expense.toServer(
@@ -171,8 +164,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
   }
 
   void _updateAttributes(
-      {String? title,
-      DateTime? date,
+      {DateTime? date,
       bool? isDateAsTitle,
       String? description,
       String? amount,
@@ -183,9 +175,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
 
     emit(ExpensePagesState.loading(supp));
     var form = supp.document.form;
-    form = form.copyWith(
-        title: title ?? form.title,
-        description: documentDescription ?? form.description);
+    form = form.copyWith(description: documentDescription ?? form.description);
     supp = supp.copyWith(
         document: document ?? supp.document.copyWith(form: form),
         amount: amount ?? supp.amount,
@@ -211,14 +201,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     var supp = state.supplements;
     emit(ExpensePagesState.loading(supp));
 
-    final form = supp.document.form;
     final errors = <String, String?>{};
-    if (isValidatingDocumentDetails && (!supp.isDateAsTitle)) {
-      errors['title'] = InputValidation.validateText(form.title, 'Title');
-    }
-    if (fromQuickActions) {
-      errors['document'] = InputValidation.validateText(form.title, 'Document');
-    }
     //validating expense details
     if (!isValidatingDocumentDetails || fromQuickActions) {
       errors['category'] =
@@ -245,7 +228,9 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     if (_page != Pages.document_expenses_page) return;
     var supp = state.supplements;
     final temporaryExpenses = expensesService.getTemporaryList;
-    final document = Document.expenses(supp.document.form, temporaryExpenses);
+    final total = expensesService.temporaryExpensesTotal;
+    final form = supp.document.form.copyWith(total: total);
+    final document = Document.expenses(form, temporaryExpenses);
     supp = supp.copyWith(document: document);
     emit(ExpensePagesState.content(supp));
   }
@@ -262,6 +247,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     if (page != Pages.expenses_documents_page) return;
     var supp = state.supplements;
     final documents = expensesService.getList;
+    documents.sort((b, a) => a.form.dateTime.compareTo(b.form.dateTime));
     supp = supp.copyWith(documents: documents);
     emit(ExpensePagesState.content(supp));
   }
@@ -276,21 +262,12 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     } else {
       //is viewing / editing existing document
       final form = document.form;
-      final isDateAsTitle =
-          _checkIfDateIsUsedAsTitle(form.title, form.dateTime);
+
       supp = supp.copyWith(
-          document: document,
-          date: form.dateTime,
-          isDateAsTitle: isDateAsTitle,
-          action: PageActions.viewing);
+          document: document, date: form.dateTime, action: PageActions.viewing);
     }
     expensesService.initDocument(supp.document);
     emit(ExpensePagesState.content(supp));
-  }
-
-  bool _checkIfDateIsUsedAsTitle(String title, DateTime date) {
-    final dateFromTitle = Utils.dateToString(date);
-    return title == dateFromTitle;
   }
 
   void _initExpensePage(Pages page, [Expense? expense, PageActions? action]) {
@@ -337,8 +314,6 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
       _updateAttributes(documentDescription: description);
 
   void updateDate(DateTime date) => _updateAttributes(date: date);
-
-  void updateTitle(String title) => _updateAttributes(title: title);
 
   void updateAction(PageActions action) => _updateAttributes(action: action);
 

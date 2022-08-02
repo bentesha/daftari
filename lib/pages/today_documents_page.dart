@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 import '../repository/reports/sales/sales_repository.dart';
 import '../source.dart';
 
@@ -73,7 +71,7 @@ class _TodayDocumentsPageState extends State<TodayDocumentsPage> {
                         return ValueListenableBuilder(
                           valueListenable: selectedDocumentNotifier,
                           child: ListTile(
-                            title: AppText(document.form.title),
+                            title: AppText(document.form.formattedDate),
                             trailing: AppText(document.form.formattedTotal,
                                 weight: FontWeight.bold),
                             onTap: () => selectedDocumentNotifier.value =
@@ -113,7 +111,7 @@ class _TodayDocumentsPageState extends State<TodayDocumentsPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            AppText(document.form.title, weight: FontWeight.bold),
+            AppText(document.form.formattedDate, weight: FontWeight.bold),
             AppIconButton(
               onPressed: () => selectedDocumentNotifier.value = "",
               icon: Icons.remove,

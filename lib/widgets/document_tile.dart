@@ -20,10 +20,7 @@ class DocumentTile<T> extends StatelessWidget {
                     : DocumentWriteOffsPage(document)),
         padding: EdgeInsets.symmetric(horizontal: 15.dw),
         child: ListTile(
-          title: AppText(form.title, color: AppColors.secondary),
-          trailing: T != WriteOff
-              ? AppText(form.formattedTotal, weight: FontWeight.bold)
-              : const SizedBox(width: .0001),
-        ));
+            title: AppText(form.formattedDate, color: AppColors.secondary),
+            trailing: AppText(form.formattedTotal, weight: FontWeight.bold)));
   }
 }

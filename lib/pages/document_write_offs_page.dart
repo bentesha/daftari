@@ -1,5 +1,6 @@
 import 'package:inventory_management/widgets/type_selector_dialog.dart';
 
+import '../widgets/date_picker_form_cell.dart';
 import '../widgets/form_cell_item_picker.dart';
 import '../source.dart';
 import '../widgets/bottom_total_amount_tile.dart';
@@ -63,14 +64,13 @@ class _DocumentWriteOffsPageState extends State<DocumentWriteOffsPage> {
     return Scaffold(
         appBar: _buildAppBar(supp),
         body: _buildGroupDetails(supp),
-        floatingActionButton: _buildActionButton(supp),
-        bottomNavigationBar: _buildBottomNavBar(supp));
+        bottomNavigationBar: BottomTotalAmountTile(supp.document.form.total));
   }
 
   _buildAppBar(WriteOffSupplements supp) {
     final action = supp.action;
     final title = action.isViewing
-        ? supp.document.form.title
+        ? supp.document.form.formattedDate
         : action.isEditing
             ? 'Edit Write-off Document'
             : 'New Write-off Document';
@@ -88,14 +88,17 @@ class _DocumentWriteOffsPageState extends State<DocumentWriteOffsPage> {
     final action = supp.action;
 
     return ListView(
+      physics: const NeverScrollableScrollPhysics(),
       children: [
-        !action.isViewing
-            ? DateSelector(
-                title: 'Date',
-                onDateSelected: bloc.updateDate,
-                date: supp.date,
-                isEditable: false)
-            : Container(),
+        if (action.isEditing || action.isAdding)
+          DatePickerFormCell(
+            label: "Date",
+            value: supp.date,
+            onChanged: (value) {
+              if (value == null) return;
+              bloc.updateDate(value);
+            },
+          ),
         FormCellItemPicker(
             onPressed: () => _openTypesDialog(supp.type),
             valueText: supp.type.string,
@@ -103,44 +106,27 @@ class _DocumentWriteOffsPageState extends State<DocumentWriteOffsPage> {
             errorText: supp.errors['type'],
             editable: action.isAdding),
         const AppDivider(margin: EdgeInsets.zero),
-        _buildGroupTitle(supp),
+        SizedBox(height: 15.dh),
+        _buildItemsTitle(),
         _buildItems(supp)
       ],
     );
   }
 
-  _buildGroupTitle(WriteOffSupplements supp) {
-    return supp.action.isViewing
-        ? Container()
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildCheckBox(supp),
-              supp.isDateAsTitle
-                  ? Container()
-                  : AppTextField(
-                      text: supp.document.form.title,
-                      onChanged: bloc.updateTitle,
-                      hintText: '',
-                      keyboardType: TextInputType.name,
-                      textCapitalization: TextCapitalization.words,
-                      label: 'Title',
-                      error: supp.errors['title']),
-            ],
-          );
-  }
-
-  _buildCheckBox(WriteOffSupplements supp) {
-    final text =
-        supp.isDateAsTitle ? 'Date used as title' : 'Use date as title';
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5.dw),
+  _buildItemsTitle() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 5),
+      decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.black, width: 1.5))),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Checkbox(
-              value: supp.isDateAsTitle, onChanged: bloc.updateDateAsTitle),
-          SizedBox(width: 5.dw),
-          AppText(text),
+          const Text("ITEMS", style: TextStyle(fontSize: 18)),
+          AppIconButton(
+              onPressed: () => push(const WriteOffPage(PageActions.adding)),
+              icon: Icons.add,
+              margin: const EdgeInsets.only(bottom: 5),
+              iconThemeData: const IconThemeData(color: AppColors.primary))
         ],
       ),
     );
@@ -150,27 +136,18 @@ class _DocumentWriteOffsPageState extends State<DocumentWriteOffsPage> {
     final writeOffList = supp.getWriteOffList;
     if (writeOffList.isEmpty) return _buildEmptyState(emptyExpensesMessage);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 19.dw, top: 10.dh),
-          child: const AppText('Items', weight: FontWeight.bold),
-        ),
-        ListView.separated(
-          itemCount: writeOffList.length,
-          separatorBuilder: (_, __) => AppDivider.onDocumentPage(),
-          itemBuilder: (_, i) {
-            final writeOff = writeOffList[i];
-            final product = bloc.getProductById(writeOff.productId);
-            return WriteOffTile(writeOff,
-                product: product, documentPageAction: supp.action);
-          },
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.zero,
-        ),
-      ],
+    return ListView.separated(
+      itemCount: writeOffList.length,
+      separatorBuilder: (_, __) => AppDivider.onDocumentPage(),
+      itemBuilder: (_, i) {
+        final writeOff = writeOffList[i];
+        final product = bloc.getProductById(writeOff.productId);
+        return WriteOffTile(writeOff,
+            product: product, documentPageAction: supp.action);
+      },
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.zero,
     );
   }
 
@@ -179,18 +156,6 @@ class _DocumentWriteOffsPageState extends State<DocumentWriteOffsPage> {
         height: 600.dh,
         alignment: Alignment.center,
         child: EmptyStateWidget(message: message));
-  }
-
-  _buildActionButton(WriteOffSupplements supp) {
-    return supp.action.isViewing
-        ? Container()
-        : const AddButton(nextPage: WriteOffPage(PageActions.adding));
-  }
-
-  _buildBottomNavBar(WriteOffSupplements supp) {
-    return supp.action.isViewing
-        ? BottomTotalAmountTile(supp.document.form.total)
-        : const SizedBox(height: .00001);
   }
 
   _initBloc([bool isFirstTimeInit = true]) {

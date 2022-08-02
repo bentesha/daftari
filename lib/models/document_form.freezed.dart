@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of '../document_form.dart';
+part of 'document_form.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -24,13 +24,11 @@ class _$DocumentFormTearOff {
 
   _DocumentForm call(
       {String id = '',
-      String title = '',
       String? description,
       double total = 0.0,
       String date = ''}) {
     return _DocumentForm(
       id: id,
-      title: title,
       description: description,
       total: total,
       date: date,
@@ -48,7 +46,6 @@ const $DocumentForm = _$DocumentFormTearOff();
 /// @nodoc
 mixin _$DocumentForm {
   String get id => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
@@ -64,12 +61,7 @@ abstract class $DocumentFormCopyWith<$Res> {
   factory $DocumentFormCopyWith(
           DocumentForm value, $Res Function(DocumentForm) then) =
       _$DocumentFormCopyWithImpl<$Res>;
-  $Res call(
-      {String id,
-      String title,
-      String? description,
-      double total,
-      String date});
+  $Res call({String id, String? description, double total, String date});
 }
 
 /// @nodoc
@@ -83,7 +75,6 @@ class _$DocumentFormCopyWithImpl<$Res> implements $DocumentFormCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
-    Object? title = freezed,
     Object? description = freezed,
     Object? total = freezed,
     Object? date = freezed,
@@ -92,10 +83,6 @@ class _$DocumentFormCopyWithImpl<$Res> implements $DocumentFormCopyWith<$Res> {
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: title == freezed
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
               as String,
       description: description == freezed
           ? _value.description
@@ -120,12 +107,7 @@ abstract class _$DocumentFormCopyWith<$Res>
           _DocumentForm value, $Res Function(_DocumentForm) then) =
       __$DocumentFormCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {String id,
-      String title,
-      String? description,
-      double total,
-      String date});
+  $Res call({String id, String? description, double total, String date});
 }
 
 /// @nodoc
@@ -141,7 +123,6 @@ class __$DocumentFormCopyWithImpl<$Res> extends _$DocumentFormCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? title = freezed,
     Object? description = freezed,
     Object? total = freezed,
     Object? date = freezed,
@@ -150,10 +131,6 @@ class __$DocumentFormCopyWithImpl<$Res> extends _$DocumentFormCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      title: title == freezed
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
               as String,
       description: description == freezed
           ? _value.description
@@ -175,11 +152,7 @@ class __$DocumentFormCopyWithImpl<$Res> extends _$DocumentFormCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_DocumentForm extends _DocumentForm {
   const _$_DocumentForm(
-      {this.id = '',
-      this.title = '',
-      this.description,
-      this.total = 0.0,
-      this.date = ''})
+      {this.id = '', this.description, this.total = 0.0, this.date = ''})
       : super._();
 
   factory _$_DocumentForm.fromJson(Map<String, dynamic> json) =>
@@ -188,9 +161,6 @@ class _$_DocumentForm extends _DocumentForm {
   @JsonKey()
   @override
   final String id;
-  @JsonKey()
-  @override
-  final String title;
   @override
   final String? description;
   @JsonKey()
@@ -202,7 +172,7 @@ class _$_DocumentForm extends _DocumentForm {
 
   @override
   String toString() {
-    return 'DocumentForm(id: $id, title: $title, description: $description, total: $total, date: $date)';
+    return 'DocumentForm(id: $id, description: $description, total: $total, date: $date)';
   }
 
   @override
@@ -211,7 +181,6 @@ class _$_DocumentForm extends _DocumentForm {
         (other.runtimeType == runtimeType &&
             other is _DocumentForm &&
             const DeepCollectionEquality().equals(other.id, id) &&
-            const DeepCollectionEquality().equals(other.title, title) &&
             const DeepCollectionEquality()
                 .equals(other.description, description) &&
             const DeepCollectionEquality().equals(other.total, total) &&
@@ -222,7 +191,6 @@ class _$_DocumentForm extends _DocumentForm {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(id),
-      const DeepCollectionEquality().hash(title),
       const DeepCollectionEquality().hash(description),
       const DeepCollectionEquality().hash(total),
       const DeepCollectionEquality().hash(date));
@@ -241,7 +209,6 @@ class _$_DocumentForm extends _DocumentForm {
 abstract class _DocumentForm extends DocumentForm {
   const factory _DocumentForm(
       {String id,
-      String title,
       String? description,
       double total,
       String date}) = _$_DocumentForm;
@@ -252,8 +219,6 @@ abstract class _DocumentForm extends DocumentForm {
 
   @override
   String get id;
-  @override
-  String get title;
   @override
   String? get description;
   @override

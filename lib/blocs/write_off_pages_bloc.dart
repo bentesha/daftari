@@ -63,9 +63,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
     var form = document.form;
     final now = DateTime.now();
 
-    form = document.form.copyWith(
-        date: now.millisecondsSinceEpoch.toString(),
-        title: supp.isDateAsTitle ? Utils.dateToString(now) : form.title);
+    form = document.form.copyWith(date: now.millisecondsSinceEpoch.toString());
     final writeOffList = writeOffsService.getTemporaryList;
     document = Document.writeOffs(form, supp.type, writeOffList);
 
@@ -85,11 +83,6 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
     if (hasErrors) return;
 
     var document = supp.document;
-    if (supp.isDateAsTitle) {
-      final form = document.form.copyWith(title: Utils.dateToString(supp.date));
-      document = document.copyWith(form: form);
-    }
-
     try {
       await writeOffsService.editDocument(document);
       emit(WriteOffPagesState.success(supp));
@@ -159,9 +152,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
 
     emit(WriteOffPagesState.loading(supp));
     var form = supp.document.form;
-    form = form.copyWith(
-        title: title ?? form.title,
-        description: description ?? form.description);
+    form = form.copyWith(description: description ?? form.description);
     supp = supp.copyWith(
         document: supp.document.copyWith(form: form),
         quantity: quantity ?? supp.quantity,
@@ -185,11 +176,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
     var supp = state.supplements;
     emit(WriteOffPagesState.loading(supp));
 
-    final form = supp.document.form;
     final errors = <String, String?>{};
-    if (isValidatingDocumentDetails && (!supp.isDateAsTitle)) {
-      errors['title'] = InputValidation.validateText(form.title, 'Title');
-    }
     //validating purchases details
     if (!isValidatingDocumentDetails) {
       errors['product'] =
@@ -218,8 +205,9 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
     if (_page != Pages.document_write_offs_page) return;
     var supp = state.supplements;
     final temporaryWriteOffs = writeOffsService.getTemporaryList;
-    final document =
-        Document.writeOffs(supp.document.form, supp.type, temporaryWriteOffs);
+    final total = writeOffsService.temporaryWriteOffsTotal;
+    final form = supp.document.form.copyWith(total: total);
+    final document = Document.writeOffs(form, supp.type, temporaryWriteOffs);
     supp = supp.copyWith(document: document);
     emit(WriteOffPagesState.content(supp));
   }
@@ -237,6 +225,7 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
 
     var supp = state.supplements;
     final documents = writeOffsService.getList;
+    documents.sort((b, a) => a.form.dateTime.compareTo(b.form.dateTime));
     supp = supp.copyWith(documents: documents);
     emit(WriteOffPagesState.content(supp));
   }
@@ -251,8 +240,6 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
     } else {
       //is viewing / editing existing document
       final form = document.form;
-      final isDateAsTitle =
-          _checkIfDateIsUsedAsTitle(form.title, form.dateTime);
       final type = document.maybeWhen(
           writeOffs: (_, type, __) => type, orElse: () => null);
 
@@ -260,16 +247,10 @@ class WriteOffPagesBloc extends Cubit<WriteOffPagesState> {
           document: document,
           date: form.dateTime,
           type: type!,
-          isDateAsTitle: isDateAsTitle,
           action: PageActions.viewing);
     }
     writeOffsService.initDocument(supp.document);
     emit(WriteOffPagesState.content(supp));
-  }
-
-  bool _checkIfDateIsUsedAsTitle(String title, DateTime date) {
-    final dateFromTitle = Utils.dateToString(date);
-    return title == dateFromTitle;
   }
 
   void _initWriteOffsPage(Pages page,

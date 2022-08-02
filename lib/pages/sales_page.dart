@@ -68,7 +68,7 @@ class _SalesPageState extends State<SalesPage> {
         if (widget.fromQuickActions)
           FormCellItemPicker(
             label: 'Document',
-            valueText: supp.document.form.title,
+            valueText: "Document",
             errorText: supp.errors['document'],
             onPressed: () async {
               final document = await ItemsSearchPage.navigateTo<Document>(

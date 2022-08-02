@@ -157,7 +157,7 @@ class _ItemsSearchPageState<T> extends State<ItemsSearchPage<T>> {
 
   String _getName(var item) {
     if (T == Document) {
-      return (item as Document).form.title;
+      return (item as Document).form.description ?? "Document";
     }
     return item.name;
   }

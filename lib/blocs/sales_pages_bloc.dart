@@ -44,9 +44,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     var form = document.form;
     final now = DateTime.now();
 
-    form = document.form.copyWith(
-        date: now.millisecondsSinceEpoch.toString(),
-        title: supp.isDateAsTitle ? Utils.dateToString(now) : form.title);
+    form = document.form.copyWith(date: now.millisecondsSinceEpoch.toString());
 
     // save temporarily if coming from quick actions
     if (fromQuickActions) {
@@ -89,10 +87,6 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     emit(SalesDocumentsPageState.loading(supp));
 
     var document = supp.document;
-    if (supp.isDateAsTitle) {
-      final form = document.form.copyWith(title: Utils.dateToString(supp.date));
-      document = document.copyWith(form: form);
-    }
     if (fromQuickActions) {
       final form = salesService.getCurrent.form;
       final sales = Sales.toServer(
@@ -172,8 +166,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
   }
 
   void _updateAttributes(
-      {String? title,
-      DateTime? date,
+      {DateTime? date,
       bool? isDateAsTitle,
       String? quantity,
       String? unitPrice,
@@ -184,9 +177,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
 
     emit(SalesDocumentsPageState.loading(supp));
     var form = supp.document.form;
-    form = form.copyWith(
-        title: title ?? form.title,
-        description: description ?? form.description);
+    form = form.copyWith(description: description ?? form.description);
     supp = supp.copyWith(
         document: document ?? supp.document.copyWith(form: form),
         quantity: quantity ?? supp.quantity,
@@ -212,15 +203,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     var supp = state.supplements;
     emit(SalesDocumentsPageState.loading(supp));
 
-    final form = supp.document.form;
     final errors = <String, String?>{};
-    if (isValidatingDocumentDetails && (!supp.isDateAsTitle)) {
-      errors['title'] = InputValidation.validateText(form.title, 'Title');
-    }
-    if (fromQuickActions) {
-      errors['document'] = InputValidation.validateText(form.title, 'Document');
-    }
-
     //validating sales details
     if (!isValidatingDocumentDetails || fromQuickActions) {
       errors['product'] =
@@ -250,7 +233,9 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     if (_page != Pages.document_sales_page) return;
     var supp = state.supplements;
     final temporarySales = salesService.getTemporaryList;
-    final document = Document.sales(supp.document.form, temporarySales);
+    final total = salesService.temporarySalesTotal;
+    final form = supp.document.form.copyWith(total: total);
+    final document = Document.sales(form, temporarySales);
     supp = supp.copyWith(document: document);
     emit(SalesDocumentsPageState.content(supp));
   }
@@ -260,9 +245,10 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     if (_page != Pages.sales_page) return;
     final product = productsService.getCurrent;
     final supp = state.supplements.copyWith(
-        product: product,
-        quantity: '1',
-        unitPrice: product.unitPrice.toString());
+      product: product,
+      quantity: '1',
+      unitPrice: product.unitPrice.toString(),
+    );
     emit(SalesDocumentsPageState.content(supp));
   }
 
@@ -270,6 +256,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     if (page != Pages.sales_documents_page) return;
     var supp = state.supplements;
     final documents = salesService.getList;
+    documents.sort((b, a) => a.form.dateTime.compareTo(b.form.dateTime));
     supp = supp.copyWith(documents: documents);
     emit(SalesDocumentsPageState.content(supp));
   }
@@ -284,21 +271,11 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     } else {
       //is viewing / editing existing document
       final form = document.form;
-      final isDateAsTitle =
-          _checkIfDateIsUsedAsTitle(form.title, form.dateTime);
       supp = supp.copyWith(
-          document: document,
-          date: form.dateTime,
-          isDateAsTitle: isDateAsTitle,
-          action: PageActions.viewing);
+          document: document, date: form.dateTime, action: PageActions.viewing);
     }
     salesService.initDocument(supp.document);
     emit(SalesDocumentsPageState.content(supp));
-  }
-
-  bool _checkIfDateIsUsedAsTitle(String title, DateTime date) {
-    final dateFromTitle = Utils.dateToString(date);
-    return title == dateFromTitle;
   }
 
   void _initSalesPage(Pages page, [Sales? sales, PageActions? action]) {
@@ -343,8 +320,6 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
 
   void updateDate(DateTime date) => _updateAttributes(date: date);
 
-  void updateTitle(String title) => _updateAttributes(title: title);
-
   void updateAction(PageActions action) => _updateAttributes(action: action);
 
   void updateDateAsTitle(bool? isDateAsTitle) =>
@@ -354,6 +329,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
       _updateAttributes(document: document);
 
   void _handleError(ApiErrors error) {
-    emit(SalesDocumentsPageState.failed(state.supplements, message: error.message));
+    emit(SalesDocumentsPageState.failed(state.supplements,
+        message: error.message));
   }
 }

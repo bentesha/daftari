@@ -44,8 +44,7 @@ class _SalesLandingPageState extends State<SalesLandingPage> {
                 push(const SalesDocumentsPage());
               }),
               _buildTile(Icons.sell, "Add New Sales", () {
-                push(const SalesPage(PageActions.adding,
-                    fromQuickActions: true));
+                push(const DocumentSalesPage());
               }),
               _buildTile(Icons.qr_code, "Add New Product", () {
                 push(const ProductPage());

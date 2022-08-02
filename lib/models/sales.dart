@@ -34,7 +34,9 @@ class Sales with _$Sales {
           quantity: quantity,
           id: id);
 
-  String get formattedTotal => Utils.convertToMoneyFormat(quantity * unitPrice);
+  String get formattedTotal => Utils.convertToMoneyFormat(calcTotal);
+
+  double get calcTotal => quantity * unitPrice;
 
   factory Sales.fromJson(Map<String, dynamic> json) => _$SalesFromJson(json);
 

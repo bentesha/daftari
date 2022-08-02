@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of '../write_off.dart';
+part of 'write_off.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -26,11 +26,13 @@ class _$WriteOffTearOff {
       {String id = '',
       String documentId = '',
       String productId = '',
+      double unitCost = 0.0,
       double quantity = 0.0}) {
     return _WriteOff(
       id: id,
       documentId: documentId,
       productId: productId,
+      unitCost: unitCost,
       quantity: quantity,
     );
   }
@@ -48,6 +50,7 @@ mixin _$WriteOff {
   String get id => throw _privateConstructorUsedError;
   String get documentId => throw _privateConstructorUsedError;
   String get productId => throw _privateConstructorUsedError;
+  double get unitCost => throw _privateConstructorUsedError;
   double get quantity => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -60,7 +63,12 @@ mixin _$WriteOff {
 abstract class $WriteOffCopyWith<$Res> {
   factory $WriteOffCopyWith(WriteOff value, $Res Function(WriteOff) then) =
       _$WriteOffCopyWithImpl<$Res>;
-  $Res call({String id, String documentId, String productId, double quantity});
+  $Res call(
+      {String id,
+      String documentId,
+      String productId,
+      double unitCost,
+      double quantity});
 }
 
 /// @nodoc
@@ -76,6 +84,7 @@ class _$WriteOffCopyWithImpl<$Res> implements $WriteOffCopyWith<$Res> {
     Object? id = freezed,
     Object? documentId = freezed,
     Object? productId = freezed,
+    Object? unitCost = freezed,
     Object? quantity = freezed,
   }) {
     return _then(_value.copyWith(
@@ -91,6 +100,10 @@ class _$WriteOffCopyWithImpl<$Res> implements $WriteOffCopyWith<$Res> {
           ? _value.productId
           : productId // ignore: cast_nullable_to_non_nullable
               as String,
+      unitCost: unitCost == freezed
+          ? _value.unitCost
+          : unitCost // ignore: cast_nullable_to_non_nullable
+              as double,
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -104,7 +117,12 @@ abstract class _$WriteOffCopyWith<$Res> implements $WriteOffCopyWith<$Res> {
   factory _$WriteOffCopyWith(_WriteOff value, $Res Function(_WriteOff) then) =
       __$WriteOffCopyWithImpl<$Res>;
   @override
-  $Res call({String id, String documentId, String productId, double quantity});
+  $Res call(
+      {String id,
+      String documentId,
+      String productId,
+      double unitCost,
+      double quantity});
 }
 
 /// @nodoc
@@ -121,6 +139,7 @@ class __$WriteOffCopyWithImpl<$Res> extends _$WriteOffCopyWithImpl<$Res>
     Object? id = freezed,
     Object? documentId = freezed,
     Object? productId = freezed,
+    Object? unitCost = freezed,
     Object? quantity = freezed,
   }) {
     return _then(_WriteOff(
@@ -136,6 +155,10 @@ class __$WriteOffCopyWithImpl<$Res> extends _$WriteOffCopyWithImpl<$Res>
           ? _value.productId
           : productId // ignore: cast_nullable_to_non_nullable
               as String,
+      unitCost: unitCost == freezed
+          ? _value.unitCost
+          : unitCost // ignore: cast_nullable_to_non_nullable
+              as double,
       quantity: quantity == freezed
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -151,6 +174,7 @@ class _$_WriteOff extends _WriteOff {
       {this.id = '',
       this.documentId = '',
       this.productId = '',
+      this.unitCost = 0.0,
       this.quantity = 0.0})
       : super._();
 
@@ -168,11 +192,14 @@ class _$_WriteOff extends _WriteOff {
   final String productId;
   @JsonKey()
   @override
+  final double unitCost;
+  @JsonKey()
+  @override
   final double quantity;
 
   @override
   String toString() {
-    return 'WriteOff(id: $id, documentId: $documentId, productId: $productId, quantity: $quantity)';
+    return 'WriteOff(id: $id, documentId: $documentId, productId: $productId, unitCost: $unitCost, quantity: $quantity)';
   }
 
   @override
@@ -184,6 +211,7 @@ class _$_WriteOff extends _WriteOff {
             const DeepCollectionEquality()
                 .equals(other.documentId, documentId) &&
             const DeepCollectionEquality().equals(other.productId, productId) &&
+            const DeepCollectionEquality().equals(other.unitCost, unitCost) &&
             const DeepCollectionEquality().equals(other.quantity, quantity));
   }
 
@@ -193,6 +221,7 @@ class _$_WriteOff extends _WriteOff {
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(documentId),
       const DeepCollectionEquality().hash(productId),
+      const DeepCollectionEquality().hash(unitCost),
       const DeepCollectionEquality().hash(quantity));
 
   @JsonKey(ignore: true)
@@ -211,6 +240,7 @@ abstract class _WriteOff extends WriteOff {
       {String id,
       String documentId,
       String productId,
+      double unitCost,
       double quantity}) = _$_WriteOff;
   const _WriteOff._() : super._();
 
@@ -222,6 +252,8 @@ abstract class _WriteOff extends WriteOff {
   String get documentId;
   @override
   String get productId;
+  @override
+  double get unitCost;
   @override
   double get quantity;
   @override

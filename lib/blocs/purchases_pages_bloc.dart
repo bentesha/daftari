@@ -63,9 +63,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     var form = document.form;
     final now = DateTime.now();
 
-    form = document.form.copyWith(
-        date: now.millisecondsSinceEpoch.toString(),
-        title: supp.isDateAsTitle ? Utils.dateToString(now) : form.title);
+    form = document.form.copyWith(date: now.millisecondsSinceEpoch.toString());
     final purchaseList = purchasesService.getTemporaryList;
     document = Document.purchases(form, purchaseList);
 
@@ -85,11 +83,6 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     if (hasErrors) return;
 
     var document = supp.document;
-    if (supp.isDateAsTitle) {
-      final form = document.form.copyWith(title: Utils.dateToString(supp.date));
-      document = document.copyWith(form: form);
-    }
-
     try {
       await purchasesService.editDocument(document);
       emit(PurchasesPagesState.success(supp));
@@ -161,9 +154,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
 
     emit(PurchasesPagesState.loading(supp));
     var form = supp.document.form;
-    form = form.copyWith(
-        title: title ?? form.title,
-        description: description ?? form.description);
+    form = form.copyWith(description: description ?? form.description);
     supp = supp.copyWith(
         document: supp.document.copyWith(form: form),
         quantity: quantity ?? supp.quantity,
@@ -187,11 +178,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     var supp = state.supplements;
     emit(PurchasesPagesState.loading(supp));
 
-    final form = supp.document.form;
     final errors = <String, String?>{};
-    if (isValidatingDocumentDetails && (!supp.isDateAsTitle)) {
-      errors['title'] = InputValidation.validateText(form.title, 'Title');
-    }
     //validating purchases details
     if (!isValidatingDocumentDetails) {
       errors['product'] =
@@ -221,7 +208,9 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     if (_page != Pages.document_purchases_page) return;
     var supp = state.supplements;
     final temporaryPurchases = purchasesService.getTemporaryList;
-    final document = Document.purchases(supp.document.form, temporaryPurchases);
+    final total = purchasesService.temporaryPurchasesTotal;
+    final form = supp.document.form.copyWith(total: total);
+    final document = Document.purchases(form, temporaryPurchases);
     supp = supp.copyWith(document: document);
     emit(PurchasesPagesState.content(supp));
   }
@@ -242,6 +231,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
 
     var supp = state.supplements;
     final documents = purchasesService.getList;
+    documents.sort((b, a) => a.form.dateTime.compareTo(b.form.dateTime));
     supp = supp.copyWith(documents: documents);
     emit(PurchasesPagesState.content(supp));
   }
@@ -256,21 +246,11 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     } else {
       //is viewing / editing existing document
       final form = document.form;
-      final isDateAsTitle =
-          _checkIfDateIsUsedAsTitle(form.title, form.dateTime);
       supp = supp.copyWith(
-          document: document,
-          date: form.dateTime,
-          isDateAsTitle: isDateAsTitle,
-          action: PageActions.viewing);
+          document: document, date: form.dateTime, action: PageActions.viewing);
     }
     purchasesService.initDocument(supp.document);
     emit(PurchasesPagesState.content(supp));
-  }
-
-  bool _checkIfDateIsUsedAsTitle(String title, DateTime date) {
-    final dateFromTitle = Utils.dateToString(date);
-    return title == dateFromTitle;
   }
 
   void _initPurchasesPage(Pages page,

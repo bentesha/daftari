@@ -71,7 +71,7 @@ class _ExpensePageState extends State<ExpensePage> {
         if (widget.fromQuickActions)
           FormCellItemPicker(
             label: 'Document',
-            valueText: supp.document.form.title,
+            valueText: "Document",
             errorText: supp.errors['document'],
             onPressed: () async {
               final document = await ItemsSearchPage.navigateTo<Document>(

@@ -1,5 +1,6 @@
 import '../source.dart';
 import '../widgets/bottom_total_amount_tile.dart';
+import '../widgets/date_picker_form_cell.dart';
 
 class DocumentExpensesPage extends StatefulWidget {
   const DocumentExpensesPage(
@@ -76,11 +77,7 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
         key: _scaffoldKey,
         appBar: _buildAppBar(supp),
         body: _buildGroupDetails(supp),
-        floatingActionButton:
-            widget.fromQuickActions ? _emptyWidget() : _buildActionButton(supp),
-        bottomNavigationBar: widget.fromQuickActions
-            ? _emptyWidget()
-            : _buildBottomNavBar(supp));
+        bottomNavigationBar: BottomTotalAmountTile(supp.document.form.total));
   }
 
   Widget _emptyWidget() => const SizedBox(height: .004, width: .0004);
@@ -88,7 +85,7 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
   _buildAppBar(ExpenseSupplements supp) {
     final action = supp.action;
     final title = action.isViewing
-        ? supp.document.form.title
+        ? supp.document.form.formattedDate
         : action.isEditing
             ? 'Edit Expenses Document'
             : 'New Expenses Document';
@@ -106,54 +103,48 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
     final action = supp.action;
 
     return ListView(
+      physics: const NeverScrollableScrollPhysics(),
       children: [
-        action.isEditing || action.isAdding
-            ? DateSelector(
-                title: 'Date',
-                onDateSelected: bloc.updateDate,
-                date: supp.date,
-                isEditable: false,
-              )
-            : Container(),
+        if (action.isEditing || action.isAdding)
+          DatePickerFormCell(
+            label: "Date",
+            value: supp.date,
+            onChanged: (value) {
+              if (value == null) return;
+              bloc.updateDate(value);
+            },
+          ),
         const AppDivider(margin: EdgeInsets.zero),
-        _buildGroupTitle(supp),
-        widget.fromQuickActions ? _emptyWidget() : _buildItems(supp)
+        SizedBox(height: 15.dh),
+        AppTextField(
+            text: supp.document.form.description,
+            onChanged: bloc.updateNotes,
+            hintText: '',
+            keyboardType: TextInputType.text,
+            label: 'Comment',
+            error: supp.errors['comment'],
+            isUpdatingOnRebuild: true,
+            isEnabled: !action.isViewing),
+        _buildItemsTitle(),
+        _buildItems(supp)
       ],
     );
   }
 
-  _buildGroupTitle(ExpenseSupplements supp) {
-    return supp.action.isViewing
-        ? Container()
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildCheckBox(supp),
-              supp.isDateAsTitle
-                  ? Container()
-                  : AppTextField(
-                      text: supp.document.form.title,
-                      onChanged: bloc.updateTitle,
-                      hintText: '',
-                      keyboardType: TextInputType.name,
-                      textCapitalization: TextCapitalization.words,
-                      label: 'Title',
-                      error: supp.errors['title']),
-            ],
-          );
-  }
-
-  _buildCheckBox(ExpenseSupplements supp) {
-    final text =
-        supp.isDateAsTitle ? 'Date used as title' : 'Use date as title';
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5.dw),
+  _buildItemsTitle() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 5),
+      decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.black, width: 1.5))),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Checkbox(
-              value: supp.isDateAsTitle, onChanged: bloc.updateDateAsTitle),
-          SizedBox(width: 5.dw),
-          AppText(text),
+          const Text("CATEGORIES", style: TextStyle(fontSize: 18)),
+          AppIconButton(
+              onPressed: () => push(const ExpensePage(PageActions.adding)),
+              icon: Icons.add,
+              margin: const EdgeInsets.only(bottom: 5),
+              iconThemeData: const IconThemeData(color: AppColors.primary))
         ],
       ),
     );
@@ -163,29 +154,17 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
     final expenseList = supp.getExpenseList;
     if (expenseList.isEmpty) return _buildEmptyState(emptyExpensesMessage);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        supp.action.isViewing
-            ? Container()
-            : Padding(
-                padding: EdgeInsets.only(left: 19.dw),
-                child: const AppText('Expenses', weight: FontWeight.bold),
-              ),
-        ListView.separated(
-          itemCount: expenseList.length,
-          separatorBuilder: (_, __) => AppDivider.onDocumentPage(),
-          itemBuilder: (_, i) {
-            final expense = expenseList[i];
-            final category = bloc.getCategoryById(expense.categoryId);
-            return ExpenseTile(expense,
-                category: category, documentPageAction: supp.action);
-          },
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.zero,
-        ),
-      ],
+    return ListView.separated(
+      itemCount: expenseList.length,
+      separatorBuilder: (_, __) => AppDivider.onDocumentPage(),
+      itemBuilder: (_, i) {
+        final expense = expenseList[i];
+        final category = bloc.getCategoryById(expense.categoryId);
+        return ExpenseTile(expense,
+            category: category, documentPageAction: supp.action);
+      },
+      shrinkWrap: true,
+      padding: EdgeInsets.zero,
     );
   }
 
@@ -194,18 +173,6 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
         height: 600.dh,
         alignment: Alignment.center,
         child: EmptyStateWidget(message: message));
-  }
-
-  _buildActionButton(ExpenseSupplements supp) {
-    return supp.action.isViewing
-        ? Container()
-        : const AddButton(nextPage: ExpensePage(PageActions.adding));
-  }
-
-  _buildBottomNavBar(ExpenseSupplements supp) {
-    return supp.action.isViewing
-        ? BottomTotalAmountTile(supp.document.form.total)
-        : const SizedBox(height: .00001);
   }
 
   _initBloc([bool isFirstTimeInit = true]) {

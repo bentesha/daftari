@@ -2,12 +2,10 @@ import 'package:inventory_management/widgets/form_cell_item_picker.dart';
 import '../source.dart';
 
 class ExpensePage extends StatefulWidget {
-  const ExpensePage(this.documentPageAction,
-      {this.expense, this.fromQuickActions = false, Key? key})
+  const ExpensePage(this.documentPageAction, {this.expense, Key? key})
       : super(key: key);
 
   final Expense? expense;
-  final bool fromQuickActions;
   final PageActions documentPageAction;
 
   @override
@@ -68,18 +66,6 @@ class _ExpensePageState extends State<ExpensePage> {
 
     return Column(
       children: [
-        if (widget.fromQuickActions)
-          FormCellItemPicker(
-            label: 'Document',
-            valueText: "Document",
-            errorText: supp.errors['document'],
-            onPressed: () async {
-              final document = await ItemsSearchPage.navigateTo<Document>(
-                  context,
-                  documentType: DocumentType.expenses);
-              bloc.updateDocument(document);
-            },
-          ),
         FormCellItemPicker(
           label: 'Category',
           valueText: supp.category.name,
@@ -131,9 +117,7 @@ class _ExpensePageState extends State<ExpensePage> {
         wasViewingDocument: wasViewingDocument,
         updateActionCallback: updateActionCallback,
         deleteModelCallback: bloc.deleteExpense,
-        saveModelCallback: widget.fromQuickActions
-            ? () => bloc.editDocument(true)
-            : bloc.addExpense,
+        saveModelCallback: bloc.addExpense,
         editModelCallback: bloc.editExpense);
   }
 

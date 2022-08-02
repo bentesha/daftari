@@ -2,12 +2,10 @@ import '../source.dart';
 import '../widgets/form_cell_item_picker.dart';
 
 class SalesPage extends StatefulWidget {
-  const SalesPage(this.documentPageAction,
-      {this.sales, this.fromQuickActions = false, Key? key})
+  const SalesPage(this.documentPageAction, {this.sales, Key? key})
       : super(key: key);
 
   final Sales? sales;
-  final bool fromQuickActions;
   final PageActions documentPageAction;
 
   @override
@@ -65,18 +63,6 @@ class _SalesPageState extends State<SalesPage> {
 
     return Column(
       children: [
-        if (widget.fromQuickActions)
-          FormCellItemPicker(
-            label: 'Document',
-            valueText: "Document",
-            errorText: supp.errors['document'],
-            onPressed: () async {
-              final document = await ItemsSearchPage.navigateTo<Document>(
-                  context,
-                  documentType: DocumentType.sales);
-              bloc.updateDocument(document);
-            },
-          ),
         FormCellItemPicker(
           label: 'Product',
           valueText: supp.product.name,
@@ -126,9 +112,7 @@ class _SalesPageState extends State<SalesPage> {
         wasViewingDocument: wasViewingDocument,
         updateActionCallback: updateActionCallback,
         deleteModelCallback: bloc.deleteSales,
-        saveModelCallback: widget.fromQuickActions
-            ? () => bloc.editDocument(true)
-            : bloc.addSales,
+        saveModelCallback: bloc.addSales,
         editModelCallback: bloc.editSales);
   }
 

@@ -80,7 +80,7 @@ class _AppTextButtonState extends State<AppTextButton>
               alignment: widget.alignment ?? Alignment.center,
               decoration: BoxDecoration(
                   color: animation.value,
-                  borderRadius: widget.borderRadius ?? BorderRadius.zero),
+                  borderRadius: widget.borderRadius ?? BorderRadius.circular(5)),
               child: child),
         );
       },

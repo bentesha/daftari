@@ -17,7 +17,9 @@ class DatePickerFormCell extends StatelessWidget {
       this.hintText,
       this.errorText,
       this.clearable = false,
-      required this.onChanged, super.key});
+      this.enabled = true,
+      required this.onChanged,
+      super.key});
 
   final String label;
   final DateTime? value;
@@ -25,14 +27,15 @@ class DatePickerFormCell extends StatelessWidget {
   final DateTime? lastDate;
   final String? hintText;
   final String? errorText;
-  final bool clearable;
+  final bool clearable, enabled;
   final ValueChanged<DateTime?> onChanged;
 
   _showDatePicker(context) async {
     final newValue = await showDatePicker(
         context: context,
         initialDate: value ?? DateTime.now(),
-        firstDate: firstDate ?? DateTime.now().subtract(const Duration(days: 365)),
+        firstDate:
+            firstDate ?? DateTime.now().subtract(const Duration(days: 365)),
         lastDate: lastDate ?? DateTime.now());
     if (newValue != null && newValue != value) onChanged(newValue);
   }
@@ -42,11 +45,11 @@ class DatePickerFormCell extends StatelessWidget {
   }
 
   @override
-  build(context) {
+  Widget build(BuildContext context) {
     final showClearButton = clearable && value != null;
-    final showSelectorButton = !showClearButton;
+    final showSelectorButton = enabled;
     return FormCell(
-        onTap: () => _showDatePicker(context),
+        onTap: enabled ? () => _showDatePicker(context) : null,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

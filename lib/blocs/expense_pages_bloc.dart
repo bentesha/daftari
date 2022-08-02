@@ -33,7 +33,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     _initExpensePage(page, expense, action);
   }
 
-  void saveDocument([bool fromQuickActions = false]) async {
+  void saveDocument() async {
     _validate();
 
     var supp = state.supplements;
@@ -45,15 +45,6 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     final now = DateTime.now();
 
     form = document.form.copyWith(date: now.millisecondsSinceEpoch.toString());
-    // save temporarily if coming from quick actions
-    if (fromQuickActions) {
-      form = form.copyWith(id: Utils.getRandomId());
-      final temporaryDocument = Document.expenses(form, []);
-      expensesService.saveTemporaryDocument(temporaryDocument);
-      emit(ExpensePagesState.success(supp));
-      return;
-    }
-
     // save to the server otherwise
     emit(ExpensePagesState.loading(supp));
 
@@ -76,8 +67,8 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     }
   }
 
-  void editDocument([bool fromQuickActions = false]) async {
-    _validate(true, fromQuickActions);
+  void editDocument() async {
+    _validate(true);
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
@@ -86,16 +77,6 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     emit(ExpensePagesState.loading(supp));
 
     var document = supp.document;
-    if (fromQuickActions) {
-      final form = expensesService.getCurrent.form;
-      final expense = Expense.toServer(
-          id: Utils.getRandomId(),
-          categoryId: supp.category.id,
-          amount: supp.parsedAmount,
-          description: supp.description);
-      document = Document.expenses(form, [expense]);
-    }
-
     // checking if empty
     final documentList =
         document.maybeWhen(expenses: (_, list) => list, orElse: () => []);
@@ -105,7 +86,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     }
 
     try {
-      await expensesService.editDocument(document, fromQuickActions);
+      await expensesService.editDocument(document);
       emit(ExpensePagesState.success(supp));
     } on ApiErrors catch (e) {
       _handleError(e);
@@ -195,15 +176,13 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
 
   _validateSalesDetails() => _validate(false);
 
-  _validate(
-      [bool isValidatingDocumentDetails = true,
-      bool fromQuickActions = false]) {
+  _validate([bool isValidatingDocumentDetails = true]) {
     var supp = state.supplements;
     emit(ExpensePagesState.loading(supp));
 
     final errors = <String, String?>{};
     //validating expense details
-    if (!isValidatingDocumentDetails || fromQuickActions) {
+    if (!isValidatingDocumentDetails) {
       errors['category'] =
           InputValidation.validateText(supp.category.id, 'Category');
       errors['amount'] = InputValidation.validateNumber(supp.amount, 'Amount');

@@ -5,6 +5,7 @@ import '../widgets/form_cell_item_picker.dart';
 import '../source.dart';
 import '../widgets/bottom_total_amount_tile.dart';
 import '../utils/extensions.dart/write_off_type.dart';
+import '../widgets/items_title.dart';
 
 class DocumentWriteOffsPage extends StatefulWidget {
   const DocumentWriteOffsPage([this.document, Key? key]) : super(key: key);
@@ -90,15 +91,16 @@ class _DocumentWriteOffsPageState extends State<DocumentWriteOffsPage> {
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        if (action.isEditing || action.isAdding)
-          DatePickerFormCell(
-            label: "Date",
-            value: supp.date,
-            onChanged: (value) {
-              if (value == null) return;
-              bloc.updateDate(value);
-            },
-          ),
+        // if (action.isEditing || action.isAdding)
+        DatePickerFormCell(
+          label: "Date",
+          value: supp.date,
+          enabled: action.isEditing || action.isAdding,
+          onChanged: (value) {
+            if (value == null) return;
+            bloc.updateDate(value);
+          },
+        ),
         FormCellItemPicker(
             onPressed: () => _openTypesDialog(supp.type),
             valueText: supp.type.string,
@@ -107,28 +109,12 @@ class _DocumentWriteOffsPageState extends State<DocumentWriteOffsPage> {
             editable: action.isAdding),
         const AppDivider(margin: EdgeInsets.zero),
         SizedBox(height: 15.dh),
-        _buildItemsTitle(),
+        ItemsListTitle(
+            title: "ITEMS",
+            enabled: action.isEditing || action.isAdding,
+            onPressed: () => push(const WriteOffPage(PageActions.adding))),
         _buildItems(supp)
       ],
-    );
-  }
-
-  _buildItemsTitle() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 5),
-      decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.black, width: 1.5))),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text("ITEMS", style: TextStyle(fontSize: 18)),
-          AppIconButton(
-              onPressed: () => push(const WriteOffPage(PageActions.adding)),
-              icon: Icons.add,
-              margin: const EdgeInsets.only(bottom: 5),
-              iconThemeData: const IconThemeData(color: AppColors.primary))
-        ],
-      ),
     );
   }
 

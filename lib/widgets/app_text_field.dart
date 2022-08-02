@@ -1,4 +1,6 @@
 import '../source.dart';
+import 'form_cell_error.dart';
+import 'form_cell_label.dart';
 
 class AppTextField extends StatefulWidget {
   const AppTextField(
@@ -70,7 +72,8 @@ class _AppTextFieldState extends State<AppTextField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppText(widget.label, opacity: .7),
+          FormCellLabel(widget.label),
+          // AppText(widget.label, opacity: .7),
           Container(
             height: widget.maxLines > 1 ? 90.dh : 40.dh,
             margin: EdgeInsets.only(top: 8.dh),
@@ -127,12 +130,7 @@ class _AppTextFieldState extends State<AppTextField> {
     return hasError && widget.shouldShowErrorText
         ? Padding(
             padding: EdgeInsets.only(top: 8.dw),
-            child: AppText(
-              widget.error!,
-              color: AppColors.error,
-              size: 14.dw,
-            ),
-          )
+            child: FormCellError(widget.error))
         : Container();
   }
 

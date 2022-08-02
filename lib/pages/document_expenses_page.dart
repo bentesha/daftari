@@ -1,14 +1,13 @@
+import 'package:inventory_management/widgets/items_title.dart';
+
 import '../source.dart';
 import '../widgets/bottom_total_amount_tile.dart';
 import '../widgets/date_picker_form_cell.dart';
 
 class DocumentExpensesPage extends StatefulWidget {
-  const DocumentExpensesPage(
-      {this.document, this.fromQuickActions = false, Key? key})
-      : super(key: key);
+  const DocumentExpensesPage({this.document, Key? key}) : super(key: key);
 
   final Document? document;
-  final bool fromQuickActions;
 
   @override
   State<DocumentExpensesPage> createState() => _DocumentExpensesPageState();
@@ -36,12 +35,11 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
                   state.maybeWhen(success: (_) => true, orElse: () => false);
 
               if (isSuccessful) {
-                final message =
-                    widget.fromQuickActions || state.supplements.action.isAdding
-                        ? 'Sales document was added successfully'
-                        : state.supplements.action.isEditing
-                            ? 'Sales document was editted successfully'
-                            : 'Sales document was deleted successfully';
+                final message = state.supplements.action.isAdding
+                    ? 'Sales document was added successfully'
+                    : state.supplements.action.isEditing
+                        ? 'Sales document was editted successfully'
+                        : 'Sales document was deleted successfully';
                 showSnackBar(message, context: _, isError: false);
                 pop();
               }
@@ -80,8 +78,6 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
         bottomNavigationBar: BottomTotalAmountTile(supp.document.form.total));
   }
 
-  Widget _emptyWidget() => const SizedBox(height: .004, width: .0004);
-
   _buildAppBar(ExpenseSupplements supp) {
     final action = supp.action;
     final title = action.isViewing
@@ -95,7 +91,7 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
         action: action,
         updateActionCallback: () => bloc.updateAction(PageActions.editing),
         deleteDocumentCallback: bloc.deleteDocument,
-        saveDocumentCallback: () => bloc.saveDocument(widget.fromQuickActions),
+        saveDocumentCallback: bloc.saveDocument,
         editDocumentCallback: bloc.editDocument);
   }
 
@@ -105,15 +101,16 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        if (action.isEditing || action.isAdding)
-          DatePickerFormCell(
-            label: "Date",
-            value: supp.date,
-            onChanged: (value) {
-              if (value == null) return;
-              bloc.updateDate(value);
-            },
-          ),
+        //  if (action.isEditing || action.isAdding)
+        DatePickerFormCell(
+          label: "Date",
+          value: supp.date,
+          enabled: action.isEditing || action.isAdding,
+          onChanged: (value) {
+            if (value == null) return;
+            bloc.updateDate(value);
+          },
+        ),
         const AppDivider(margin: EdgeInsets.zero),
         SizedBox(height: 15.dh),
         AppTextField(
@@ -125,28 +122,12 @@ class _DocumentExpensesPageState extends State<DocumentExpensesPage> {
             error: supp.errors['comment'],
             isUpdatingOnRebuild: true,
             isEnabled: !action.isViewing),
-        _buildItemsTitle(),
+        ItemsListTitle(
+            title: "CATEGORIES",
+            enabled: action.isEditing || action.isAdding,
+            onPressed: () => push(const ExpensePage(PageActions.adding))),
         _buildItems(supp)
       ],
-    );
-  }
-
-  _buildItemsTitle() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 5),
-      decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.black, width: 1.5))),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text("CATEGORIES", style: TextStyle(fontSize: 18)),
-          AppIconButton(
-              onPressed: () => push(const ExpensePage(PageActions.adding)),
-              icon: Icons.add,
-              margin: const EdgeInsets.only(bottom: 5),
-              iconThemeData: const IconThemeData(color: AppColors.primary))
-        ],
-      ),
     );
   }
 

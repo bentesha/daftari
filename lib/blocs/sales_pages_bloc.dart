@@ -77,8 +77,8 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     }
   }
 
-  void editDocument([bool fromQuickActions = false]) async {
-    _validate(true, fromQuickActions);
+  void editDocument() async {
+    _validate(true);
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
@@ -87,16 +87,6 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     emit(SalesDocumentsPageState.loading(supp));
 
     var document = supp.document;
-    if (fromQuickActions) {
-      final form = salesService.getCurrent.form;
-      final sales = Sales.toServer(
-          id: Utils.getRandomId(),
-          productId: supp.product.id,
-          unitPrice: supp.parsedUnitPrice,
-          quantity: supp.parsedQuantity);
-      document = Document.sales(form, [sales]);
-    }
-
     // checking if empty
     final documentList =
         document.maybeWhen(sales: (_, list) => list, orElse: () => []);
@@ -107,7 +97,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     }
 
     try {
-      await salesService.editDocument(document, fromQuickActions);
+      await salesService.editDocument(document);
       emit(SalesDocumentsPageState.success(supp));
     } on ApiErrors catch (e) {
       _handleError(e);
@@ -197,15 +187,13 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
 
   _validateSalesDetails() => _validate(false);
 
-  _validate(
-      [bool isValidatingDocumentDetails = true,
-      bool fromQuickActions = false]) {
+  _validate([bool isValidatingDocumentDetails = true]) {
     var supp = state.supplements;
     emit(SalesDocumentsPageState.loading(supp));
 
     final errors = <String, String?>{};
     //validating sales details
-    if (!isValidatingDocumentDetails || fromQuickActions) {
+    if (!isValidatingDocumentDetails) {
       errors['product'] =
           InputValidation.validateText(supp.product.id, 'Product');
       errors['price'] = InputValidation.validateNumber(supp.unitPrice, 'Price');

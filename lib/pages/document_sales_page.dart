@@ -1,6 +1,8 @@
 import '../source.dart';
 import '../widgets/bottom_total_amount_tile.dart';
 import '../widgets/date_picker_form_cell.dart';
+import '../widgets/items_title.dart';
+import '../widgets/text_input_form.dart';
 
 class DocumentSalesPage extends StatefulWidget {
   const DocumentSalesPage(
@@ -101,48 +103,37 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        if (action.isEditing || action.isAdding)
-          DatePickerFormCell(
-            label: "Date",
-            value: supp.date,
-            onChanged: (value) {
-              if (value == null) return;
-              bloc.updateDate(value);
-            },
-          ),
+        // if (action.isEditing || action.isAdding)
+        DatePickerFormCell(
+          label: "Date",
+          value: supp.date,
+          enabled: action.isEditing || action.isAdding,
+          onChanged: (value) {
+            if (value == null) return;
+            bloc.updateDate(value);
+          },
+        ),
         const AppDivider(margin: EdgeInsets.zero),
         SizedBox(height: 15.dh),
+        /*   TextInputFormCell(
+          label: "Comment",
+          hintText: "",
+        ), */
         AppTextField(
             text: supp.document.form.description,
             onChanged: bloc.updateNotes,
             hintText: '',
-             keyboardType: TextInputType.text,
+            keyboardType: TextInputType.text,
             label: 'Comment',
             error: supp.errors['comment'],
             isUpdatingOnRebuild: true,
             isEnabled: !action.isViewing),
-        _buildItemsTitle(),
+        ItemsListTitle(
+            title: "ITEMS",
+            enabled: action.isEditing || action.isAdding,
+            onPressed: () => push(const SalesPage(PageActions.adding))),
         _buildItems(supp)
       ],
-    );
-  }
-
-  _buildItemsTitle() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.dw, vertical: 5),
-      decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.black, width: 1.5))),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text("ITEMS", style: TextStyle(fontSize: 18)),
-          AppIconButton(
-              onPressed: () => push(const SalesPage(PageActions.adding)),
-              icon: Icons.add,
-              margin: const EdgeInsets.only(bottom: 5),
-              iconThemeData: const IconThemeData(color: AppColors.primary))
-        ],
-      ),
     );
   }
 

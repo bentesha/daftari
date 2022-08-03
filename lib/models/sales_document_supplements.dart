@@ -1,6 +1,6 @@
 import '../source.dart';
 
-part 'freezed_models/sales_document_supplements.freezed.dart';
+part 'sales_document_supplements.freezed.dart';
 
 enum PageActions { viewing, editing, adding }
 
@@ -22,7 +22,7 @@ class SalesDocumentSupplements with _$SalesDocumentSupplements {
       @Default(true) bool isDateAsTitle,
       //for editing sales
       @Default('') String salesId,
-      @Default('') String quantity,
+      @Default('1') String quantity,
       @Default('') String unitPrice,
       required Product product,
       //for both

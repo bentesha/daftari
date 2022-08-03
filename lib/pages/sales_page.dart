@@ -1,5 +1,6 @@
 import '../source.dart';
 import '../widgets/form_cell_item_picker.dart';
+import '../widgets/quantity_input_field.dart';
 
 class SalesPage extends StatefulWidget {
   const SalesPage(this.documentPageAction, {this.sales, Key? key})
@@ -71,7 +72,14 @@ class _SalesPageState extends State<SalesPage> {
           onPressed: () => push(const ItemsSearchPage<Product>()),
         ),
         AppDivider(margin: EdgeInsets.only(bottom: 10.dh)),
-        AppTextField(
+        QuantityInputField(
+          initialValue: supp.quantity.isEmpty ? 1 : supp.parsedQuantity.toInt(),
+          onChanged: (value) => bloc.updateQuantity(value.toString()),
+          enabled: !action.isViewing,
+        ),
+        const SizedBox(height: 10),
+
+        /*    AppTextField(
             text: supp.quantity,
             onChanged: bloc.updateQuantity,
             hintText: '',
@@ -79,7 +87,7 @@ class _SalesPageState extends State<SalesPage> {
             label: 'Quantity',
             error: supp.errors['quantity'],
             isUpdatingOnRebuild: true,
-            isEnabled: !action.isViewing),
+            isEnabled: !action.isViewing), */
         AppTextField(
             text: supp.unitPrice,
             onChanged: bloc.updateAmount,

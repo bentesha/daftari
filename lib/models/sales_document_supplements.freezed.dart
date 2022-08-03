@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
-part of '../sales_document_supplements.dart';
+part of 'sales_document_supplements.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -24,7 +24,7 @@ class _$SalesDocumentSupplementsTearOff {
       required DateTime date,
       bool isDateAsTitle = true,
       String salesId = '',
-      String quantity = '',
+      String quantity = '1',
       String unitPrice = '',
       required Product product,
       PageActions action = PageActions.viewing,
@@ -263,7 +263,7 @@ class _$_SalesDocumentSupplements extends _SalesDocumentSupplements {
       required this.date,
       this.isDateAsTitle = true,
       this.salesId = '',
-      this.quantity = '',
+      this.quantity = '1',
       this.unitPrice = '',
       required this.product,
       this.action = PageActions.viewing,

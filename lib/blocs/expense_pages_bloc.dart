@@ -34,8 +34,6 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
   }
 
   void saveDocument() async {
-    _validate();
-
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
@@ -68,8 +66,6 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
   }
 
   void editDocument() async {
-    _validate(true);
-
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
@@ -105,7 +101,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
   }
 
   void addExpense() {
-    _validateSalesDetails();
+    _validateExpenseDetails();
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
@@ -122,7 +118,7 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
   }
 
   void editExpense() {
-    _validateSalesDetails();
+    _validateExpenseDetails();
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
@@ -174,19 +170,17 @@ class ExpensesPagesBloc extends Cubit<ExpensePagesState> {
     emit(ExpensePagesState.success(supp));
   }
 
-  _validateSalesDetails() => _validate(false);
-
-  _validate([bool isValidatingDocumentDetails = true]) {
+  _validateExpenseDetails() {
     var supp = state.supplements;
     emit(ExpensePagesState.loading(supp));
 
     final errors = <String, String?>{};
     //validating expense details
-    if (!isValidatingDocumentDetails) {
-      errors['category'] =
-          InputValidation.validateText(supp.category.id, 'Category');
-      errors['amount'] = InputValidation.validateNumber(supp.amount, 'Amount');
-    }
+
+    errors['category'] =
+        InputValidation.validateText(supp.category.id, 'Category');
+    errors['amount'] = InputValidation.validateNumber(supp.amount, 'Amount');
+
     supp = supp.copyWith(errors: errors);
     emit(ExpensePagesState.content(supp));
   }

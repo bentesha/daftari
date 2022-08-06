@@ -2,15 +2,11 @@ import '../source.dart';
 import '../widgets/bottom_total_amount_tile.dart';
 import '../widgets/date_picker_form_cell.dart';
 import '../widgets/items_title.dart';
-import '../widgets/text_input_form.dart';
 
 class DocumentSalesPage extends StatefulWidget {
-  const DocumentSalesPage(
-      {this.document, this.fromQuickActions = false, Key? key})
-      : super(key: key);
+  const DocumentSalesPage({this.document, Key? key}) : super(key: key);
 
   final Document? document;
-  final bool fromQuickActions;
 
   @override
   State<DocumentSalesPage> createState() => _DocumentSalesPageState();
@@ -37,12 +33,11 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
                   state.maybeWhen(success: (_) => true, orElse: () => false);
 
               if (isSuccessful) {
-                final message =
-                    widget.fromQuickActions || state.supplements.action.isAdding
-                        ? 'Sales document was added successfully'
-                        : state.supplements.action.isEditing
-                            ? 'Sales document was editted successfully'
-                            : 'Sales document was deleted successfully';
+                final message = state.supplements.action.isAdding
+                    ? 'Sales document was added successfully'
+                    : state.supplements.action.isEditing
+                        ? 'Sales document was editted successfully'
+                        : 'Sales document was deleted successfully';
                 showSnackBar(message, context: _, isError: false);
                 pop();
               }
@@ -93,7 +88,7 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
         action: action,
         updateActionCallback: () => bloc.updateAction(PageActions.editing),
         deleteDocumentCallback: bloc.deleteDocument,
-        saveDocumentCallback: () => bloc.saveDocument(widget.fromQuickActions),
+        saveDocumentCallback: bloc.saveDocument,
         editDocumentCallback: bloc.editDocument);
   }
 
@@ -115,10 +110,6 @@ class _DocumentSalesPageState extends State<DocumentSalesPage> {
         ),
         const AppDivider(margin: EdgeInsets.zero),
         SizedBox(height: 15.dh),
-        /*   TextInputFormCell(
-          label: "Comment",
-          hintText: "",
-        ), */
         AppTextField(
             text: supp.document.form.description,
             onChanged: bloc.updateNotes,

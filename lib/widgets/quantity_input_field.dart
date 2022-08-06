@@ -47,6 +47,7 @@ class _QuantityInputFieldState extends State<QuantityInputField> {
                       onPressed: () {
                         if (currentValue == 1 || !widget.enabled) return;
                         currentValue -= 1;
+                        widget.onChanged(currentValue);
                         setState(() {});
                       },
                       icon: const Icon(Icons.remove)),
@@ -61,6 +62,7 @@ class _QuantityInputFieldState extends State<QuantityInputField> {
                       onPressed: () {
                         if (!widget.enabled) return;
                         currentValue += 1;
+                        widget.onChanged(currentValue);
                         setState(() {});
                       },
                       icon: const Icon(Icons.add)),

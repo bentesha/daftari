@@ -51,8 +51,6 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
       _updateAttributes(isDateAsTitle: isDateAsTitle);
 
   void saveDocument() async {
-    _validate();
-
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
@@ -76,8 +74,6 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
   }
 
   void editDocument() async {
-    _validate();
-
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
@@ -103,7 +99,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
   }
 
   void addPurchase() {
-    _validateSalesDetails();
+    _validatePurchaseDetails();
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
@@ -120,7 +116,7 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
   }
 
   void editPurchase() {
-    _validateSalesDetails();
+    _validatePurchaseDetails();
 
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
@@ -172,21 +168,19 @@ class PurchasesPagesBloc extends Cubit<PurchasesPagesState> {
     emit(PurchasesPagesState.success(supp));
   }
 
-  _validateSalesDetails() => _validate(false);
-
-  _validate([bool isValidatingDocumentDetails = true]) {
+  _validatePurchaseDetails() {
     var supp = state.supplements;
     emit(PurchasesPagesState.loading(supp));
 
     final errors = <String, String?>{};
     //validating purchases details
-    if (!isValidatingDocumentDetails) {
-      errors['product'] =
-          InputValidation.validateText(supp.product.id, 'Product');
-      errors['price'] = InputValidation.validateNumber(supp.unitPrice, 'Price');
-      errors['quantity'] =
-          InputValidation.validateNumber(supp.quantity, 'Quantity');
-    }
+
+    errors['product'] =
+        InputValidation.validateText(supp.product.id, 'Product');
+    errors['price'] = InputValidation.validateNumber(supp.unitPrice, 'Price');
+    errors['quantity'] =
+        InputValidation.validateNumber(supp.quantity, 'Quantity');
+
     supp = supp.copyWith(errors: errors);
     emit(PurchasesPagesState.content(supp));
   }

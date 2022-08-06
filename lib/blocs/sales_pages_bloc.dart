@@ -33,28 +33,14 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     _initSalesPage(page, sales, action);
   }
 
-  void saveDocument([bool fromQuickActions = false]) async {
-    _validate();
-
+  void saveDocument() async {
     var supp = state.supplements;
-    final hasErrors = InputValidation.checkErrors(supp.errors);
-    if (hasErrors) return;
-
     var document = supp.document;
     var form = document.form;
     final now = DateTime.now();
 
     form = document.form.copyWith(date: now.millisecondsSinceEpoch.toString());
 
-    // save temporarily if coming from quick actions
-    if (fromQuickActions) {
-      final temporaryDocument = Document.sales(form, []);
-      salesService.saveTemporaryDocument(temporaryDocument);
-      emit(SalesDocumentsPageState.success(supp));
-      return;
-    }
-
-    // save to the server otherwise
     emit(SalesDocumentsPageState.loading(supp));
 
     final salesList = salesService.getTemporaryList;
@@ -78,12 +64,7 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
   }
 
   void editDocument() async {
-    _validate(true);
-
     var supp = state.supplements;
-    final hasErrors = InputValidation.checkErrors(supp.errors);
-    if (hasErrors) return;
-
     emit(SalesDocumentsPageState.loading(supp));
 
     var document = supp.document;
@@ -121,6 +102,8 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     var supp = state.supplements;
     final hasErrors = InputValidation.checkErrors(supp.errors);
     if (hasErrors) return;
+
+    log(supp.parsedQuantity.toString());
 
     final sales = Sales.toServer(
         id: Utils.getRandomId(),
@@ -185,21 +168,18 @@ class SalesPagesBloc extends Cubit<SalesDocumentsPageState> {
     emit(SalesDocumentsPageState.success(supp));
   }
 
-  _validateSalesDetails() => _validate(false);
-
-  _validate([bool isValidatingDocumentDetails = true]) {
+  _validateSalesDetails() {
     var supp = state.supplements;
     emit(SalesDocumentsPageState.loading(supp));
 
     final errors = <String, String?>{};
     //validating sales details
-    if (!isValidatingDocumentDetails) {
-      errors['product'] =
-          InputValidation.validateText(supp.product.id, 'Product');
-      errors['price'] = InputValidation.validateNumber(supp.unitPrice, 'Price');
-      errors['quantity'] =
-          InputValidation.validateNumber(supp.quantity, 'Quantity');
-    }
+
+    errors['product'] =
+        InputValidation.validateText(supp.product.id, 'Product');
+    errors['price'] = InputValidation.validateNumber(supp.unitPrice, 'Price');
+    errors['quantity'] =
+        InputValidation.validateNumber(supp.quantity, 'Quantity');
 
     supp = supp.copyWith(errors: errors);
     emit(SalesDocumentsPageState.content(supp));

@@ -1,9 +1,11 @@
 // ignore_for_file: constant_identifier_names
 
+import 'package:inventory_management/pages/landing_pages/expenses_landing_page.dart';
 import 'package:inventory_management/pages/settings_page.dart';
-import 'package:inventory_management/pages/write_offs_documents_page.dart';
-import '../pages/reports_page.dart';
-import '../pages/sales_landing_page.dart';
+import 'package:inventory_management/pages/documents_pages/write_offs_documents_page.dart';
+import '../pages/landing_pages/purchases_landing_page.dart';
+import '../pages/reports/reports_page.dart';
+import '../pages/landing_pages/sales_landing_page.dart';
 import '../source.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -130,13 +132,13 @@ class _AppDrawerState extends State<AppDrawer> {
         nextPage = const SalesLandingPage();
         break;
       case Pages.purchases_documents_page:
-        nextPage = const PurchasesDocumentsPage();
+        nextPage = const PurchasesLandingPage();
         break;
       case Pages.reports_page:
         nextPage = const ReportsSelectorPage();
         break;
       case Pages.expenses_documents_page:
-        nextPage = const ExpensesDocumentsPage();
+        nextPage = const ExpensesLandingPage();
         break;
       case Pages.stock_write_offs_page:
         nextPage = const WriteOffsDocumentsPages();

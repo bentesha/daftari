@@ -46,6 +46,8 @@ class DashBoardBloc extends Cubit<DashBoardState> {
     }
   }
 
+  void refresh() => getData();
+
   Future<TodayStatistics> _getTodayStats() async {
     final sales = await _salesRepository.getTodaySalesTotal();
     final purchases = await _purchasesRepository.getTodayPurchasesTotal();

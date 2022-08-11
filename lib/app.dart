@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: AppTheme.themeData(),
         navigatorKey: navigatorKey,
-        home: const Dashboard(),
+        home: const DashboardPage(),
       ),
     );
   }

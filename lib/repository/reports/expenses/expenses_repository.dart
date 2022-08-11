@@ -84,4 +84,31 @@ class ExpensesRepository with ExpensesRepositoryMixin, ErrorHandler {
       throw message;
     }
   }
+
+  Future<List<Document>> getTodayExpensesDocuments() async {
+    final now = DateTime.now();
+    final date = DateFormat("yyyy-MM-dd").format(now);
+    try {
+      final url = root + 'expense?&date:gt=$date';
+      final result = await http.get(url);
+      log("$result");
+
+      final data = List<Map<String, dynamic>>.from(result);
+      if (data.isEmpty) return [];
+      // final jsonDocuments = data.groupListsBy<String>((m) => m["documentId"]);
+
+      final documents = <Document>[];
+      for (var document in data) {
+        final expenses = (document["details"] as List)
+            .map((e) => Expense.fromJson(e))
+            .toList();
+        final form = DocumentForm.fromJson(document);
+        documents.add(Document.expenses(form, expenses));
+      }
+      return documents;
+    } catch (error) {
+      final message = getError(error);
+      throw message;
+    }
+  }
 }

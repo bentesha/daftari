@@ -57,4 +57,31 @@ class PurchasesRepository with PurchasesRepositoryMixin, ErrorHandler {
       throw message;
     }
   }
+
+  Future<List<Document>> getTodayPurchasesDocuments() async {
+    final now = DateTime.now();
+    final date = DateFormat("yyyy-MM-dd").format(now);
+    try {
+      final url = root + 'purchase?&date:gt=$date';
+      final result = await http.get(url);
+      log("$result");
+
+      final data = List<Map<String, dynamic>>.from(result);
+      if (data.isEmpty) return [];
+      // final jsonDocuments = data.groupListsBy<String>((m) => m["documentId"]);
+
+      final documents = <Document>[];
+      for (var document in data) {
+        final purchases = (document["details"] as List)
+            .map((e) => Purchase.fromJson(e))
+            .toList();
+        final form = DocumentForm.fromJson(document);
+        documents.add(Document.purchases(form, purchases));
+      }
+      return documents;
+    } catch (error) {
+      final message = getError(error);
+      throw message;
+    }
+  }
 }
